@@ -18,5 +18,6 @@ namespace Entidades
         public string descripcionPartida { get; set; }
         public Partida partidaPadre { get; set; }
         public Periodo periodo { get; set; }
+        //TestCommit
     }
 }
