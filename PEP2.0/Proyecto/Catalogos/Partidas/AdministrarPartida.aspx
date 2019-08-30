@@ -5,6 +5,7 @@
     <asp:ScriptManager ID="MainScriptManager" runat="server" EnableCdn="true"/>
         <asp:UpdatePanel ID="pnlUpdate" runat="server">
             <ContentTemplate>
+                <%--TEST--%>
                 <div class="row">
                     <div class="col-md-12 col-xs-12 col-sm-12">
                         <center>
