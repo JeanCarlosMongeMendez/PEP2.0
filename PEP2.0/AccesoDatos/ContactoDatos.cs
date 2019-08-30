@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace AccesoDatos
 {
     /// <summary>
-    /// Leonardo Carrion
+    /// Leonardo Carrion.
     /// 06/may/2019
     /// Clase para administrar las consultas sql para la tabla de Contacto
     /// </summary>
