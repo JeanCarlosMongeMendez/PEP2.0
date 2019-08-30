@@ -11,7 +11,7 @@ namespace AccesoDatos
     /// <summary>
     /// Leonardo Carrion.
     /// 06/may/2019
-    /// Clase para administrar las consultas sql para la tabla de Contacto
+    /// Clase para administrar las consultas sql para la tabla de Contactos.
     /// </summary>
     public class ContactoDatos
     {
