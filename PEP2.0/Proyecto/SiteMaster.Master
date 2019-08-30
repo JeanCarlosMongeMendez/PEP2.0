@@ -1,0 +1,249 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="SiteMaster.master.cs" Inherits="PEP.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head id="Head1" runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="MobileOptimized" content="320" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="cleartype" content="on" />
+    <link rel="icon" href="http://www.lanamme.ucr.ac.cr/_firmasweb/images/Icon_LanammeUCR.ico" />
+    
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <!--Dialogos de Mensaje ref:https://nakupanda.github.io/bootstrap3-dialog/#available-options -->
+    <link href="css/bootstrap-dialog.css" rel="stylesheet" />
+
+    <%-- Estilos con formato UCR  --%>
+    <link href="css/Lanamme.css" rel="stylesheet" />
+
+    <link href="css/toastr.css" rel="stylesheet" />
+
+    <!-- Table -->
+    <link href="Content/DataTables/datatables.min.css" rel="stylesheet" />
+    <script src='<%=Page.ResolveUrl("~/Scripts/jquery-3.0.0.js") %>'></script>
+    <script src='<%=Page.ResolveUrl("~/Scripts/datatables.min.js") %>'></script>
+
+    <script src='<%=Page.ResolveUrl("~/Scripts/bootstrap-dialog.js") %>'></script>
+    <script src='<%=Page.ResolveUrl("~/Scripts/Dialogo.js") %>'></script>
+
+
+    <script src='<%=Page.ResolveUrl("~/Scripts/bootstrap.js") %>'></script>
+    <!-- Bootstrap PDF Viewer solo para visualizar archivos -->
+    <script src='<%=Page.ResolveUrl("~/Scripts/pdf.js") %>'></script>
+
+    <script src='<%=Page.ResolveUrl("~/Scripts/toastr.js") %>'></script>
+    <script src='<%=Page.ResolveUrl("~/Scripts/toastrConfig.js") %>'></script>
+
+
+    <title>Plataforma de Ejecución Presupuestaria</title>
+    <link rel="icon" href="http://www.lanamme.ucr.ac.cr/_firmasweb/images/Icon_LanammeUCR.ico" />
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="wrapper">
+            <!----Navbar---->
+            <div class="navbardiv">
+                <nav>
+                    <div class="container-fluid">
+                        <div class="col-xs-12">
+                            <!-- Brand and toggle get grouped for better mobile display -->
+                            <div class="navbar-header">
+                                <a class="left" href="http://www.ucr.ac.cr/">
+                                    <img class="logoUCR" src='<%=Page.ResolveUrl("~/Imagenes/logoUCR.png") %>' />
+                                </a>
+                            </div>
+                            <!-- Collect the nav links, forms, and other content for toggling -->
+
+                            <div class="navbar-header navbar-right">
+                                <a href="http://www.lanamme.ucr.ac.cr/">
+                                    <img class="logoLanamme" src='<%=Page.ResolveUrl("~/Imagenes/logoLanamme.png") %>' /></a>
+                                <!-- /.navbar-collapse -->
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- /.container-fluid -->
+                </nav>
+
+                <div class="subHeader center">
+                    <h3 class="subheaderTitle">Plataforma de Ejecución Presupuestaria</h3>
+                </div>
+            </div>
+            <!----Navbar end---->
+
+            <div id="menu" class="menu" runat="server">
+                <nav class="navbar navbar-default" role="navigation">
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed btn btn-danger" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+                            <%------------------------------ MENUS ---------------------------%>
+
+                            <%------------------------------MENU DE ADMINISTRADOR--------------------------%>
+                            <div id="MenuAdministrador" runat="server">
+                                <ul class="nav navbar-nav">
+                                    <li>
+                                        <asp:LinkButton ID="btnInformacion" runat="server" ToolTip="Información" ForeColor="#005da4" data-toggle="modal" data-target="#modalInformacion" Style="text-align: left;">
+                              <span class="glyphicon glyphicon-info-sign"></span>                
+                                        </asp:LinkButton>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Mantenimiento<span class="caret"></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <%--<li><a href='<%=Page.ResolveUrl("~/Default.aspx") %>'>Default</a></li>--%>
+                                            <li><a href='<%=Page.ResolveUrl("~/Mantenimiento/EscalasSalariales/AdministrarEscalas.aspx") %>'>Escalas salariales</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Formulacion<span class="caret"></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <%--<li><a href='<%=Page.ResolveUrl("~/Default.aspx") %>'>Default</a></li>--%>
+                                            <li><a href='<%=Page.ResolveUrl("~/Catalogos/Periodos/AdministrarPeriodo.aspx") %>'>Apertura de Periodo</a></li>
+                                            <li><a href='<%=Page.ResolveUrl("~/Catalogos/Partidas/AdministrarPartida.aspx") %>'>Administrar Partidas</a></li>
+                                            <li><a href='<%=Page.ResolveUrl("~/Catalogos/Presupuesto/PresupuestoIngreso.aspx") %>'>Presupuesto de Ingreso</a></li>
+                                            <li><a href='<%=Page.ResolveUrl("~/Catalogos/Presupuesto/PresupuestoEgreso.aspx") %>'>Presupuesto de Egreso</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Planilla<span class="caret"></span></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <%--<li><a href='<%=Page.ResolveUrl("~/Default.aspx") %>'>Default</a></li>--%>
+                                            <li><a href='<%=Page.ResolveUrl("~/Planilla/AdministrarPlanilla.aspx") %>'>Planilla</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href='<%=Page.ResolveUrl("~/") %>'>Ayuda</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <%------------------------------ FIN MENU DE ADMINISTRADOR--------------------------%>
+
+                            <%------------------------------FIN DE LOS MENUS ---------------------------%>
+
+                            <ul class="nav navbar-nav navbar-right">
+                                <li>
+                                    <a id="username" class="hidden-sm hidden-xs" runat="server">Bienvenid@</a>
+                                </li>
+                                <li>
+                                    <div class="input-group">
+                                        <asp:LinkButton ID="BtnSalir2" runat="server" CssClass="btn btn-primary" OnClick="BtnSalir_Click" CausesValidation="False" UseSubmitBehavior="False">
+                                        Salir
+                                        <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+                                        </asp:LinkButton>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- /.container-fluid -->
+                </nav>
+            </div>
+
+            <%--Modal de Información--%>
+
+            <div id="modalInformacion" class="modal fade" role="alertdialog">
+                <div class="modal-dialog modal-lg">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <center><asp:Label ID="Label2" runat="server" Text="Información" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label></center>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <asp:Label ID="lblInformacion" runat="server" Text="Información de la Aplicación:" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    Permita facilitar y llevar a cabo las labores relativas a la planificación y ejecución presupuestaria de la institución.
+                                </div>
+                                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                    <br />
+                                </div>
+                                <div class="col-md-12">
+                                    <asp:Label ID="lblCoordinador" runat="server" Text="Coordinador de la UTI: " Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    Wilson Argüello Rodríguez
+                                </div>
+                                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                    <br />
+                                </div>
+                                <div class="col-md-12">
+                                    <asp:Label ID="lblEncargadoDesarrollo" runat="server" Text="Encargado de Desarrollo de la Aplicación: " Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    Leonardo Carrión Quirós
+                                </div>
+                                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                    <br />
+                                </div>
+                                <div class="col-md-12">
+                                    <asp:Label ID="lblAnnio" runat="server" Text="Año:" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    2019
+                                </div>
+                                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                    <br />
+                                </div>
+                                <div class="col-md-12">
+                                    <asp:Label ID="Label1" runat="server" Text="Versión:" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    01.00.2019
+                                </div>
+                                <div class="col-md-12">
+                                    <br />
+                                    <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                                        <hr />
+                                    </div>
+                                    <asp:Label ID="lblContacto" runat="server" Text="Contacto y ayuda:" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    <asp:LinkButton ID="LinkButton2" runat="server" OnClientClick="window.open('http://www.lanamme.ucr.ac.cr/sau/');" Font-Size="Medium">sistema de atención de usuarios</asp:LinkButton>
+                                    <asp:Label ID="Label3" runat="server" Text="o a los telefonos 2511-2503 / 2511-2536" Font-Size="Medium" ForeColor="Black"></asp:Label>
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <%--Fin de Modal de Información--%>
+
+            <div class="content">
+                <%--Elementos para cada pagina --%>
+                <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                </asp:ContentPlaceHolder>
+                <div class="modal modal-sm modal-static fade" id="ModalAlerta" role="alertdialog">
+                    <div class="modal-dialog">
+                    </div>
+                </div>
+
+                <div class="messageText">
+                    <asp:Label ID="mensaje" Text="" runat="server"></asp:Label>
+                    <asp:Label runat="server" ID="alert" Text="" Visible="true"></asp:Label>
+                </div>
+            </div>
+            <div class="footer">
+                <h6 class="masterh6">&nbsp&nbsp&nbsp&nbsp&copy; <%: DateTime.Now.Year %>  Laboratorio Nacional de Materiales y Modelos Estructurales</h6>
+            </div>
+        </div>
+       
+    </form>
+
+    <%--Dentro de este espacio se ponen los scripts que tienen que correr al cargar la pagina  --%>
+    <asp:ContentPlaceHolder ID="ScriptContent" runat="server">
+    </asp:ContentPlaceHolder>
+</body>
+</html>
