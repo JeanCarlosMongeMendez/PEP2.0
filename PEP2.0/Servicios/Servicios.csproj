@@ -45,8 +45,10 @@
     <Compile Include="ContactoServicios.cs" />
     <Compile Include="EscalaSalarialServicios.cs" />
     <Compile Include="FuncionarioServicios.cs" />
+    <Compile Include="FuncionariosFundeviServicios.cs" />
     <Compile Include="PartidaServicios.cs" />
     <Compile Include="PeriodoServicios.cs" />
+    <Compile Include="PlanillaFundeviServicios.cs" />
     <Compile Include="PlanillaServicios.cs" />
     <Compile Include="PresupuestoServicios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

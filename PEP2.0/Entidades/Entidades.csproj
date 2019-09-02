@@ -44,9 +44,11 @@
     <Compile Include="Contacto.cs" />
     <Compile Include="EscalaSalarial.cs" />
     <Compile Include="Funcionario.cs" />
+    <Compile Include="FuncionarioFundevi.cs" />
     <Compile Include="Partida.cs" />
     <Compile Include="Periodo.cs" />
     <Compile Include="Planilla.cs" />
+    <Compile Include="PlanillaFundevi.cs" />
     <Compile Include="PresupuestoEgreso.cs" />
     <Compile Include="PresupuestoEgresoPartida.cs" />
     <Compile Include="PresupuestoIngreso.cs" />
