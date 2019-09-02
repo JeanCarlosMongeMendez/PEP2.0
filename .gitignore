@@ -6,7 +6,6 @@
 *.dll
 *.exe
 *.pdb
-*.dll.config
 *.cache
 *.suo
 # Include dlls if they�re in the NuGet packages directory
@@ -74,7 +73,6 @@ _[Ss]cripts
 *.ncrunchsolution
 *.dot[Cc]over
 *.cache
-*.config
 PEP2.0/.vs/Proyecto/v15/.suo
 *.ide-shm
 *.ide-wal
