@@ -3541,6 +3541,8 @@ input[type="button"].btn-block {
        -o-transition: opacity .15s linear;
           transition: opacity .15s linear;
 }
+
+
 .fade.in {
   opacity: 1;
 }
@@ -5971,6 +5973,11 @@ button.close {
   position: relative;
   width: auto;
   margin: 10px;
+}
+
+.modal-full {
+    min-width: 95%;
+    margin: 2%;
 }
 .modal-content {
   position: relative;
