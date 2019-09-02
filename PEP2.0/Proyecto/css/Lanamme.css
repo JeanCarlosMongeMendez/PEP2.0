@@ -1,0 +1,430 @@
+﻿/* ==============================================
+    Template: Lanamme css
+    Autor: Jean Sagot
+
+ - General settings     
+ - Colores datatable    
+ - Login                
+ - Cambio hover         
+ - Botones formulario   
+
+================================================ */
+
+
+/* ------------------
+    General settings aka master
+--------------------*/
+
+
+/*
+body {
+    display: flex;
+    flex-direction: column;
+}
+*/
+
+body {
+    
+}
+
+.loginBody {
+
+    background-image: url("../Imagenes/background.png");
+}
+
+.wrapper {
+    min-height: 100%;
+    min-width: 100%;
+    position: absolute;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+   
+}
+
+.divRedondo {
+    padding: 10px 5%;
+}
+
+/* ------------------
+    menu navbar
+--------------------*/
+.navbardiv {
+    min-height: 108px;
+    background-color: #005da4;
+}
+
+
+
+.logoUCR {
+    margin-top: 5%;
+    width: 400px;
+    height: 100%;
+}
+
+.logoLanamme {
+    margin-top: 5%;
+    width: 400px;
+    height: 100%;
+}
+
+.navbar-header {
+    margin-top: 8px;
+}
+
+.messageText {
+    display: none;
+}
+
+.spanTitleMaster {
+    font-family: Arial, Helvetica;
+    color: #FFFFFF;
+    font-size: 1.1em;
+    margin-right: 0.5em;
+}
+
+.content {
+    align-content: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 5%;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+
+
+/* ------------------
+    subheader
+--------------------*/
+.subHeader {
+    margin-top: 30px;
+    min-height: 50px;
+    color: #fff;
+    background-color: #666666;
+    text-align: center;
+}
+ .subheaderTitle{
+     padding-top: 10px;
+ }
+
+/* ------------------
+    Footer
+--------------------*/
+.footer {
+    background-color: #666666;
+    min-height: 25px;
+    padding: 1rem;
+    text-align: center;
+    min-height: 25px;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    padding-top:15px;
+}
+
+
+/*Para los downlist del autocompletar*/
+.completionList {
+    border: solid 1px Gray;
+    margin: 0px;
+    padding: 3px;
+    overflow: auto;
+    background-color: #FFFFFF;
+    font-family: Arial;
+    font-size: 13px;
+}
+
+.bottom-aligner {
+    display: inline;
+    height: 100%;
+    vertical-align: bottom;
+    width: 20px;
+}
+
+.bottom-content {
+    display: inline-block;
+    text-align: justify;
+}
+
+.listItem {
+    color: #000000;
+}
+
+.itemHighlighted {
+    background-color: #1E90FF;
+    color: #FFFFFF;
+}
+
+/* -------------------------
+    Colores para datatable
+----------------------------*/
+
+.naranja.even, .naranja.odd {
+    background-color: #FF7F00;
+}
+
+.rojo.even, .rojo.odd {
+    background-color: #ff4d4d;
+}
+
+.gris.even, .gris.odd {
+    background-color: #BEBEBE;
+}
+
+.amarillo.even, .amarillo.odd {
+    background-color: #ffff4d;
+}
+
+.verde.even, .verde.odd {
+    background-color: #6DC066;
+}
+
+.lila.even, .lila.odd {
+    background-color: #B666D2;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+}
+
+/* -------------------------
+            table
+----------------------------*/
+#infoIcon {
+    color: #005da4;
+    font-size: 25px;
+    float:left;
+    margin:5px;
+}
+
+    #infoIcon:hover {
+        color: #1E90FF;
+        cursor: pointer;
+    }
+
+/* -------------------------
+            login
+----------------------------*/
+#loginPanel {
+    padding-bottom: 12%;
+    min-width: 30rem;
+    align-content: center;
+}
+
+.loginOutline {
+    padding: 10px 5%;
+    /*
+    background: #eee;
+    border-radius: 50px;
+        */
+}
+
+@media screen and (max-width: 47.9rem) {
+    #loginPanel {
+        padding-right: 50px;
+        padding-left: 50px;
+    }
+}
+
+/* -------------------------
+    Cambio de icon en hover login
+----------------------------*/
+
+* > .fa.fa-hover-show,
+*:hover > .fa.fa-hover-hidden {
+    display: none;
+}
+
+*:hover > .fa.fa-hover-show {
+    display: inline-block;
+}
+
+
+/* -------------------------
+ login messages
+----------------------------*/
+.errorMessages {
+    margin-top: -20px;
+    text-align: center;
+}
+
+
+.loginButton {
+    text-align: center;
+    margin-top: 8px;
+}
+
+/* ------------------
+    infoIcon
+--------------------*/
+
+
+/* ---------------------
+    Botones formulario
+------------------------*/
+/* ------------------
+    Nuevo
+--------------------*/
+.boton-nuevo {
+    margin-top: 8px;
+    margin-right: 8px;
+    border-radius: 10px;
+    border: 2px solid #4CAF50;
+}
+
+    .boton-nuevo:hover {
+        color: white;
+        background-color: #4CAF50;
+    }
+
+    .boton-nuevo > span {
+        color: #4CAF50;
+        border-color:white;
+    }
+
+    .boton-nuevo:hover > span {
+        color: white;
+    }
+
+
+/* ------------------
+    Editar
+--------------------*/
+.boton-editar {
+    margin-top: 8px;
+    margin-right: 8px;
+    border-radius: 10px;
+    border: 2px solid #008CBA;
+}
+
+    .boton-editar:hover {
+        color: white;
+        background-color: #008CBA;
+    }
+
+    .boton-editar > span {
+        color: #008CBA;
+    }
+
+    .boton-editar:hover > span {
+        color: white;
+    }
+
+/* ------------------
+    Eliminar
+--------------------*/
+.boton-eliminar {
+    margin-top: 8px;
+    margin-right: 8px;
+    border-radius: 10px;
+    border: 2px solid #f44336;
+}
+
+    .boton-eliminar:hover {
+        color: white;
+        background-color: #f44336;
+    }
+
+    .boton-eliminar > span {
+        color: #f44336;
+    }
+
+    .boton-eliminar:hover > span {
+        color: white;
+    }
+
+/* ------------------
+    Otro
+--------------------*/
+.boton-otro {
+    margin-top: 8px;
+    margin-right: 8px;
+    border-radius: 10px;
+    border: 2px solid #f0ad4e;
+}
+
+    .boton-otro:hover {
+        color: white;
+        background-color: #f0ad4e;
+    }
+
+    .boton-otro > span {
+        color: #f0ad4e;
+    }
+
+    .boton-otro:hover > span {
+        color: white;
+    }
+
+/* ------------------
+    Main
+--------------------*/
+.boton-main {
+    margin-top: 8px;
+    margin-right: 8px;
+    border-radius: 10px;
+    background-color: #005da4 !important;
+    color: white !important;
+}
+
+    .boton-main:hover {
+        color: #005da4 !important;
+        border: 2px solid #005da4 !important;
+        background-color: White !important;
+    }
+
+    .boton-main > span {
+        color: White;
+    }
+
+    .boton-main:hover > span {
+        color: #005da4;
+    }
+
+#BtnSalir2 {
+    margin-top: 4px;
+    margin-left: 10px;
+}
+
+.masterh6 {
+    color: #fff;
+    text-align: center;
+}
+
+
+.navLogoContent {
+    display: inline-block;
+}
+
+@media screen and (min-width: 50.6rem) {
+    .navLogoContent {
+        margin-top: 50px;
+    }
+}
+
+.alinear-derecha {
+    text-align: right;
+}
+
+.center {
+    text-align: center;
+}
+
+.mt-1 {
+    margin-top: 1em;
+}
+
+.mt-2 {
+    margin-top: 2em;
+}
+
+.fondo-azul {
+    background-color: #005da4;
+    color: white;
+}
