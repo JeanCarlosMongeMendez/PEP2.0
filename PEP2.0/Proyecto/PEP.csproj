@@ -158,8 +158,12 @@
     <Content Include="Imagenes\UCR informe.png" />
     <Content Include="Login.aspx" />
     <Content Include="Mantenimiento\EscalasSalariales\AdministrarEscalas.aspx" />
+    <Content Include="Planilla\AdministrarFuncionarioFundevi.aspx" />
     <Content Include="Planilla\AdministrarFuncionariosPlanilla.aspx" />
     <Content Include="Planilla\AdministrarPlanilla.aspx" />
+    <Content Include="Planilla\AdministrarPlanillaFundevi.aspx" />
+    <Content Include="Planilla\AgregarFuncionarioFundevi.aspx" />
+    <Content Include="Planilla\AsignarFuncionariosPlanillaFundevi.aspx" />
     <Content Include="Scripts\abrirfile.js" />
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
@@ -323,6 +327,13 @@
     <Compile Include="Mantenimiento\EscalasSalariales\AdministrarEscalas.aspx.designer.cs">
       <DependentUpon>AdministrarEscalas.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Planilla\AdministrarFuncionarioFundevi.aspx.cs">
+      <DependentUpon>AdministrarFuncionarioFundevi.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Planilla\AdministrarFuncionarioFundevi.aspx.designer.cs">
+      <DependentUpon>AdministrarFuncionarioFundevi.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Planilla\AdministrarFuncionariosPlanilla.aspx.cs">
       <DependentUpon>AdministrarFuncionariosPlanilla.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -336,6 +347,27 @@
     </Compile>
     <Compile Include="Planilla\AdministrarPlanilla.aspx.designer.cs">
       <DependentUpon>AdministrarPlanilla.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Planilla\AdministrarPlanillaFundevi.aspx.cs">
+      <DependentUpon>AdministrarPlanillaFundevi.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Planilla\AdministrarPlanillaFundevi.aspx.designer.cs">
+      <DependentUpon>AdministrarPlanillaFundevi.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Planilla\AgregarFuncionarioFundevi.aspx.cs">
+      <DependentUpon>AgregarFuncionarioFundevi.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Planilla\AgregarFuncionarioFundevi.aspx.designer.cs">
+      <DependentUpon>AgregarFuncionarioFundevi.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Planilla\AsignarFuncionariosPlanillaFundevi.aspx.cs">
+      <DependentUpon>AsignarFuncionariosPlanillaFundevi.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Planilla\AsignarFuncionariosPlanillaFundevi.aspx.designer.cs">
+      <DependentUpon>AsignarFuncionariosPlanillaFundevi.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SiteMaster.Master.cs">
