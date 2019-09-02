@@ -300,6 +300,7 @@ namespace Proyecto.Catalogos.Presupuesto
                     HiddenField IdPartida = (HiddenField)item.FindControl("HFIdPartida");
                     int idPartida = Convert.ToInt32(IdPartida.Value.ToString());
 
+
                     monto += Convert.ToDouble(tbMonto.Text);
 
                     presupuestoEgresoPartida.idPartida = idPartida;
