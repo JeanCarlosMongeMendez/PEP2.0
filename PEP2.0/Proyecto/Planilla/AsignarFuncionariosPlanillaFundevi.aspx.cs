@@ -170,5 +170,21 @@ namespace Proyecto.Planilla
                 }
             }
         }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 02/sep/2019
+        /// Efecto: regresa a la pantalla de administrar funcionarios fundevi
+        /// Requiere: dar clic al boton de regresar
+        /// Modifica: -
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnRegresar_Click(object sender, EventArgs e)
+        {
+            String url = Page.ResolveUrl("~/Planilla/AdministrarFuncionarioFundevi.aspx");
+            Response.Redirect(url);
+        }
     }
 }

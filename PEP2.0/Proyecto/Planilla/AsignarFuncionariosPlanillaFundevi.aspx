@@ -93,6 +93,11 @@
                         <hr />
                     </div>
 
+                    <div class="row col-md-12 col-xs-12 col-sm-12">
+                        <div class="col-md-12 col-xs-12 col-sm-12 mt-1 alinear-derecha">
+                            <asp:Button Text="Regresar" ID="btnRegresar" runat="server" class="btn btn-danger" OnClick="btnRegresar_Click"/>
+                        </div>
+                    </div>    
                          
                 </div>
             </ContentTemplate>
