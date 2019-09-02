@@ -328,6 +328,11 @@ namespace PEP.Catalogos.Periodos
 
         protected void PasarProyectosBtn_Click(object sender, EventArgs e)
         {
+
+           
+
+
+
             if (Session["CheckRefresh"].ToString() == ViewState["CheckRefresh"].ToString())
             {
                 if (!PeriodosNuevosDDL.SelectedValue.Trim().Equals(""))
@@ -339,6 +344,10 @@ namespace PEP.Catalogos.Periodos
                             ProyectosNuevosLB.Items.Add(proyecto);
                         }
                     }
+                }
+                else
+                {
+                    Toastr("error", "Debe seleccionar el periodo al que desea pasar los proyectos");
                 }
 
                 Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());

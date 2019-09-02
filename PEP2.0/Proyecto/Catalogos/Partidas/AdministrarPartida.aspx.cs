@@ -205,6 +205,10 @@ namespace Proyecto.Catalogos.Partidas
                         }
                     }
                 }
+                else
+                {
+                    Toastr("error", "Debe seleccionar el periodo al que desea pasar los proyectos");
+                }
 
                 Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());
             }
