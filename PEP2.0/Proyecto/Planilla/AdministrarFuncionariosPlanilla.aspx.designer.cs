@@ -391,6 +391,24 @@ namespace Proyecto.Planilla {
         protected global::System.Web.UI.WebControls.LinkButton btnCalcularMontoAnualidades;
         
         /// <summary>
+        /// Control txtSalContratacion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSalContratacion;
+        
+        /// <summary>
+        /// Control btnCalcularSalContratacion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnCalcularSalContratacion;
+        
+        /// <summary>
         /// Control btnGuardarNuevoFuncionario.
         /// </summary>
         /// <remarks>

@@ -336,6 +336,24 @@
                             </div>
                         </div>
 
+                        <div class="col-md-12 col-xs-12 col-sm-12">
+                            <br />
+                        </div>
+
+                        <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                            <div class="col-md-3 col-xs-3 col-sm-3">
+                                <asp:Label runat="server" Text="Sal. Contratación <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                            </div>
+
+                            <div class="col-md-4 col-xs-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">₡</span>
+                                    <asp:TextBox ID="txtSalContratacion" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                </div>
+                                <asp:LinkButton ID="btnCalcularSalContratacion" runat="server" OnClick="btnCalcularSalContratacion_Click">Calcular</asp:LinkButton>
+                            </div>
+                        </div>
+
                         <div class="col-xs-12">
                             <h6 style="text-align: left">Los campos marcados con <span style='color: red'>*</span> son requeridos.</h6>
                         </div>

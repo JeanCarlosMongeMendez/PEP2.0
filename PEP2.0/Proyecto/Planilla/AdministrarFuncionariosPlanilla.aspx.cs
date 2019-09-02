@@ -117,6 +117,14 @@ namespace Proyecto.Planilla
             return montoAnualiadad;
         }
 
+        private Double calcularSalarioContratacion()
+        {
+            Double salarioBaseI = escalaSeleccionada.salarioBase1;
+            Double escalafon = calcularMontoEscalafon();
+            Double anualidad = calcularMontoAnualidad();
+            return (salarioBaseI + escalafon + anualidad);
+        }
+
         /// <summary>
         /// Leonardo Carrion
         /// 17/jul/2019
@@ -467,6 +475,22 @@ namespace Proyecto.Planilla
         {
             txtMontoEscalafones.Text = calcularMontoEscalafon().ToString();
 
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 02/09/2019
+        /// Efecto : Calcula el salario de contratacion y lo muestra en un campo de texto
+        /// Requiere : Clickear el boton calcular
+        /// Modifica : -
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnCalcularSalContratacion_Click(object sender, EventArgs e)
+        {
+            txtSalContratacion.Text = calcularSalarioContratacion().ToString();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
