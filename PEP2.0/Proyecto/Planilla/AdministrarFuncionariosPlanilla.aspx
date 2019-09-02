@@ -159,6 +159,20 @@
 
                         <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
                             <div class="col-md-3 col-xs-3 col-sm-3">
+                                <asp:Label runat="server" Text="Nombre Completo" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                            </div>
+
+                            <div class="col-md-4 col-xs-4 col-sm-4">
+                                <asp:TextBox CssClass="form-control" ID="txtNombreCompleto" runat="server" TextMode="MultiLine"></asp:TextBox>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-xs-12 col-sm-12">
+                            <br />
+                        </div>
+
+                        <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                            <div class="col-md-3 col-xs-3 col-sm-3">
                                 <asp:Label ID="Label4" runat="server" Text="Escala salarial" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                             </div>
 
