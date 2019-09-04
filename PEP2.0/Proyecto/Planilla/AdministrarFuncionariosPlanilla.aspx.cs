@@ -83,7 +83,7 @@ namespace Proyecto.Planilla
         /// Devuelve: monto de anualidad
         /// </summary>
         /// <returns></returns>
-        private Double calcularMontoAnualidad(Boolean boton)
+        private Double calcularMontoAnualidad(int boton)
         {
             Double montoAnualiadad = 0;
             Double montoEscalafon = 0;
@@ -108,7 +108,7 @@ namespace Proyecto.Planilla
             }
             catch
             {
-                txtMontoAnualidades.Text = "0";
+                txtMontoAnualidadesI.Text = "0";
             }
 
             Double porcentajeAnualidad = 0;
@@ -129,7 +129,7 @@ namespace Proyecto.Planilla
             }
             catch
             {
-                txtPorcentajeAnualidades.Text = "0";
+                txtPorcentajeAnualidadesI.Text = "0";
             }
 
 
@@ -148,20 +148,34 @@ namespace Proyecto.Planilla
         /// Devuelve : Salario de contratacion
         /// </summary>
         /// <returns></returns>
-        private Double calcularSalarioContratacion()
+        private Double calcularSalarioContratacion(int idBtn)
         {
-            Double montoEscalafon = 0;
+            Double salarioBase=0;
             try
             {
-                String montoTxt = txtMontoEscalafonesI.Text.Replace(".", ",");
-                Double monto = Convert.ToDouble(montoTxt);
+                
 
-                montoEscalafon = monto;
+                if (idBtn == 1)
+                {
+                    salarioBase = escalaSeleccionada.salarioBase1;
 
+                }
+                else if (idBtn == 2)
+                {
+                    salarioBase = escalaSeleccionada.salarioBase2;
+
+                }
             }
             catch
             {
-                txtMontoAnualidadesI.Text = "0";
+                if (idBtn == 1)
+                {
+
+                }
+                else if (idBtn == 2)
+                {
+
+                }
             }
 
             Double porcentajeAnualidad = 0;
@@ -180,10 +194,10 @@ namespace Proyecto.Planilla
 
 
 
-            Double salarioBaseI = escalaSeleccionada.salarioBase1;
-            Double escalafon = calcularMontoEscalafon();
-            Double anualidad = calcularMontoAnualidad(montoEscalafon, porcentajeAnualidad);
-            return (salarioBaseI + escalafon + anualidad);
+            
+            Double escalafon = calcularMontoEscalafon(idBtn);
+            Double anualidad = calcularMontoAnualidad(idBtn);
+            return (salarioBase + escalafon + anualidad);
         }
 
         /// <summary>
@@ -195,24 +209,21 @@ namespace Proyecto.Planilla
         /// Devuelve: monto de escalafones
         /// </summary>
         /// <returns></returns>
-        private Double calcularMontoEscalafon(Boolean boton)
+        private Double calcularMontoEscalafon(int boton)
         {
             int numeroEscalafones = 0;
             Double salarioBase = 0;
             try
             {
-<<<<<<< HEAD
-                if (boton)
+
+                if (boton==1)
                 {
                     numeroEscalafones = Convert.ToInt32(txtEscalafonesI.Text);
                 }
-                else
+                else if (boton == 2)
                 {
                     numeroEscalafones = Convert.ToInt32(txtEscalafonesII.Text);
                 }
-=======
-                numeroEscalafones = Convert.ToInt32(txtEscalafonesI.Text);
->>>>>>> 5236de5898702114d95497a0bbd955c6a835dbc0
             }
             catch
             {
@@ -223,14 +234,14 @@ namespace Proyecto.Planilla
 
             try
             {
-                if (boton)
+                if (boton==1)
                 {
                     String salarioTxt = txtSumaSalarioBase1.Text.Replace(".", ",");
                     Double salario = Convert.ToDouble(salarioTxt);
 
                     sumaSalario1 = salario;
                 }
-                else
+                else if (boton == 2)
                 {
                     String salarioTxt = txtSumaSalarioBase2.Text.Replace(".", ",");
                     Double salario = Convert.ToDouble(salarioTxt);
@@ -245,7 +256,7 @@ namespace Proyecto.Planilla
 
             try
             {
-                if (boton)
+                if (boton==1)
                 {
                     salarioBase = escalaSeleccionada.salarioBase1;
                     String salarioTxt = txtSumaSalarioBase2.Text.Replace(".", ",");
@@ -253,7 +264,7 @@ namespace Proyecto.Planilla
 
                     sumaSalario2 = salario;
                 }
-                else
+                else if (boton == 2)
                 {
                     salarioBase = escalaSeleccionada.salarioBase2;
                     String salarioTxt = txtSumaSalarioBase1.Text.Replace(".", ",");
@@ -284,19 +295,24 @@ namespace Proyecto.Planilla
         /// Devuelve : Salario mensual Enero - Junio
         /// </summary>
         /// <returns></returns>
-        private Double calcularSalarioMensualEneroJunio()
+        private Double calcularSalarioMensual(int idBtn)
         {
             Double salarioMensual = 0;
             int pagoLey8114 = 0;
             try
+
             {
                 pagoLey8114 = Convert.ToInt32(txtPagoLey8114.Text);
             }
             catch
             {
-                txtEscalafonesI.Text = "0";
+                txtPagoLey8114.Text = "0";
             }
-            salarioMensual = pagoLey8114 + calcularSalarioContratacion();
+          
+                salarioMensual = pagoLey8114 + calcularSalarioContratacion(idBtn);
+
+            
+           
             return salarioMensual;
         }
 
@@ -595,13 +611,9 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularEscalafones_Click(object sender, EventArgs e)
         {
-<<<<<<< HEAD
             LinkButton button = (LinkButton)sender;
             bool boton = button.ID.Equals("btnCalcularMontoAnualidadesI");
             txtMontoEscalafonesI.Text = calcularMontoEscalafon(boton).ToString();
-=======
-            txtMontoEscalafonesI.Text = calcularMontoEscalafon().ToString();
->>>>>>> 5236de5898702114d95497a0bbd955c6a835dbc0
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
@@ -633,7 +645,16 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularSalarioMensualEneroJunio_Click(object sender, EventArgs e)
         {
-            txtSalarioMensualEneroJunio.Text = calcularSalarioMensualEneroJunio().ToString();
+            LinkButton btnCalcularSalario = (LinkButton)sender;
+            if (btnCalcularSalario.ID.Equals("btnCalcularSalarioMensualI"))
+            {
+                txtSalarioMensualEneroJunio.Text = calcularSalarioMensual(1).ToString();
+            }
+            else if (btnCalcularSalario.ID.Equals("btnCalcularSalarioMensualII"))
+            {
+                txtSalarioMensualEneroJunio.Text = calcularSalarioMensual(2).ToString();
+            }
+
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
@@ -649,42 +670,12 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularMontoAnualidades_Click(object sender, EventArgs e)
         {
-<<<<<<< HEAD
-            #region anualidades
-            
             LinkButton button = (LinkButton)sender;
             bool boton = button.ID.Equals("btnCalcularMontoAnualidadesI");
-            
-            txtMontoAnualidades.Text = calcularMontoAnualidad(boton).ToString();
-            #endregion
-=======
-<<<<<<< HEAD
-            txtMontoEscalafonesI.Text = calcularMontoEscalafon().ToString();
-            txtMontoAnualidadesI.Text = calcularMontoAnualidad().ToString();
-=======
-            Double montoEscalafon = 0;
-            try
-            {
-                String montoTxt = txtMontoEscalafones.Text.Replace(".", ",");
-                Double monto = Convert.ToDouble(montoTxt);
->>>>>>> 5236de5898702114d95497a0bbd955c6a835dbc0
-
-
-
-
-
-            #region escalafon
-
-           
-
             txtMontoEscalafonesI.Text = calcularMontoEscalafon(boton).ToString();
-            #endregion
 
-<<<<<<< HEAD
-=======
-            txtMontoEscalafones.Text = calcularMontoEscalafon().ToString();
->>>>>>> be10332ac470dea9f416f57176a3d0d4d1c884d8
->>>>>>> 5236de5898702114d95497a0bbd955c6a835dbc0
+            txtMontoAnualidadesI.Text = calcularMontoAnualidad(boton).ToString();
+
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
