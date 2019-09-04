@@ -117,6 +117,15 @@ namespace Proyecto.Planilla
             return montoAnualiadad;
         }
 
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 04/09/2019
+        /// Efecto: Calcula el salario de contratacion
+        /// Requiere: -
+        /// Modifica : -
+        /// Devuelve : Salario de contratacion
+        /// </summary>
+        /// <returns></returns>
         private Double calcularSalarioContratacion()
         {
             Double salarioBaseI = escalaSeleccionada.salarioBase1;
@@ -176,6 +185,31 @@ namespace Proyecto.Planilla
             montoEscalafon = ((escalaSeleccionada.salarioBase1 + sumaSalario1) * numeroEscalafones) * (escalaSeleccionada.porentajeEscalafones / 100);
 
             return montoEscalafon;
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 04/09/2019
+        /// Efecto : Calcula el salario mensual Enero - Junio 
+        /// Requiere : -
+        /// Modifica : -
+        /// Devuelve : Salario mensual Enero - Junio
+        /// </summary>
+        /// <returns></returns>
+        private Double calcularSalarioMensualEneroJunio()
+        {
+            Double salarioMensual = 0;
+            int pagoLey8114 = 0;
+            try
+            {
+                pagoLey8114 = Convert.ToInt32(txtPagoLey8114.Text);
+            }
+            catch
+            {
+                txtEscalafones.Text = "0";
+            }
+            salarioMensual = pagoLey8114 + calcularSalarioContratacion();
+            return salarioMensual;
         }
 
         /// <summary>
@@ -474,7 +508,6 @@ namespace Proyecto.Planilla
         protected void btnCalcularEscalafones_Click(object sender, EventArgs e)
         {
             txtMontoEscalafones.Text = calcularMontoEscalafon().ToString();
-
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
@@ -482,8 +515,8 @@ namespace Proyecto.Planilla
         /// Jean Carlos Monge Mendez
         /// 02/09/2019
         /// Efecto : Calcula el salario de contratacion y lo muestra en un campo de texto
-        /// Requiere : Clickear el boton calcular
-        /// Modifica : -
+        /// Requiere : Salario base 1, monto de escalafones, monto de anualidad
+        /// Modifica : El campo de texto con el salario de contratacion
         /// Devuelve : -
         /// </summary>
         /// <param name="sender"></param>
@@ -491,6 +524,22 @@ namespace Proyecto.Planilla
         protected void btnCalcularSalContratacion_Click(object sender, EventArgs e)
         {
             txtSalContratacion.Text = calcularSalarioContratacion().ToString();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 04/09/2019
+        /// Efecto: Calcula el salario mensual a proponer real Ene-Jun
+        /// Requiere : Salario de contratacion, Concepto de pago Ley 8114
+        /// Modifica : Campo de texto con el salario mensual enero - junio
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnCalcularSalarioMensualEneroJunio_Click(object sender, EventArgs e)
+        {
+            txtSalarioMensualEneroJunio.Text = calcularSalarioMensualEneroJunio().ToString();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 

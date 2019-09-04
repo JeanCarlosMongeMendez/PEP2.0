@@ -1,4 +1,5 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMaster.Master" AutoEventWireup="true" CodeBehind="AdministrarFuncionariosPlanilla.aspx.cs" Inherits="Proyecto.Planilla.AdministrarFuncionariosPlanilla" MaintainScrollPositionOnPostback="true"%>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMaster.Master" AutoEventWireup="true" CodeBehind="AdministrarFuncionariosPlanilla.aspx.cs" Inherits="Proyecto.Planilla.AdministrarFuncionariosPlanilla" MaintainScrollPositionOnPostback="true" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -139,7 +140,7 @@
     <%--<asp:UpdatePanel ID="UpdatePanel2" runat="server">
         <ContentTemplate>--%>
     <div id="modalNuevoFuncionario" class="modal fade" role="alertdialog">
-        <div class="modal-dialog modal-lg"  style="min-width: 95%; margin: 2%">
+        <div class="modal-dialog modal-lg" style="min-width: 95%; margin: 2%">
 
             <!-- Modal content-->
             <div class="modal-content">
@@ -151,7 +152,19 @@
                     <%-- campos a llenar --%>
                     <div class="row">
 
-                        <%-- fin campos a llenar --%>
+                        <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                            <div class="col-md-3 col-xs-3 col-sm-3">
+                                <asp:Label runat="server" Text="Nombre Completo" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                            </div>
+
+                            <div class="col-md-4 col-xs-4 col-sm-4">
+                                <asp:TextBox CssClass="form-control" ID="txtNombreCompleto" runat="server" TextMode="MultiLine"></asp:TextBox>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-xs-12 col-sm-12">
+                            <br />
+                        </div>
 
                         <div class="col-md-12 col-xs-12 col-sm-12">
                             <br />
@@ -193,12 +206,20 @@
                                 <asp:Label ID="Label5" runat="server" Text="Salario base I <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                             </div>
 
-                            <div class="col-md-4 col-xs-4 col-sm-4">
+                            <div class="col-md-2 col-xs-2 col-sm-2">
                                 <div class="input-group">
                                     <span class="input-group-addon">₡</span>
                                     <asp:TextBox ID="txtSalarioBase1ModalNuevo" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
                                 </div>
                             </div>
+
+                            <div class="col-md-2 col-xs-2 col-sm-2">
+                                <div class="input-group">
+                                    <span class="input-group-addon">+</span>
+                                    <asp:TextBox ID="txtSumaSalarioBase1" runat="server" class="form-control"></asp:TextBox>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="col-md-12 col-xs-12 col-sm-12">
@@ -213,7 +234,7 @@
                             <div class="col-md-4 col-xs-4 col-sm-4">
                                 <div class="input-group">
                                     <span class="input-group-addon">₡</span>
-                                    <asp:TextBox ID="txtSumaSalarioBase1" runat="server" class="form-control"></asp:TextBox>
+                                    <asp:TextBox ID="txtSumaTotalSalarioBase1" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
                                 </div>
                             </div>
                         </div>
@@ -340,10 +361,47 @@
                             </div>
                         </div>
 
+                        <div class="col-md-12 col-xs-12 col-sm-12">
+                            <br />
+                        </div>
+
+                        <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                            <div class="col-md-3 col-xs-3 col-sm-3">
+                                <asp:Label ID="Label13" runat="server" Text="Concepto de pago Ley 8114" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                            </div>
+
+                            <div class="col-md-4 col-xs-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">₡</span>
+                                    <asp:TextBox ID="txtPagoLey8114" runat="server" class="form-control" TextMode="Number"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-xs-12 col-sm-12">
+                            <br />
+                        </div>
+
+                        <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                            <div class="col-md-3 col-xs-3 col-sm-3">
+                                <asp:Label runat="server" Text="Salario mensual a proponer Enero - Junio <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                            </div>
+
+                            <div class="col-md-4 col-xs-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">₡</span>
+                                    <asp:TextBox ID="txtSalarioMensualEneroJunio" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                </div>
+                                <asp:LinkButton ID="btnCalcularSalarioMensualEneroJunio" runat="server" OnClick="btnCalcularSalarioMensualEneroJunio_Click">Calcular</asp:LinkButton>
+                            </div>
+                        </div>
+
                         <div class="col-xs-12">
                             <h6 style="text-align: left">Los campos marcados con <span style='color: red'>*</span> son requeridos.</h6>
                         </div>
                     </div>
+
+                    <%-- Fin campos a llenar --%>
 
                 </div>
                 <div class="modal-footer" style="text-align: center">

@@ -184,6 +184,15 @@ namespace Proyecto.Planilla {
         protected global::System.Web.UI.WebControls.Button btnRegresar;
         
         /// <summary>
+        /// Control txtNombreCompleto.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNombreCompleto;
+        
+        /// <summary>
         /// Control Label4.
         /// </summary>
         /// <remarks>
@@ -238,6 +247,15 @@ namespace Proyecto.Planilla {
         protected global::System.Web.UI.WebControls.TextBox txtSalarioBase1ModalNuevo;
         
         /// <summary>
+        /// Control txtSumaSalarioBase1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSumaSalarioBase1;
+        
+        /// <summary>
         /// Control Label9.
         /// </summary>
         /// <remarks>
@@ -247,13 +265,13 @@ namespace Proyecto.Planilla {
         protected global::System.Web.UI.WebControls.Label Label9;
         
         /// <summary>
-        /// Control txtSumaSalarioBase1.
+        /// Control txtSumaTotalSalarioBase1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSumaSalarioBase1;
+        protected global::System.Web.UI.WebControls.TextBox txtSumaTotalSalarioBase1;
         
         /// <summary>
         /// Control Label6.
@@ -398,6 +416,42 @@ namespace Proyecto.Planilla {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnCalcularSalContratacion;
+        
+        /// <summary>
+        /// Control Label13.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label13;
+        
+        /// <summary>
+        /// Control txtPagoLey8114.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPagoLey8114;
+        
+        /// <summary>
+        /// Control txtSalarioMensualEneroJunio.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSalarioMensualEneroJunio;
+        
+        /// <summary>
+        /// Control btnCalcularSalarioMensualEneroJunio.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnCalcularSalarioMensualEneroJunio;
         
         /// <summary>
         /// Control btnGuardarNuevoFuncionario.
