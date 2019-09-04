@@ -83,34 +83,12 @@ namespace Proyecto.Planilla
         /// Devuelve: monto de anualidad
         /// </summary>
         /// <returns></returns>
-        private Double calcularMontoAnualidad()
+        private Double calcularMontoAnualidad(Double monto, Double porcentajeAnualidad)
         {
+
             Double montoAnualiadad = 0;
 
-            Double montoEscalafon = 0;
-
-            try
-            {
-                String montoTxt = txtMontoEscalafonesI.Text.Replace(".", ",");
-                Double monto = Convert.ToDouble(montoTxt);
-
-                montoEscalafon = monto;
-            }
-            catch
-            {
-                txtMontoAnualidadesI.Text = "0";
-            }
-
-            Double porcentajeAnualidad = 0;
-            try
-            {
-                String montoTxt = txtPorcentajeAnualidadesI.Text.Replace(".", ",");
-                porcentajeAnualidad = Convert.ToDouble(montoTxt);
-            }
-            catch
-            {
-                txtPorcentajeAnualidadesI.Text = "0";
-            }
+            Double montoEscalafon = monto;
 
             montoAnualiadad = (escalaSeleccionada.salarioBase1 + montoEscalafon) * (porcentajeAnualidad / 100);
 
@@ -128,9 +106,41 @@ namespace Proyecto.Planilla
         /// <returns></returns>
         private Double calcularSalarioContratacion()
         {
+            Double montoEscalafon = 0;
+            try
+            {
+                String montoTxt = txtMontoEscalafonesI.Text.Replace(".", ",");
+                Double monto = Convert.ToDouble(montoTxt);
+
+                montoEscalafon = monto;
+
+
+
+            }
+            catch
+            {
+                txtMontoAnualidadesI.Text = "0";
+            }
+
+            Double porcentajeAnualidad = 0;
+            try
+            {
+                String montoTxt = txtPorcentajeAnualidadesI.Text.Replace(".", ",");
+                porcentajeAnualidad = Convert.ToDouble(montoTxt);
+            }
+            catch
+            {
+                txtPorcentajeAnualidadesI.Text = "0";
+            }
+            
+
+
+
+
+
             Double salarioBaseI = escalaSeleccionada.salarioBase1;
             Double escalafon = calcularMontoEscalafon();
-            Double anualidad = calcularMontoAnualidad();
+            Double anualidad = calcularMontoAnualidad(montoEscalafon, porcentajeAnualidad);
             return (salarioBaseI + escalafon + anualidad);
         }
 
@@ -555,8 +565,40 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularMontoAnualidades_Click(object sender, EventArgs e)
         {
+<<<<<<< HEAD
             txtMontoEscalafonesI.Text = calcularMontoEscalafon().ToString();
             txtMontoAnualidadesI.Text = calcularMontoAnualidad().ToString();
+=======
+            Double montoEscalafon = 0;
+            try
+            {
+                String montoTxt = txtMontoEscalafones.Text.Replace(".", ",");
+                Double monto = Convert.ToDouble(montoTxt);
+
+                montoEscalafon = monto;
+
+
+
+            }
+            catch
+            {
+                txtMontoAnualidades.Text = "0";
+            }
+
+            Double porcentajeAnualidad = 0;
+            try
+            {
+                String montoTxt = txtPorcentajeAnualidades.Text.Replace(".", ",");
+                porcentajeAnualidad = Convert.ToDouble(montoTxt);
+            }
+            catch
+            {
+                txtPorcentajeAnualidades.Text = "0";
+            }
+            txtMontoAnualidades.Text = calcularMontoAnualidad(montoEscalafon, porcentajeAnualidad).ToString();
+
+            txtMontoEscalafones.Text = calcularMontoEscalafon().ToString();
+>>>>>>> be10332ac470dea9f416f57176a3d0d4d1c884d8
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
