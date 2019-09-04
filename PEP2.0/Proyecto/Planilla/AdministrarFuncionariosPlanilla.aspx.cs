@@ -150,10 +150,10 @@ namespace Proyecto.Planilla
         /// <returns></returns>
         private Double calcularSalarioContratacion(int idBtn)
         {
-            Double salarioBase=0;
+            Double salarioBase = 0;
             try
             {
-                
+
 
                 if (idBtn == 1)
                 {
@@ -188,13 +188,13 @@ namespace Proyecto.Planilla
             {
                 txtPorcentajeAnualidadesI.Text = "0";
             }
-            
 
 
 
 
 
-            
+
+
             Double escalafon = calcularMontoEscalafon(idBtn);
             Double anualidad = calcularMontoAnualidad(idBtn);
             return (salarioBase + escalafon + anualidad);
@@ -216,7 +216,7 @@ namespace Proyecto.Planilla
             try
             {
 
-                if (boton==1)
+                if (boton == 1)
                 {
                     numeroEscalafones = Convert.ToInt32(txtEscalafonesI.Text);
                 }
@@ -234,7 +234,7 @@ namespace Proyecto.Planilla
 
             try
             {
-                if (boton==1)
+                if (boton == 1)
                 {
                     String salarioTxt = txtSumaSalarioBase1.Text.Replace(".", ",");
                     Double salario = Convert.ToDouble(salarioTxt);
@@ -256,7 +256,7 @@ namespace Proyecto.Planilla
 
             try
             {
-                if (boton==1)
+                if (boton == 1)
                 {
                     salarioBase = escalaSeleccionada.salarioBase1;
                     String salarioTxt = txtSumaSalarioBase2.Text.Replace(".", ",");
@@ -308,11 +308,11 @@ namespace Proyecto.Planilla
             {
                 txtPagoLey8114.Text = "0";
             }
-          
-                salarioMensual = pagoLey8114 + calcularSalarioContratacion(idBtn);
 
-            
-           
+            salarioMensual = pagoLey8114 + calcularSalarioContratacion(idBtn);
+
+
+
             return salarioMensual;
         }
 
