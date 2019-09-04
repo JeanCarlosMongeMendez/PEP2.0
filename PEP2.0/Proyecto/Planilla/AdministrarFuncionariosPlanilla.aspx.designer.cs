@@ -238,13 +238,13 @@ namespace Proyecto.Planilla {
         protected global::System.Web.UI.WebControls.Label Label5;
         
         /// <summary>
-        /// Control txtSalarioBase1ModalNuevo.
+        /// Control txtSalarioBase1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSalarioBase1ModalNuevo;
+        protected global::System.Web.UI.WebControls.TextBox txtSalarioBase1;
         
         /// <summary>
         /// Control txtSumaSalarioBase1.
@@ -256,49 +256,13 @@ namespace Proyecto.Planilla {
         protected global::System.Web.UI.WebControls.TextBox txtSumaSalarioBase1;
         
         /// <summary>
-        /// Control Label9.
+        /// Control txtSalarioBase2.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label9;
-        
-        /// <summary>
-        /// Control txtSumaTotalSalarioBase1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSumaTotalSalarioBase1;
-        
-        /// <summary>
-        /// Control Label6.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label6;
-        
-        /// <summary>
-        /// Control txtSalarioBase2ModalNuevo.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSalarioBase2ModalNuevo;
-        
-        /// <summary>
-        /// Control Label10.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label10;
+        protected global::System.Web.UI.WebControls.TextBox txtSalarioBase2;
         
         /// <summary>
         /// Control txtSumaSalarioBase2.
@@ -310,6 +274,24 @@ namespace Proyecto.Planilla {
         protected global::System.Web.UI.WebControls.TextBox txtSumaSalarioBase2;
         
         /// <summary>
+        /// Control txtSumaTotalSalarioBase1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSumaTotalSalarioBase1;
+        
+        /// <summary>
+        /// Control txtSumaTotalSalarioBaseII.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSumaTotalSalarioBaseII;
+        
+        /// <summary>
         /// Control Label7.
         /// </summary>
         /// <remarks>
@@ -319,40 +301,58 @@ namespace Proyecto.Planilla {
         protected global::System.Web.UI.WebControls.Label Label7;
         
         /// <summary>
-        /// Control txtEscalafones.
+        /// Control txtEscalafonesI.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEscalafones;
+        protected global::System.Web.UI.WebControls.TextBox txtEscalafonesI;
         
         /// <summary>
-        /// Control Label8.
+        /// Control txtEscalafonesII.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label8;
+        protected global::System.Web.UI.WebControls.TextBox txtEscalafonesII;
         
         /// <summary>
-        /// Control txtMontoEscalafones.
+        /// Control txtMontoEscalafonesI.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMontoEscalafones;
+        protected global::System.Web.UI.WebControls.TextBox txtMontoEscalafonesI;
         
         /// <summary>
-        /// Control btnCalcularEscalafones.
+        /// Control btnCalcularEscalafonesI.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnCalcularEscalafones;
+        protected global::System.Web.UI.WebControls.LinkButton btnCalcularEscalafonesI;
+        
+        /// <summary>
+        /// Control txtMontoEscalafonesII.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtMontoEscalafonesII;
+        
+        /// <summary>
+        /// Control btnCalcularEscalafonesII.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnCalcularEscalafonesII;
         
         /// <summary>
         /// Control Label11.
