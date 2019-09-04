@@ -91,25 +91,25 @@ namespace Proyecto.Planilla
 
             try
             {
-                String montoTxt = txtMontoEscalafones.Text.Replace(".", ",");
+                String montoTxt = txtMontoEscalafonesI.Text.Replace(".", ",");
                 Double monto = Convert.ToDouble(montoTxt);
 
                 montoEscalafon = monto;
             }
             catch
             {
-                txtMontoAnualidades.Text = "0";
+                txtMontoAnualidadesI.Text = "0";
             }
 
             Double porcentajeAnualidad = 0;
             try
             {
-                String montoTxt = txtPorcentajeAnualidades.Text.Replace(".", ",");
+                String montoTxt = txtPorcentajeAnualidadesI.Text.Replace(".", ",");
                 porcentajeAnualidad = Convert.ToDouble(montoTxt);
             }
             catch
             {
-                txtPorcentajeAnualidades.Text = "0";
+                txtPorcentajeAnualidadesI.Text = "0";
             }
 
             montoAnualiadad = (escalaSeleccionada.salarioBase1 + montoEscalafon) * (porcentajeAnualidad / 100);
@@ -149,11 +149,11 @@ namespace Proyecto.Planilla
             int numeroEscalafones = 0;
             try
             {
-                numeroEscalafones = Convert.ToInt32(txtEscalafones.Text);
+                numeroEscalafones = Convert.ToInt32(txtEscalafonesI.Text);
             }
             catch
             {
-                txtEscalafones.Text = "0";
+                txtEscalafonesI.Text = "0";
             }
 
             Double sumaSalario1 = 0, sumaSalario2 = 0;
@@ -206,7 +206,7 @@ namespace Proyecto.Planilla
             }
             catch
             {
-                txtEscalafones.Text = "0";
+                txtEscalafonesI.Text = "0";
             }
             salarioMensual = pagoLey8114 + calcularSalarioContratacion();
             return salarioMensual;
@@ -507,7 +507,7 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularEscalafones_Click(object sender, EventArgs e)
         {
-            txtMontoEscalafones.Text = calcularMontoEscalafon().ToString();
+            txtMontoEscalafonesI.Text = calcularMontoEscalafon().ToString();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
@@ -523,7 +523,7 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularSalContratacion_Click(object sender, EventArgs e)
         {
-            txtSalContratacion.Text = calcularSalarioContratacion().ToString();
+            txtSalContratacionI.Text = calcularSalarioContratacion().ToString();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
@@ -555,9 +555,28 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularMontoAnualidades_Click(object sender, EventArgs e)
         {
-            txtMontoEscalafones.Text = calcularMontoEscalafon().ToString();
-            txtMontoAnualidades.Text = calcularMontoAnualidad().ToString();
+            txtMontoEscalafonesI.Text = calcularMontoEscalafon().ToString();
+            txtMontoAnualidadesI.Text = calcularMontoAnualidad().ToString();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
+        }
+
+        protected void btnCalcularNumeroEscalafones2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnCalcularPromedioSemestres_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnCalcularSalarioPropuesto_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnCalcularTotalSalarioBase_Click(object sender, EventArgs e)
+        {
         }
 
         #endregion
