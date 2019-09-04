@@ -161,7 +161,7 @@ namespace Proyecto.Planilla
             }
             catch
             {
-                txtMontoAnualidades.Text = "0";
+                txtMontoAnualidadesI.Text = "0";
             }
 
             Double porcentajeAnualidad = 0;
@@ -172,7 +172,7 @@ namespace Proyecto.Planilla
             }
             catch
             {
-                txtPorcentajeAnualidades.Text = "0";
+                txtPorcentajeAnualidadesI.Text = "0";
             }
             
 
@@ -201,6 +201,7 @@ namespace Proyecto.Planilla
             Double salarioBase = 0;
             try
             {
+<<<<<<< HEAD
                 if (boton)
                 {
                     numeroEscalafones = Convert.ToInt32(txtEscalafonesI.Text);
@@ -209,6 +210,9 @@ namespace Proyecto.Planilla
                 {
                     numeroEscalafones = Convert.ToInt32(txtEscalafonesII.Text);
                 }
+=======
+                numeroEscalafones = Convert.ToInt32(txtEscalafonesI.Text);
+>>>>>>> 5236de5898702114d95497a0bbd955c6a835dbc0
             }
             catch
             {
@@ -591,9 +595,13 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularEscalafones_Click(object sender, EventArgs e)
         {
+<<<<<<< HEAD
             LinkButton button = (LinkButton)sender;
             bool boton = button.ID.Equals("btnCalcularMontoAnualidadesI");
             txtMontoEscalafonesI.Text = calcularMontoEscalafon(boton).ToString();
+=======
+            txtMontoEscalafonesI.Text = calcularMontoEscalafon().ToString();
+>>>>>>> 5236de5898702114d95497a0bbd955c6a835dbc0
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
@@ -609,7 +617,7 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularSalContratacion_Click(object sender, EventArgs e)
         {
-            txtSalContratacion.Text = calcularSalarioContratacion().ToString();
+            txtSalContratacionI.Text = calcularSalarioContratacion().ToString();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
@@ -641,6 +649,7 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularMontoAnualidades_Click(object sender, EventArgs e)
         {
+<<<<<<< HEAD
             #region anualidades
             
             LinkButton button = (LinkButton)sender;
@@ -648,6 +657,17 @@ namespace Proyecto.Planilla
             
             txtMontoAnualidades.Text = calcularMontoAnualidad(boton).ToString();
             #endregion
+=======
+<<<<<<< HEAD
+            txtMontoEscalafonesI.Text = calcularMontoEscalafon().ToString();
+            txtMontoAnualidadesI.Text = calcularMontoAnualidad().ToString();
+=======
+            Double montoEscalafon = 0;
+            try
+            {
+                String montoTxt = txtMontoEscalafones.Text.Replace(".", ",");
+                Double monto = Convert.ToDouble(montoTxt);
+>>>>>>> 5236de5898702114d95497a0bbd955c6a835dbc0
 
 
 
@@ -660,7 +680,31 @@ namespace Proyecto.Planilla
             txtMontoEscalafonesI.Text = calcularMontoEscalafon(boton).ToString();
             #endregion
 
+<<<<<<< HEAD
+=======
+            txtMontoEscalafones.Text = calcularMontoEscalafon().ToString();
+>>>>>>> be10332ac470dea9f416f57176a3d0d4d1c884d8
+>>>>>>> 5236de5898702114d95497a0bbd955c6a835dbc0
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
+        }
+
+        protected void btnCalcularNumeroEscalafones2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnCalcularPromedioSemestres_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnCalcularSalarioPropuesto_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnCalcularTotalSalarioBase_Click(object sender, EventArgs e)
+        {
         }
 
         #endregion
