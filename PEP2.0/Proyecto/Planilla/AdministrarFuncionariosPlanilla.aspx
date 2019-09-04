@@ -153,11 +153,11 @@
                     <div class="row">
 
                         <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
-                            <div class="col-md-3 col-xs-3 col-sm-3">
+                            <div class="col-md-3 col-xs-3 col-sm-3 col-md-offset-3">
                                 <asp:Label runat="server" Text="Nombre Completo" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                             </div>
 
-                            <div class="col-md-4 col-xs-4 col-sm-4">
+                            <div class="col-md-3 col-xs-3 col-sm-3">
                                 <asp:TextBox CssClass="form-control" ID="txtNombreCompleto" runat="server" TextMode="MultiLine"></asp:TextBox>
                             </div>
                         </div>
@@ -166,16 +166,12 @@
                             <br />
                         </div>
 
-                        <div class="col-md-12 col-xs-12 col-sm-12">
-                            <br />
-                        </div>
-
                         <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
-                            <div class="col-md-3 col-xs-3 col-sm-3">
+                            <div class="col-md-3 col-xs-3 col-sm-3 col-md-offset-3">
                                 <asp:Label ID="Label4" runat="server" Text="Escala salarial" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                             </div>
 
-                            <div class="col-md-4 col-xs-4 col-sm-4">
+                            <div class="col-md-3 col-xs-3 col-sm-3">
                                 <asp:DropDownList ID="ddlEscalaSalarial" class="btn btn-default dropdown-toggle" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlEscalaSalarial_SelectedIndexChanged"></asp:DropDownList>
                             </div>
                         </div>
@@ -185,11 +181,11 @@
                         </div>
 
                         <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
-                            <div class="col-md-3 col-xs-3 col-sm-3">
+                            <div class="col-md-3 col-xs-3 col-sm-3 col-md-offset-3">
                                 <asp:Label ID="Label3" runat="server" Text="Fecha ingreso <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                             </div>
 
-                            <div class="col-md-4 col-xs-4 col-sm-4 input-group date" id="divFecha">
+                            <div class="col-md-3 col-xs-3 col-sm-3 input-group date" id="divFecha">
                                 <span class="input-group-addon">
                                     <span class="fa fa-calendar"></span>
                                 </span>
@@ -201,15 +197,35 @@
                             <br />
                         </div>
 
+
+                        <div class="col-md-12 col-xs-12 col-sm-12">
+                            <br />
+                        </div>
+
                         <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
-                            <div class="col-md-3 col-xs-3 col-sm-3">
+                            <div class="col-md-6 col-xs-6 col-sm-6">
+                                <asp:Label runat="server" Text="Datos para el primer semestre" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                            </div>
+
+                            <div class="col-md-6 col-xs-6 col-sm-6">
+                                <asp:Label runat="server" Text="Datos para el segundo semestre" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-xs-12 col-sm-12">
+                            <br />
+                        </div>
+
+                        <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+
+                            <div class="col-md-2 col-xs-2 col-sm-2">
                                 <asp:Label ID="Label5" runat="server" Text="Salario base I <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                             </div>
 
                             <div class="col-md-2 col-xs-2 col-sm-2">
                                 <div class="input-group">
                                     <span class="input-group-addon">₡</span>
-                                    <asp:TextBox ID="txtSalarioBase1ModalNuevo" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                    <asp:TextBox ID="txtSalarioBase1" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
                                 </div>
                             </div>
 
@@ -220,6 +236,24 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-2 col-xs-2 col-sm-2">
+                                <asp:Label runat="server" Text="Salario base II <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                            </div>
+
+                            <div class="col-md-2 col-xs-2 col-sm-2">
+                                <div class="input-group">
+                                    <span class="input-group-addon">₡</span>
+                                    <asp:TextBox ID="txtSalarioBase2" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 col-xs-2 col-sm-2">
+                                <div class="input-group">
+                                    <span class="input-group-addon">+</span>
+                                    <asp:TextBox ID="txtSumaSalarioBase2" runat="server" class="form-control"></asp:TextBox>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="col-md-12 col-xs-12 col-sm-12">
@@ -227,8 +261,9 @@
                         </div>
 
                         <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
-                            <div class="col-md-3 col-xs-3 col-sm-3">
-                                <asp:Label ID="Label9" runat="server" Text="Suma a salario base I" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+
+                            <div class="col-md-2 col-xs-2 col-sm-2">
+                                <asp:Label runat="server" Text="Total salario base I" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                             </div>
 
                             <div class="col-md-4 col-xs-4 col-sm-4">
@@ -237,23 +272,18 @@
                                     <asp:TextBox ID="txtSumaTotalSalarioBase1" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-md-12 col-xs-12 col-sm-12">
-                            <br />
-                        </div>
-
-                        <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
-                            <div class="col-md-3 col-xs-3 col-sm-3">
-                                <asp:Label ID="Label6" runat="server" Text="Salario base II <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                            <div class="col-md-2 col-xs-2 col-sm-2">
+                                <asp:Label runat="server" Text="Total salario base II" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                             </div>
 
                             <div class="col-md-4 col-xs-4 col-sm-4">
                                 <div class="input-group">
                                     <span class="input-group-addon">₡</span>
-                                    <asp:TextBox ID="txtSalarioBase2ModalNuevo" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                    <asp:TextBox ID="txtSumaTotalSalarioBaseII" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
                                 </div>
                             </div>
+
                         </div>
 
                         <div class="col-md-12 col-xs-12 col-sm-12">
@@ -261,33 +291,29 @@
                         </div>
 
                         <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
-                            <div class="col-md-3 col-xs-3 col-sm-3">
-                                <asp:Label ID="Label10" runat="server" Text="Suma a salario base II" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
-                            </div>
 
-                            <div class="col-md-4 col-xs-4 col-sm-4">
-                                <div class="input-group">
-                                    <span class="input-group-addon">₡</span>
-                                    <asp:TextBox ID="txtSumaSalarioBase2" runat="server" class="form-control"></asp:TextBox>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12 col-xs-12 col-sm-12">
-                            <br />
-                        </div>
-
-                        <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
-                            <div class="col-md-3 col-xs-3 col-sm-3">
+                            <div class="col-md-2 col-xs-2 col-sm-2">
                                 <asp:Label ID="Label7" runat="server" Text="Número escalafones <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                             </div>
 
                             <div class="col-md-4 col-xs-4 col-sm-4">
                                 <div class="input-group">
                                     <span class="input-group-addon">#</span>
-                                    <asp:TextBox class="form-control" ID="txtEscalafones" runat="server" TextMode="Number" min="0"></asp:TextBox>
+                                    <asp:TextBox class="form-control" ID="txtEscalafonesI" runat="server" TextMode="Number" min="0"></asp:TextBox>
                                 </div>
                             </div>
+
+                            <div class="col-md-2 col-xs-2 col-sm-2">
+                                <asp:Label runat="server" Text="Número escalafones <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                            </div>
+
+                            <div class="col-md-4 col-xs-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">#</span>
+                                    <asp:TextBox class="form-control" ID="txtEscalafonesII" runat="server" TextMode="Number" min="0" ReadOnly="true"></asp:TextBox>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="col-md-12 col-xs-12 col-sm-12">
@@ -295,17 +321,31 @@
                         </div>
 
                         <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
-                            <div class="col-md-3 col-xs-3 col-sm-3">
-                                <asp:Label ID="Label8" runat="server" Text="Monto escalafones <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+
+                            <div class="col-md-2 col-xs-2 col-sm-2">
+                                <asp:Label runat="server" Text="Monto escalafones <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                             </div>
 
                             <div class="col-md-4 col-xs-4 col-sm-4">
                                 <div class="input-group">
                                     <span class="input-group-addon">₡</span>
-                                    <asp:TextBox ID="txtMontoEscalafones" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                    <asp:TextBox ID="txtMontoEscalafonesI" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
                                 </div>
-                                <asp:LinkButton ID="btnCalcularEscalafones" runat="server" OnClick="btnCalcularEscalafones_Click">Calcular</asp:LinkButton>
+                                <asp:LinkButton ID="btnCalcularEscalafonesI" runat="server" OnClick="btnCalcularEscalafones_Click">Calcular</asp:LinkButton>
                             </div>
+
+                            <div class="col-md-2 col-xs-2 col-sm-2">
+                                <asp:Label runat="server" Text="Monto escalafones <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                            </div>
+
+                            <div class="col-md-4 col-xs-4 col-sm-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon">₡</span>
+                                    <asp:TextBox ID="txtMontoEscalafonesII" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                </div>
+                                <asp:LinkButton ID="btnCalcularEscalafonesII" runat="server" OnClick="btnCalcularEscalafones_Click">Calcular</asp:LinkButton>
+                            </div>
+
                         </div>
 
                         <div class="col-md-12 col-xs-12 col-sm-12">
@@ -402,7 +442,6 @@
                     </div>
 
                     <%-- Fin campos a llenar --%>
-
                 </div>
                 <div class="modal-footer" style="text-align: center">
                     <asp:Button ID="btnGuardarNuevoFuncionario" runat="server" Text="Guardar" CssClass="btn btn-primary" />

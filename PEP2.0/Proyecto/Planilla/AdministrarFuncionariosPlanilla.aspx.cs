@@ -451,8 +451,8 @@ namespace Proyecto.Planilla
                 if (escalaSalarial.idEscalaSalarial == escalaSeleccionadaModal.idEscalaSalarial)
                 {
                     escalaSeleccionada = escalaSalarial;
-                    txtSalarioBase1ModalNuevo.Text = escalaSalarial.salarioBase1.ToString();
-                    txtSalarioBase2ModalNuevo.Text = escalaSalarial.salarioBase2.ToString();
+                    txtSalarioBase1.Text = escalaSalarial.salarioBase1.ToString();
+                    txtSalarioBase2.Text = escalaSalarial.salarioBase2.ToString();
                 }
             }
 
@@ -497,8 +497,8 @@ namespace Proyecto.Planilla
                 if (escalaSalarial.idEscalaSalarial == escalaSeleccionadaModal.idEscalaSalarial)
                 {
                     escalaSeleccionada = escalaSalarial;
-                    txtSalarioBase1ModalNuevo.Text = escalaSalarial.salarioBase1.ToString();
-                    txtSalarioBase2ModalNuevo.Text = escalaSalarial.salarioBase2.ToString();
+                    txtSalarioBase1.Text = escalaSalarial.salarioBase1.ToString();
+                    txtSalarioBase2.Text = escalaSalarial.salarioBase2.ToString();
                 }
             }
 
