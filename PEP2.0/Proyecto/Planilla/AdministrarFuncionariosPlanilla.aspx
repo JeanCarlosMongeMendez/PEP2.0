@@ -241,7 +241,7 @@
                                 <div class="col-md-4 col-xs-6 col-sm-6" style="text-align: center">
                                     <div class="input-group">
                                         <span class="input-group-addon">+</span>
-                                        <asp:TextBox ID="txtSumaSalarioBase1" runat="server" class="form-control"></asp:TextBox>
+                                        <asp:TextBox ID="txtSumaSalarioBase1" runat="server" class="form-control" TextMode="Number" pattern="[0-9]+([\,][0-9]+)?"  step="0.1" OnTextChanged=""></asp:TextBox>
                                     </div>
                                 </div>
                             </div>
