@@ -108,7 +108,14 @@ namespace Proyecto.Planilla
             }
             catch
             {
-                txtMontoAnualidadesI.Text = "0";
+                if (idBtn == 1)
+                {
+                    txtMontoAnualidadesI.Text = "0";
+                }
+                else if (idBtn == 2)
+                {
+                    txtMontoAnualidadesII.Text = "0";
+                }
             }
 
             Double porcentajeAnualidad = 0;
@@ -129,7 +136,14 @@ namespace Proyecto.Planilla
             }
             catch
             {
-                txtPorcentajeAnualidadesI.Text = "0";
+                if (idBtn == 1)
+                {
+                    txtPorcentajeAnualidadesI.Text = "0";
+                }
+                else if (idBtn == 1)
+                {
+                    txtPorcentajeAnualidadesII.Text = "0";
+                }
             }
 
 
@@ -151,18 +165,26 @@ namespace Proyecto.Planilla
         private Double calcularSalarioContratacion(int idBtn)
         {
             Double salarioBase = 0;
+
+            Double porcentajeAnualidad = 0;
             try
             {
-
+                
 
                 if (idBtn == 1)
                 {
                     salarioBase = escalaSeleccionada.salarioBase1;
+                    String montoTxt = txtPorcentajeAnualidadesI.Text.Replace(".", ",");
+                    porcentajeAnualidad = Convert.ToDouble(montoTxt);
+
 
                 }
                 else if (idBtn == 2)
                 {
                     salarioBase = escalaSeleccionada.salarioBase2;
+                    String montoTxt = txtPorcentajeAnualidadesII.Text.Replace(".", ",");
+                    porcentajeAnualidad = Convert.ToDouble(montoTxt);
+
 
                 }
             }
@@ -177,24 +199,7 @@ namespace Proyecto.Planilla
 
                 }
             }
-
-            Double porcentajeAnualidad = 0;
-            try
-            {
-                String montoTxt = txtPorcentajeAnualidadesI.Text.Replace(".", ",");
-                porcentajeAnualidad = Convert.ToDouble(montoTxt);
-            }
-            catch
-            {
-                txtPorcentajeAnualidadesI.Text = "0";
-            }
-
-
-
-
-
-
-
+                       
             Double escalafon = calcularMontoEscalafon(idBtn);
             Double anualidad = calcularMontoAnualidad(idBtn);
             return (salarioBase + escalafon + anualidad);
@@ -639,9 +644,10 @@ namespace Proyecto.Planilla
             if (btnSalarioContratacion.ID.Equals("btnCalcularSalContratacionI"))
             {
                 txtSalContratacionI.Text = calcularSalarioContratacion(1).ToString();
-            }else if (btnSalarioContratacion.ID.Equals("btnCalcularSalContratacionII"))
+            }
+            else if (btnSalarioContratacion.ID.Equals("btnCalcularSalContratacionII"))
             {
-                txtSalContratacionI.Text = calcularSalarioContratacion(2).ToString();
+                txtSalContratacionII.Text = calcularSalarioContratacion(2).ToString();
             }
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
@@ -665,7 +671,7 @@ namespace Proyecto.Planilla
             }
             else if (btnCalcularSalario.ID.Equals("btnCalcularSalarioMensualII"))
             {
-                txtSalarioMensualEneroJunio.Text = calcularSalarioMensual(2).ToString();
+                txtSalarioMensualJunioDiciembre.Text = calcularSalarioMensual(2).ToString();
             }
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
@@ -683,12 +689,15 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularMontoAnualidades_Click(object sender, EventArgs e)
         {
-            LinkButton button = (LinkButton)sender;
-            bool boton = button.ID.Equals("btnCalcularMontoAnualidadesI");
-            txtMontoEscalafonesI.Text = calcularMontoEscalafon(1).ToString();
-
-            txtMontoAnualidadesI.Text = calcularMontoAnualidad(2).ToString();
-
+            LinkButton bntMontoAnualidades = (LinkButton)sender;
+            if (bntMontoAnualidades.ID.Equals("btnCalcularMontoAnualidadesI"))
+            {
+                txtMontoAnualidadesI.Text = calcularMontoAnualidad(1).ToString();
+            }
+            else  if (bntMontoAnualidades.ID.Equals("btnCalcularMontoAnualidadesII"))
+            {
+                txtMontoAnualidadesII.Text = calcularMontoAnualidad(2).ToString();
+            }
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
