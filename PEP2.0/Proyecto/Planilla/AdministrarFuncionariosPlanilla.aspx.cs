@@ -90,7 +90,7 @@ namespace Proyecto.Planilla
             Double salarioBase = 0;
             try
             {
-                if (idBtn==1)
+                if (idBtn == 1)
                 {
                     salarioBase = escalaSeleccionada.salarioBase1;
                     String montoTxt = txtMontoEscalafonesI.Text.Replace(".", ",");
@@ -169,7 +169,7 @@ namespace Proyecto.Planilla
             Double porcentajeAnualidad = 0;
             try
             {
-                
+
 
                 if (idBtn == 1)
                 {
@@ -199,7 +199,7 @@ namespace Proyecto.Planilla
 
                 }
             }
-                       
+
             Double escalafon = calcularMontoEscalafon(idBtn);
             Double anualidad = calcularMontoAnualidad(idBtn);
             return (salarioBase + escalafon + anualidad);
@@ -620,7 +620,8 @@ namespace Proyecto.Planilla
             if (btnEscalafones.ID.Equals("btnCalcularEscalafonesI"))
             {
                 txtMontoEscalafonesI.Text = calcularMontoEscalafon(1).ToString();
-            }else if (btnEscalafones.ID.Equals("btnCalcularEscalafonesII"))
+            }
+            else if (btnEscalafones.ID.Equals("btnCalcularEscalafonesII"))
             {
                 txtMontoEscalafonesII.Text = calcularMontoEscalafon(2).ToString();
             }
@@ -640,7 +641,7 @@ namespace Proyecto.Planilla
         protected void btnCalcularSalContratacion_Click(object sender, EventArgs e)
         {
             LinkButton btnSalarioContratacion = (LinkButton)sender;
-            
+
             if (btnSalarioContratacion.ID.Equals("btnCalcularSalContratacionI"))
             {
                 txtSalContratacionI.Text = calcularSalarioContratacion(1).ToString();
@@ -694,7 +695,7 @@ namespace Proyecto.Planilla
             {
                 txtMontoAnualidadesI.Text = calcularMontoAnualidad(1).ToString();
             }
-            else  if (bntMontoAnualidades.ID.Equals("btnCalcularMontoAnualidadesII"))
+            else if (bntMontoAnualidades.ID.Equals("btnCalcularMontoAnualidadesII"))
             {
                 txtMontoAnualidadesII.Text = calcularMontoAnualidad(2).ToString();
             }
