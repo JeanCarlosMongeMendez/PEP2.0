@@ -83,21 +83,21 @@ namespace Proyecto.Planilla
         /// Devuelve: monto de anualidad
         /// </summary>
         /// <returns></returns>
-        private Double calcularMontoAnualidad(int boton)
+        private Double calcularMontoAnualidad(int idBtn)
         {
             Double montoAnualiadad = 0;
             Double montoEscalafon = 0;
             Double salarioBase = 0;
             try
             {
-                if (boton)
+                if (idBtn==1)
                 {
                     salarioBase = escalaSeleccionada.salarioBase1;
                     String montoTxt = txtMontoEscalafonesI.Text.Replace(".", ",");
                     Double monto = Convert.ToDouble(montoTxt);
                     montoEscalafon = monto;
                 }
-                else
+                else if (idBtn == 2)
                 {
 
                     salarioBase = escalaSeleccionada.salarioBase2;
@@ -115,13 +115,13 @@ namespace Proyecto.Planilla
             try
             {
 
-                if (boton)
+                if (idBtn == 1)
                 {
 
                     String montoTxt = txtPorcentajeAnualidadesI.Text.Replace(".", ",");
                     porcentajeAnualidad = Convert.ToDouble(montoTxt);
                 }
-                else
+                else if (idBtn == 2)
                 {
                     String montoTxt = txtPorcentajeAnualidadesII.Text.Replace(".", ",");
                     porcentajeAnualidad = Convert.ToDouble(montoTxt);
@@ -611,9 +611,14 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularEscalafones_Click(object sender, EventArgs e)
         {
-            LinkButton button = (LinkButton)sender;
-            bool boton = button.ID.Equals("btnCalcularMontoAnualidadesI");
-            txtMontoEscalafonesI.Text = calcularMontoEscalafon(boton).ToString();
+            LinkButton btnEscalafones = (LinkButton)sender;
+            if (btnEscalafones.ID.Equals("btnCalcularEscalafonesI"))
+            {
+                txtMontoEscalafonesI.Text = calcularMontoEscalafon(1).ToString();
+            }else if (btnEscalafones.ID.Equals("btnCalcularEscalafonesII"))
+            {
+                txtMontoEscalafonesII.Text = calcularMontoEscalafon(2).ToString();
+            }
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
@@ -629,7 +634,15 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularSalContratacion_Click(object sender, EventArgs e)
         {
-            txtSalContratacionI.Text = calcularSalarioContratacion().ToString();
+            LinkButton btnSalarioContratacion = (LinkButton)sender;
+            
+            if (btnSalarioContratacion.ID.Equals("btnCalcularSalContratacionI"))
+            {
+                txtSalContratacionI.Text = calcularSalarioContratacion(1).ToString();
+            }else if (btnSalarioContratacion.ID.Equals("btnCalcularSalContratacionII"))
+            {
+                txtSalContratacionI.Text = calcularSalarioContratacion(2).ToString();
+            }
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
@@ -672,9 +685,9 @@ namespace Proyecto.Planilla
         {
             LinkButton button = (LinkButton)sender;
             bool boton = button.ID.Equals("btnCalcularMontoAnualidadesI");
-            txtMontoEscalafonesI.Text = calcularMontoEscalafon(boton).ToString();
+            txtMontoEscalafonesI.Text = calcularMontoEscalafon(1).ToString();
 
-            txtMontoAnualidadesI.Text = calcularMontoAnualidad(boton).ToString();
+            txtMontoAnualidadesI.Text = calcularMontoAnualidad(2).ToString();
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
