@@ -642,9 +642,8 @@
                                 <div class="col-md-6 col-xs-12 col-sm-12">
                                     <div class="input-group">
                                         <span class="input-group-addon">₡</span>
-                                        <asp:TextBox ID="txtSalarioPropuesto" runat="server" class="form-control" TextMode="Number" ReadOnly="true"></asp:TextBox>
+                                        <asp:TextBox ID="txtSalarioPropuesto" runat="server" class="form-control" TextMode="Number"></asp:TextBox>
                                     </div>
-                                    <asp:LinkButton ID="btnCalcularSalarioPropuesto" runat="server" OnClick="btnCalcularSalarioPropuesto_Click">Calcular</asp:LinkButton>
                                 </div>
 
                             </div>
