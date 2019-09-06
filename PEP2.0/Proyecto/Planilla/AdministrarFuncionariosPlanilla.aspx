@@ -162,7 +162,7 @@
                                     <asp:Label runat="server" Text="Nombre Completo" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                                 </div>
 
-                                <div class="col-md-9 col-xs-12 col-sm-12">
+                                <div class="col-md-6 col-xs-12 col-sm-12">
                                     <asp:TextBox CssClass="form-control" ID="txtNombreCompleto" runat="server" TextMode="MultiLine"></asp:TextBox>
                                 </div>
 
@@ -611,15 +611,15 @@
                         </div>
 
                         <%-- Datos generales --%>
-                        <asp:Panel ID="panel1" runat="server" CssClass="col-md-12 col-xs-12 col-sm-12">
+                        <asp:Panel ID="panelDatosGeneralesFinales" runat="server" CssClass="col-md-12 col-xs-12 col-sm-12">
 
                             <div class="row" style="text-align: center">
 
-                                <div class="col-md-3 col-xs-12 col-sm-3">
-                                    <asp:Label ID="Label6" runat="server" Text="Promedio de semestres" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                <div class="col-md-3 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Promedio de semestres" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                                 </div>
 
-                                <div class="col-md-9 col-xs-12 col-sm-12">
+                                <div class="col-md-6 col-xs-12 col-sm-12">
                                     <div class="input-group">
                                         <span class="input-group-addon">₡</span>
                                         <asp:TextBox ID="txtPromedioSemestres" runat="server" class="form-control" TextMode="Number" ReadOnly="true"></asp:TextBox>
@@ -639,7 +639,7 @@
                                     <asp:Label runat="server" Text="Salario propuesto" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                                 </div>
 
-                                <div class="col-md-9 col-xs-12 col-sm-12" style="text-align: left">
+                                <div class="col-md-6 col-xs-12 col-sm-12">
                                     <div class="input-group">
                                         <span class="input-group-addon">₡</span>
                                         <asp:TextBox ID="txtSalarioPropuesto" runat="server" class="form-control" TextMode="Number" ReadOnly="true"></asp:TextBox>
