@@ -73,7 +73,6 @@ namespace Proyecto.Planilla
         #endregion
 
         #region logica
-
         /// <summary>
         /// Leonardo Carrion
         /// 17/jul/2019
@@ -702,23 +701,44 @@ namespace Proyecto.Planilla
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnCalcularNumeroEscalafones2_Click(object sender, EventArgs e)
         {
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnCalcularPromedioSemestres_Click(object sender, EventArgs e)
         {
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnCalcularSalarioPropuesto_Click(object sender, EventArgs e)
         {
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnCalcularTotalSalarioBase_Click(object sender, EventArgs e)
         {
+
         }
 
         #endregion
