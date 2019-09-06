@@ -292,6 +292,9 @@ namespace Proyecto.Catalogos.Presupuesto
 
                 foreach (RepeaterItem item in rpPartida.Items)
                 {
+
+                    //private int y;
+
                     PresupuestoEgresoPartida presupuestoEgresoPartida = new PresupuestoEgresoPartida();
 
                     TextBox tbMonto = (TextBox)item.FindControl("TbMonto");
