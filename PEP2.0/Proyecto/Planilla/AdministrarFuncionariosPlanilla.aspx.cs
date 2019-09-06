@@ -164,27 +164,20 @@ namespace Proyecto.Planilla
         private Double calcularSalarioContratacion(int idBtn)
         {
             Double salarioBase = 0;
-
             Double porcentajeAnualidad = 0;
             try
             {
-
-
                 if (idBtn == 1)
                 {
                     salarioBase = escalaSeleccionada.salarioBase1;
                     String montoTxt = txtPorcentajeAnualidadesI.Text.Replace(".", ",");
                     porcentajeAnualidad = Convert.ToDouble(montoTxt);
-
-
                 }
                 else if (idBtn == 2)
                 {
                     salarioBase = escalaSeleccionada.salarioBase2;
                     String montoTxt = txtPorcentajeAnualidadesII.Text.Replace(".", ",");
                     porcentajeAnualidad = Convert.ToDouble(montoTxt);
-
-
                 }
             }
             catch
@@ -202,6 +195,31 @@ namespace Proyecto.Planilla
             Double escalafon = calcularMontoEscalafon(idBtn);
             Double anualidad = calcularMontoAnualidad(idBtn);
             return (salarioBase + escalafon + anualidad);
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 06/29/2019
+        /// Efecto : Calcula el salario total de un funcionario
+        /// Requiere : Salario base, suma al salario base
+        /// Modifica : -
+        /// Devuelve : Salario total
+        /// </summary>
+        /// <param name="salarioBase"></param>
+        /// <param name="sumaSalarioBase"></param>
+        /// <returns></returns>
+        private Double calcularTotalSalarioBase(Double salarioBase, Double sumaSalarioBase)
+        {
+            Double total = 0;
+            if (sumaSalarioBase == 0)
+            {
+                total = salarioBase;
+            }
+            else
+            {
+                total = salarioBase * sumaSalarioBase;
+            }
+            return total;
         }
 
         /// <summary>
@@ -738,7 +756,26 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularTotalSalarioBase_Click(object sender, EventArgs e)
         {
+            LinkButton btnTotalSalarioBase = (LinkButton)sender;
+            if (btnTotalSalarioBase.ID.Equals("btnCalcularTotalSalarioBaseI"))
+            {
+                Double salarioBase = escalaSeleccionada.salarioBase1;
+                Double sumaSalarioBase = 0;
 
+                sumaSalarioBase = Convert.ToDouble(txtSumaSalarioBase1.Text.Replace(".", ","));
+                if(Double.TryParse(txtSumaSalarioBase1.Text.Replace(".", ",").ToString(), out sumaSalarioBase)){
+
+                }
+
+                txtSumaTotalSalarioBase1.Text = calcularTotalSalarioBase(salarioBase, sumaSalarioBase).ToString();
+            }
+            else if (btnTotalSalarioBase.ID.Equals("btnCalcularTotalSalarioBaseII"))
+            {
+                Double sumaSalarioBase = Convert.ToInt32(txtSumaSalarioBase2.Text);
+                Double salarioBase = Convert.ToInt32(txtSumaSalarioBase2.Text.Replace(".", ","));
+                txtSumaTotalSalarioBaseII.Text = calcularTotalSalarioBase(salarioBase, sumaSalarioBase).ToString();
+            }
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
         #endregion
