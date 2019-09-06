@@ -699,12 +699,12 @@ namespace Proyecto.Planilla
 
         protected void btnCalcularPromedioSemestres_Click(object sender, EventArgs e)
         {
-
-        }
-
-        protected void btnCalcularSalarioPropuesto_Click(object sender, EventArgs e)
-        {
-
+            Double primerSemestre = Convert.ToDouble(txtSalarioMensualEneroJunio.Text);
+            Double segundoSemestre = Convert.ToDouble(txtSalarioMensualJunioDiciembre.Text);
+            if(primerSemestre != 0 && segundoSemestre != 0)
+            {
+                txtPromedioSemestres.Text = ((primerSemestre + segundoSemestre) / 2).ToString();
+            }
         }
 
         protected void btnCalcularTotalSalarioBase_Click(object sender, EventArgs e)
