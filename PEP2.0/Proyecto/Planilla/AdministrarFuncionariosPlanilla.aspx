@@ -610,37 +610,50 @@
                             <br />
                         </div>
 
-                        <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
-                            <div class="col-md-2 col-xs-2 col-sm-2">
-                                <asp:Label ID="Label6" runat="server" Text="Promedio de semestres" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
-                            </div>
+                        <%-- Datos generales --%>
+                        <asp:Panel ID="panel1" runat="server" CssClass="col-md-12 col-xs-12 col-sm-12">
 
-                            <div class="col-md-4 col-xs-4 col-sm-4">
-                                <div class="input-group">
-                                    <span class="input-group-addon">₡</span>
-                                    <asp:TextBox ID="txtPromedioSemestres" runat="server" class="form-control" TextMode="Number" ReadOnly="true"></asp:TextBox>
+                            <div class="row" style="text-align: center">
+
+                                <div class="col-md-3 col-xs-12 col-sm-3">
+                                    <asp:Label ID="Label6" runat="server" Text="Promedio de semestres" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                                 </div>
-                                <asp:LinkButton ID="btnCalcularPromedioSemestres" runat="server" OnClick="btnCalcularPromedioSemestres_Click">Calcular</asp:LinkButton>
-                            </div>
-                        </div>
 
-                        <div class="col-md-12 col-xs-12 col-sm-12">
-                            <br />
-                        </div>
-
-                        <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
-                            <div class="col-md-2 col-xs-2 col-sm-2">
-                                <asp:Label runat="server" Text="Salario propuesto" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
-                            </div>
-
-                            <div class="col-md-4 col-xs-4 col-sm-4">
-                                <div class="input-group">
-                                    <span class="input-group-addon">₡</span>
-                                    <asp:TextBox ID="txtSalarioPropuesto" runat="server" class="form-control" TextMode="Number" ReadOnly="true"></asp:TextBox>
+                                <div class="col-md-9 col-xs-12 col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">₡</span>
+                                        <asp:TextBox ID="txtPromedioSemestres" runat="server" class="form-control" TextMode="Number" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                    <asp:LinkButton ID="btnCalcularPromedioSemestres" runat="server" OnClick="btnCalcularPromedioSemestres_Click">Calcular</asp:LinkButton>
                                 </div>
-                                <asp:LinkButton ID="btnCalcularSalarioPropuesto" runat="server" OnClick="btnCalcularSalarioPropuesto_Click">Calcular</asp:LinkButton>
+
                             </div>
-                        </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <div class="row" style="text-align: center">
+
+                                <div class="col-md-3 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Salario propuesto" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-9 col-xs-12 col-sm-12" style="text-align: left">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">₡</span>
+                                        <asp:TextBox ID="txtSalarioPropuesto" runat="server" class="form-control" TextMode="Number" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                    <asp:LinkButton ID="btnCalcularSalarioPropuesto" runat="server" OnClick="btnCalcularSalarioPropuesto_Click">Calcular</asp:LinkButton>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                        </asp:Panel>
 
                         <div class="col-xs-12">
                             <h6 style="text-align: left">Los campos marcados con <span style='color: red'>*</span> son requeridos.</h6>
