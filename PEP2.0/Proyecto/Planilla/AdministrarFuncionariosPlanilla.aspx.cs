@@ -726,7 +726,18 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularNumeroEscalafones2_Click(object sender, EventArgs e)
         {
-
+            int cantidadEscalafonesIsemestre = Convert.ToInt32(txtEscalafonesI.Text);
+            DateTime fechaIngreso = Convert.ToDateTime(txtFecha.Text);
+            DateTime fechaDivisionSemestres = Convert.ToDateTime("6/01/2020");
+            if(cantidadEscalafonesIsemestre < escalaSeleccionada.topeEscalafones && DateTime.Compare(fechaDivisionSemestres, fechaIngreso)<0)
+            {
+                txtEscalafonesII.Text = (cantidadEscalafonesIsemestre + 1).ToString();
+            }
+            else
+            {
+                txtEscalafonesII.Text = cantidadEscalafonesIsemestre.ToString();
+            }
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
         /// <summary>
@@ -750,7 +761,12 @@ namespace Proyecto.Planilla
         }
 
         /// <summary>
-        /// 
+        /// Jean Carlos Monge Mendez
+        /// 06/09/2019
+        /// Efecto : Calcula el salario total del funcionario
+        /// Requiere : Salario base, Suma al salario base
+        /// Modifica : Campo de texto con el valor del salario total
+        /// Devuelve : -
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -761,19 +777,28 @@ namespace Proyecto.Planilla
             {
                 Double salarioBase = escalaSeleccionada.salarioBase1;
                 Double sumaSalarioBase = 0;
-
-                sumaSalarioBase = Convert.ToDouble(txtSumaSalarioBase1.Text.Replace(".", ","));
                 if(Double.TryParse(txtSumaSalarioBase1.Text.Replace(".", ",").ToString(), out sumaSalarioBase)){
-
+                    sumaSalarioBase = Convert.ToDouble(txtSumaSalarioBase1.Text.Replace(".", ","));
+                    txtSumaTotalSalarioBase1.Text = calcularTotalSalarioBase(salarioBase, sumaSalarioBase).ToString();
                 }
-
-                txtSumaTotalSalarioBase1.Text = calcularTotalSalarioBase(salarioBase, sumaSalarioBase).ToString();
+                else
+                {
+                    txtSumaTotalSalarioBase1.Text = calcularTotalSalarioBase(salarioBase, 0).ToString();
+                }
             }
             else if (btnTotalSalarioBase.ID.Equals("btnCalcularTotalSalarioBaseII"))
             {
-                Double sumaSalarioBase = Convert.ToInt32(txtSumaSalarioBase2.Text);
-                Double salarioBase = Convert.ToInt32(txtSumaSalarioBase2.Text.Replace(".", ","));
-                txtSumaTotalSalarioBaseII.Text = calcularTotalSalarioBase(salarioBase, sumaSalarioBase).ToString();
+                Double salarioBase = escalaSeleccionada.salarioBase2;
+                Double sumaSalarioBase = 0;
+                if (Double.TryParse(txtSumaSalarioBase2.Text.Replace(".", ",").ToString(), out sumaSalarioBase))
+                {
+                    sumaSalarioBase = Convert.ToDouble(txtSumaSalarioBase2.Text.Replace(".", ","));
+                    txtSumaTotalSalarioBaseII.Text = calcularTotalSalarioBase(salarioBase, sumaSalarioBase).ToString();
+                }
+                else
+                {
+                    txtSumaTotalSalarioBaseII.Text = calcularTotalSalarioBase(salarioBase, 0).ToString();
+                }
             }
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
