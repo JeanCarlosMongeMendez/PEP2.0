@@ -238,13 +238,18 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-4 col-xs-6 col-sm-6" style="text-align: center">
+
+                                   <asp:UpdatePanel ID="UpdatePanel2"  runat="server">
+                <ContentTemplate>
+                                <div class="col-md-4 col-xs-6 col-sm-6" style="text-align: center">  
                                     <div class="input-group">
                                         <span class="input-group-addon">+</span>
-                                        <asp:TextBox ID="txtSumaSalarioBase1" runat="server" class="form-control"></asp:TextBox>
+                                        <asp:TextBox ID="txtSumaSalarioBase1"  runat="server" class="form-control" AutoPostBack="true" TextMode="Number" pattern="[0-9]+([\,][0-9]+)?"  step="0.1" OnTextChanged="txtSumaSalarioBase1_TextChanged"></asp:TextBox>
                                     </div>
                                 </div>
                             </div>
+                    </ContentTemplate>
+                                       </asp:UpdatePanel>
 
                             <div class="col-md-12 col-xs-12 col-sm-12">
                                 <br />
@@ -443,12 +448,17 @@
                                     </div>
                                 </div>
 
+
+                                <asp:UpdatePanel ID="UpdatePanel3"  runat="server">
+                <ContentTemplate>
                                 <div class="col-md-4 col-xs-6 col-sm-6">
                                     <div class="input-group">
                                         <span class="input-group-addon">+</span>
-                                        <asp:TextBox ID="txtSumaSalarioBase2" runat="server" class="form-control"></asp:TextBox>
+                                        <asp:TextBox ID="txtSumaSalarioBase2" runat="server" class="form-control"  AutoPostBack="true" TextMode="Number" pattern="[0-9]+([\,][0-9]+)?"  step="0.1" OnTextChanged="txtSumaSalarioBase1_TextChanged"></asp:TextBox>>
                                     </div>
                                 </div>
+                    </ContentTemplate>
+                                    </asp:UpdatePanel>
 
                             </div>
 
