@@ -383,7 +383,7 @@ namespace Proyecto.Catalogos.Presupuesto
                     break;
                 }
             }
-
+            lblProyectoSeleccionado.Text = proyectoSeleccionado.nombreProyecto;
             Session["proyecto"] = proyectoSeleccionado.idProyecto;
             MostrarDatosTablaPresupuestos();
         }
