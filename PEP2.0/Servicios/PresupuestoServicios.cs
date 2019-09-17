@@ -80,7 +80,7 @@ namespace Servicios
             return this.presupuestoDatos.ObtenerPresupuestoPorProyecto(idUnidad, idProyecto);
         }
 
-        public LinkedList<PresupuestoEgresoPartida> presupuestoEgresoPartidasPorPresupuesto(PresupuestoEgreso presupuestoEgresoPartidaF)
+        public LinkedList<PresupuestoEgresoPartida> presupuestoEgresoPartidasPorPresupuesto(PresupuestoEgresoPartida presupuestoEgresoPartidaF)
         {
             return presupuestoDatos.presupuestoEgresoPartidasPorPresupuesto(presupuestoEgresoPartidaF);
         }

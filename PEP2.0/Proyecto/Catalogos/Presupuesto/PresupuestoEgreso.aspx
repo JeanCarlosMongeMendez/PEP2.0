@@ -82,8 +82,8 @@
                                 </td>
                                
                                  <td>
-                                        
-                                    </td>
+                                        <%# Eval("descripcion") %>
+                                 </td>
                             </tr>
 
                         </ItemTemplate>
@@ -255,7 +255,7 @@
                             <table class="table table-bordered">
                                 <thead style="text-align: center">
                                     <tr style="text-align: center" class="btn-primary">
-                                     <th></th>
+                                     
                                         <th>Partida</th>
                                         <th>Presupuesto  </th>
                                         <th>Monto </th>

@@ -460,15 +460,22 @@ namespace Proyecto.Catalogos.Presupuesto
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalIngresarPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalIngresarPartida').hide();", true);
 
         }
-
+       
+        /// <summary>
+        /// Muestra el detalle de las partidas de egreso en función al número de partida
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnVerPartidas_Click(object sender, EventArgs e)
         {
-            Entidades.PresupuestoEgreso presupuestoEgresoBuscar = new Entidades.PresupuestoEgreso();
-            presupuestoEgresoBuscar.idUnidad= Int32.Parse(UnidadesDDL.SelectedValue);
+            Entidades.PresupuestoEgresoPartida presupuestoEgresoBuscar = new Entidades.PresupuestoEgresoPartida();
+          
             LinkedList<Entidades.PresupuestoEgresoPartida> presupuestos = new LinkedList<Entidades.PresupuestoEgresoPartida>();
+            int idPartida = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+            presupuestoEgresoBuscar.idPartida = idPartida;
+
             presupuestos = presupuestoServicios.presupuestoEgresoPartidasPorPresupuesto(presupuestoEgresoBuscar);
-
-
+            
             var dt = presupuestos;
 
             pgsources.DataSource = dt;

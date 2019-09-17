@@ -242,18 +242,18 @@ namespace AccesoDatos
         }
 
         /// <summary>
-        /// Filtra los presupuestos de acuerdo con el numero de partida
+        /// Filtra los presupuestos egresos de acuerdo con el numero de partida 
         /// </summary>
         /// <param name="presupuestoEgresoPartidaF"></param>
         /// <returns></returns>
-        public LinkedList<PresupuestoEgresoPartida> presupuestoEgresoPartidasPorPresupuesto(PresupuestoEgreso presupuestoEgresoPartidaF)
+        public LinkedList<PresupuestoEgresoPartida> presupuestoEgresoPartidasPorPresupuesto(PresupuestoEgresoPartida presupuestoEgresoPartidaF)
         {
             SqlConnection sqlConnectionPresupuestoEgreso = conexion.conexionPEP();
             SqlConnection sqlConnectionPresupuestoEgresoPartida = conexion.conexionPEP();
 
-            SqlCommand sqlCommandPresupuestoEgreso = new SqlCommand("SELECT id_presupuesto_egreso,id_partida,monto, descripcion FROM Presupuesto_Egreso_Partida Where id_presupuesto_egreso = @id_presupuesto_egreso; ", sqlConnectionPresupuestoEgreso);
+            SqlCommand sqlCommandPresupuestoEgreso = new SqlCommand("SELECT id_presupuesto_egreso,id_partida,monto, descripcion FROM Presupuesto_Egreso_Partida Where id_presupuesto_egreso = @id_partida; ", sqlConnectionPresupuestoEgreso);
 
-            sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@id_presupuesto_egreso", presupuestoEgresoPartidaF.idPresupuestoEgreso);
+            sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@id_partida", presupuestoEgresoPartidaF.idPartida);
 
             SqlDataReader readerPresupuestoEgreso;
             sqlConnectionPresupuestoEgreso.Open();
@@ -268,7 +268,7 @@ namespace AccesoDatos
                 presupuestoEgresoPartida.idPresupuestoEgreso = Convert.ToInt32(readerPresupuestoEgreso["id_presupuesto_egreso"].ToString());
                 presupuestoEgresoPartida.idPartida = Convert.ToInt32(readerPresupuestoEgreso["id_partida"].ToString());
                 presupuestoEgresoPartida.monto = Convert.ToDouble(readerPresupuestoEgreso["monto"].ToString());
-
+                presupuestoEgresoPartida.descripcion= readerPresupuestoEgreso["descripcion"].ToString();
                 presupuestoEgresosPartidaL.AddLast(presupuestoEgresoPartida);
             }
 
@@ -278,6 +278,7 @@ namespace AccesoDatos
 
             return presupuestoEgresosPartidaL;
         }
+
         public int AprobarPresupuestoEgreso(int idPresupuestoEgreso)
         {
             SqlConnection sqlConnection = conexion.conexionPEP();
@@ -397,6 +398,7 @@ namespace AccesoDatos
 
             return presupuestoEgresos;
         }
+       
         /// <summary>
         /// Retorna el presupuesto de los proyecto por proyecto y por unidad
         /// </summary>
@@ -425,7 +427,7 @@ namespace AccesoDatos
                 presupuestoEgreso.idUnidad = Convert.ToInt32(readerPresupuestoEgreso["id_unidad"].ToString());
                 presupuestoEgreso.planEstrategicoOperacional = readerPresupuestoEgreso["plan_estrategico_operacional"].ToString();
                 presupuestoEgreso.montoTotal = Convert.ToDouble(readerPresupuestoEgreso["montoTotal"].ToString());
-
+                presupuestoEgreso.descripcion = ObtenerDescripcionesPartida(presupuestoEgreso.idPresupuestoEgreso);
                 presupuestoEgreso.presupuestoEgresoPartidas = new LinkedList<PresupuestoEgresoPartida>();
                 SqlCommand sqlCommandPresupuestoEgresoPartidas = new SqlCommand("SELECT id_presupuesto_egreso, id_partida, monto FROM Presupuesto_Egreso_Partida where id_presupuesto_egreso=@id_presupuesto_egreso_;", sqlConnectionPresupuestoEgresoPartida);
                 sqlCommandPresupuestoEgresoPartidas.Parameters.AddWithValue("@id_presupuesto_egreso_", presupuestoEgreso.idPresupuestoEgreso);
@@ -442,6 +444,7 @@ namespace AccesoDatos
                     presupuestoEgresoPartida.monto = Convert.ToDouble(readerPresupuestoEgresoPartidas["monto"].ToString());
 
                     presupuestoEgreso.presupuestoEgresoPartidas.AddLast(presupuestoEgresoPartida);
+                   
                 }
 
                 presupuestoEgresos.AddLast(presupuestoEgreso);
@@ -452,7 +455,34 @@ namespace AccesoDatos
 
             return presupuestoEgresos;
         }
+        /// <summary>
+        /// Este metodo muestra las descripciones existentes para esa partida
+        /// </summary>
+        private string ObtenerDescripcionesPartida(int idPresupuestoE)
+        {
+            string descricpcion = "";
+            SqlConnection sqlConnectionPresupuestoEgreso = conexion.conexionPEP();
+            SqlConnection sqlConnectionPresupuestoEgresoPartida = conexion.conexionPEP();
 
+            SqlCommand sqlCommandPresupuestoEgreso = new SqlCommand("SELECT descripcion FROM Presupuesto_Egreso_Partida where id_presupuesto_egreso = @id_presupuesto_egreso", sqlConnectionPresupuestoEgreso);
+
+            sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@id_presupuesto_egreso", idPresupuestoE);
+
+            SqlDataReader readerPresupuestoEgreso;
+            sqlConnectionPresupuestoEgreso.Open();
+            readerPresupuestoEgreso = sqlCommandPresupuestoEgreso.ExecuteReader();
+            while (readerPresupuestoEgreso.Read())
+            {
+                descricpcion += "-";
+                descricpcion += readerPresupuestoEgreso["descripcion"].ToString()+"\n";
+               descricpcion += "\n";
+            }
+
+            sqlConnectionPresupuestoEgreso.Close();
+            return descricpcion;
+        }
+        
+        
         #endregion PRESUPUESTO DE EGRESO
     }
 }
