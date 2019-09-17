@@ -199,5 +199,42 @@ namespace AccesoDatos
 
             sqlConnection.Close();
         }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 12/sep/2019
+        /// Efecto: devuelve los periodos que se encuentran en las planillas de fundevi
+        /// Requiere: -
+        /// Modifica: -
+        /// Devuelve: lista de periodos
+        /// </summary>
+        /// <returns></returns>
+        public List<Periodo> getPeriodosPlanillasFundevi()
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+            List<Periodo> periodos = new List<Periodo>();
+
+            String consulta = @"select P.* from Periodo P, Planilla_fundevi PF where P.ano_periodo = PF.ano_periodo and disponible=1;";
+
+            SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
+
+            SqlDataReader reader;
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Periodo periodo = new Periodo();
+                periodo.anoPeriodo = Convert.ToInt32(reader["ano_periodo"].ToString());
+                periodo.habilitado = Boolean.Parse(reader["habilitado"].ToString());
+
+                periodos.Add(periodo);
+            }
+
+            sqlConnection.Close();
+
+            return periodos;
+        }
+
     }
 }

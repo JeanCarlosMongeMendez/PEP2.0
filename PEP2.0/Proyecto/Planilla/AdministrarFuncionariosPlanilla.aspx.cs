@@ -132,7 +132,7 @@ namespace Proyecto.Planilla
             {
                 txtPorcentajeAnualidadesI.Text = "0";
             }
-            
+
 
 
 
@@ -565,40 +565,40 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularMontoAnualidades_Click(object sender, EventArgs e)
         {
-<<<<<<< HEAD
-            txtMontoEscalafonesI.Text = calcularMontoEscalafon().ToString();
-            txtMontoAnualidadesI.Text = calcularMontoAnualidad().ToString();
-=======
-            Double montoEscalafon = 0;
-            try
-            {
-                String montoTxt = txtMontoEscalafones.Text.Replace(".", ",");
-                Double monto = Convert.ToDouble(montoTxt);
 
-                montoEscalafon = monto;
+            //txtMontoEscalafonesI.Text = calcularMontoEscalafon().ToString();
+            //txtMontoAnualidadesI.Text = calcularMontoAnualidad().ToString();
+
+            //Double montoEscalafon = 0;
+            //try
+            //{
+            //    String montoTxt = txtMontoEscalafones.Text.Replace(".", ",");
+            //    Double monto = Convert.ToDouble(montoTxt);
+
+            //    montoEscalafon = monto;
 
 
 
-            }
-            catch
-            {
-                txtMontoAnualidades.Text = "0";
-            }
+            //}
+            //catch
+            //{
+            //    txtMontoAnualidades.Text = "0";
+            //}
 
-            Double porcentajeAnualidad = 0;
-            try
-            {
-                String montoTxt = txtPorcentajeAnualidades.Text.Replace(".", ",");
-                porcentajeAnualidad = Convert.ToDouble(montoTxt);
-            }
-            catch
-            {
-                txtPorcentajeAnualidades.Text = "0";
-            }
-            txtMontoAnualidades.Text = calcularMontoAnualidad(montoEscalafon, porcentajeAnualidad).ToString();
+            //Double porcentajeAnualidad = 0;
+            //try
+            //{
+            //    String montoTxt = txtPorcentajeAnualidades.Text.Replace(".", ",");
+            //    porcentajeAnualidad = Convert.ToDouble(montoTxt);
+            //}
+            //catch
+            //{
+            //    txtPorcentajeAnualidades.Text = "0";
+            //}
+            //txtMontoAnualidades.Text = calcularMontoAnualidad(montoEscalafon, porcentajeAnualidad).ToString();
 
-            txtMontoEscalafones.Text = calcularMontoEscalafon().ToString();
->>>>>>> be10332ac470dea9f416f57176a3d0d4d1c884d8
+            //txtMontoEscalafones.Text = calcularMontoEscalafon().ToString();
+
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 

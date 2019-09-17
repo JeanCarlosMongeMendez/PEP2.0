@@ -22,7 +22,7 @@ namespace Proyecto.Planilla
         {
             PlanillaFundeviServicios fundeviServicios = new PlanillaFundeviServicios();
             List<PlanillaFundevi> planillas = new List<PlanillaFundevi>();
-            planillas = fundeviServicios.GetPlanillaFundevi();
+            planillas = fundeviServicios.GetPlanillasFundevi();
             foreach (PlanillaFundevi planilla in planillas)
             {
                 ListItem item = new ListItem("" + planilla.anoPeriodo);
@@ -43,7 +43,7 @@ namespace Proyecto.Planilla
                 funcionario.salario = Convert.ToInt32(txtApellido.Text);
 
 
-                if (funcionarioServicios.Insertar(funcionario))
+                if (funcionarioServicios.InsertFuncionario(funcionario))
                 {
                     txtInfo.CssClass = "alert alert-success";
                     txtInfo.Text = "El funcionario ha sido registrado correctamente.";

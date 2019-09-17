@@ -58,7 +58,7 @@ namespace AccesoDatos
                 funcionario.idFuncionario = Convert.ToInt32(reader["id_funcionario"].ToString());
                 funcionario.idPlanilla = Convert.ToInt32(reader["id_planilla"].ToString());
                 funcionario.nombre = reader["nombre_funcionario"].ToString();
-                funcionario.salario = Convert.ToInt32(reader["salario"].ToString());
+                funcionario.salario = Convert.ToDouble(reader["salario"].ToString());
                 funcionarios.Add(funcionario);
             }
             return funcionarios;
@@ -88,7 +88,7 @@ namespace AccesoDatos
                 funcionario.idFuncionario = Convert.ToInt32(reader["id_funcionario"].ToString());
                 funcionario.idPlanilla = Convert.ToInt32(reader["id_planilla"].ToString());
                 funcionario.nombre = reader["nombre_funcionario"].ToString();
-                funcionario.salario = Convert.ToInt32(reader["salario"].ToString());
+                funcionario.salario = Convert.ToDouble(reader["salario"].ToString());
                 funcionarios.Add(funcionario);
             }
             return funcionarios;
@@ -139,7 +139,7 @@ namespace AccesoDatos
                 funcionario.idFuncionario = Convert.ToInt32(reader["id_funcionario"].ToString());
                 funcionario.idPlanilla = Convert.ToInt32(reader["id_planilla"].ToString());
                 funcionario.nombre = reader["nombre_funcionario"].ToString();
-                funcionario.salario = Convert.ToInt32(reader["salario"].ToString());
+                funcionario.salario = Convert.ToDouble(reader["salario"].ToString());
 
             }
             return funcionario;
@@ -159,7 +159,6 @@ namespace AccesoDatos
             Boolean flag = false;
             foreach (FuncionarioFundevi funcionario in funcionarios)
             {
-
                 if (funcionario.idPlanilla != idPlanilla)
                 {
                     funcionario.idPlanilla = idPlanilla;
@@ -167,10 +166,7 @@ namespace AccesoDatos
                     {
                         flag = true;
                     }
-
                 }
-
-
             }
             return flag;
         }

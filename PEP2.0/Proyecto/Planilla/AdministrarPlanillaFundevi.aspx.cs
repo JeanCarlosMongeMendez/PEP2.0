@@ -45,7 +45,7 @@ namespace Proyecto.Planilla
                 Session["planillas"] = null;
                 Session["planillasFiltradas"] = null;
                 llenarDdlPeriodos();
-                List<PlanillaFundevi> planillaFundevi = fundeviServicios.GetPlanillaFundevi();
+                List<PlanillaFundevi> planillaFundevi = fundeviServicios.GetPlanillasFundevi();
                 Session["planillas"] = planillaFundevi;
                 Session["planillasFiltradas"] = planillaFundevi;
                 mostrarDatosTabla();
@@ -266,9 +266,25 @@ namespace Proyecto.Planilla
         protected void btnNuevaPlanillaModal_Click(object sender, EventArgs e)
         {
             int ano = Convert.ToInt32(ddlPeriodo.SelectedValue);
-            fundeviServicios.Insertar(ano);
-            String url = Page.ResolveUrl("~/Planilla/AdministrarPlanillaFundevi.aspx");
-            Response.Redirect(url);
+
+            if (fundeviServicios.existePlanilla(ano))
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.warning('" + "Ya existe una planilla en el período "+ano+ "');", true);
+            }
+            else
+            {
+                fundeviServicios.Insertar(ano);
+                //String url = Page.ResolveUrl("~/Planilla/AdministrarPlanillaFundevi.aspx");
+                //Response.Redirect(url);}
+                List<PlanillaFundevi> planillaFundevi = fundeviServicios.GetPlanillasFundevi();
+                Session["planillas"] = planillaFundevi;
+                Session["planillasFiltradas"] = planillaFundevi;
+                mostrarDatosTabla();
+
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se guardo correctamente la planilla"+"');", true);
+            }
+            
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevaPlanilla", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevaPlanilla').hide();", true);
         }
 
         protected void btnNuevaPlanilla_Click(object sender, EventArgs e)
