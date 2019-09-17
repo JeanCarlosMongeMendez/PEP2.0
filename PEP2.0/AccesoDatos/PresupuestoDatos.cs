@@ -242,6 +242,7 @@ namespace AccesoDatos
         }
 
         /// <summary>
+        /// Josseline M
         /// Filtra los presupuestos egresos de acuerdo con el numero de partida 
         /// </summary>
         /// <param name="presupuestoEgresoPartidaF"></param>
@@ -304,6 +305,7 @@ namespace AccesoDatos
         }
        
         /// <summary>
+        /// Josseline M 
         /// Este metodo retorna una lista de presuestos egresos destinados por unidad
         /// </summary>
         /// <param name="idUnidad"></param>
@@ -426,8 +428,10 @@ namespace AccesoDatos
                 presupuestoEgreso.idPresupuestoEgreso = Convert.ToInt32(readerPresupuestoEgreso["id_presupuesto_egreso"].ToString());
                 presupuestoEgreso.idUnidad = Convert.ToInt32(readerPresupuestoEgreso["id_unidad"].ToString());
                 presupuestoEgreso.planEstrategicoOperacional = readerPresupuestoEgreso["plan_estrategico_operacional"].ToString();
+                ObtenerMontoPartida(presupuestoEgreso.idPresupuestoEgreso);
                 presupuestoEgreso.montoTotal = Convert.ToDouble(readerPresupuestoEgreso["montoTotal"].ToString());
                 presupuestoEgreso.descripcion = ObtenerDescripcionesPartida(presupuestoEgreso.idPresupuestoEgreso);
+
                 presupuestoEgreso.presupuestoEgresoPartidas = new LinkedList<PresupuestoEgresoPartida>();
                 SqlCommand sqlCommandPresupuestoEgresoPartidas = new SqlCommand("SELECT id_presupuesto_egreso, id_partida, monto FROM Presupuesto_Egreso_Partida where id_presupuesto_egreso=@id_presupuesto_egreso_;", sqlConnectionPresupuestoEgresoPartida);
                 sqlCommandPresupuestoEgresoPartidas.Parameters.AddWithValue("@id_presupuesto_egreso_", presupuestoEgreso.idPresupuestoEgreso);
@@ -455,6 +459,7 @@ namespace AccesoDatos
 
             return presupuestoEgresos;
         }
+        
         /// <summary>
         /// Este metodo muestra las descripciones existentes para esa partida
         /// </summary>
@@ -482,7 +487,53 @@ namespace AccesoDatos
             return descricpcion;
         }
         
-        
+        /// <summary>
+        /// Este metodo suma los montos existentes para esa partida
+        /// </summary>
+        private void ObtenerMontoPartida(int idPresupuestoE)
+        {
+            double monto = 0;
+            SqlConnection sqlConnectionPresupuestoEgreso = conexion.conexionPEP();
+             SqlCommand sqlCommandPresupuestoEgreso = new SqlCommand("SELECT monto FROM Presupuesto_Egreso_Partida where id_presupuesto_egreso = @id_presupuesto_egreso", sqlConnectionPresupuestoEgreso);
+
+            sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@id_presupuesto_egreso", idPresupuestoE);
+
+            SqlDataReader readerPresupuestoEgreso;
+            sqlConnectionPresupuestoEgreso.Open();
+
+            readerPresupuestoEgreso = sqlCommandPresupuestoEgreso.ExecuteReader();
+            while (readerPresupuestoEgreso.Read())
+            {
+                
+                monto += Convert.ToDouble(readerPresupuestoEgreso["monto"]);
+             
+            }
+
+       
+            sqlConnectionPresupuestoEgreso.Close();
+
+            ActualizarMontoTotalPresupuesto(idPresupuestoE,monto);
+        }
+        /// <summary>
+        /// Josseline M
+        /// Actualiza el monto total de presupuesto egreso a partir de idPresupuestoEgreso
+        /// </summary>
+        /// <param name="idPresupuestoE"></param>
+        /// <param name="monto"></param>
+        private void ActualizarMontoTotalPresupuesto(int idPresupuestoE, double monto)
+        {
+            SqlConnection sqlConnectionPresupuestoEgreso = conexion.conexionPEP();
+            SqlCommand sqlCommandPresupuestoEgreso = new SqlCommand("Update Presupuesto_Egreso set montoTotal= @monto where id_presupuesto_egreso = @id_presupuesto_egreso", sqlConnectionPresupuestoEgreso);
+            sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@monto", monto);
+            sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@id_presupuesto_egreso", idPresupuestoE);
+  
+            sqlConnectionPresupuestoEgreso.Open();
+            sqlCommandPresupuestoEgreso.ExecuteScalar();
+
+
+            sqlConnectionPresupuestoEgreso.Close();
+        }
+       
         #endregion PRESUPUESTO DE EGRESO
     }
 }

@@ -190,7 +190,7 @@
                                        <div class="col-md-4 col-xs-4 col-sm-4">
                                         <div class="input-group">
                                             <span class="input-group-addon">₡</span>
-                                            <asp:TextBox class="form-control" ID="txtMontoIngresarModal"  type="number" runat="server" Enabled="true" ></asp:TextBox>
+                                            <asp:TextBox class="form-control" ID="txtMontoIngresarModal"   runat="server" Enabled="true" ></asp:TextBox>
                                         </div>
                                     </div>
 
