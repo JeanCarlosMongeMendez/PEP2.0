@@ -731,8 +731,15 @@ namespace Proyecto.Planilla
         protected void btnGuardarAjuste_Click(object sender, EventArgs e)
         {
             FuncionarioFundevi funcionarioFundevi = (FuncionarioFundevi)Session["funcionarioAjuste"];
-            int salarioAjuste = Convert.ToInt32(txtAsalario.Text.ToString());
-            if (funcionariosFundeviServicios.actualizarSalario(funcionarioFundevi, salarioAjuste))
+
+            Double salario = 0;
+            String txtSalario = txtAsalario.Text.Replace(".", ",");
+            if (Double.TryParse(txtSalario, out salario))
+            {
+                txtAsalario.Text = salario.ToString();
+            }
+
+            if (funcionariosFundeviServicios.actualizarSalario(funcionarioFundevi, salario))
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "El salario se actualizó correctamente" + "');", true);
                 String url = Page.ResolveUrl("~/Planilla/AdministrarFuncionarioFundevi.aspx");
@@ -804,7 +811,15 @@ namespace Proyecto.Planilla
             if (!TextBox1.Equals("") && !tb1.Equals(""))
             {
                 funcionario.nombre = TextBox1.Text;
-                funcionario.salario = float.Parse(tb1.Text);
+
+                Double salario = 0;
+                String txtSalario = tb1.Text.Replace(".", ",");
+                if (Double.TryParse(txtSalario, out salario))
+                {
+                    tb1.Text = salario.ToString();
+                }
+
+                funcionario.salario = salario;
                 if (funcionariosFundeviServicios.EditarFuncionario(funcionario))
                 {
                     String url = Page.ResolveUrl("~/Planilla/AdministrarFuncionarioFundevi.aspx");

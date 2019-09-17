@@ -131,12 +131,50 @@
                     </button>
                 </div>
                 <div class="modal-body" style="align-content: center">
-                    <asp:Label runat="server">Nombre del funcionario:</asp:Label><br />
-                    <asp:Label ID="lblNombre" runat="server"></asp:Label><br />
-                    <asp:Label runat="server">Actual salario:</asp:Label><br />
-                    <asp:Label ID="lblSalario" runat="server"></asp:Label><br />
-                    <asp:Label runat="server">Ingrese el nuevo salario:</asp:Label><br />
-                    <asp:TextBox runat="server" ID="txtAsalario" CssClass="form-control"></asp:TextBox>
+
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12 col-sm-12">
+                            <div class="col-md-5 col-xs-12 col-sm-5">
+                                <asp:Label ID="Label11" runat="server" Text="Nombre del funcionario" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                            </div>
+                            <div class="col-md-5 col-xs-12 col-sm-5">
+                                <asp:Label ID="lblNombre" runat="server" Text="" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-xs-12 col-sm-12">
+                            <br />
+                        </div>
+
+                        <div class="col-md-12 col-xs-12 col-sm-12">
+                            <div class="col-md-5 col-xs-12 col-sm-5">
+                                <asp:Label ID="Label12" runat="server" Text="Salario actual" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                            </div>
+                            <div class="col-md-5 col-xs-12 col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon">₡</span>
+                                    <asp:TextBox class="form-control" ID="lblSalario" runat="server" ReadOnly="true"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-xs-12 col-sm-12">
+                            <br />
+                        </div>
+
+                        <div class="col-md-12 col-xs-12 col-sm-12">
+                            <div class="col-md-5 col-xs-12 col-sm-5">
+                                <asp:Label ID="Label14" runat="server" Text="Ingrese el nuevo salario" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                            </div>
+                            <div class="col-md-5 col-xs-12 col-sm-5">
+                                <div class="input-group">
+                                    <span class="input-group-addon">₡</span>
+                                    <asp:TextBox class="form-control" ID="txtAsalario" runat="server" ></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
 
                 </div>
                 <div class="modal-footer">

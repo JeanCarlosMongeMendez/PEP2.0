@@ -29,7 +29,7 @@ namespace Servicios
         {
             return fundeviDatos.GetFuncionariosPorPlanilla(planilla);
         }
-        public Boolean actualizarSalario(FuncionarioFundevi funcionario, int salario)
+        public Boolean actualizarSalario(FuncionarioFundevi funcionario, Double salario)
         {
             return fundeviDatos.actualizarSalario(funcionario, salario);
         }

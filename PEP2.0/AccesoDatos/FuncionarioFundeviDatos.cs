@@ -101,12 +101,15 @@ namespace AccesoDatos
         /// <param name="fundevi"></param>
         /// <param name="salario"></param>
         /// <returns>verdadero si el ajuste de salario se guardo exitosamente</returns>
-        public Boolean actualizarSalario(FuncionarioFundevi funcionario, int salario)
+        public Boolean actualizarSalario(FuncionarioFundevi funcionario, Double salario)
         {
             Boolean flag = false;
             SqlConnection sqlConnection = conexion.conexionPEP();
-            SqlCommand sqlCommand = new SqlCommand("update Funcionario_fundevi set salario=" + salario +
-                "  where id_funcionario=" + funcionario.idFuncionario, sqlConnection);
+            SqlCommand sqlCommand = new SqlCommand("update Funcionario_fundevi set salario= @salario where id_funcionario= @idFuncionario", sqlConnection);
+
+            sqlCommand.Parameters.AddWithValue("@salario", salario);
+            sqlCommand.Parameters.AddWithValue("@idFuncionario", funcionario.idFuncionario);
+
             sqlConnection.Open();
             if (sqlCommand.ExecuteNonQuery() != -1)
             {
@@ -230,9 +233,13 @@ namespace AccesoDatos
         {
             Boolean flag = false;
             SqlConnection sqlConnection = conexion.conexionPEP();
-            SqlCommand sqlCommand = new SqlCommand("update Funcionario_fundevi set nombre_funcionario='" + funcionario.nombre +
-                    "', salario=" + funcionario.salario +
-                    " where id_funcionario=" + funcionario.idFuncionario, sqlConnection);
+            SqlCommand sqlCommand = new SqlCommand(@"update Funcionario_fundevi set nombre_funcionario=@nombreFuncionario, 
+            salario=@salario where id_funcionario=@idFuncionario", sqlConnection);
+
+            sqlCommand.Parameters.AddWithValue("@nombreFuncionario", funcionario.nombre);
+            sqlCommand.Parameters.AddWithValue("@salario", funcionario.salario);
+            sqlCommand.Parameters.AddWithValue("@idFuncionario", funcionario.idFuncionario);
+
             sqlConnection.Open();
             if (sqlCommand.ExecuteNonQuery() != -1)
             {

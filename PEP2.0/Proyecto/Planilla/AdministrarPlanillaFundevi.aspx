@@ -110,7 +110,7 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">Nueva planilla Fundevi</h4>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="align-content:center;text-align:center">
                         <%-- campos a llenar --%>
                         <div class="row">
 
@@ -119,7 +119,7 @@
                             <div class="col-md-12 col-xs-12 col-sm-12">
                                 <br />
                             </div>
-                            <div class="col-md-3 col-xs-3 col-sm-3">
+                            <div class="col-md-12 col-xs-12 col-sm-12">
                                 <asp:Label ID="label44" runat="server" Text="Seleccione un periodo para agregar la planilla" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                             </div>
                             <div class="col-md-12 col-xs-12 col-sm-12">
