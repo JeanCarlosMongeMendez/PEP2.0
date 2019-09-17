@@ -224,30 +224,7 @@ namespace Proyecto.Catalogos.Presupuesto
         #endregion
 
         #region eventos
-
-        //protected void btnEliminar_Click(object sender, EventArgs e)
-        //{
-        //    int idContacto = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
-
-        //    List<Contacto> listaContactos = (List<Contacto>)Session["listaContactosFiltrada"];
-
-        //    Contacto contactoEliminar = new Contacto();
-
-        //    foreach (Contacto contacto in listaContactos)
-        //    {
-        //        if (contacto.idContacto == idContacto)
-        //        {
-        //            contactoEliminar = contacto;
-        //            break;
-        //        }
-        //    }
-
-        //    Session["contactoEliminar"] = contactoEliminar;
-
-        //    String url = Page.ResolveUrl("~/Administracion/EliminarContacto.aspx");
-        //    Response.Redirect(url);
-        //}
-
+        
         protected void Guardar_Click(object sender, EventArgs e)
         {
             if (PeriodosDDL.Items.Count > 0)
@@ -379,6 +356,38 @@ namespace Proyecto.Catalogos.Presupuesto
         {
             MostrarDatosTablaProyectos();
         }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 17/sep/2019
+        /// Efecto: muestra los presupuestos de ingresos del proyecto seleccionado
+        /// Requiere: dar clic en el boton de "Seleccionar"
+        /// Modifica: datos de la tabla de presupuestos de ingresos
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnSelccionar_Click(object sender, EventArgs e)
+        {
+            int idProyecto = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+
+            LinkedList<Proyectos> listaProyectos = (LinkedList<Proyectos>)Session["listaProyectos"];
+
+            Proyectos proyectoSeleccionado = new Proyectos();
+
+            foreach (Proyectos proyecto in listaProyectos)
+            {
+                if (proyecto.idProyecto == idProyecto)
+                {
+                    proyectoSeleccionado = proyecto;
+                    break;
+                }
+            }
+
+            Session["proyecto"] = proyectoSeleccionado.idProyecto;
+            MostrarDatosTablaPresupuestos();
+        }
         #endregion
+
     }
 }

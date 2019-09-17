@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMaster.Master" AutoEventWireup="true" CodeBehind="PresupuestoIngreso.aspx.cs" Inherits="Proyecto.Catalogos.Presupuesto.PresupuestoIngreso" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMaster.Master" AutoEventWireup="true" CodeBehind="PresupuestoIngreso.aspx.cs" Inherits="Proyecto.Catalogos.Presupuesto.PresupuestoIngreso" MaintainScrollPositionOnPostback="true"%>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
@@ -46,11 +46,11 @@
                                 <td>
                                     <div class="btn-group">
                                         <asp:HiddenField runat="server" ID="HFIdProyecto" Value='<%# Eval("idProyecto") %>' />
-                                        <asp:CheckBox ID="cbProyecto" runat="server" Text="" />
+                                        <%--<asp:CheckBox ID="cbProyecto" runat="server" Text="" />--%>
+                                        <asp:LinkButton ID="btnSelccionar" runat="server" ToolTip="Seleccionar"  OnClick="btnSelccionar_Click" CommandArgument='<%# Eval("idProyecto") %>'><span class="glyphicon glyphicon-ok"></span></asp:LinkButton>
                                     </div>
                                 </td>
                                 <td>
-                                    <%--<asp:LinkButton ID="btnVer" runat="server" ToolTip="Ver" OnClick="btnVer_Click" CommandArgument='<%# Eval("idContacto") %>'><span class="glyphicon glyphicon-eye-open"></span></asp:LinkButton>--%>
                                     <%# Eval("nombreProyecto") %>
                                 </td>
                                 <td>
@@ -59,10 +59,6 @@
                                 <td>
                                     <%# (Eval("esUCR").ToString() == "True")? "UCR" : "FUNDEVI" %>
                                 </td>
-                                <%--<td>
-                                    <asp:HiddenField runat="server" ID="HFIdProyecto" Value='<%# Eval("idProyecto") %>' />
-                                    <asp:TextBox class="form-control" ID="TbMonto" runat="server"></asp:TextBox>
-                                </td>--%>
                             </tr>
 
                         </ItemTemplate>
@@ -74,9 +70,9 @@
                 </div>
                     <%-- fin tabla--%>
 
-                    <div class="col-md-12 col-xs-12 col-sm-12">
+                    <%--<div class="col-md-12 col-xs-12 col-sm-12">
                         <asp:Button ID="btnMostrar" runat="server" Text="Mostrar" CssClass="btn btn-primary" OnClick="Mostrar_Click"/>
-                    </div>
+                    </div>--%>
 
 
                     <div id="divMontoPresupuesto" runat="server">
