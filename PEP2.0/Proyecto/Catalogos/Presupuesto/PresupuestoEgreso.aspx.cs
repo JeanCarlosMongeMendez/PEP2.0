@@ -235,9 +235,7 @@ namespace Proyecto.Catalogos.Presupuesto
                 LblPresupuestoIngreso.Text = "El monto disponible para el proyecto seleccionado es " + String.Format("{0:N}", totalIngreso) + " colones";
             }
         }
-
-     
-
+        
         private void Paginacion()
         {
             var dt = new DataTable();
@@ -443,25 +441,34 @@ namespace Proyecto.Catalogos.Presupuesto
             LinkedList<Entidades.PresupuestoEgreso> presupuestoEgresos = new LinkedList<Entidades.PresupuestoEgreso>();
             presupuestoEgresos = this.presupuestoServicios.ObtenerPorUnidadEgresos(Int32.Parse(UnidadesDDL.SelectedValue));
 
-           
-           
-            
-
-            foreach (Entidades.PresupuestoEgreso presupuestoA in presupuestoEgresos)
+            Double salario = 0;
+            String txtMonto = txtMontoIngresarModal.Text.Replace(".", ",");
+            if (Double.TryParse(txtMonto, out salario))
             {
-                presupuestoEgresoPartida.idPresupuestoEgreso = presupuestoA.idPresupuestoEgreso;
-                presupuestoEgresoPartida.idPartida = Convert.ToInt32(txtIdPartida.Text);
-                presupuestoEgresoPartida.monto = Convert.ToInt64(txtMontoIngresarModal.Text);
-                presupuestoEgresoPartida.descripcion = txtdescripcionNuevaPartida.Text;
+                txtMontoIngresarModal.Text = salario.ToString();
+
+                foreach (Entidades.PresupuestoEgreso presupuestoA in presupuestoEgresos)
+                {
+                    presupuestoEgresoPartida.idPresupuestoEgreso = presupuestoA.idPresupuestoEgreso;
+                    presupuestoEgresoPartida.idPartida = Convert.ToInt32(txtIdPartida.Text);
+                    presupuestoEgresoPartida.monto = salario;
+                    presupuestoEgresoPartida.descripcion = txtdescripcionNuevaPartida.Text;
+                    presupuestoServicios.InsertarPresupuestoEgresoPartida(presupuestoEgresoPartida);
+                }
             }
-            presupuestoServicios.InsertarPresupuestoEgresoPartida(presupuestoEgresoPartida);
+            else
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalIngresarPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalIngresarPartida').hide();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalIngresarPartida();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El monto asignado es incorrecto" + "');", true);
+            }
 
-
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalIngresarPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalIngresarPartida').hide();", true);
-
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalIngresarPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalIngresarPartida').hide();", true);
+            MostrarDatosTabla();
         }
        
         /// <summary>
+        /// Josseline M
         /// Muestra el detalle de las partidas de egreso en función al número de partida
         /// </summary>
         /// <param name="sender"></param>
