@@ -19,7 +19,26 @@ namespace Proyecto.Catalogos.Presupuesto
         private UnidadServicios unidadServicios;
         private PartidaServicios partidaServicios;
         private PresupuestoServicios presupuestoServicios;
+        int primerIndex, ultimoIndex;
+         private int paginaActual
+        {
+            get
+            {
+                if (ViewState["paginaActual"] == null)
+                {
+                    return 0;
+                }
+                return ((int)ViewState["paginaActual"]);
+            }
+            set
+            {
+                ViewState["paginaActual"] = value;
+            }
+        }
+
+
         readonly PagedDataSource pgsource = new PagedDataSource();
+        readonly PagedDataSource pgsources = new PagedDataSource();
         #endregion
 
         #region page load
@@ -41,7 +60,10 @@ namespace Proyecto.Catalogos.Presupuesto
                 Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());
 
                 Session["idPresupuestoEgreso"] = 0;
+                PeriodosDDL.Items.Clear();
+                ProyectosDDL.Items.Clear();
                 CargarPeriodos();
+                
             }
         }
         #endregion
@@ -82,7 +104,7 @@ namespace Proyecto.Catalogos.Presupuesto
                 CargarProyectos();
                 MostrarDatosTabla();
 
-                LlenarTabla();
+        
             }
         }
 
@@ -100,6 +122,7 @@ namespace Proyecto.Catalogos.Presupuesto
                     foreach (Proyectos proyecto in proyectos)
                     {
                         ListItem itemLB = new ListItem(proyecto.nombreProyecto, proyecto.idProyecto.ToString());
+                        Session["proyecto"] = proyecto.idProyecto;
                         ProyectosDDL.Items.Add(itemLB);
                     }
 
@@ -125,7 +148,7 @@ namespace Proyecto.Catalogos.Presupuesto
                     UnidadesDDL.Items.Add(itemLB);
                 }
 
-                LlenarTabla();
+                MostrarDatosTabla();
             }
         }
 
@@ -152,8 +175,8 @@ namespace Proyecto.Catalogos.Presupuesto
 
                         TextBox tbDescripcion = (TextBox)item.FindControl("TbDescripcion");
 
-                        tbMonto.Text = String.Format("{0:N}", "0");
-                        lbTotal.Text = String.Format("{0:N}", "0");
+                     //   tbMonto.Text = String.Format("{0:N}", "0");
+                       // lbTotal.Text = String.Format("{0:N}", "0");
                         tbDescripcion.Text = "";
                     }
                 }
@@ -213,32 +236,68 @@ namespace Proyecto.Catalogos.Presupuesto
             }
         }
 
+     
+
+        private void Paginacion()
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("IndexPagina"); //Inicia en 0
+            dt.Columns.Add("PaginaText"); //Inicia en 1
+
+            primerIndex = paginaActual - 2;
+            if (paginaActual > 2)
+                ultimoIndex = paginaActual + 2;
+            else
+                ultimoIndex = 4;
+
+            //se revisa que la ultima pagina sea menor que el total de paginas a mostrar, sino se resta para que muestre bien la paginacion
+            if (ultimoIndex > Convert.ToInt32(ViewState["TotalPaginas"]))
+            {
+                ultimoIndex = Convert.ToInt32(ViewState["TotalPaginas"]);
+                primerIndex = ultimoIndex - 4;
+            }
+
+            if (primerIndex < 0)
+                primerIndex = 0;
+
+            //se crea el numero de paginas basado en la primera y ultima pagina
+            for (var i = primerIndex; i < ultimoIndex; i++)
+            {
+                var dr = dt.NewRow();
+                dr[0] = i;
+                dr[1] = i + 1;
+                dt.Rows.Add(dr);
+            }
+
+            rptPaginacion.DataSource = dt;
+            rptPaginacion.DataBind();
+        }
+
+
         /// <summary>
-        /// LLena y muestra la tabla de proyectos basado en el periodo seleccionado
+        /// Muestra los presupuestos relacionados con con un proyecto y una unidad
+        /// 
         /// </summary>
         private void MostrarDatosTabla()
         {
-            if (PeriodosDDL.Items.Count > 0)
+                      
+            if (ProyectosDDL.Items.Count > 0)
             {
-                LinkedList<Partida> listaPartidas = new LinkedList<Partida>();
-                LinkedList<Partida> listaPartidasDT = new LinkedList<Partida>();
-                listaPartidas = partidaServicios.ObtenerPorPeriodo(Convert.ToInt32(PeriodosDDL.SelectedValue));
+                LinkedList<Entidades.PresupuestoEgreso> listaPresupuestosEgresos = presupuestoServicios.ObtenerPresupuestoPorProyecto(Convert.ToInt32(UnidadesDDL.SelectedValue),Convert.ToInt32(ProyectosDDL.SelectedValue));
 
-                foreach (Partida partida in listaPartidas)
-                {
-                    if (partida.partidaPadre != null)
-                    {
-                        listaPartidasDT.AddLast(partida);
-                    }
-                }
+                
+                var dt = listaPresupuestosEgresos;
 
-                var dt = listaPartidasDT;
                 pgsource.DataSource = dt;
                 pgsource.AllowPaging = false;
-
                 ViewState["TotalPaginas"] = pgsource.PageCount;
-
                 rpPartida.DataSource = pgsource;
+                rpPartida.DataBind();
+            }
+            else
+            {
+                LinkedList<Entidades.PresupuestoEgreso> listaPresupuestosEgresos = new LinkedList<Entidades.PresupuestoEgreso>();
+                rpPartida.DataSource = listaPresupuestosEgresos;
                 rpPartida.DataBind();
             }
         }
@@ -259,6 +318,7 @@ namespace Proyecto.Catalogos.Presupuesto
 
             return montoTotalPresupuestoIngreso;
         }
+
         #endregion
 
         #region eventos
@@ -269,8 +329,157 @@ namespace Proyecto.Catalogos.Presupuesto
 
         protected void Periodos_OnChanged(object sender, EventArgs e)
         {
-            MostrarDatosTabla();
+            
             CargarProyectos();
+            CargarUnidades();
+            MostrarDatosTabla();
+        }
+        /// <summary>
+        /// Leonardo Carrion
+        /// 10/abr/2019
+        /// Efecto: se devuelve a la primera pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Primer pagina"
+        /// Modifica: elementos mostrados en la tabla de contactos
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbPrimero_Click(object sender, EventArgs e)
+        {
+            paginaActual = 0;
+            MostrarDatosTabla();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 10/abr/2019
+        /// Efecto: se devuelve a la ultima pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Ultima pagina"
+        /// Modifica: elementos mostrados en la tabla de contactos
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbUltimo_Click(object sender, EventArgs e)
+        {
+            paginaActual = (Convert.ToInt32(ViewState["TotalPaginas"]) - 1);
+            MostrarDatosTabla();
+        }
+
+        protected void lbAnterior_Click(object sender, EventArgs e)
+        {
+            paginaActual -= 1;
+            MostrarDatosTabla();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 10/abr/2019
+        /// Efecto: marca el boton de la pagina seleccionada
+        /// Requiere: dar clic al boton de paginacion
+        /// Modifica: color del boton seleccionado
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// 
+        protected void rptPaginacion_ItemDataBound(object sender, DataListItemEventArgs e)
+        {
+            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion");
+            if (lnkPagina.CommandArgument != paginaActual.ToString()) return;
+            lnkPagina.Enabled = false;
+            lnkPagina.BackColor = Color.FromName("#005da4");
+            lnkPagina.ForeColor = Color.FromName("#FFFFFF");
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 10/abr/2019
+        /// Efecto: se devuelve a la pagina siguiente y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Siguiente pagina"
+        /// Modifica: elementos mostrados en la tabla de contactos
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbSiguiente_Click(object sender, EventArgs e)
+        {
+            paginaActual += 1;
+            MostrarDatosTabla();
+        }
+
+        protected void rptPaginacion_ItemCommand(object source, DataListCommandEventArgs e)
+        {
+            if (!e.CommandName.Equals("nuevaPagina")) return;
+            paginaActual = Convert.ToInt32(e.CommandArgument.ToString());
+            MostrarDatosTabla();
+        }
+        
+        protected void btnNuevoPresupuesto_Click(object sender, EventArgs e)
+        {
+            int idPartida= Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+
+            txtMontoIngresarModal.CssClass = "form-control";
+            txtIdPartida.CssClass = "form-control";
+            txtdescripcionNuevaPartida.CssClass = "form-control";
+
+            txtMontoIngresarModal.Text = "";
+            txtIdPartida.Text = idPartida+"";
+            txtdescripcionNuevaPartida.Text = "";
+
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalIngresarPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalIngresarPartida').hide();", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalIngresarPartida();", true);
+
+        }
+        /// <summary>
+        /// Josseline M
+        /// este metodo insertar un nuevo registro de una partida apartir de la unidad y partidac
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnNuevoIngresoPartidaModal_Click(object sender, EventArgs e)
+        {
+            PresupuestoEgresoPartida presupuestoEgresoPartida = new PresupuestoEgresoPartida();
+            LinkedList<Entidades.PresupuestoEgreso> presupuestoEgresos = new LinkedList<Entidades.PresupuestoEgreso>();
+            presupuestoEgresos = this.presupuestoServicios.ObtenerPorUnidadEgresos(Int32.Parse(UnidadesDDL.SelectedValue));
+
+           
+           
+            
+
+            foreach (Entidades.PresupuestoEgreso presupuestoA in presupuestoEgresos)
+            {
+                presupuestoEgresoPartida.idPresupuestoEgreso = presupuestoA.idPresupuestoEgreso;
+                presupuestoEgresoPartida.idPartida = Convert.ToInt32(txtIdPartida.Text);
+                presupuestoEgresoPartida.monto = Convert.ToInt64(txtMontoIngresarModal.Text);
+                presupuestoEgresoPartida.descripcion = txtdescripcionNuevaPartida.Text;
+            }
+            presupuestoServicios.InsertarPresupuestoEgresoPartida(presupuestoEgresoPartida);
+
+
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalIngresarPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalIngresarPartida').hide();", true);
+
+        }
+
+        protected void btnVerPartidas_Click(object sender, EventArgs e)
+        {
+            Entidades.PresupuestoEgreso presupuestoEgresoBuscar = new Entidades.PresupuestoEgreso();
+            presupuestoEgresoBuscar.idUnidad= Int32.Parse(UnidadesDDL.SelectedValue);
+            LinkedList<Entidades.PresupuestoEgresoPartida> presupuestos = new LinkedList<Entidades.PresupuestoEgresoPartida>();
+            presupuestos = presupuestoServicios.presupuestoEgresoPartidasPorPresupuesto(presupuestoEgresoBuscar);
+
+
+            var dt = presupuestos;
+
+            pgsources.DataSource = dt;
+            pgsources.AllowPaging = false;
+            ViewState["TotalPaginas"] = pgsources.PageCount;
+            rpPartidaEgresoPartida.DataSource = pgsources;
+            rpPartidaEgresoPartida.DataBind();
+
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalMostrarPresupuestoEgresos", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalMostrarPresupuestoEgresos').hide();", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalMostrarPresupuestoEgresos();", true);
+
         }
 
         protected void Proyectos_OnChanged(object sender, EventArgs e)
@@ -359,6 +568,7 @@ namespace Proyecto.Catalogos.Presupuesto
                 }
             }
         }
+       
 
         #endregion
 

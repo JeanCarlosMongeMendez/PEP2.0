@@ -236,6 +236,7 @@
                     <asp:Label runat="server" ID="alert" Text="" Visible="true"></asp:Label>
                 </div>
             </div>
+            
             <div class="footer">
                 <h6 class="masterh6">&nbsp&nbsp&nbsp&nbsp&copy; <%: DateTime.Now.Year %>  Laboratorio Nacional de Materiales y Modelos Estructurales</h6>
             </div>
