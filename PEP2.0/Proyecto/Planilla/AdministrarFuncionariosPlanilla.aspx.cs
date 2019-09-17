@@ -14,12 +14,14 @@ namespace Proyecto.Planilla
 {
     public partial class AdministrarFuncionariosPlanilla : System.Web.UI.Page
     {
-        #region variables globales
-        FuncionarioServicios funcionarioServicios = new FuncionarioServicios();
-        EscalaSalarialServicios escalaSalarialServicios = new EscalaSalarialServicios();
-        static Funcionario funcionarioSeleccionado = new Funcionario();
-        static EscalaSalarial escalaSeleccionada = new EscalaSalarial();
+        #region variables globales 
+        private FuncionarioServicios funcionarioServicios = new FuncionarioServicios();
+        private EscalaSalarialServicios escalaSalarialServicios = new EscalaSalarialServicios();
+        private static Funcionario funcionarioSeleccionado = new Funcionario();
+        private static EscalaSalarial escalaSeleccionada = new EscalaSalarial();
+        #endregion
 
+        #region variables globales paginacion
         readonly PagedDataSource pgsource = new PagedDataSource();
         int primerIndex, ultimoIndex;
         private int elmentosMostrar = 10;
@@ -66,32 +68,27 @@ namespace Proyecto.Planilla
                 ddlEscalaSalarial.DataSource = listaEscalas;
                 ddlEscalaSalarial.DataTextField = "descEscalaSalarial";
                 ddlEscalaSalarial.DataValueField = "idEscalaSalarial";
-
                 ddlEscalaSalarial.DataBind();
             }
         }
         #endregion
 
         #region logica
-
         /// <summary>
         /// Leonardo Carrion
         /// 17/jul/2019
         /// Efecto: calcula el monto de la anualidad
-        /// Requiere: -
+        /// Requiere: porcentaje de anualidad, total salario base, monto de escalafones
         /// Modifica: -
         /// Devuelve: monto de anualidad
         /// </summary>
         /// <returns></returns>
-        private Double calcularMontoAnualidad(Double monto, Double porcentajeAnualidad)
+        /// <param name="montoEscalafones"></param>
+        /// <param name="porcentajeAnualidad"></param>
+        /// <param name="sumaSalarioBase"></param>
+        private Double calcularMontoAnualidad(double sumaSalarioBase, double montoEscalafones, double porcentajeAnualidad)
         {
-
-            Double montoAnualiadad = 0;
-
-            Double montoEscalafon = monto;
-
-            montoAnualiadad = (escalaSeleccionada.salarioBase1 + montoEscalafon) * (porcentajeAnualidad / 100);
-
+            double montoAnualiadad = (sumaSalarioBase + montoEscalafones) * (porcentajeAnualidad / 100);
             return montoAnualiadad;
         }
 
@@ -99,127 +96,100 @@ namespace Proyecto.Planilla
         /// Jean Carlos Monge Mendez
         /// 04/09/2019
         /// Efecto: Calcula el salario de contratacion
-        /// Requiere: -
+        /// Requiere: total salario base, monto escalafones, monto anualidad
         /// Modifica : -
         /// Devuelve : Salario de contratacion
         /// </summary>
         /// <returns></returns>
-        private Double calcularSalarioContratacion()
+        /// <param name="sumaSalarioBase"></param>
+        /// <param name="montoEscalafones"></param>
+        /// <param name="montoAnualidad"></param>
+        private Double calcularSalarioContratacion(double sumaSalarioBase, double montoEscalafones, double montoAnualidad)
         {
-            Double montoEscalafon = 0;
-            try
+            double salarioContratacion = sumaSalarioBase + montoEscalafones + montoAnualidad;
+            return salarioContratacion;
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 06/29/2019
+        /// Efecto : Calcula el salario total de un funcionario
+        /// Requiere : Salario base, suma al salario base
+        /// Modifica : -
+        /// Devuelve : Salario total
+        /// </summary>
+        /// <param name="salarioBase"></param>
+        /// <param name="sumaSalarioBase"></param>
+        /// <returns></returns>
+        private Double calcularTotalSalarioBase(Double salarioBase, Double sumaSalarioBase)
+        {
+            Double total = 0;
+            if (sumaSalarioBase == 0)
             {
-                String montoTxt = txtMontoEscalafonesI.Text.Replace(".", ",");
-                Double monto = Convert.ToDouble(montoTxt);
-
-                montoEscalafon = monto;
-
-
-
+                total = salarioBase;
             }
-            catch
+            else
             {
-                txtMontoAnualidadesI.Text = "0";
+                total = salarioBase * sumaSalarioBase;
             }
+            //Double salarioBaseI = escalaSeleccionada.salarioBase1;
+            //Double escalafon = calcularMontoEscalafon();
+            //Double anualidad = calcularMontoAnualidad(montoEscalafon, porcentajeAnualidad);
+            //return (salarioBaseI + escalafon + anualidad);
 
-            Double porcentajeAnualidad = 0;
-            try
-            {
-                String montoTxt = txtPorcentajeAnualidadesI.Text.Replace(".", ",");
-                porcentajeAnualidad = Convert.ToDouble(montoTxt);
-            }
-            catch
-            {
-                txtPorcentajeAnualidadesI.Text = "0";
-            }
+            return total;
 
-
-
-
-
-
-            Double salarioBaseI = escalaSeleccionada.salarioBase1;
-            Double escalafon = calcularMontoEscalafon();
-            Double anualidad = calcularMontoAnualidad(montoEscalafon, porcentajeAnualidad);
-            return (salarioBaseI + escalafon + anualidad);
         }
 
         /// <summary>
         /// Leonardo Carrion
         /// 17/jul/2019
         /// Efecto: calcula el monto de escalafon
-        /// Requiere: -
+        /// Requiere: total salario base, numero de escalafones
         /// Modifica: -
         /// Devuelve: monto de escalafones
         /// </summary>
+        /// <param name="numeroEscalafones"></param>
+        /// <param name="totalSalarioBase"></param>
         /// <returns></returns>
-        private Double calcularMontoEscalafon()
+        private Double calcularMontoEscalafon(double totalSalarioBase, int numeroEscalafones)
         {
-            Double montoEscalafon = 0;
-            int numeroEscalafones = 0;
-            try
-            {
-                numeroEscalafones = Convert.ToInt32(txtEscalafonesI.Text);
-            }
-            catch
-            {
-                txtEscalafonesI.Text = "0";
-            }
-
-            Double sumaSalario1 = 0, sumaSalario2 = 0;
-
-            try
-            {
-                String salarioTxt = txtSumaSalarioBase1.Text.Replace(".", ",");
-                Double salario = Convert.ToDouble(salarioTxt);
-
-                sumaSalario1 = salario;
-            }
-            catch
-            {
-                txtSumaSalarioBase1.Text = "0";
-            }
-
-            try
-            {
-                String salarioTxt = txtSumaSalarioBase2.Text.Replace(".", ",");
-                Double salario = Convert.ToDouble(salarioTxt);
-
-                sumaSalario2 = salario;
-            }
-            catch
-            {
-                txtSumaSalarioBase2.Text = "0";
-            }
-
-            montoEscalafon = ((escalaSeleccionada.salarioBase1 + sumaSalario1) * numeroEscalafones) * (escalaSeleccionada.porentajeEscalafones / 100);
-
+            double montoEscalafon = (totalSalarioBase * numeroEscalafones) * (escalaSeleccionada.porentajeEscalafones / 100);
             return montoEscalafon;
         }
 
         /// <summary>
         /// Jean Carlos Monge Mendez
         /// 04/09/2019
-        /// Efecto : Calcula el salario mensual Enero - Junio 
-        /// Requiere : -
+        /// Efecto : Calcula el salario mensual por semestre 
+        /// Requiere : Salario contratacion, pago ley 8114
         /// Modifica : -
-        /// Devuelve : Salario mensual Enero - Junio
+        /// Devuelve : Salario mensual del semestre
         /// </summary>
         /// <returns></returns>
-        private Double calcularSalarioMensualEneroJunio()
+        /// <param name="salarioContratacion"></param>
+        /// <param name="pagoLey8114"></param>
+        private Double calcularSalarioMensual(double salarioContratacion, int pagoLey8114)
         {
-            Double salarioMensual = 0;
-            int pagoLey8114 = 0;
-            try
-            {
-                pagoLey8114 = Convert.ToInt32(txtPagoLey8114.Text);
-            }
-            catch
-            {
-                txtEscalafonesI.Text = "0";
-            }
-            salarioMensual = pagoLey8114 + calcularSalarioContratacion();
+            double salarioMensual = salarioContratacion + pagoLey8114;
             return salarioMensual;
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 11/09/2019
+        /// Efecto : Calcula el promedio del salario mensual de los dos semestres
+        /// Requiere : Salario mensual primer semestre, salario mensual segundo semestre
+        /// Modifica : -
+        /// Devuelve : Promedio de los dos semetres
+        /// </summary>
+        /// <param name="salarioPrimerSemestre"></param>
+        /// <param name="salarioSegundoSemestre"></param>
+        /// <returns></returns>
+        private Double calcularPromedioSemestres (double salarioPrimerSemestre, double salarioSegundoSemestre)
+        {
+            double promedio = (salarioPrimerSemestre + salarioSegundoSemestre) / 2;
+            return promedio;
         }
 
         /// <summary>
@@ -313,6 +283,8 @@ namespace Proyecto.Planilla
         #endregion
 
         #region eventos
+
+        #region paginacion
         /// <summary>
         /// Leonardo Carrion
         /// 14/jun/2019
@@ -412,6 +384,7 @@ namespace Proyecto.Planilla
             lnkPagina.BackColor = Color.FromName("#005da4");
             lnkPagina.ForeColor = Color.FromName("#FFFFFF");
         }
+        #endregion
 
         /// <summary>
         /// Leonardo Carrion
@@ -517,7 +490,25 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularEscalafones_Click(object sender, EventArgs e)
         {
-            txtMontoEscalafonesI.Text = calcularMontoEscalafon().ToString();
+            LinkButton btnEscalafones = (LinkButton)sender;
+            double sumaSalarioBase = 0;
+            int cantidadEscalafones = 0;
+            if (btnEscalafones.ID.Equals("btnCalcularEscalafonesI"))
+            {
+                Double.TryParse(txtSumaTotalSalarioBase1.Text, out sumaSalarioBase);
+                int.TryParse(txtEscalafonesI.Text, out cantidadEscalafones);
+                txtSumaTotalSalarioBase1.Text = sumaSalarioBase.ToString();
+                txtEscalafonesI.Text = cantidadEscalafones.ToString();
+                txtMontoEscalafonesI.Text = calcularMontoEscalafon(sumaSalarioBase, cantidadEscalafones).ToString();
+            }
+            else if (btnEscalafones.ID.Equals("btnCalcularEscalafonesII"))
+            {
+                Double.TryParse(txtSumaTotalSalarioBaseII.Text, out sumaSalarioBase);
+                int.TryParse(txtEscalafonesII.Text, out cantidadEscalafones);
+                txtSumaTotalSalarioBaseII.Text = sumaSalarioBase.ToString();
+                txtEscalafonesII.Text = cantidadEscalafones.ToString();
+                txtMontoEscalafonesII.Text = calcularMontoEscalafon(sumaSalarioBase, cantidadEscalafones).ToString();
+            }
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
@@ -525,7 +516,7 @@ namespace Proyecto.Planilla
         /// Jean Carlos Monge Mendez
         /// 02/09/2019
         /// Efecto : Calcula el salario de contratacion y lo muestra en un campo de texto
-        /// Requiere : Salario base 1, monto de escalafones, monto de anualidad
+        /// Requiere : Salario base, monto de escalafones, monto de anualidad, clickear el boton calcular salario contratacion
         /// Modifica : El campo de texto con el salario de contratacion
         /// Devuelve : -
         /// </summary>
@@ -533,7 +524,30 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularSalContratacion_Click(object sender, EventArgs e)
         {
-            txtSalContratacionI.Text = calcularSalarioContratacion().ToString();
+            LinkButton btnSalarioContratacion = (LinkButton)sender;
+            double sumaSalarioBase = 0;
+            double montoEscalafones = 0;
+            double montoAnualidad = 0;
+            if (btnSalarioContratacion.ID.Equals("btnCalcularSalContratacionI"))
+            {
+                Double.TryParse(txtSumaTotalSalarioBase1.Text.Replace(".", ","), out sumaSalarioBase);
+                Double.TryParse(txtMontoEscalafonesI.Text.Replace(".", ","), out montoEscalafones);
+                Double.TryParse(txtMontoAnualidadesI.Text.Replace(".", ","), out montoAnualidad);
+                txtSalContratacionI.Text = calcularSalarioContratacion(sumaSalarioBase, montoEscalafones, montoAnualidad).ToString();
+                txtSumaTotalSalarioBase1.Text = sumaSalarioBase.ToString();
+                txtMontoEscalafonesI.Text = montoEscalafones.ToString();
+                txtMontoAnualidadesI.Text = montoAnualidad.ToString();
+            }
+            else if (btnSalarioContratacion.ID.Equals("btnCalcularSalContratacionII"))
+            {
+                Double.TryParse(txtSumaTotalSalarioBaseII.Text.Replace(".", ","), out sumaSalarioBase);
+                Double.TryParse(txtMontoEscalafonesII.Text.Replace(".", ","), out montoEscalafones);
+                Double.TryParse(txtMontoAnualidadesII.Text.Replace(".", ","), out montoAnualidad);
+                txtSalContratacionII.Text = calcularSalarioContratacion(sumaSalarioBase, montoEscalafones, montoAnualidad).ToString();
+                txtSumaTotalSalarioBaseII.Text = sumaSalarioBase.ToString();
+                txtMontoEscalafonesII.Text = montoEscalafones.ToString();
+                txtMontoAnualidadesII.Text = montoAnualidad.ToString();
+            }
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
@@ -541,15 +555,33 @@ namespace Proyecto.Planilla
         /// Jean Carlos Monge Mendez
         /// 04/09/2019
         /// Efecto: Calcula el salario mensual a proponer real Ene-Jun
-        /// Requiere : Salario de contratacion, Concepto de pago Ley 8114
-        /// Modifica : Campo de texto con el salario mensual enero - junio
+        /// Requiere : Salario de contratacion, Concepto de pago Ley 8114, clickear el boton calcular salario mensual
+        /// Modifica : Campo de texto con el salario mensual 
         /// Devuelve : -
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void btnCalcularSalarioMensualEneroJunio_Click(object sender, EventArgs e)
+        protected void btnCalcularSalarioMensualPorSemestre_Click(object sender, EventArgs e)
         {
-            txtSalarioMensualEneroJunio.Text = calcularSalarioMensualEneroJunio().ToString();
+            LinkButton btnCalcularSalario = (LinkButton)sender;
+            double salarioContratacion = 0;
+            int pagoLey8114 = 0;
+            if (btnCalcularSalario.ID.Equals("btnCalcularSalarioMensualI"))
+            {
+                Double.TryParse(txtSalContratacionI.Text.Replace(".", ","), out salarioContratacion);
+                int.TryParse(txtPagoLey8114.Text, out pagoLey8114);
+                txtSalarioMensualEneroJunio.Text = calcularSalarioMensual(salarioContratacion, pagoLey8114).ToString();
+                txtSalContratacionI.Text = salarioContratacion.ToString();
+                txtPagoLey8114.Text = pagoLey8114.ToString();
+            }
+            else if (btnCalcularSalario.ID.Equals("btnCalcularSalarioMensualII"))
+            {
+                Double.TryParse(txtSalContratacionII.Text.Replace(".", ","), out salarioContratacion);
+                int.TryParse(txtPagoLey8114.Text, out pagoLey8114);
+                txtSalarioMensualJunioDiciembre.Text = calcularSalarioMensual(salarioContratacion, pagoLey8114).ToString();
+                txtSalContratacionII.Text = salarioContratacion.ToString();
+                txtPagoLey8114.Text = pagoLey8114.ToString();
+            }
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
@@ -557,7 +589,7 @@ namespace Proyecto.Planilla
         /// Leonardo Carrion
         /// 17/jul/2019
         /// Efecto: calcula el monto de la anualidad segun los datos ingresados
-        /// Requiere: monto salario base 1, monto escalafon y porcentaje anualidad
+        /// Requiere: monto salario base, monto escalafon y porcentaje anualidad, clickear el boton calcular
         /// Modifica: el campo con el monto de anualidad
         /// Devuelve: -
         /// </summary>
@@ -565,7 +597,6 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularMontoAnualidades_Click(object sender, EventArgs e)
         {
-
             //txtMontoEscalafonesI.Text = calcularMontoEscalafon().ToString();
             //txtMontoAnualidadesI.Text = calcularMontoAnualidad().ToString();
 
@@ -598,29 +629,141 @@ namespace Proyecto.Planilla
             //txtMontoAnualidades.Text = calcularMontoAnualidad(montoEscalafon, porcentajeAnualidad).ToString();
 
             //txtMontoEscalafones.Text = calcularMontoEscalafon().ToString();
+            
+            LinkButton bntMontoAnualidades = (LinkButton)sender;
+            double sumaSalarioBase = 1.220;
+            double montoEscalafones = 0;
+            double porcentajeAnualidad = 0;
 
+            if (bntMontoAnualidades.ID.Equals("btnCalcularMontoAnualidadesI"))
+            {
+                Double.TryParse(txtSumaTotalSalarioBase1.Text.Replace(".", ","), out sumaSalarioBase);
+                Double.TryParse(txtMontoEscalafonesI.Text.Replace(".", ","), out montoEscalafones);
+                Double.TryParse(txtPorcentajeAnualidadesI.Text.Replace(".", ","), out porcentajeAnualidad);
+                txtMontoAnualidadesI.Text = calcularMontoAnualidad(sumaSalarioBase, montoEscalafones, porcentajeAnualidad).ToString();
+                txtSumaTotalSalarioBase1.Text = sumaSalarioBase.ToString();
+                txtMontoEscalafonesI.Text = montoEscalafones.ToString();
+                txtPorcentajeAnualidadesI.Text = porcentajeAnualidad.ToString();
+            }
+            else if (bntMontoAnualidades.ID.Equals("btnCalcularMontoAnualidadesII"))
+            {
+                Double.TryParse(txtSumaTotalSalarioBaseII.Text.Replace(".", ","), out sumaSalarioBase);
+                Double.TryParse(txtMontoEscalafonesII.Text.Replace(".", ","), out montoEscalafones);
+                Double.TryParse(txtPorcentajeAnualidadesII.Text.Replace(".", ","), out porcentajeAnualidad);
+                txtMontoAnualidadesII.Text = calcularMontoAnualidad(sumaSalarioBase, montoEscalafones, porcentajeAnualidad).ToString();
+                txtSumaTotalSalarioBaseII.Text = sumaSalarioBase.ToString();
+                txtMontoEscalafonesII.Text = montoEscalafones.ToString();
+                txtPorcentajeAnualidadesII.Text = porcentajeAnualidad.ToString();
+            }
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnCalcularNumeroEscalafones2_Click(object sender, EventArgs e)
         {
-
+            int cantidadEscalafonesIsemestre = Convert.ToInt32(txtEscalafonesI.Text);
+            DateTime fechaIngreso = Convert.ToDateTime(txtFecha.Text);
+            DateTime fechaDivisionSemestres = Convert.ToDateTime("6/01/2020");
+            if (cantidadEscalafonesIsemestre < escalaSeleccionada.topeEscalafones && DateTime.Compare(fechaDivisionSemestres, fechaIngreso) < 0)
+            {
+                txtEscalafonesII.Text = (cantidadEscalafonesIsemestre + 1).ToString();
+            }
+            else
+            {
+                txtEscalafonesII.Text = cantidadEscalafonesIsemestre.ToString();
+            }
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 11/09/2019
+        /// Efecto : Calcular el promedio de los salarios semestrales y lo muestra en un campo de texto
+        /// Requiere: salario mensual primer semestre, salario mensual segundo semestre, clickear el boton calcular promedio
+        /// Mofidica: campo de texto promedio dos semetres
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnCalcularPromedioSemestres_Click(object sender, EventArgs e)
         {
-
+            double primerSemestre = 0;
+            double segundoSemestre = 0;
+            Double.TryParse(txtSalarioMensualEneroJunio.Text.Replace(".", ","), out primerSemestre);
+            Double.TryParse(txtSalarioMensualJunioDiciembre.Text.Replace(".", ","), out segundoSemestre);
+            txtPromedioSemestres.Text = calcularPromedioSemestres(primerSemestre, segundoSemestre).ToString();
+            txtSalarioMensualEneroJunio.Text = primerSemestre.ToString();
+            txtSalarioMensualJunioDiciembre.Text = segundoSemestre.ToString();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
-        protected void btnCalcularSalarioPropuesto_Click(object sender, EventArgs e)
-        {
-
-        }
-
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 06/09/2019
+        /// Efecto : Calcula el salario total del funcionario
+        /// Requiere : Salario base, Suma al salario base, clickear el boton de calcular total salario base 
+        /// Modifica : Campo de texto con el valor del salario total
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnCalcularTotalSalarioBase_Click(object sender, EventArgs e)
         {
+            LinkButton btnTotalSalarioBase = (LinkButton)sender;
+            double salarioBase = 0;
+            double sumaSalarioBase = 0;
+            if (btnTotalSalarioBase.ID.Equals("btnCalcularTotalSalarioBaseI"))
+            {
+                salarioBase = escalaSeleccionada.salarioBase1;
+                Double.TryParse(txtSumaSalarioBase1.Text.Replace(".", ",").ToString(), out sumaSalarioBase);
+                txtSumaTotalSalarioBase1.Text = calcularTotalSalarioBase(salarioBase, sumaSalarioBase).ToString();
+                txtSumaSalarioBase1.Text = sumaSalarioBase.ToString();
+            }
+            else if (btnTotalSalarioBase.ID.Equals("btnCalcularTotalSalarioBaseII"))
+            {
+                salarioBase = escalaSeleccionada.salarioBase2;
+                Double.TryParse(txtSumaSalarioBase2.Text.Replace(".", ",").ToString(), out sumaSalarioBase);
+                txtSumaTotalSalarioBaseII.Text = calcularTotalSalarioBase(salarioBase, sumaSalarioBase).ToString();
+                txtSumaSalarioBase2.Text = sumaSalarioBase.ToString();
+            }
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
+        protected void btnGuardar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Daniel Solano
+        /// 06/Set/2019
+        /// Efecto: Cambia el  punto por coma en el valor decimal
+        /// Requiere: -
+        /// Modifica: campo de texto de suma salario
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void txtFormatoComas_TextChanged(object sender, EventArgs e)
+        {
+
+            LinkButton txtSumasalario = (LinkButton)sender;
+            //falta validar cual es el campo en que se va a hacer el cambio
+            if (!String.IsNullOrEmpty(txtSumaSalarioBase1.Text.Trim()))
+            {
+                Double sumaSalarioBase = Convert.ToDouble(txtSumaSalarioBase1.Text.Replace(".", ","));
+                txtSalarioBase1.Text = Convert.ToString(sumaSalarioBase);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
+            }
+        }
         #endregion
     }
 }
