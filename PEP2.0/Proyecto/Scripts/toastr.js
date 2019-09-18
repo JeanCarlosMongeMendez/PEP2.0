@@ -188,7 +188,7 @@
                     closeClass: 'toast-close-button',
                     newestOnTop: true,
                     preventDuplicates: false,
-                    progressBar: false,
+                    progressBar: true,
                     progressClass: 'toast-progress',
                     rtl: false
                 };

@@ -41,5 +41,19 @@ namespace Servicios
         {
             periodoDatos.EliminarPeriodo(anoPeriodo);
         }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 12/sep/2019
+        /// Efecto: devuelve los periodos que se encuentran en las planillas de fundevi
+        /// Requiere: -
+        /// Modifica: -
+        /// Devuelve: lista de periodos
+        /// </summary>
+        /// <returns></returns>
+        public List<Periodo> getPeriodosPlanillasFundevi()
+        {
+            return periodoDatos.getPeriodosPlanillasFundevi();
+        }
     }
 }

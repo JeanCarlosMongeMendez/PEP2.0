@@ -31,7 +31,7 @@ namespace Proyecto.Planilla
         {
             PlanillaFundeviServicios fundeviServicios = new PlanillaFundeviServicios();
             List<PlanillaFundevi> planillas = new List<PlanillaFundevi>();
-            planillas = fundeviServicios.GetPlanillaFundevi();
+            planillas = fundeviServicios.GetPlanillasFundevi();
             foreach (PlanillaFundevi planilla in planillas)
             {
                 ListItem item = new ListItem("" + planilla.anoPeriodo);
@@ -61,7 +61,7 @@ namespace Proyecto.Planilla
                 List<FuncionarioFundevi> funcionarios = new List<FuncionarioFundevi>();
                 PlanillaFundevi planilla = fundeviServicios.GetPlanilla(Convert.ToInt32(PeriodosDDL.SelectedValue));
 
-                funcionarios = funcionarioServicios.GetFuncionario(planilla);
+                funcionarios = funcionarioServicios.GetFuncionariosPorPlanilla(planilla);
                 if (funcionarios.Count > 0)
                 {
                     foreach (FuncionarioFundevi funcionario in funcionarios)
@@ -154,7 +154,7 @@ namespace Proyecto.Planilla
 
                         // int respuesta = this.proyectoServicios.Guardar(proyectosId, Int32.Parse(PeriodosNuevosDDL.SelectedValue));
 
-                        if (funcionarioServicios.InsertarFuncionario(funcionarios, planilla.idPlanilla))
+                        if (funcionarioServicios.InsertarFuncionarios(funcionarios, planilla.idPlanilla))
                         {
                             Toastr("success", "Se han guardado los cambios con éxito!");
                             String url = Page.ResolveUrl("~/Planilla/AdministrarPlanillaFundevi.aspx");

@@ -45,7 +45,7 @@ namespace AccesoDatos
         /// Devuelve todas las planillas de fundevi
         /// </summary>
         /// <returns>Retorna una lista de palnillasFundevi</returns>
-        public List<PlanillaFundevi> GetPlanillaFundevi()
+        public List<PlanillaFundevi> GetPlanillasFundevi()
         {
             SqlConnection sqlConnection = conexion.conexionPEP();
             List<PlanillaFundevi> planillas = new List<PlanillaFundevi>();
@@ -125,6 +125,38 @@ namespace AccesoDatos
                 }
             }
             return flag;
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 12/sep/2019
+        /// Efecto: devuelve 'True' si existe una planilla fundevi con el periodo seleccionado
+        /// Requiere: periodo a consultar
+        /// Modifica: -
+        /// Devuelve: true si existe una planilla con el periodo seleccionado o false de lo contrario
+        /// </summary>
+        /// <param name="anno"></param>
+        /// <returns></returns>
+        public Boolean existePlanilla(int anno)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+
+            Boolean existe = false;
+
+            SqlCommand sqlCommand = new SqlCommand("select * from Planilla_fundevi where ano_periodo = @anno", sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@anno", anno);
+
+            SqlDataReader reader;
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                existe = true;
+            }
+
+            sqlConnection.Close();
+            return existe;
         }
     }
 }

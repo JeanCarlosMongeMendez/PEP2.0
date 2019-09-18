@@ -14,6 +14,7 @@ namespace Entidades
         public bool estado { get; set; }
         public string descripcionEstado { get; set; }
         public double montoTotal { get; set; }
+        public string descripcion { get; set; }
         public LinkedList<PresupuestoEgresoPartida> presupuestoEgresoPartidas { get; set; }
     }
 }

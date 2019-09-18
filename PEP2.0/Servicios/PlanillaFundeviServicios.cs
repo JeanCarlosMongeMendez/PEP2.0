@@ -21,9 +21,9 @@ namespace Servicios
         {
             return datos.Insertar(anoPeriodo);
         }
-        public List<PlanillaFundevi> GetPlanillaFundevi()
+        public List<PlanillaFundevi> GetPlanillasFundevi()
         {
-            return datos.GetPlanillaFundevi();
+            return datos.GetPlanillasFundevi();
         }
 
         public PlanillaFundevi GetPlanilla(int periodo)
@@ -39,6 +39,21 @@ namespace Servicios
         public Boolean EliminarPlanilla(int iPlanilla)
         {
             return datos.eliminarPlanilla(iPlanilla);
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 12/sep/2019
+        /// Efecto: devuelve 'True' si existe una planilla fundevi con el periodo seleccionado
+        /// Requiere: periodo a consultar
+        /// Modifica: -
+        /// Devuelve: true si existe una planilla con el periodo seleccionado o false de lo contrario
+        /// </summary>
+        /// <param name="anno"></param>
+        /// <returns></returns>
+        public Boolean existePlanilla(int anno)
+        {
+            return datos.existePlanilla(anno);
         }
     }
 }

@@ -132,7 +132,13 @@ namespace Proyecto.Planilla
             {
                 total = salarioBase * sumaSalarioBase;
             }
+            //Double salarioBaseI = escalaSeleccionada.salarioBase1;
+            //Double escalafon = calcularMontoEscalafon();
+            //Double anualidad = calcularMontoAnualidad(montoEscalafon, porcentajeAnualidad);
+            //return (salarioBaseI + escalafon + anualidad);
+
             return total;
+
         }
 
         /// <summary>
@@ -589,6 +595,39 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularMontoAnualidades_Click(object sender, EventArgs e)
         {
+            //txtMontoEscalafonesI.Text = calcularMontoEscalafon().ToString();
+            //txtMontoAnualidadesI.Text = calcularMontoAnualidad().ToString();
+
+            //Double montoEscalafon = 0;
+            //try
+            //{
+            //    String montoTxt = txtMontoEscalafones.Text.Replace(".", ",");
+            //    Double monto = Convert.ToDouble(montoTxt);
+
+            //    montoEscalafon = monto;
+
+
+
+            //}
+            //catch
+            //{
+            //    txtMontoAnualidades.Text = "0";
+            //}
+
+            //Double porcentajeAnualidad = 0;
+            //try
+            //{
+            //    String montoTxt = txtPorcentajeAnualidades.Text.Replace(".", ",");
+            //    porcentajeAnualidad = Convert.ToDouble(montoTxt);
+            //}
+            //catch
+            //{
+            //    txtPorcentajeAnualidades.Text = "0";
+            //}
+            //txtMontoAnualidades.Text = calcularMontoAnualidad(montoEscalafon, porcentajeAnualidad).ToString();
+
+            //txtMontoEscalafones.Text = calcularMontoEscalafon().ToString();
+            
             LinkButton bntMontoAnualidades = (LinkButton)sender;
             double salarioBase = 0;
             double montoEscalafones = 0;

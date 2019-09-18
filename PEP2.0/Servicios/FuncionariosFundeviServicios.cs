@@ -17,7 +17,7 @@ namespace Servicios
     {
         FuncionarioFundeviDatos fundeviDatos = new FuncionarioFundeviDatos();
 
-        public Boolean Insertar(FuncionarioFundevi funcionario)
+        public Boolean InsertFuncionario(FuncionarioFundevi funcionario)
         {
             return fundeviDatos.InsertFuncionario(funcionario);
         }
@@ -25,11 +25,11 @@ namespace Servicios
         {
             return fundeviDatos.GetAllFuncionario();
         }
-        public List<FuncionarioFundevi> GetFuncionario(PlanillaFundevi planilla)
+        public List<FuncionarioFundevi> GetFuncionariosPorPlanilla(PlanillaFundevi planilla)
         {
             return fundeviDatos.GetFuncionariosPorPlanilla(planilla);
         }
-        public Boolean actualizarSalario(FuncionarioFundevi funcionario, int salario)
+        public Boolean actualizarSalario(FuncionarioFundevi funcionario, Double salario)
         {
             return fundeviDatos.actualizarSalario(funcionario, salario);
         }
@@ -38,7 +38,7 @@ namespace Servicios
         {
             return fundeviDatos.GetFuncionario(idFuncionario);
         }
-        public Boolean InsertarFuncionario(LinkedList<FuncionarioFundevi> funcionarios, int idPlanilla)
+        public Boolean InsertarFuncionarios(LinkedList<FuncionarioFundevi> funcionarios, int idPlanilla)
         {
             return fundeviDatos.InsertarFuncionarios(funcionarios, idPlanilla);
         }

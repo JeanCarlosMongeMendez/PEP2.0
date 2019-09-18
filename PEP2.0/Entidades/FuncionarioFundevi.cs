@@ -11,6 +11,6 @@ namespace Entidades
         public int idFuncionario { get; set; }
         public int idPlanilla { get; set; }
         public String nombre { get; set; }
-        public float salario { get; set; }
+        public Double salario { get; set; }
     }
 }

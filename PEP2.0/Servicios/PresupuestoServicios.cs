@@ -47,7 +47,17 @@ namespace Servicios
         #region PRESUPUESTO DE EGRESO
         public LinkedList<PresupuestoEgreso> ObtenerPorUnidad(int idUnidad)
         {
-            return this.presupuestoDatos.ObtenerPorUnidad(idUnidad);
+            return presupuestoDatos.ObtenerPorUnidad(idUnidad);
+        }
+
+        /// <summary>
+        /// Retorna una lista de presupuestos egresos a partir de una unidad
+        /// </summary>
+        /// <param name="idUnidad"></param>
+        /// <returns></returns>
+        public LinkedList<PresupuestoEgreso> ObtenerPorUnidadEgresos(int idUnidad)
+        {
+            return presupuestoDatos.ObtenerPorUnidadEgresos(idUnidad);
         }
 
         public int InsertarPresupuestoEgreso(PresupuestoEgreso presupuestoEgreso)
@@ -58,6 +68,31 @@ namespace Servicios
         public int AprobarPresupuestoEgreso(int idPresupuestoEgreso)
         {
             return this.presupuestoDatos.AprobarPresupuestoEgreso(idPresupuestoEgreso);
+        }
+        /// <summary>
+        /// Josseline M
+        /// Este metodo retorna una  lista de presupuestos egresos de acuerdo al proyecto perteneciente
+        /// </summary>
+        /// <param name="idProyecto"></param>
+        /// <returns></returns>
+        public LinkedList<PresupuestoEgreso> ObtenerPresupuestoPorProyecto(int idUnidad, int idProyecto)
+        {
+            return this.presupuestoDatos.ObtenerPresupuestoPorProyecto(idUnidad, idProyecto);
+        }
+
+        public LinkedList<PresupuestoEgresoPartida> presupuestoEgresoPartidasPorPresupuesto(PresupuestoEgresoPartida presupuestoEgresoPartidaF)
+        {
+            return presupuestoDatos.presupuestoEgresoPartidasPorPresupuesto(presupuestoEgresoPartidaF);
+        }
+        
+        /// <summary>
+        /// Josseline Matamoros Cordero
+        /// Inserta una nueva partida a un proyecto
+        /// </summary>
+        /// <param name="presupuestoEgreso"></param>
+        public void InsertarPresupuestoEgresoPartida(PresupuestoEgresoPartida presupuestoEgresoP)
+        {
+            presupuestoDatos.InsertarPresupuestoEgresoPartida(presupuestoEgresoP);
         }
         #endregion
     }

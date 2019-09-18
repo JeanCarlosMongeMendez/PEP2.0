@@ -58,7 +58,7 @@ namespace AccesoDatos
                 funcionario.idFuncionario = Convert.ToInt32(reader["id_funcionario"].ToString());
                 funcionario.idPlanilla = Convert.ToInt32(reader["id_planilla"].ToString());
                 funcionario.nombre = reader["nombre_funcionario"].ToString();
-                funcionario.salario = Convert.ToInt32(reader["salario"].ToString());
+                funcionario.salario = Convert.ToDouble(reader["salario"].ToString());
                 funcionarios.Add(funcionario);
             }
             return funcionarios;
@@ -88,7 +88,7 @@ namespace AccesoDatos
                 funcionario.idFuncionario = Convert.ToInt32(reader["id_funcionario"].ToString());
                 funcionario.idPlanilla = Convert.ToInt32(reader["id_planilla"].ToString());
                 funcionario.nombre = reader["nombre_funcionario"].ToString();
-                funcionario.salario = Convert.ToInt32(reader["salario"].ToString());
+                funcionario.salario = Convert.ToDouble(reader["salario"].ToString());
                 funcionarios.Add(funcionario);
             }
             return funcionarios;
@@ -101,12 +101,15 @@ namespace AccesoDatos
         /// <param name="fundevi"></param>
         /// <param name="salario"></param>
         /// <returns>verdadero si el ajuste de salario se guardo exitosamente</returns>
-        public Boolean actualizarSalario(FuncionarioFundevi funcionario, int salario)
+        public Boolean actualizarSalario(FuncionarioFundevi funcionario, Double salario)
         {
             Boolean flag = false;
             SqlConnection sqlConnection = conexion.conexionPEP();
-            SqlCommand sqlCommand = new SqlCommand("update Funcionario_fundevi set salario=" + salario +
-                "  where id_funcionario=" + funcionario.idFuncionario, sqlConnection);
+            SqlCommand sqlCommand = new SqlCommand("update Funcionario_fundevi set salario= @salario where id_funcionario= @idFuncionario", sqlConnection);
+
+            sqlCommand.Parameters.AddWithValue("@salario", salario);
+            sqlCommand.Parameters.AddWithValue("@idFuncionario", funcionario.idFuncionario);
+
             sqlConnection.Open();
             if (sqlCommand.ExecuteNonQuery() != -1)
             {
@@ -139,7 +142,7 @@ namespace AccesoDatos
                 funcionario.idFuncionario = Convert.ToInt32(reader["id_funcionario"].ToString());
                 funcionario.idPlanilla = Convert.ToInt32(reader["id_planilla"].ToString());
                 funcionario.nombre = reader["nombre_funcionario"].ToString();
-                funcionario.salario = Convert.ToInt32(reader["salario"].ToString());
+                funcionario.salario = Convert.ToDouble(reader["salario"].ToString());
 
             }
             return funcionario;
@@ -159,7 +162,6 @@ namespace AccesoDatos
             Boolean flag = false;
             foreach (FuncionarioFundevi funcionario in funcionarios)
             {
-
                 if (funcionario.idPlanilla != idPlanilla)
                 {
                     funcionario.idPlanilla = idPlanilla;
@@ -167,10 +169,7 @@ namespace AccesoDatos
                     {
                         flag = true;
                     }
-
                 }
-
-
             }
             return flag;
         }
@@ -234,9 +233,13 @@ namespace AccesoDatos
         {
             Boolean flag = false;
             SqlConnection sqlConnection = conexion.conexionPEP();
-            SqlCommand sqlCommand = new SqlCommand("update Funcionario_fundevi set nombre_funcionario='" + funcionario.nombre +
-                    "', salario=" + funcionario.salario +
-                    " where id_funcionario=" + funcionario.idFuncionario, sqlConnection);
+            SqlCommand sqlCommand = new SqlCommand(@"update Funcionario_fundevi set nombre_funcionario=@nombreFuncionario, 
+            salario=@salario where id_funcionario=@idFuncionario", sqlConnection);
+
+            sqlCommand.Parameters.AddWithValue("@nombreFuncionario", funcionario.nombre);
+            sqlCommand.Parameters.AddWithValue("@salario", funcionario.salario);
+            sqlCommand.Parameters.AddWithValue("@idFuncionario", funcionario.idFuncionario);
+
             sqlConnection.Open();
             if (sqlCommand.ExecuteNonQuery() != -1)
             {
