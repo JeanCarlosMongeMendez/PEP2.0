@@ -737,8 +737,44 @@ namespace Proyecto.Planilla
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 18/09/2019
+        /// Efecto : Guarda los datos de un funcionario
+        /// Requiere : campos validos, clickear el boton "Guardar"
+        /// Modifica : -
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
+            Funcionario funcionario = new Funcionario();
+            funcionario.conceptoPagoLey = Convert.ToDouble(txtPagoLey8114.Text);
+            funcionario.escalaSalarial = escalaSeleccionada;
+            funcionario.fechaIngreso = Convert.ToDateTime(txtFecha.Text);
+            funcionario.montoAnualidad1 = Convert.ToDouble(txtMontoAnualidadesI.Text);
+            funcionario.montoAnualidad2 = Convert.ToDouble(txtMontoAnualidadesII.Text);
+            funcionario.montoEscalafones1 = Convert.ToDouble(txtMontoEscalafonesI.Text);
+            funcionario.montoEscalafones2 = Convert.ToDouble(txtMontoEscalafonesII.Text);
+            funcionario.noEscalafones1 = Convert.ToInt32(txtEscalafonesI.Text);
+            funcionario.noEscalafones2 = Convert.ToInt32(txtEscalafonesII.Text);
+            funcionario.nombreFuncionario = txtNombreCompleto.Text;
+            funcionario.observaciones = txtObservaciones.Text;
+            funcionario.planilla = (Entidades.Planilla)Session["planillaSeleccionada"];
+            funcionario.porcentajeAnualidad1 = Convert.ToDouble(txtPorcentajeAnualidadesI.Text);
+            funcionario.porcentajeAnualidad2 = Convert.ToDouble(txtPorcentajeAnualidadesII.Text);
+            funcionario.salarioBase1 = Convert.ToDouble(txtSumaTotalSalarioBase1.Text);
+            funcionario.salarioBase2 = Convert.ToDouble(txtSumaTotalSalarioBaseII.Text);
+            funcionario.salarioContratacion1 = Convert.ToDouble(txtSalContratacionI.Text);
+            funcionario.salarioContratacion2 = Convert.ToDouble(txtSalContratacionII.Text);
+            funcionario.salarioEnero = Convert.ToDouble(txtSalarioMensualEneroJunio.Text);
+            funcionario.salarioJunio = Convert.ToDouble(txtSalarioMensualJunioDiciembre.Text);
+            funcionario.salarioPromedio = Convert.ToDouble(txtPromedioSemestres.Text);
+            double salarioPropuesto = 0;
+            Double.TryParse(txtSalarioPropuesto.Text, out salarioPropuesto);
+            funcionario.salarioPropuesto = salarioPropuesto;
+            bool result = funcionarioServicios.guardar(funcionario);
 
         }
         #endregion

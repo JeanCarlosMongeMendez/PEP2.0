@@ -453,7 +453,7 @@
                                         <div class="col-md-4 col-xs-6 col-sm-6">
                                             <div class="input-group">
                                                 <span class="input-group-addon">+</span>
-                                                <asp:TextBox ID="txtSumaSalarioBase2" runat="server" class="form-control" AutoPostBack="true" TextMode="Number" pattern="[0-9]+([\,][0-9]+)?" step="0.1"></asp:TextBox>
+                                                <asp:TextBox ID="txtSumaSalarioBase2" runat="server" class="form-control" AutoPostBack="true"></asp:TextBox>
                                             </div>
                                         </div>
                                     </ContentTemplate>
@@ -653,6 +653,22 @@
                                         <span class="input-group-addon">₡</span>
                                         <asp:TextBox ID="txtSalarioPropuesto" runat="server" class="form-control" TextMode="Number"></asp:TextBox>
                                     </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <div class="row" style="text-align: center">
+
+                                <div class="col-md-3 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Observaciones" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-6 col-xs-12 col-sm-12">
+                                    <asp:TextBox ID="txtObservaciones" runat="server" class="form-control" TextMode="MultiLine"></asp:TextBox>
                                 </div>
 
                             </div>
