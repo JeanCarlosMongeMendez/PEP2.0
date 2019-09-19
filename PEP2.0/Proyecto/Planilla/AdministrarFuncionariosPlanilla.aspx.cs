@@ -145,16 +145,16 @@ namespace Proyecto.Planilla
         /// Leonardo Carrion
         /// 17/jul/2019
         /// Efecto: calcula el monto de escalafon
-        /// Requiere: total salario base, numero de escalafones
+        /// Requiere: salario base, numero de escalafones
         /// Modifica: -
         /// Devuelve: monto de escalafones
         /// </summary>
         /// <param name="numeroEscalafones"></param>
         /// <param name="totalSalarioBase"></param>
         /// <returns></returns>
-        private Double calcularMontoEscalafon(double totalSalarioBase, int numeroEscalafones)
+        private Double calcularMontoEscalafon(double SalarioBase, int numeroEscalafones)
         {
-            double montoEscalafon = (totalSalarioBase * numeroEscalafones) * (escalaSeleccionada.porentajeEscalafones / 100);
+            double montoEscalafon = (SalarioBase * numeroEscalafones) * (escalaSeleccionada.porentajeEscalafones / 100);
             return montoEscalafon;
         }
 
@@ -491,23 +491,21 @@ namespace Proyecto.Planilla
         protected void btnCalcularEscalafones_Click(object sender, EventArgs e)
         {
             LinkButton btnEscalafones = (LinkButton)sender;
-            double sumaSalarioBase = 0;
+            double salarioBase = 0;
             int cantidadEscalafones = 0;
             if (btnEscalafones.ID.Equals("btnCalcularEscalafonesI"))
             {
-                Double.TryParse(txtSumaTotalSalarioBase1.Text, out sumaSalarioBase);
+                Double.TryParse(escalaSeleccionada.salarioBase1.ToString(), out salarioBase);
                 int.TryParse(txtEscalafonesI.Text, out cantidadEscalafones);
-                txtSumaTotalSalarioBase1.Text = sumaSalarioBase.ToString();
                 txtEscalafonesI.Text = cantidadEscalafones.ToString();
-                txtMontoEscalafonesI.Text = calcularMontoEscalafon(sumaSalarioBase, cantidadEscalafones).ToString();
+                txtMontoEscalafonesI.Text = calcularMontoEscalafon(salarioBase, cantidadEscalafones).ToString();
             }
             else if (btnEscalafones.ID.Equals("btnCalcularEscalafonesII"))
             {
-                Double.TryParse(txtSumaTotalSalarioBaseII.Text, out sumaSalarioBase);
+                Double.TryParse(escalaSeleccionada.salarioBase2.ToString(), out salarioBase);
                 int.TryParse(txtEscalafonesII.Text, out cantidadEscalafones);
-                txtSumaTotalSalarioBaseII.Text = sumaSalarioBase.ToString();
                 txtEscalafonesII.Text = cantidadEscalafones.ToString();
-                txtMontoEscalafonesII.Text = calcularMontoEscalafon(sumaSalarioBase, cantidadEscalafones).ToString();
+                txtMontoEscalafonesII.Text = calcularMontoEscalafon(salarioBase, cantidadEscalafones).ToString();
             }
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
@@ -631,27 +629,25 @@ namespace Proyecto.Planilla
             //txtMontoEscalafones.Text = calcularMontoEscalafon().ToString();
             
             LinkButton bntMontoAnualidades = (LinkButton)sender;
-            double sumaSalarioBase = 1.220;
+            double salarioBase = 0;
             double montoEscalafones = 0;
             double porcentajeAnualidad = 0;
 
             if (bntMontoAnualidades.ID.Equals("btnCalcularMontoAnualidadesI"))
             {
-                Double.TryParse(txtSumaTotalSalarioBase1.Text.Replace(".", ","), out sumaSalarioBase);
+                Double.TryParse(escalaSeleccionada.salarioBase1.ToString(), out salarioBase);
                 Double.TryParse(txtMontoEscalafonesI.Text.Replace(".", ","), out montoEscalafones);
                 Double.TryParse(txtPorcentajeAnualidadesI.Text.Replace(".", ","), out porcentajeAnualidad);
-                txtMontoAnualidadesI.Text = calcularMontoAnualidad(sumaSalarioBase, montoEscalafones, porcentajeAnualidad).ToString();
-                txtSumaTotalSalarioBase1.Text = sumaSalarioBase.ToString();
+                txtMontoAnualidadesI.Text = calcularMontoAnualidad(salarioBase, montoEscalafones, porcentajeAnualidad).ToString();
                 txtMontoEscalafonesI.Text = montoEscalafones.ToString();
                 txtPorcentajeAnualidadesI.Text = porcentajeAnualidad.ToString();
             }
             else if (bntMontoAnualidades.ID.Equals("btnCalcularMontoAnualidadesII"))
             {
-                Double.TryParse(txtSumaTotalSalarioBaseII.Text.Replace(".", ","), out sumaSalarioBase);
+                Double.TryParse(escalaSeleccionada.salarioBase2.ToString(), out salarioBase);
                 Double.TryParse(txtMontoEscalafonesII.Text.Replace(".", ","), out montoEscalafones);
                 Double.TryParse(txtPorcentajeAnualidadesII.Text.Replace(".", ","), out porcentajeAnualidad);
-                txtMontoAnualidadesII.Text = calcularMontoAnualidad(sumaSalarioBase, montoEscalafones, porcentajeAnualidad).ToString();
-                txtSumaTotalSalarioBaseII.Text = sumaSalarioBase.ToString();
+                txtMontoAnualidadesII.Text = calcularMontoAnualidad(salarioBase, montoEscalafones, porcentajeAnualidad).ToString();
                 txtMontoEscalafonesII.Text = montoEscalafones.ToString();
                 txtPorcentajeAnualidadesII.Text = porcentajeAnualidad.ToString();
             }
@@ -659,15 +655,23 @@ namespace Proyecto.Planilla
         }
 
         /// <summary>
-        /// 
+        /// Jean Carlos Monge Mendez
+        /// 11/09/2019
+        /// Efecto : Calcula el numero de escalafones para el segundo semestre
+        /// Requiere : Escalafones primer semestre, fecha de ingreso
+        /// Modifica : Campo de texto escalafonesII
+        /// Devuelve : 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void btnCalcularNumeroEscalafones2_Click(object sender, EventArgs e)
         {
-            int cantidadEscalafonesIsemestre = Convert.ToInt32(txtEscalafonesI.Text);
-            DateTime fechaIngreso = Convert.ToDateTime(txtFecha.Text);
-            DateTime fechaDivisionSemestres = Convert.ToDateTime("6/01/2020");
+            int cantidadEscalafonesIsemestre = 0;
+            DateTime fechaIngreso = DateTime.Now;
+
+            int.TryParse(txtEscalafonesI.Text, out cantidadEscalafonesIsemestre);
+            DateTime.TryParse(txtFecha.Text, out fechaIngreso);
+            DateTime fechaDivisionSemestres = Convert.ToDateTime("6/01/"+fechaIngreso.Year);
             if (cantidadEscalafonesIsemestre < escalaSeleccionada.topeEscalafones && DateTime.Compare(fechaDivisionSemestres, fechaIngreso) < 0)
             {
                 txtEscalafonesII.Text = (cantidadEscalafonesIsemestre + 1).ToString();
@@ -736,33 +740,6 @@ namespace Proyecto.Planilla
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
 
-        }
-
-        /// <summary>
-        /// Daniel Solano
-        /// 06/Set/2019
-        /// Efecto: Cambia el  punto por coma en el valor decimal
-        /// Requiere: -
-        /// Modifica: campo de texto de suma salario
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void txtFormatoComas_TextChanged(object sender, EventArgs e)
-        {
-
-            LinkButton txtSumasalario = (LinkButton)sender;
-            //falta validar cual es el campo en que se va a hacer el cambio
-            if (!String.IsNullOrEmpty(txtSumaSalarioBase1.Text.Trim()))
-            {
-                Double sumaSalarioBase = Convert.ToDouble(txtSumaSalarioBase1.Text.Replace(".", ","));
-                txtSalarioBase1.Text = Convert.ToString(sumaSalarioBase);
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
-            }
-            else
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
-            }
         }
         #endregion
     }
