@@ -36,5 +36,6 @@ namespace Entidades
         public Double salarioPropuesto { get; set; }
         public String observaciones { get; set; }
         public String nombreFuncionario { get; set; }
+        public double porcentajeSumaSalario { get; set; }
     }
 }

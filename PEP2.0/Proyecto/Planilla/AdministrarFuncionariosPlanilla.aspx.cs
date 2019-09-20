@@ -759,8 +759,8 @@ namespace Proyecto.Planilla
             txtVerSalarioPropuesto.Text = funcionarioSeleccionado.salarioPropuesto.ToString();
             txtVerSalContratacionI.Text = funcionarioSeleccionado.salarioContratacion1.ToString();
             txtVerSalContratacionII.Text = funcionarioSeleccionado.salarioContratacion2.ToString();
-            txtVerSumaSalarioBase1.Text = funcionarioSeleccionado.salarioBase1.ToString();
-            txtVerSumaSalarioBase2.Text = funcionarioSeleccionado.salarioBase2.ToString();
+            txtVerSumaSalarioBase1.Text = funcionarioSeleccionado.porcentajeSumaSalario.ToString();
+            txtVerSumaSalarioBase2.Text = funcionarioSeleccionado.porcentajeSumaSalario.ToString();
             txtVerSumaTotalSalarioBase1.Text = funcionarioSeleccionado.salarioBase1.ToString();
             txtVerSumaTotalSalarioBaseII.Text = funcionarioSeleccionado.salarioBase2.ToString();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalVerFuncionario();", true);
@@ -810,6 +810,7 @@ namespace Proyecto.Planilla
             funcionario.salarioEnero = Convert.ToDouble(txtSalarioMensualEneroJunio.Text);
             funcionario.salarioJunio = Convert.ToDouble(txtSalarioMensualJunioDiciembre.Text);
             funcionario.salarioPromedio = Convert.ToDouble(txtPromedioSemestres.Text);
+            funcionario.porcentajeSumaSalario = Convert.ToDouble(txtSumaSalarioBase1.Text);
             double salarioPropuesto = 0;
             Double.TryParse(txtSalarioPropuesto.Text, out salarioPropuesto);
             funcionario.salarioPropuesto = salarioPropuesto;
