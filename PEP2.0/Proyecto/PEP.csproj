@@ -106,7 +106,9 @@
       <Link>SqlServerTypes\x86\SqlServerSpatial110.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Catalogos\Jornadas\AdministrarJornadas.aspx" />
     <Content Include="Catalogos\Partidas\AdministrarPartida.aspx" />
+    <Content Include="Catalogos\Partidas\AdministrarPartidas.aspx" />
     <Content Include="Catalogos\Partidas\EditarPartida.aspx" />
     <Content Include="Catalogos\Partidas\EliminarPartida.aspx" />
     <Content Include="Catalogos\Partidas\NuevaPartida.aspx" />
@@ -191,12 +193,26 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Catalogos\Jornadas\AdministrarJornadas.aspx.cs">
+      <DependentUpon>AdministrarJornadas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Catalogos\Jornadas\AdministrarJornadas.aspx.designer.cs">
+      <DependentUpon>AdministrarJornadas.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Catalogos\Partidas\AdministrarPartida.aspx.cs">
       <DependentUpon>AdministrarPartida.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Catalogos\Partidas\AdministrarPartida.aspx.designer.cs">
       <DependentUpon>AdministrarPartida.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Catalogos\Partidas\AdministrarPartidas.aspx.cs">
+      <DependentUpon>AdministrarPartidas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Catalogos\Partidas\AdministrarPartidas.aspx.designer.cs">
+      <DependentUpon>AdministrarPartidas.aspx</DependentUpon>
     </Compile>
     <Compile Include="Catalogos\Partidas\EditarPartida.aspx.cs">
       <DependentUpon>EditarPartida.aspx</DependentUpon>
