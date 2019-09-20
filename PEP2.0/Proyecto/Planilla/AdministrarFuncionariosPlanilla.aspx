@@ -136,7 +136,7 @@
     </div>
 
 
-    <!-- Modal nuevo funcionario -->
+    <!-- Modal funcionario -->
     <%--<asp:UpdatePanel ID="UpdatePanel2" runat="server">
         <ContentTemplate>--%>
     <div id="modalNuevoFuncionario" class="modal fade" role="alertdialog">
@@ -146,7 +146,7 @@
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #005da4; color: white">
                     <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
-                    <h4 class="modal-title">Nuevo funcionario</h4>
+                    <h4 class="modal-title" id="tituloModalFuncionario" runat="server">Nuevo funcionario</h4>
                 </div>
                 <div class="modal-body">
                     <%-- campos a llenar --%>
