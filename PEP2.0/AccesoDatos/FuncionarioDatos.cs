@@ -31,7 +31,11 @@ namespace AccesoDatos
             SqlConnection sqlConnection = conexion.conexionPEP();
             List<Funcionario> funcionarios = new List<Funcionario>();
 
-            String consulta = @"select * from Funcionario order by nombre_funcionario;";
+            String consulta = @"select f.*, es.id_escala_salarial, es.desc_escala_salarial, 
+                es.salario_base_1 AS escala_salario_base_1, es.salario_base_2 AS escala_salario_base_2
+                FROM Funcionario f 
+                JOIN EscalaSalarial es ON f.id_escala_salarial = es.id_escala_salarial  
+                ORDER BY nombre_funcionario;";
 
             SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
 
@@ -46,6 +50,9 @@ namespace AccesoDatos
 
                 EscalaSalarial escalaSalarial = new EscalaSalarial();
                 escalaSalarial.idEscalaSalarial = Convert.ToInt32(reader["id_escala_salarial"].ToString());
+                escalaSalarial.descEscalaSalarial = reader["desc_escala_salarial"].ToString();
+                escalaSalarial.salarioBase1 = Convert.ToDouble(reader["escala_salario_base_1"].ToString());
+                escalaSalarial.salarioBase2 = Convert.ToDouble(reader["escala_salario_base_2"].ToString());
 
                 Funcionario funcionario = new Funcionario();
                 funcionario.planilla = planilla;
