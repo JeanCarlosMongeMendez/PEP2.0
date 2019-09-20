@@ -236,11 +236,19 @@ namespace Proyecto.Catalogos.Partidas
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevaPartida();", true);
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Todos los espacios son requeridos" + "');", true);
             }
-
-
-            
+        
         }
 
+        /// <summary>
+        /// Jesús Torres
+        /// 20/sept/2019
+        /// Efecto: Actualiza los DropDownList de partidas padre
+        /// Requiere: 
+        /// Modifica: el contenido de el DropDownList padre
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlPeriodoModal_SelectedIndexChanged(object sender, EventArgs e)
         {
             Session["listaPartidasPorPeriodo"] = partidaServicios.ObtenerPorPeriodo(Convert.ToInt32(ddlPeriodoModal.SelectedValue));
@@ -288,8 +296,8 @@ namespace Proyecto.Catalogos.Partidas
                 }
 
                 if (anoHabilitado != 0)
-                {
-                    ddl.Items.FindByValue(anoHabilitado.ToString()).Selected = true;
+                {  
+                    ddl.Items.FindByValue(ddlPeriodo.SelectedValue).Selected = true;
                 }
             }
         }
