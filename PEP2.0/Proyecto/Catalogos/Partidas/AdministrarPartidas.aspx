@@ -1,8 +1,9 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMaster.Master" AutoEventWireup="true" CodeBehind="AdministrarPartidas.aspx.cs" Inherits="Proyecto.Catalogos.Partidas.AdministrarPartidas" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMaster.Master" AutoEventWireup="true" CodeBehind="AdministrarPartidas.aspx.cs" Inherits="Proyecto.Catalogos.Partidas.AdministrarPartidas" MaintainScrollPositionOnPostback="true"%>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-
+     <asp:ScriptManager ID="ScriptManager1" runat="server" EnableCdn="true"></asp:ScriptManager>
+    <asp:UpdatePanel ID="UpdatePanel3" runat="server">
      <ContentTemplate>
             <div class="row">
                 <%-- titulo pantalla --%>
@@ -127,12 +128,107 @@
 
             </div>
         </ContentTemplate>
-    
+      </asp:UpdatePanel> 
 
+    <!-- Modal nueva partida -->
+    <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+        <ContentTemplate>
+            <div id="modalNuevaPartida" class="modal fade" role="alertdialog">
+                <div class="modal-dialog modal-lg">
 
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Nueva Partida</h4>
+                        </div>
+                        <div class="modal-body">
 
+                            <div class="row">
+                                <%-- campos a llenar --%>
 
- 
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <br />
+                                </div>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                    <div class="col-md-4 col-xs-4 col-sm-4">
+                                        <asp:Label ID="Label16" runat="server" Text="Periodo" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    </div>
+
+                                    <div class="col-md-4 col-xs-4 col-sm-4">
+                                        <asp:DropDownList ID="ddlPeriodoModal" class="btn btn-default dropdown-toggle" runat="server" OnSelectedIndexChanged="ddlPeriodoModal_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <br />
+                                </div>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                    <div class="col-md-4 col-xs-4 col-sm-4">
+                                        <asp:Label ID="Label1" runat="server" Text="Tipo o Padre" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    </div>
+
+                                    <div class="col-md-4 col-xs-4 col-sm-4">
+                                        <asp:DropDownList ID="ddlPartidasPadre" class="btn btn-default dropdown-toggle" runat="server" ></asp:DropDownList>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <br />
+                                </div>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                    <div class="col-md-4 col-xs-4 col-sm-4">
+                                        <asp:Label ID="Label3" runat="server" Text="Número de Partida" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    </div>
+
+                                    <div class="col-md-4 col-xs-4 col-sm-4">
+                                            <asp:TextBox class="form-control" ID="txtNumeroPartidas" runat="server"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                                
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <br />
+                                </div>
+
+                                 <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                    <div class="col-md-4 col-xs-4 col-sm-4">
+                                        <asp:Label ID="Label2" runat="server" Text="Descripción de Partida" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    </div>
+
+                                     <div class="col-md-4 col-xs-4 col-sm-4">
+                                         <asp:TextBox class="form-control" TextMode="multiline" Rows="5" ID="txtDescripcionPartida" runat="server"></asp:TextBox>
+                                     </div>
+                                </div>
+
+                                <%-- fin campos a llenar --%>
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="text-align: center">
+                            <asp:Button ID="btnNuevaPartidaModal" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="btnNuevaPartidaModal_Click"/>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+    <!-- Fin modal nueva partida -->
+
+     <!-- Script inicio -->
+    <script type="text/javascript">
+        function activarModalNuevaPartida() {
+            $('#modalNuevaPartida').modal('show');
+        };
+
+       
+    </script>
+    <!-- Script fin -->
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ScriptContent" runat="server">
