@@ -75,14 +75,11 @@ namespace Proyecto.Catalogos.Presupuesto
                 Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());
 
                 Session["listaPresupuestoEgresos"] = null;
-                LinkedList<Entidades.PresupuestoEgreso> presupuestoEgresos = new LinkedList<Entidades.PresupuestoEgreso>();
-                presupuestoEgresos = presupuestoServicios.ObtenerPresupuestoPorProyecto(0, 0);
-                Session["listaPresupuestoEgresos"] = presupuestoEgresos;
                 Session["ListaPresupuestoEgresoGuardar"] = null;
                 PeriodosDDL.Items.Clear();
                 ProyectosDDL.Items.Clear();
                 CargarPeriodos();
-                MostrarDatosTabla();
+                
 
             }
             else
@@ -728,24 +725,24 @@ namespace Proyecto.Catalogos.Presupuesto
 
         protected void Aprobar_Click(object sender, EventArgs e)
         {
-                  int idPresupuestoEgreso = Convert.ToInt32(Session["idPresupuestoEgreso"]);
-                    int idUnidad = Convert.ToInt32(Session["idUnidadElegida"]);
-                    
-                    Entidades.PresupuestoEgreso presupuestoValidar = new Entidades.PresupuestoEgreso();
+            LinkedList<Entidades.PresupuestoEgreso> presupuestosGuardar = (LinkedList<Entidades.PresupuestoEgreso>)Session["ListaPresupuestoEgresoGuardar"];
+            int respuesta = 0;
+            foreach (Entidades.PresupuestoEgreso presupuestoIngresar in presupuestosGuardar)
+            {
+               respuesta = this.presupuestoServicios.AprobarPresupuestoEgreso(presupuestoIngresar);
 
-                    
-                            int respuesta = this.presupuestoServicios.AprobarPresupuestoEgreso(presupuestoValidar);
+                if (respuesta == 1)
+                {
+                    Toastr("success", "Sus partidas han sido aprobadas");
 
-                            if (respuesta ==1)
-                            {
-                              Toastr("success", "Sus partidas han sido aprobadas");
-   
-                            }else {
-                            Toastr("warning", "No es posible realizar la aprobación debido a que no hay suficientes ingresos para el proyecto");
-                        }
-                    
-                
-            
+                }
+                else
+                {
+                    Toastr("warning", "No es posible realizar la aprobación debido a que no hay suficientes ingresos para el proyecto");
+                }
+
+
+            }
         }
 
 

@@ -559,7 +559,7 @@ namespace AccesoDatos
             double montoTotalPresupuestos = 0;
             SqlConnection sqlConnectionPresupuestoEgreso = conexion.conexionPEP();
           
-            SqlCommand sqlCommandPresupuestoEgreso = new SqlCommand("select monto FROM Presupuesto_Egreso,Unidad,Proyecto, Presupuesto_Ingreso where where Unidad.id_unidad=@id_unidad_ and Unidad.id_proyecto=Proyecto.id_proyecto and Proyecto.id_proyecto=Presupuesto_Ingreso.id_proyecto", sqlConnectionPresupuestoEgreso);
+            SqlCommand sqlCommandPresupuestoEgreso = new SqlCommand("select monto FROM Presupuesto_Egreso,Unidad,Proyecto, Presupuesto_Ingreso where  Unidad.id_unidad=@id_unidad_ and Unidad.id_proyecto=Proyecto.id_proyecto and Proyecto.id_proyecto=Presupuesto_Ingreso.id_proyecto", sqlConnectionPresupuestoEgreso);
 
             sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@id_unidad_", presupuesto.idUnidad);
             SqlDataReader readerPresupuestoEgreso;
