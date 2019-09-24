@@ -46,6 +46,7 @@
     <Compile Include="EscalaSalarialServicios.cs" />
     <Compile Include="FuncionarioServicios.cs" />
     <Compile Include="FuncionariosFundeviServicios.cs" />
+    <Compile Include="JornadaServicios.cs" />
     <Compile Include="PartidaServicios.cs" />
     <Compile Include="PeriodoServicios.cs" />
     <Compile Include="PlanillaFundeviServicios.cs" />

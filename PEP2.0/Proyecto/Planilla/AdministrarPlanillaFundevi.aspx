@@ -186,8 +186,7 @@
         function activarModalNuevaPlanilla() {
             $('#modalNuevaPlanilla').modal('show');
         };
-    </script>
-    <script type="text/javascript">
+
         function activarModalEliminarPlanilla() {
             $('#modalEliminarPlanilla').modal('show');
         };

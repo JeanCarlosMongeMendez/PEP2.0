@@ -31,5 +31,19 @@ namespace Servicios
             return funcionarioDatos.getFuncionarios();
         }
 
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 18/09/2019
+        /// Efecto : Guarda un funcionario
+        /// Requiere : Funcionario que se desea guardar
+        /// Modifica : Funcionarios
+        /// Devuelve : true si se insertó correctamente, false si falló
+        /// </summary>
+        /// <param name="funcionario"></param>
+        /// <returns></returns>
+        public bool guardar(Funcionario funcionario)
+        {
+            return funcionarioDatos.guardar(funcionario);
+        }
     }
 }

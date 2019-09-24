@@ -132,29 +132,23 @@ namespace Proyecto.Planilla
             {
                 total = salarioBase * sumaSalarioBase;
             }
-            //Double salarioBaseI = escalaSeleccionada.salarioBase1;
-            //Double escalafon = calcularMontoEscalafon();
-            //Double anualidad = calcularMontoAnualidad(montoEscalafon, porcentajeAnualidad);
-            //return (salarioBaseI + escalafon + anualidad);
-
             return total;
-
         }
 
         /// <summary>
         /// Leonardo Carrion
         /// 17/jul/2019
         /// Efecto: calcula el monto de escalafon
-        /// Requiere: total salario base, numero de escalafones
+        /// Requiere: salario base, numero de escalafones
         /// Modifica: -
         /// Devuelve: monto de escalafones
         /// </summary>
         /// <param name="numeroEscalafones"></param>
         /// <param name="totalSalarioBase"></param>
         /// <returns></returns>
-        private Double calcularMontoEscalafon(double totalSalarioBase, int numeroEscalafones)
+        private Double calcularMontoEscalafon(double SalarioBase, int numeroEscalafones)
         {
-            double montoEscalafon = (totalSalarioBase * numeroEscalafones) * (escalaSeleccionada.porentajeEscalafones / 100);
+            double montoEscalafon = (SalarioBase * numeroEscalafones) * (escalaSeleccionada.porentajeEscalafones / 100);
             return montoEscalafon;
         }
 
@@ -213,7 +207,7 @@ namespace Proyecto.Planilla
 
             List<Funcionario> listaFuncionarioFiltrada = (List<Funcionario>)listaFuncionarios.Where(funcionario => funcionario.nombreFuncionario.ToString().Contains(nombre)).ToList();
 
-            Session["listaPlanillasFiltrada"] = listaFuncionarioFiltrada;
+            Session["listaFuncionariosFiltrada"] = listaFuncionarioFiltrada;
 
             var dt = listaFuncionarioFiltrada;
             pgsource.DataSource = dt;
@@ -472,6 +466,23 @@ namespace Proyecto.Planilla
                     escalaSeleccionada = escalaSalarial;
                     txtSalarioBase1.Text = escalaSalarial.salarioBase1.ToString();
                     txtSalarioBase2.Text = escalaSalarial.salarioBase2.ToString();
+                    txtEscalafonesI.Text = "";
+                    txtEscalafonesII.Text = "";
+                    txtMontoAnualidadesI.Text = "";
+                    txtMontoAnualidadesII.Text = "";
+                    txtMontoEscalafonesI.Text = "";
+                    txtMontoEscalafonesII.Text = "";
+                    txtPorcentajeAnualidadesI.Text = "";
+                    txtPorcentajeAnualidadesII.Text = "";
+                    txtPromedioSemestres.Text = "";
+                    txtSalarioBase1.Text = "";
+                    txtSalarioBase2.Text = "";
+                    txtSalarioMensualEneroJunio.Text = "";
+                    txtSalarioMensualJunioDiciembre.Text = "";
+                    txtSalContratacionI.Text = "";
+                    txtSalContratacionII.Text = "";
+                    txtSumaTotalSalarioBase1.Text = "";
+                    txtSumaTotalSalarioBaseII.Text = "";
                 }
             }
 
@@ -491,23 +502,21 @@ namespace Proyecto.Planilla
         protected void btnCalcularEscalafones_Click(object sender, EventArgs e)
         {
             LinkButton btnEscalafones = (LinkButton)sender;
-            double sumaSalarioBase = 0;
+            double salarioBase = 0;
             int cantidadEscalafones = 0;
             if (btnEscalafones.ID.Equals("btnCalcularEscalafonesI"))
             {
-                Double.TryParse(txtSumaTotalSalarioBase1.Text, out sumaSalarioBase);
+                Double.TryParse(escalaSeleccionada.salarioBase1.ToString(), out salarioBase);
                 int.TryParse(txtEscalafonesI.Text, out cantidadEscalafones);
-                txtSumaTotalSalarioBase1.Text = sumaSalarioBase.ToString();
                 txtEscalafonesI.Text = cantidadEscalafones.ToString();
-                txtMontoEscalafonesI.Text = calcularMontoEscalafon(sumaSalarioBase, cantidadEscalafones).ToString();
+                txtMontoEscalafonesI.Text = calcularMontoEscalafon(salarioBase, cantidadEscalafones).ToString();
             }
             else if (btnEscalafones.ID.Equals("btnCalcularEscalafonesII"))
             {
-                Double.TryParse(txtSumaTotalSalarioBaseII.Text, out sumaSalarioBase);
+                Double.TryParse(escalaSeleccionada.salarioBase2.ToString(), out salarioBase);
                 int.TryParse(txtEscalafonesII.Text, out cantidadEscalafones);
-                txtSumaTotalSalarioBaseII.Text = sumaSalarioBase.ToString();
                 txtEscalafonesII.Text = cantidadEscalafones.ToString();
-                txtMontoEscalafonesII.Text = calcularMontoEscalafon(sumaSalarioBase, cantidadEscalafones).ToString();
+                txtMontoEscalafonesII.Text = calcularMontoEscalafon(salarioBase, cantidadEscalafones).ToString();
             }
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
@@ -597,61 +606,26 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnCalcularMontoAnualidades_Click(object sender, EventArgs e)
         {
-            //txtMontoEscalafonesI.Text = calcularMontoEscalafon().ToString();
-            //txtMontoAnualidadesI.Text = calcularMontoAnualidad().ToString();
-
-            //Double montoEscalafon = 0;
-            //try
-            //{
-            //    String montoTxt = txtMontoEscalafones.Text.Replace(".", ",");
-            //    Double monto = Convert.ToDouble(montoTxt);
-
-            //    montoEscalafon = monto;
-
-
-
-            //}
-            //catch
-            //{
-            //    txtMontoAnualidades.Text = "0";
-            //}
-
-            //Double porcentajeAnualidad = 0;
-            //try
-            //{
-            //    String montoTxt = txtPorcentajeAnualidades.Text.Replace(".", ",");
-            //    porcentajeAnualidad = Convert.ToDouble(montoTxt);
-            //}
-            //catch
-            //{
-            //    txtPorcentajeAnualidades.Text = "0";
-            //}
-            //txtMontoAnualidades.Text = calcularMontoAnualidad(montoEscalafon, porcentajeAnualidad).ToString();
-
-            //txtMontoEscalafones.Text = calcularMontoEscalafon().ToString();
-            
             LinkButton bntMontoAnualidades = (LinkButton)sender;
-            double sumaSalarioBase = 1.220;
+            double salarioBase = 0;
             double montoEscalafones = 0;
             double porcentajeAnualidad = 0;
 
             if (bntMontoAnualidades.ID.Equals("btnCalcularMontoAnualidadesI"))
             {
-                Double.TryParse(txtSumaTotalSalarioBase1.Text.Replace(".", ","), out sumaSalarioBase);
+                Double.TryParse(escalaSeleccionada.salarioBase1.ToString(), out salarioBase);
                 Double.TryParse(txtMontoEscalafonesI.Text.Replace(".", ","), out montoEscalafones);
                 Double.TryParse(txtPorcentajeAnualidadesI.Text.Replace(".", ","), out porcentajeAnualidad);
-                txtMontoAnualidadesI.Text = calcularMontoAnualidad(sumaSalarioBase, montoEscalafones, porcentajeAnualidad).ToString();
-                txtSumaTotalSalarioBase1.Text = sumaSalarioBase.ToString();
+                txtMontoAnualidadesI.Text = calcularMontoAnualidad(salarioBase, montoEscalafones, porcentajeAnualidad).ToString();
                 txtMontoEscalafonesI.Text = montoEscalafones.ToString();
                 txtPorcentajeAnualidadesI.Text = porcentajeAnualidad.ToString();
             }
             else if (bntMontoAnualidades.ID.Equals("btnCalcularMontoAnualidadesII"))
             {
-                Double.TryParse(txtSumaTotalSalarioBaseII.Text.Replace(".", ","), out sumaSalarioBase);
+                Double.TryParse(escalaSeleccionada.salarioBase2.ToString(), out salarioBase);
                 Double.TryParse(txtMontoEscalafonesII.Text.Replace(".", ","), out montoEscalafones);
                 Double.TryParse(txtPorcentajeAnualidadesII.Text.Replace(".", ","), out porcentajeAnualidad);
-                txtMontoAnualidadesII.Text = calcularMontoAnualidad(sumaSalarioBase, montoEscalafones, porcentajeAnualidad).ToString();
-                txtSumaTotalSalarioBaseII.Text = sumaSalarioBase.ToString();
+                txtMontoAnualidadesII.Text = calcularMontoAnualidad(salarioBase, montoEscalafones, porcentajeAnualidad).ToString();
                 txtMontoEscalafonesII.Text = montoEscalafones.ToString();
                 txtPorcentajeAnualidadesII.Text = porcentajeAnualidad.ToString();
             }
@@ -659,15 +633,23 @@ namespace Proyecto.Planilla
         }
 
         /// <summary>
-        /// 
+        /// Jean Carlos Monge Mendez
+        /// 11/09/2019
+        /// Efecto : Calcula el numero de escalafones para el segundo semestre
+        /// Requiere : Escalafones primer semestre, fecha de ingreso
+        /// Modifica : Campo de texto escalafonesII
+        /// Devuelve : 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void btnCalcularNumeroEscalafones2_Click(object sender, EventArgs e)
         {
-            int cantidadEscalafonesIsemestre = Convert.ToInt32(txtEscalafonesI.Text);
-            DateTime fechaIngreso = Convert.ToDateTime(txtFecha.Text);
-            DateTime fechaDivisionSemestres = Convert.ToDateTime("6/01/2020");
+            int cantidadEscalafonesIsemestre = 0;
+            DateTime fechaIngreso = DateTime.Now;
+
+            int.TryParse(txtEscalafonesI.Text, out cantidadEscalafonesIsemestre);
+            DateTime.TryParse(txtFecha.Text, out fechaIngreso);
+            DateTime fechaDivisionSemestres = Convert.ToDateTime("1/06/"+fechaIngreso.Year);
             if (cantidadEscalafonesIsemestre < escalaSeleccionada.topeEscalafones && DateTime.Compare(fechaDivisionSemestres, fechaIngreso) < 0)
             {
                 txtEscalafonesII.Text = (cantidadEscalafonesIsemestre + 1).ToString();
@@ -733,35 +715,113 @@ namespace Proyecto.Planilla
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
-        protected void btnGuardar_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 20/09/2019
+        /// Efecto : Muestra los datos del funcionario seleccionado
+        /// Requiere : Clickear el boton "Seleccionar"
+        /// Modifica : -
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnSelccionar_Click(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+            Funcionario funcionarioSeleccionado = null;
+            List<Funcionario> funcionarios = (List<Funcionario>)Session["listaFuncionariosFiltrada"];
+            foreach (Funcionario funcionario in funcionarios)
+            {
+                if (funcionario.idFuncionario == id)
+                {
+                    funcionarioSeleccionado = funcionario;
+                    break;
+                }
+            }
+            txtVerNombreCompleto.Text = funcionarioSeleccionado.nombreFuncionario;
+            txtVerEscalafonesI.Text = funcionarioSeleccionado.noEscalafones1.ToString();
+            txtVerEscalafonesII.Text = funcionarioSeleccionado.noEscalafones2.ToString();
+            txtVerEscalaSalarial.Text = funcionarioSeleccionado.escalaSalarial.descEscalaSalarial;
+            txtVerFecha.Text = funcionarioSeleccionado.fechaIngreso.ToString();
+            txtVerMontoAnualidadesI.Text = funcionarioSeleccionado.montoAnualidad1.ToString();
+            txtVerMontoAnualidadesII.Text = funcionarioSeleccionado.montoAnualidad2.ToString();
+            txtVerMontoEscalafonesI.Text = funcionarioSeleccionado.montoEscalafones1.ToString();
+            txtVerMontoEscalafonesII.Text = funcionarioSeleccionado.montoEscalafones2.ToString();
+            txtVerObservaciones.Text = funcionarioSeleccionado.observaciones;
+            txtVerPagoLey8114.Text = funcionarioSeleccionado.conceptoPagoLey.ToString();
+            txtVerPorcentajeAnualidadesI.Text = funcionarioSeleccionado.porcentajeAnualidad1.ToString();
+            txtVerPorcentajeAnualidadesII.Text = funcionarioSeleccionado.porcentajeAnualidad2.ToString();
+            txtVerPromedioSemestres.Text = funcionarioSeleccionado.salarioPromedio.ToString();
+            txtVerSalarioBaseI.Text = funcionarioSeleccionado.escalaSalarial.salarioBase1.ToString();
+            txtVerSalarioBase2.Text = funcionarioSeleccionado.escalaSalarial.salarioBase2.ToString();
+            txtVerSalarioMensualEneroJunio.Text = funcionarioSeleccionado.salarioEnero.ToString();
+            txtVerSalarioMensualJunioDiciembre.Text = funcionarioSeleccionado.salarioJunio.ToString();
+            txtVerSalarioPropuesto.Text = funcionarioSeleccionado.salarioPropuesto.ToString();
+            txtVerSalContratacionI.Text = funcionarioSeleccionado.salarioContratacion1.ToString();
+            txtVerSalContratacionII.Text = funcionarioSeleccionado.salarioContratacion2.ToString();
+            txtVerSumaSalarioBase1.Text = funcionarioSeleccionado.porcentajeSumaSalario.ToString();
+            txtVerSumaSalarioBase2.Text = funcionarioSeleccionado.porcentajeSumaSalario.ToString();
+            txtVerSumaTotalSalarioBase1.Text = funcionarioSeleccionado.salarioBase1.ToString();
+            txtVerSumaTotalSalarioBaseII.Text = funcionarioSeleccionado.salarioBase2.ToString();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalVerFuncionario();", true);
+        }
+
+        protected void btnEditar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnEliminar_Click(object sender, EventArgs e)
         {
 
         }
 
         /// <summary>
-        /// Daniel Solano
-        /// 06/Set/2019
-        /// Efecto: Cambia el  punto por coma en el valor decimal
-        /// Requiere: -
-        /// Modifica: campo de texto de suma salario
-        /// Devuelve: -
+        /// Jean Carlos Monge Mendez
+        /// 18/09/2019
+        /// Efecto : Guarda los datos de un funcionario
+        /// Requiere : campos validos, clickear el boton "Guardar"
+        /// Modifica : -
+        /// Devuelve : -
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void txtFormatoComas_TextChanged(object sender, EventArgs e)
+        protected void btnGuardar_Click(object sender, EventArgs e)
         {
+            Funcionario funcionario = new Funcionario();
+            funcionario.conceptoPagoLey = Convert.ToDouble(txtPagoLey8114.Text);
+            funcionario.escalaSalarial = escalaSeleccionada;
+            funcionario.fechaIngreso = Convert.ToDateTime(txtFecha.Text);
+            funcionario.montoAnualidad1 = Convert.ToDouble(txtMontoAnualidadesI.Text);
+            funcionario.montoAnualidad2 = Convert.ToDouble(txtMontoAnualidadesII.Text);
+            funcionario.montoEscalafones1 = Convert.ToDouble(txtMontoEscalafonesI.Text);
+            funcionario.montoEscalafones2 = Convert.ToDouble(txtMontoEscalafonesII.Text);
+            funcionario.noEscalafones1 = Convert.ToInt32(txtEscalafonesI.Text);
+            funcionario.noEscalafones2 = Convert.ToInt32(txtEscalafonesII.Text);
+            funcionario.nombreFuncionario = txtNombreCompleto.Text;
+            funcionario.observaciones = txtObservaciones.Text;
+            funcionario.planilla = (Entidades.Planilla)Session["planillaSeleccionada"];
+            funcionario.porcentajeAnualidad1 = Convert.ToDouble(txtPorcentajeAnualidadesI.Text);
+            funcionario.porcentajeAnualidad2 = Convert.ToDouble(txtPorcentajeAnualidadesII.Text);
+            funcionario.salarioBase1 = Convert.ToDouble(txtSumaTotalSalarioBase1.Text);
+            funcionario.salarioBase2 = Convert.ToDouble(txtSumaTotalSalarioBaseII.Text);
+            funcionario.salarioContratacion1 = Convert.ToDouble(txtSalContratacionI.Text);
+            funcionario.salarioContratacion2 = Convert.ToDouble(txtSalContratacionII.Text);
+            funcionario.salarioEnero = Convert.ToDouble(txtSalarioMensualEneroJunio.Text);
+            funcionario.salarioJunio = Convert.ToDouble(txtSalarioMensualJunioDiciembre.Text);
+            funcionario.salarioPromedio = Convert.ToDouble(txtPromedioSemestres.Text);
+            funcionario.porcentajeSumaSalario = Convert.ToDouble(txtSumaSalarioBase1.Text);
+            double salarioPropuesto = 0;
+            Double.TryParse(txtSalarioPropuesto.Text, out salarioPropuesto);
+            funcionario.salarioPropuesto = salarioPropuesto;
+            bool result = funcionarioServicios.guardar(funcionario);
 
-            LinkButton txtSumasalario = (LinkButton)sender;
-            //falta validar cual es el campo en que se va a hacer el cambio
-            if (!String.IsNullOrEmpty(txtSumaSalarioBase1.Text.Trim()))
+            if (result && IsPostBack)
             {
-                Double sumaSalarioBase = Convert.ToDouble(txtSumaSalarioBase1.Text.Replace(".", ","));
-                txtSalarioBase1.Text = Convert.ToString(sumaSalarioBase);
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
-            }
-            else
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
+                List<Funcionario>listaFuncionarioFiltrada = (List<Funcionario>)Session["listaFuncionariosFiltrada"];
+                listaFuncionarioFiltrada.Add(funcionario);
+                rpFuncionarios.DataSource = listaFuncionarioFiltrada;
+                rpFuncionarios.DataBind();
             }
         }
         #endregion
