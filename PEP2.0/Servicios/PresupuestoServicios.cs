@@ -60,15 +60,23 @@ namespace Servicios
             return presupuestoDatos.ObtenerPorUnidadEgresos(idUnidad);
         }
 
+        /// <summary>
+        /// Josseline M
+        /// Almacena un nuevo presupuesto de egreso
+        /// </summary>
+        /// <param name="presupuestoEgreso"></param>
+        /// <returns></returns>
         public int InsertarPresupuestoEgreso(PresupuestoEgreso presupuestoEgreso)
         {
             return this.presupuestoDatos.InsertarPresupuestoEgreso(presupuestoEgreso);
         }
 
-        public int AprobarPresupuestoEgreso(int idPresupuestoEgreso)
+
+        public int AprobarPresupuestoEgreso(PresupuestoEgreso presupuesto)
         {
-            return this.presupuestoDatos.AprobarPresupuestoEgreso(idPresupuestoEgreso);
+            return presupuestoDatos.AprobarPresupuestoEgresoPorMonto(presupuesto);
         }
+        
         /// <summary>
         /// Josseline M
         /// Este metodo retorna una  lista de presupuestos egresos de acuerdo al proyecto perteneciente
@@ -80,6 +88,11 @@ namespace Servicios
             return this.presupuestoDatos.ObtenerPresupuestoPorProyecto(idUnidad, idProyecto);
         }
 
+        /// <summary>
+        /// Retorna un listado con los detalles de egresos partidas a partir de un presupesto
+        /// </summary>
+        /// <param name="presupuestoEgresoPartidaF"></param>
+        /// <returns></returns>
         public LinkedList<PresupuestoEgresoPartida> presupuestoEgresoPartidasPorPresupuesto(PresupuestoEgresoPartida presupuestoEgresoPartidaF)
         {
             return presupuestoDatos.presupuestoEgresoPartidasPorPresupuesto(presupuestoEgresoPartidaF);
@@ -94,6 +107,9 @@ namespace Servicios
         {
             presupuestoDatos.InsertarPresupuestoEgresoPartida(presupuestoEgresoP);
         }
+        
+        
+        
         #endregion
     }
 }

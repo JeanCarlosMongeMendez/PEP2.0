@@ -13,6 +13,7 @@ namespace AccesoDatos
     /// 22/may/2019
     /// Clase para administrar el CRUD para los presupuestos
     /// </summary>
+
     public class PresupuestoDatos
     {
         private ConexionDatos conexion = new ConexionDatos();
@@ -279,7 +280,12 @@ namespace AccesoDatos
 
             return presupuestoEgresosPartidaL;
         }
-
+       /*
+        /// <summary>
+        /// Verifica si el monto total de las partidas de egresos es menor a la asignada al presupuesto
+        /// </summary>
+        /// <param name="idPresupuestoEgreso"></param>
+        /// <returns></returns>
         public int AprobarPresupuestoEgreso(int idPresupuestoEgreso)
         {
             SqlConnection sqlConnection = conexion.conexionPEP();
@@ -302,7 +308,8 @@ namespace AccesoDatos
             sqlConnection.Close();
 
             return respuesta;
-        }
+        }*/
+
        
         /// <summary>
         /// Josseline M 
@@ -426,9 +433,11 @@ namespace AccesoDatos
                 PresupuestoEgreso presupuestoEgreso = new PresupuestoEgreso();
 
                 presupuestoEgreso.idPresupuestoEgreso = Convert.ToInt32(readerPresupuestoEgreso["id_presupuesto_egreso"].ToString());
+                double monto = ObtenerMontoPartida(presupuestoEgreso.idPresupuestoEgreso);
+                ActualizarMontoTotalPresupuesto(presupuestoEgreso.idPresupuestoEgreso, monto);
                 presupuestoEgreso.idUnidad = Convert.ToInt32(readerPresupuestoEgreso["id_unidad"].ToString());
                 presupuestoEgreso.planEstrategicoOperacional = readerPresupuestoEgreso["plan_estrategico_operacional"].ToString();
-                ObtenerMontoPartida(presupuestoEgreso.idPresupuestoEgreso);
+              
                 presupuestoEgreso.montoTotal = Convert.ToDouble(readerPresupuestoEgreso["montoTotal"].ToString());
                 presupuestoEgreso.descripcion = ObtenerDescripcionesPartida(presupuestoEgreso.idPresupuestoEgreso);
 
@@ -490,7 +499,7 @@ namespace AccesoDatos
         /// <summary>
         /// Este metodo suma los montos existentes para esa partida
         /// </summary>
-        private void ObtenerMontoPartida(int idPresupuestoE)
+        private double ObtenerMontoPartida(int idPresupuestoE)
         {
             double monto = 0;
             SqlConnection sqlConnectionPresupuestoEgreso = conexion.conexionPEP();
@@ -511,9 +520,11 @@ namespace AccesoDatos
 
        
             sqlConnectionPresupuestoEgreso.Close();
-
-            ActualizarMontoTotalPresupuesto(idPresupuestoE,monto);
+            return monto;
+           
         }
+       
+        
         /// <summary>
         /// Josseline M
         /// Actualiza el monto total de presupuesto egreso a partir de idPresupuestoEgreso
@@ -524,8 +535,9 @@ namespace AccesoDatos
         {
             SqlConnection sqlConnectionPresupuestoEgreso = conexion.conexionPEP();
             SqlCommand sqlCommandPresupuestoEgreso = new SqlCommand("Update Presupuesto_Egreso set montoTotal= @monto where id_presupuesto_egreso = @id_presupuesto_egreso", sqlConnectionPresupuestoEgreso);
-            sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@monto", monto);
             sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@id_presupuesto_egreso", idPresupuestoE);
+            sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@monto", monto);
+      
   
             sqlConnectionPresupuestoEgreso.Open();
             sqlCommandPresupuestoEgreso.ExecuteScalar();
@@ -534,6 +546,47 @@ namespace AccesoDatos
             sqlConnectionPresupuestoEgreso.Close();
         }
        
+        /// <summary>
+        /// Este metodo retorna 1 de ser inferior el monto total del presupuesto egresos en compración al 
+        /// diponible
+        /// </summary>
+        /// <param name="presupuesto"></param>
+        /// <returns></returns>
+        public int AprobarPresupuestoEgresoPorMonto(PresupuestoEgreso presupuesto)
+        {
+            int esMenor = 0;
+            double montoDisponible = 0;
+            double montoTotalPresupuestos = 0;
+            SqlConnection sqlConnectionPresupuestoEgreso = conexion.conexionPEP();
+            SqlConnection sqlConnectionPresupuestoEgresoPartida = conexion.conexionPEP();
+
+            SqlCommand sqlCommandPresupuestoEgreso = new SqlCommand("select monto FROM Presupuesto_Egreso,Unidad,Proyecto, Presupuesto_Ingreso where where Unidad.id_unidad=@id_unidad_ and Unidad.id_proyecto=Proyecto.id_proyecto and Proyecto.id_proyecto=Presupuesto_Ingreso.id_proyecto", sqlConnectionPresupuestoEgreso);
+
+            sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@id_unidad_", presupuesto.idUnidad);
+            SqlDataReader readerPresupuestoEgreso;
+            sqlConnectionPresupuestoEgreso.Open();
+            readerPresupuestoEgreso = sqlCommandPresupuestoEgreso.ExecuteReader();
+
+
+            while (readerPresupuestoEgreso.Read())
+            {
+
+                montoDisponible = Convert.ToDouble(readerPresupuestoEgreso["monto"].ToString());
+
+            }
+
+            montoTotalPresupuestos = ObtenerMontoPartida(presupuesto.idPresupuestoEgreso);
+
+            if (montoTotalPresupuestos<=montoDisponible)
+            {
+                esMenor = 1;
+            }
+
+            sqlConnectionPresupuestoEgreso.Close();
+
+            return esMenor;
+        }
+
         #endregion PRESUPUESTO DE EGRESO
     }
 }
