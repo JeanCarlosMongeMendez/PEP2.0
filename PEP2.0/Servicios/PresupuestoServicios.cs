@@ -70,8 +70,7 @@ namespace Servicios
         {
             return this.presupuestoDatos.InsertarPresupuestoEgreso(presupuestoEgreso);
         }
-
-
+        
         public int AprobarPresupuestoEgreso(PresupuestoEgreso presupuesto)
         {
             return presupuestoDatos.AprobarPresupuestoEgresoPorMonto(presupuesto);
@@ -107,9 +106,17 @@ namespace Servicios
         {
             presupuestoDatos.InsertarPresupuestoEgresoPartida(presupuestoEgresoP);
         }
-        
-        
-        
-        #endregion
-    }
+
+        /// <summary>
+        /// Guarda el avance obtenido en el añadimiento de partidas
+        /// </summary>
+        /// <param name="presupuestoE"></param>
+        public void guardarPartidasPresupuestoEgreso(LinkedList<PresupuestoEgreso> presupuestosE)
+        {
+            this.presupuestoDatos.guardarPartidasPresupuestoEgreso(presupuestosE);
+        }
+
+
+            #endregion
+        }
 }

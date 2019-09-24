@@ -558,8 +558,7 @@ namespace AccesoDatos
             double montoDisponible = 0;
             double montoTotalPresupuestos = 0;
             SqlConnection sqlConnectionPresupuestoEgreso = conexion.conexionPEP();
-            SqlConnection sqlConnectionPresupuestoEgresoPartida = conexion.conexionPEP();
-
+          
             SqlCommand sqlCommandPresupuestoEgreso = new SqlCommand("select monto FROM Presupuesto_Egreso,Unidad,Proyecto, Presupuesto_Ingreso where where Unidad.id_unidad=@id_unidad_ and Unidad.id_proyecto=Proyecto.id_proyecto and Proyecto.id_proyecto=Presupuesto_Ingreso.id_proyecto", sqlConnectionPresupuestoEgreso);
 
             sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@id_unidad_", presupuesto.idUnidad);
@@ -579,6 +578,8 @@ namespace AccesoDatos
 
             if (montoTotalPresupuestos<=montoDisponible)
             {
+                actualizaEstadoPresupuestoEgreso(presupuesto.idPresupuestoEgreso,1);
+              
                 esMenor = 1;
             }
 
@@ -587,6 +588,39 @@ namespace AccesoDatos
             return esMenor;
         }
 
+        /// <summary>
+        /// Josseline M
+        /// Este método actualiza el estado del presupuesto egreso es decir se la asigna 1 si este ha sido aprobado
+        /// o 2 si ha sido guardado pero no aprobado
+        /// </summary>
+        /// <param name="idPresupuestoEgreso"></param>
+        /// <param name="valorEstado"></param>
+        private void actualizaEstadoPresupuestoEgreso(int idPresupuestoEgreso,int valorEstado)
+        {
+            SqlConnection sqlConnectionPresupuestoEgreso = conexion.conexionPEP();
+            SqlCommand sqlCommandPresupuestoEgreso = new SqlCommand("UPDATE Presupuesto_Egreso  SET id_estado = @id_estado_ where id_presupuesto_egreso=@id_presupuesto_egreso_", sqlConnectionPresupuestoEgreso);
+            sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@id_presupuesto_egreso_", idPresupuestoEgreso);
+            sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@id_estado_", valorEstado);
+            sqlConnectionPresupuestoEgreso.Open();
+            sqlCommandPresupuestoEgreso.ExecuteScalar();
+            sqlConnectionPresupuestoEgreso.Close();
+
+
+        }
+
+        /// <summary>
+        /// Guarda el avance obtenido en el añadimiento de partidas
+        /// </summary>
+        /// <param name="presupuestoE"></param>
+        public void guardarPartidasPresupuestoEgreso(LinkedList<PresupuestoEgreso> presupuestosE)
+        {
+            foreach (PresupuestoEgreso presupuestoIngresar in presupuestosE)
+            {
+                actualizaEstadoPresupuestoEgreso(presupuestoIngresar.idPresupuestoEgreso, 2);
+            }
+           
+        }
+       
         #endregion PRESUPUESTO DE EGRESO
     }
 }

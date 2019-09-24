@@ -73,12 +73,12 @@ namespace Proyecto.Catalogos.Presupuesto
             if (!IsPostBack)
             {
                 Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());
-                Session["idUnidadElegida"] = null;
+
                 Session["listaPresupuestoEgresos"] = null;
                 LinkedList<Entidades.PresupuestoEgreso> presupuestoEgresos = new LinkedList<Entidades.PresupuestoEgreso>();
                 presupuestoEgresos = presupuestoServicios.ObtenerPresupuestoPorProyecto(0, 0);
                 Session["listaPresupuestoEgresos"] = presupuestoEgresos;
-                Session["idPresupuestoEgreso"] = 0;
+                Session["ListaPresupuestoEgresoGuardar"] = null;
                 PeriodosDDL.Items.Clear();
                 ProyectosDDL.Items.Clear();
                 CargarPeriodos();
@@ -87,6 +87,7 @@ namespace Proyecto.Catalogos.Presupuesto
             }
             else
             {
+                Session["ListaPresupuestoEgresoGuardar"] = null;
                 MostrarDatosTabla();
             }
         }
@@ -349,7 +350,7 @@ namespace Proyecto.Catalogos.Presupuesto
             {
                 LinkedList<Entidades.PresupuestoEgreso> listaPresupuestosEgresos = presupuestoServicios.ObtenerPresupuestoPorProyecto(Convert.ToInt32(UnidadesDDL.SelectedValue), Convert.ToInt32(ProyectosDDL.SelectedValue));
                 Session["idUnidadElegida"]= Convert.ToInt32(UnidadesDDL.SelectedValue) ;
-
+                Session["ListaPresupuestoEgresoGuardar"] = listaPresupuestosEgresos;
                 var dt = listaPresupuestosEgresos;
                 pgsource.DataSource = dt;
                 pgsource.AllowPaging = true;
@@ -550,6 +551,7 @@ namespace Proyecto.Catalogos.Presupuesto
             CargarUnidades();
             MostrarDatosTabla();
         }
+
         /// <summary>
         /// Leonardo Carrion
         /// 10/abr/2019
@@ -647,6 +649,7 @@ namespace Proyecto.Catalogos.Presupuesto
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalIngresarPartida();", true);
 
         }
+       
         /// <summary>
         /// Josseline M
         /// este metodo insertar un nuevo registro de una partida apartir de la unidad y partidac
@@ -716,74 +719,32 @@ namespace Proyecto.Catalogos.Presupuesto
 
         protected void Guardar_Click(object sender, EventArgs e)
         {
-            if (UnidadesDDL.Items.Count > 0)
-            {
-                Session["idPresupuestoEgreso"] = 0;
-
-                Entidades.PresupuestoEgreso presupuestoEgreso = new Entidades.PresupuestoEgreso();
-                presupuestoEgreso.idUnidad = Convert.ToInt32(UnidadesDDL.SelectedValue);
-                presupuestoEgreso.planEstrategicoOperacional = txtPAO.Text;
-                LinkedList<PresupuestoEgresoPartida> presupuestoEgresoPartidas = new LinkedList<PresupuestoEgresoPartida>();
-                double monto = 0;
-
-                foreach (RepeaterItem item in rpPartida.Items)
-                {
-
-                    PresupuestoEgresoPartida presupuestoEgresoPartida = new PresupuestoEgresoPartida();
-
-                    TextBox tbMonto = (TextBox)item.FindControl("TbMonto");
-                    TextBox tbDescripcion = (TextBox)item.FindControl("TbDescripcion");
-
-                    TextBox IdPartida = (TextBox)item.FindControl("idPresupuestoEgreso");
-                    int idPartida = Convert.ToInt32(IdPartida.ToString());
-
-                    monto += Convert.ToDouble(tbMonto.Text);
-
-                    presupuestoEgresoPartida.idPartida = idPartida;
-                    presupuestoEgresoPartida.monto = Convert.ToDouble(tbMonto.Text);
-                    presupuestoEgresoPartida.descripcion = tbDescripcion.Text;
-
-                    presupuestoEgresoPartidas.AddLast(presupuestoEgresoPartida);
-                }
-
-                presupuestoEgreso.montoTotal = monto;
-                presupuestoEgreso.presupuestoEgresoPartidas = presupuestoEgresoPartidas;
-
-                int idPresupuestoEgreso = this.presupuestoServicios.InsertarPresupuestoEgreso(presupuestoEgreso);
-                Session["idPresupuestoEgreso"] = idPresupuestoEgreso;
-
-                LlenarTabla();
-            }
+          
+            LinkedList<Entidades.PresupuestoEgreso> presupuestosGuardar= (LinkedList<Entidades.PresupuestoEgreso> ) Session["ListaPresupuestoEgresoGuardar"];
+            presupuestoServicios.guardarPartidasPresupuestoEgreso(presupuestosGuardar);
+            Toastr("success", "Se han almacenado su progreso en las partidas");
+            
         }
 
         protected void Aprobar_Click(object sender, EventArgs e)
         {
-           
-           
-
-                if (Session["idPresupuestoEgreso"] != null)
-                {
-                    int idPresupuestoEgreso = Convert.ToInt32(Session["idPresupuestoEgreso"]);
+                  int idPresupuestoEgreso = Convert.ToInt32(Session["idPresupuestoEgreso"]);
                     int idUnidad = Convert.ToInt32(Session["idUnidadElegida"]);
                     
                     Entidades.PresupuestoEgreso presupuestoValidar = new Entidades.PresupuestoEgreso();
 
-                    if (idPresupuestoEgreso > 0)
-                    {
-                        presupuestoValidar.idPresupuestoEgreso = idPresupuestoEgreso;
-                        presupuestoValidar.idUnidad = idUnidad;
-
+                    
                             int respuesta = this.presupuestoServicios.AprobarPresupuestoEgreso(presupuestoValidar);
 
                             if (respuesta ==1)
                             {
-                              Toastr("confirm", "Sus partidas han sido aprobadas");
+                              Toastr("success", "Sus partidas han sido aprobadas");
    
                             }else {
                             Toastr("warning", "No es posible realizar la aprobación debido a que no hay suficientes ingresos para el proyecto");
                         }
-                    }
-                }
+                    
+                
             
         }
 
