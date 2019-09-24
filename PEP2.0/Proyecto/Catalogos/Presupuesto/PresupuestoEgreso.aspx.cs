@@ -673,6 +673,7 @@ namespace Proyecto.Catalogos.Presupuesto
                     presupuestoEgresoPartida.descripcion = txtdescripcionNuevaPartida.Text;
                     presupuestoServicios.InsertarPresupuestoEgresoPartida(presupuestoEgresoPartida);
                     MostrarDatosTabla();
+                    Response.Redirect("PresupuestoEgreso.aspx");
                 }
             }
             else
@@ -723,6 +724,12 @@ namespace Proyecto.Catalogos.Presupuesto
             
         }
 
+        /// <summary>
+        /// Este metodo envia la lista de partidas de egresos para ser validadas esto con su debido presupuesto iniciar
+        /// Hace un llamado a un metodo el cual al tener 1 indica que se ha aprobado y 0 que no posee recursos economicos suficientes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void Aprobar_Click(object sender, EventArgs e)
         {
             LinkedList<Entidades.PresupuestoEgreso> presupuestosGuardar = (LinkedList<Entidades.PresupuestoEgreso>)Session["ListaPresupuestoEgresoGuardar"];
