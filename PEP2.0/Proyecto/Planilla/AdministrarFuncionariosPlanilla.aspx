@@ -141,7 +141,7 @@
         <ContentTemplate>--%>
     <div id="modalNuevoFuncionario" class="modal fade" role="alertdialog">
         <div class="modal-dialog modal-lg" style="min-width: 95%; margin: 2%">
-
+            <asp:HiddenField  ID="hdIdFuncionario" Value='<%# Eval("idFuncionario") %>' runat="server"/>
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #005da4; color: white">
