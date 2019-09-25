@@ -251,5 +251,45 @@ namespace AccesoDatos
             }
             return result;
         }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 25/09/2019
+        /// Efecto : Elimina un funcionario en la base de datos
+        /// Requiere : Funcionario que se desea eliminar en la base de datos
+        /// Modifica : Base de datos, tabla Funcionario
+        /// Devuelve : true si se eliminó correctamente, false si falló
+        /// </summary>
+        /// <param name="funcionario"></param>
+        /// <returns></returns>
+        public bool eliminar(Funcionario funcionario)
+        {
+            bool result = false;
+            SqlConnection sqlConnection = new SqlConnection();
+            SqlCommand sqlCommandEliminar = new SqlCommand();
+            SqlTransaction sqlTransaction = null;
+            try
+            {
+                sqlConnection = conexion.conexionPEP();
+                sqlCommandEliminar = new SqlCommand("DELETE Funcionario WHERE id_funionario = @id", sqlConnection);
+                sqlCommandEliminar.Parameters.AddWithValue("@id", funcionario.idFuncionario);
+                sqlConnection.Open();
+                sqlTransaction = sqlConnection.BeginTransaction();
+                sqlCommandEliminar.Transaction = sqlTransaction;
+                sqlCommandEliminar.ExecuteNonQuery();
+                sqlTransaction.Commit();
+                result = true;
+            }
+            catch
+            {
+                sqlTransaction.Rollback();
+                throw;
+            }
+            finally
+            {
+                sqlConnection.Close();
+            }
+            return result;
+        }
     }
 }

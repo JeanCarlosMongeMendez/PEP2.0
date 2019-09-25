@@ -141,7 +141,7 @@
         <ContentTemplate>--%>
     <div id="modalNuevoFuncionario" class="modal fade" role="alertdialog">
         <div class="modal-dialog modal-lg" style="min-width: 95%; margin: 2%">
-            <asp:HiddenField  ID="hdIdFuncionario" Value='<%# Eval("idFuncionario") %>' runat="server"/>
+            <asp:HiddenField  ID="hdIdFuncionario" runat="server"/>
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #005da4; color: white">
@@ -700,12 +700,12 @@
     <!-- Modal Ver funcionario -->
     <div id="modalVerFuncionario" class="modal fade" role="alertdialog">
         <div class="modal-dialog modal-lg" style="min-width: 95%; margin: 2%">
-
+            <asp:HiddenField ID="hdIdEliminarFuncionario" runat="server"/>
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #005da4; color: white">
                     <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
-                    <h4 class="modal-title" id="H1" runat="server">Ver funcionario</h4>
+                    <h4 class="modal-title" id="tituloVerFuncionario" runat="server">Ver funcionario</h4>
                 </div>
                 <div class="modal-body">
                     <%-- campos a llenar --%>
@@ -1216,6 +1216,7 @@
                     <%-- Fin campos a llenar --%>
                 </div>
                 <div class="modal-footer" style="text-align: center">
+                    <asp:Button ID="btnConfirmarEliminar" runat="server" Text="Eliminar" CssClass="btn btn-primary" OnClick="btnConfirmarEliminar_Click" />
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
