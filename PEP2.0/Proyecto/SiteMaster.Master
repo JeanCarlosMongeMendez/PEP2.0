@@ -110,6 +110,7 @@
                                             <%--<li><a href='<%=Page.ResolveUrl("~/Default.aspx") %>'>Default</a></li>--%>
                                             <li><a href='<%=Page.ResolveUrl("~/Mantenimiento/EscalasSalariales/AdministrarEscalas.aspx") %>'>Escalas salariales</a></li>
                                             <li><a href='<%=Page.ResolveUrl("~/Catalogos/Jornadas/AdministrarJornadas.aspx") %>'>Jornadas</a></li>
+                                            <li><a href='<%=Page.ResolveUrl("~/Catalogos/CargasSociales/AdministrarCargasSociales.aspx") %>'>Cargas sociales</a></li>                                            
                                         </ul>
                                     </li>
                                     <li class="dropdown">

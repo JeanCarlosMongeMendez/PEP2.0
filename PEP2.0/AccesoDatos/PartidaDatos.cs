@@ -313,5 +313,59 @@ namespace AccesoDatos
 
             sqlConnection.Close();
         }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 25/sep/2019
+        /// Efecto: devuelve la partida que cumple con los datos ingresados de numero de partida y periodo
+        /// Requiere: partida y periodo
+        /// Modifica: -
+        /// Devuelve: partida
+        /// </summary>
+        /// <param name="partida"></param>
+        /// <param name="periodo"></param>
+        /// <returns></returns>
+        public Partida getPartidaPorNumeroYPeriodo(Partida partida, Periodo periodo)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+            Partida partidaBD = new Partida();
+
+            String consulta = @"select * from Partida
+                                            where numero_partida = @numeroPartida and ano_periodo = @anoPeriodo";
+
+            SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
+
+            sqlCommand.Parameters.AddWithValue("@numeroPartida", partida.numeroPartida);
+            sqlCommand.Parameters.AddWithValue("@anoPeriodo", periodo.anoPeriodo);
+
+            SqlDataReader reader;
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                partidaBD.idPartida = Convert.ToInt32(reader["id_partida"].ToString());
+                partidaBD.numeroPartida = reader["numero_partida"].ToString();
+                partidaBD.descripcionPartida = reader["descripcion_partida"].ToString();
+
+                //Si la partida padre contiene un valor se le agrega, sino se deja como nulo
+                if (!DBNull.Value.Equals(reader["id_partida_padre"]))
+                {
+                    partidaBD.partidaPadre = new Partida();
+                    partidaBD.partidaPadre.idPartida = Convert.ToInt32(reader["id_partida_padre"].ToString());
+                }
+                else
+                {
+                    partidaBD.partidaPadre = null;
+                }
+
+                partidaBD.periodo = new Periodo();
+                partidaBD.periodo.anoPeriodo = Convert.ToInt32(reader["ano_periodo"].ToString());
+            }
+
+            sqlConnection.Close();
+
+            return partidaBD;
+        }
     }
 }

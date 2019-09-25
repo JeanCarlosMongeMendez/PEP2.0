@@ -15,7 +15,6 @@ namespace Proyecto.Planilla
     public partial class AdministrarProyeccion : System.Web.UI.Page
     {
         #region variables globales
-        JornadaServicios jornadaServicios = new JornadaServicios();
         #endregion
 
         #region paginacion
@@ -48,28 +47,11 @@ namespace Proyecto.Planilla
             Utilidades.escogerMenu(Page, rolesPermitidos);
             if (!IsPostBack)
             {
-                Session["listaJornadas"] = null;
-                Session["listaJornadasFiltrada"] = null;
-
-                List<Jornada> listaJornadas = jornadaServicios.getJornadasActivas();
-
-                Session["listaJornadas"] = listaJornadas;
-                Session["listaJornadasFiltrada"] = listaJornadas;
-
-                mostrarDatosTabla();
             }
         }
         #endregion
 
         #region logica
-        /// <summary>
-        /// Leonardo Carrion
-        /// 18/sep/2019
-        /// Efecto: carga los datos filtrados en la tabla y realiza la paginacion correspondiente
-        /// Requiere: -
-        /// Modifica: los datos mostrados en pantalla
-        /// Devuelve: -
-        /// </summary>
         public void mostrarDatosTabla()
         {
             List<Jornada> listaJornadas = (List<Jornada>)Session["listaJornadas"];
