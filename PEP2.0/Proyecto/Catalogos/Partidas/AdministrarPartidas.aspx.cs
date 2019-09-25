@@ -7,7 +7,7 @@ using System.Linq;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Drawing;
-
+using System.Web.UI;
 
 namespace Proyecto.Catalogos.Partidas
 {
@@ -16,7 +16,7 @@ namespace Proyecto.Catalogos.Partidas
 
         #region variables globales
         PeriodoServicios periodoServicios = new PeriodoServicios();
-        PartidaServicios partidaservicios = new PartidaServicios();
+        PartidaServicios partidaServicios = new PartidaServicios();
         readonly PagedDataSource pgsource = new PagedDataSource();
         #endregion
 
@@ -25,7 +25,7 @@ namespace Proyecto.Catalogos.Partidas
         {
             //controla los menus q se muestran y las pantallas que se muestras segun el rol que tiene el usuario
             //si no tiene permiso de ver la pagina se redirecciona a login
-            int[] rolesPermitidos = { 2, 9, 17 };
+            int[] rolesPermitidos = { 2 };
             Utilidades.escogerMenu(Page, rolesPermitidos);
             if (!IsPostBack)
             {
@@ -38,13 +38,13 @@ namespace Proyecto.Catalogos.Partidas
                 Session["listaPartidaAgregadas"] = null;
                 Session["listaPartidaAgregadasFiltrada"] = null;
 
-                llenarDdlPeriodos();
+                llenarDdlPeriodos(ddlPeriodo);
 
                 Periodo periodo = new Periodo();
                 periodo.anoPeriodo = Convert.ToInt32(ddlPeriodo.SelectedValue);
 
 
-                LinkedList<Partida> listaPartidas = partidaservicios.ObtenerPorPeriodo(Int32.Parse(ddlPeriodo.SelectedValue));
+                LinkedList<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(Int32.Parse(ddlPeriodo.SelectedValue));
 
                 Session["listaPartidas"] = listaPartidas;
                 Session["listaPartidasFiltrada"] = listaPartidas;
@@ -71,7 +71,7 @@ namespace Proyecto.Catalogos.Partidas
             Periodo periodo = new Periodo();
             periodo.anoPeriodo = Convert.ToInt32(ddlPeriodo.SelectedValue);
 
-            LinkedList<Partida> listaPartidas = partidaservicios.ObtenerPorPeriodo(periodo.anoPeriodo);
+            LinkedList<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(periodo.anoPeriodo);
 
             Session["listaPartidas"] = listaPartidas;
             Session["listaPartidasFiltrada"] = listaPartidas;
@@ -83,10 +83,28 @@ namespace Proyecto.Catalogos.Partidas
         {
 
         }
-
+        /// <summary>
+        /// Jesús Torres
+        /// 20/sept/2019
+        /// Efecto: permite mostrar el modal de ingreso de partidas
+        /// Requiere: dar clic en el boton de nueva partida para mostrar modal
+        /// Modifica: limpia los text que se encuantrar en este modal, carga los DropDownList de periodo y partidas padre
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnNuevaPartida_Click(object sender, EventArgs e)
         {
+            txtNumeroPartidas.Text = "";
+            txtNumeroPartidas.CssClass = "form-control";
+            txtDescripcionPartida.Text = "";
+            txtDescripcionPartida.CssClass = "form-control";
+            llenarDdlPeriodos(ddlPeriodoModal);
 
+            Session["listaPartidasPorPeriodo"] = partidaServicios.ObtenerPorPeriodo(Convert.ToInt32(ddlPeriodoModal.SelectedValue));
+
+            llenarPartidasPadreDDL(ddlPartidasPadre);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevaPartida();", true);
         }
         /// <summary>
         /// Jesús Torres
@@ -129,6 +147,116 @@ namespace Proyecto.Catalogos.Partidas
 
         }
 
+        /// <summary>
+        /// Jesús Torres
+        /// 19/sept/2019
+        /// Efecto: se devuelve a la primera pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Primer pagina"
+        /// Modifica: elementos mostrados en la tabla de contactos
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbPrimero_Click(object sender, EventArgs e)
+        {
+            paginaActual = 0;
+            mostrarDatosTabla();
+        }
+
+        /// <summary>
+        /// Jesús Torres
+        /// 19/sept/2019
+        /// Efecto: se devuelve a la ultima pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Ultima pagina"
+        /// Modifica: elementos mostrados en la tabla de contactos
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbUltimo_Click(object sender, EventArgs e)
+        {
+            paginaActual = (Convert.ToInt32(ViewState["TotalPaginas"]) - 1);
+            mostrarDatosTabla();
+        }
+
+        /// <summary>
+        /// Jesús Torres
+        /// 20/sept/2019
+        /// Efecto: inserta en BD, una nueva partida
+        /// Requiere: dar clic al boton de Guardar
+        /// Modifica: 
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnNuevaPartidaModal_Click(object sender, EventArgs e)
+        {
+            //se validan los campos antes de guardar los datos en la base de datos
+            if (validarCampos())
+            {
+                Partida partida = new Partida();
+                partida.numeroPartida = txtNumeroPartidas.Text;
+                partida.descripcionPartida = txtDescripcionPartida.Text;
+                partida.periodo = new Periodo();
+                partida.periodo.anoPeriodo = Convert.ToInt32(ddlPeriodoModal.SelectedValue);
+
+                if (ddlPartidasPadre.SelectedValue == "null")
+                {
+                    partida.partidaPadre = null;
+                }
+                else
+                {
+                    partida.partidaPadre = new Partida();
+                    partida.partidaPadre.idPartida = Convert.ToInt32(ddlPartidasPadre.SelectedValue);
+                }
+                try
+                {
+                    int idPartida = this.partidaServicios.Insertar(partida);
+                    Periodo periodo = new Periodo();
+                    periodo.anoPeriodo = Convert.ToInt32(ddlPeriodo.SelectedValue);
+                    LinkedList<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(periodo.anoPeriodo);
+
+                    Session["listaPartidas"] = listaPartidas;
+                    Session["listaPartidasFiltrada"] = listaPartidas;
+
+                    mostrarDatosTabla();
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevaPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevaPartida').hide();", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se ingreso la partida correctamente" + "');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Error en la inserción, intentelo denuevo" + "');", true);
+                }
+
+            }
+            else
+            {
+
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevaPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevaPartida').hide();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevaPartida();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Todos los espacios son requeridos" + "');", true);
+            }
+        
+        }
+
+        /// <summary>
+        /// Jesús Torres
+        /// 20/sept/2019
+        /// Efecto: Actualiza los DropDownList de partidas padre
+        /// Requiere: 
+        /// Modifica: el contenido de el DropDownList padre
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void ddlPeriodoModal_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Session["listaPartidasPorPeriodo"] = partidaServicios.ObtenerPorPeriodo(Convert.ToInt32(ddlPeriodoModal.SelectedValue));
+            llenarPartidasPadreDDL(ddlPartidasPadre);
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevaPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevaPartida').hide();", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevaPartida();", true);
+        }
+
         #endregion
 
         #region metodos
@@ -140,10 +268,10 @@ namespace Proyecto.Catalogos.Partidas
         /// Modifica: DropDownList
         /// Devuelve: -
         /// </summary>
-        public void llenarDdlPeriodos()
+        public void llenarDdlPeriodos(DropDownList ddl)
         {
             LinkedList<Periodo> periodos = new LinkedList<Periodo>();
-            ddlPeriodo.Items.Clear();
+            ddl.Items.Clear();
             periodos = this.periodoServicios.ObtenerTodos();
             int anoHabilitado = 0;
 
@@ -164,12 +292,12 @@ namespace Proyecto.Catalogos.Partidas
                     }
 
                     ListItem itemPeriodo = new ListItem(nombre, periodo.anoPeriodo.ToString());
-                    ddlPeriodo.Items.Add(itemPeriodo);
+                    ddl.Items.Add(itemPeriodo);
                 }
 
                 if (anoHabilitado != 0)
-                {
-                    ddlPeriodo.Items.FindByValue(anoHabilitado.ToString()).Selected = true;
+                {  
+                    ddl.Items.FindByValue(ddlPeriodo.SelectedValue).Selected = true;
                 }
             }
         }
@@ -216,6 +344,70 @@ namespace Proyecto.Catalogos.Partidas
             rpPartidas.DataBind();
             //metodo que realiza la paginacion
             Paginacion();
+        }
+
+        /// <summary>
+        /// Jesús Torres
+        /// 20/sept/2019
+        /// Efecto: carga los de padres de las partidas a el DropDownList correspondiente 
+        /// Requiere: -
+        /// Modifica: los datos mostrados en DropDownList de padres de partidas
+        /// Devuelve: -
+        /// </summary>
+        protected void llenarPartidasPadreDDL(DropDownList ddl)
+        {
+            ddl.Items.Clear();
+            ddl.Items.Add(new ListItem("Partida Padre", "null"));
+
+            LinkedList<Partida> partidas = new LinkedList<Partida>();
+            partidas = (LinkedList<Partida>)Session["listaPartidasPorPeriodo"];
+            foreach (Partida partida in partidas)
+            {
+                if (partida.partidaPadre == null)
+                {
+                    ListItem item = new ListItem(partida.numeroPartida + ": " + partida.descripcionPartida, partida.idPartida.ToString());
+                    ddl.Items.Add(item);
+                }
+            }
+        }
+
+
+
+        /// <summary>
+        /// Jesús Torres
+        /// 20/sept/2019
+        /// Efecto: valida los datos ingresados para una nueva partida 
+        /// Requiere: -
+        /// Modifica: 
+        /// Devuelve: -Boolean true si aplica, false en caso de no
+        /// </summary>
+        public Boolean validarCampos()
+        {
+            Boolean validados = true;
+
+            
+            if (ddlPeriodo.SelectedIndex.Equals(null))
+            {
+                validados = false;
+            }
+            
+            String numeroPartida = txtNumeroPartidas.Text;
+
+            if (numeroPartida.Trim() == "" || numeroPartida.Length > 255)
+            {
+                txtNumeroPartidas.CssClass = "form-control alert-danger";
+                validados = false;
+            }
+
+            String descripcionPartida = txtDescripcionPartida.Text;
+
+            if (descripcionPartida.Trim() == "" || descripcionPartida.Length > 255)
+            {
+                txtDescripcionPartida.CssClass = "form-control alert-danger";
+                validados = false;
+            }
+
+            return validados;
         }
 
 
@@ -286,37 +478,7 @@ namespace Proyecto.Catalogos.Partidas
             rptPaginacion.DataBind();
         }
 
-        /// <summary>
-        /// Jesús Torres
-        /// 19/sept/2019
-        /// Efecto: se devuelve a la primera pagina y muestra los datos de la misma
-        /// Requiere: dar clic al boton de "Primer pagina"
-        /// Modifica: elementos mostrados en la tabla de contactos
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void lbPrimero_Click(object sender, EventArgs e)
-        {
-            paginaActual = 0;
-            mostrarDatosTabla();
-        }
-
-        /// <summary>
-        /// Jesús Torres
-        /// 19/sept/2019
-        /// Efecto: se devuelve a la ultima pagina y muestra los datos de la misma
-        /// Requiere: dar clic al boton de "Ultima pagina"
-        /// Modifica: elementos mostrados en la tabla de contactos
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void lbUltimo_Click(object sender, EventArgs e)
-        {
-            paginaActual = (Convert.ToInt32(ViewState["TotalPaginas"]) - 1);
-            mostrarDatosTabla();
-        }
+      
 
         /// <summary>
         /// Jesús Torres
@@ -367,6 +529,8 @@ namespace Proyecto.Catalogos.Partidas
             mostrarDatosTabla();
         }
 
+       
+
         /// <summary>
         /// Jesús Torres
         /// 19/sep/2019
@@ -386,6 +550,11 @@ namespace Proyecto.Catalogos.Partidas
             lnkPagina.ForeColor = Color.FromName("#FFFFFF");
         }
 
+
+        
         #endregion
+
+
+
     }
 }

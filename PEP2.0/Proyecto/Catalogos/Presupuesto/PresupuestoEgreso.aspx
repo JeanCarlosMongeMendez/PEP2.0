@@ -1,13 +1,14 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMaster.Master" AutoEventWireup="true" CodeBehind="PresupuestoEgreso.aspx.cs" Inherits="Proyecto.Catalogos.Presupuesto.PresupuestoEgreso" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnableCdn="true"></asp:ScriptManager>
-  <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
-    <div class="row">
-        <div class="form-group col-md-12 col-xs-12 col-sm-12">
-            <center>
+            <div class="row">
+                <div class="form-group col-md-12 col-xs-12 col-sm-12">
+                    <center>
                 <asp:Label runat="server" Text="Presupuesto de Egreso" Font-Size="Large" ForeColor="Black"></asp:Label>
             
                 <p class="mt-1">Seleccione un periodo</p>
@@ -19,7 +20,7 @@
                 <p class="mt-1">Seleccione una unidad</p>
                 <asp:DropDownList AutoPostBack="true" ID="UnidadesDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="Unidades_OnChanged"></asp:DropDownList>
                       </center>
-        </div>
+                </div>
 
                 <div class="col-md-12 col-xs-12 col-sm-12 mt-2">
                     <hr />
@@ -31,7 +32,7 @@
 
                 <div class="col-md-12 col-xs-12 col-sm-12">
                     <div class="col-md-12 col-xs-12 col-sm-12">
-                        <p class="mt-2">Plan estrategico operacional <span style='color:red'>*</span></p>
+                        <p class="mt-2">Plan estrategico operacional <span style='color: red'>*</span></p>
                     </div>
                     <div class="col-md-12 col-xs-12 col-sm-12">
                         <asp:TextBox class="form-control" TextMode="multiline" Columns="50" Rows="5" ID="txtPAO" runat="server"></asp:TextBox>
@@ -50,50 +51,52 @@
                 </div>
 
                 <%-- tabla--%>
-                    <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
-                    <asp:Repeater ID="rpPartida" runat="server" >
-                        <HeaderTemplate>
-                            <table class="table table-bordered">
-                                <thead style="text-align: center">
-                                    <tr style="text-align: center" class="btn-primary">
-                                     <th></th>
-                                        <th>Partida</th>
-                                        <th>Monto total </th>
-                                         <th>Descripción</th>
-                                    </tr>
-                                </thead>
-                        </HeaderTemplate>
-
-                        <ItemTemplate>
-                            <tr style="text-align: center">
-                               <td>
-                                    <asp:LinkButton ID="btnAnadirPartida" runat="server" ToolTip="Anadir" CommandArgument='<%# Eval("idPresupuestoEgreso") %>' OnClick="btnNuevoPresupuesto_Click"><span class="btn glyphicon glyphicon-plus"></span></asp:LinkButton>
-                                  
-                                    <asp:LinkButton ID="btnVerPartida" runat="server" ToolTip="Ver" CommandArgument='<%# Eval("idPresupuestoEgreso") %>' OnClick="btnVerPartidas_Click"><span class="btn glyphicon glyphicon-eye-open"></span></asp:LinkButton>
-                                       
-                                </td>
-                                <td>
-                                  <%# Eval("idPresupuestoEgreso") %>
-                                    
-                                </td>
-                                <td>
-                                     ₡  <%# Eval("montoTotal") %> 
-                                    
-                                </td>
-                               
-                                 <td>
-                                        <%# Eval("descripcion") %>
-                                 </td>
+                <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                    <table id="tblPresupuesto" class="table table-bordered">
+                        <thead style="text-align: center">
+                            <tr style="text-align: center" class="btn-primary">
+                                <th></th>
+                                <th>Partida</th>
+                                <th>Monto total </th>
+                                <th>Descripción</th>
                             </tr>
+                        </thead>
 
-                        </ItemTemplate>
+                        <asp:Repeater ID="rpPartida" runat="server">
+                            <HeaderTemplate>
+                            </HeaderTemplate>
 
-                        <FooterTemplate>
-                            </table>
-                        </FooterTemplate>
-                    </asp:Repeater>
+                            <ItemTemplate>
+                                <tr style="text-align: center">
+                                    <td>
+                                        <asp:LinkButton ID="btnAnadirPartida" runat="server" ToolTip="Anadir" CommandArgument='<%# Eval("idPresupuestoEgreso") %>' OnClick="btnNuevoPresupuesto_Click"><span class="btn glyphicon glyphicon-plus"></span></asp:LinkButton>
+                                        <asp:LinkButton ID="btnVerPartida" runat="server" ToolTip="Ver" CommandArgument='<%# Eval("idPresupuestoEgreso") %>' OnClick="btnVerPartidasEgreso_Click"><span class="btn glyphicon glyphicon-eye-open"></span></asp:LinkButton>
+
+                                    </td>
+                                    <td>
+                                        <%# Eval("idPresupuestoEgreso") %>
+                                    
+                                    </td>
+                                    <td>₡  <%# Eval("montoTotal") %> 
+                                    
+                                    </td>
+
+                                    <td>
+                                        <%# Eval("descripcion") %>
+                                    </td>
+                                </tr>
+
+                            </ItemTemplate>
+
+                            <FooterTemplate>
+                            </FooterTemplate>
+                        </asp:Repeater>
+                    </table>
                 </div>
-                 <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+
+                <%-- fin tabla--%>
+
+                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
                     <center>
                     <table class="table" style="max-width:664px;">
                         <tr style="padding:1px !important">
@@ -127,24 +130,21 @@
                     </table>
                         </center>
                 </div>
-                 
-                    <%-- fin tabla--%>
-      
 
-        <div class="col-md-12 col-xs-12 col-sm-12">
-                <div class="col-md-6 col-xs-6 col-sm-6">
-                    <asp:Button ID="btnGuardar" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="Guardar_Click"/>
+                <div class="col-md-12 col-xs-12 col-sm-12">
+                    <div class="col-md-6 col-xs-6 col-sm-6">
+                        <asp:Button ID="btnGuardar" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="Guardar_Click" />
+                    </div>
+
+                    <div class="col-md-6 col-xs-6 col-sm-6 alinear-derecha">
+                        <asp:Button ID="btnAprobar" runat="server" Text="Aprobar" CssClass="btn btn-primary" OnClick="Aprobar_Click" />
+                    </div>
                 </div>
+            </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
 
-                <div class="col-md-6 col-xs-6 col-sm-6 alinear-derecha">
-                    <asp:Button ID="btnAprobar" runat="server" Text="Aprobar" CssClass="btn btn-primary" OnClick="Aprobar_Click"/>
-                </div>
-        </div> 
-    </div>
-     </ContentTemplate>
- </asp:UpdatePanel>
 
-    
     <!-- Modal nueva partida -->
     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
         <ContentTemplate>
@@ -173,8 +173,8 @@
                                     </div>
 
                                     <div class="col-md-4 col-xs-4 col-sm-4">
-                                        <asp:Label ID="txtIdPartida" runat="server"  Font-Size="Medium" ForeColor="Black" CssClass="label" Enabled="false"></asp:Label>
-                                 </div>
+                                        <asp:Label ID="txtIdPartida" runat="server" Font-Size="Medium" ForeColor="Black" CssClass="label" Enabled="false"></asp:Label>
+                                    </div>
                                 </div>
 
                                 <div class="col-md-12 col-xs-12 col-sm-12">
@@ -183,14 +183,14 @@
 
                                 <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
                                     <div class="col-md-3 col-xs-3 col-sm-3">
-                                      <asp:Label ID="Label10" runat="server" Text="Monto" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                        <asp:Label ID="Label10" runat="server" Text="Monto" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                                     </div>
 
-                                   
-                                       <div class="col-md-4 col-xs-4 col-sm-4">
+
+                                    <div class="col-md-4 col-xs-4 col-sm-4">
                                         <div class="input-group">
                                             <span class="input-group-addon">₡</span>
-                                            <asp:TextBox class="form-control" ID="txtMontoIngresarModal"   runat="server" Enabled="true" ></asp:TextBox>
+                                            <asp:TextBox class="form-control" ID="txtMontoIngresarModal" runat="server" Enabled="true"></asp:TextBox>
                                         </div>
                                     </div>
 
@@ -202,22 +202,22 @@
 
                                 <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
                                     <div class="col-md-3 col-xs-3 col-sm-3">
-                                         <asp:Label ID="Label2" runat="server" Text="Descripción" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                        <asp:Label ID="Label2" runat="server" Text="Descripción" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                                     </div>
 
                                     <div class="col-md-4 col-xs-4 col-sm-4">
                                         <div class="input-group">
-                                       
-                                             <asp:TextBox class="form-control" ID="txtdescripcionNuevaPartida" type="text" runat="server"></asp:TextBox>
-                                           
+
+                                            <asp:TextBox class="form-control" ID="txtdescripcionNuevaPartida" type="text" runat="server"></asp:TextBox>
+
                                         </div>
                                     </div>
                                 </div>
-                                                       
+
                             </div>
                         </div>
                         <div class="modal-footer" style="text-align: center">
-                             <asp:Button ID="btnNuevoIngresoPartidaModal" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="btnNuevoIngresoPartidaModal_Click" />
+                            <asp:Button ID="btnNuevoIngresoPartidaModal" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="btnNuevoIngresoPartidaModal_Click" />
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         </div>
                     </div>
@@ -227,7 +227,8 @@
         </ContentTemplate>
     </asp:UpdatePanel>
     <!-- Fin modal nueva escala -->
-      <!-- Modal pasar escala -->
+    <!-- Nuevo modal nueva escala -->
+
     <asp:UpdatePanel ID="UpdatePanel5" runat="server">
         <ContentTemplate>
             <div id="modalMostrarPresupuestoEgresos" class="modal fade" role="alertdialog">
@@ -248,51 +249,83 @@
                                 <div class="col-md-12 col-xs-12 col-sm-12">
                                     <br />
                                 </div>
-
                                 <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
-                    <asp:Repeater ID="rpPartidaEgresoPartida" runat="server" >
-                        <HeaderTemplate>
-                            <table class="table table-bordered">
-                                <thead style="text-align: center">
-                                    <tr style="text-align: center" class="btn-primary">
-                                     
-                                        <th>Partida</th>
-                                        <th>Presupuesto  </th>
-                                        <th>Monto </th>
-                                         <th>Descripción</th>
-                                    </tr>
-                                </thead>
-                        </HeaderTemplate>
+                                    <table id="tblEscalasAgregadas" class="table table-bordered">
+                                        <thead>
+                                            <tr style="text-align: center" class="btn-primary">
 
-                        <ItemTemplate>
-                            <tr style="text-align: center">
-                          
-                                <td>
-                                  <%# Eval("idPresupuestoEgreso") %>
+                                                <th>Partida</th>
+                                                <th>Presupuesto  </th>
+                                                <th>Monto </th>
+                                                <th>Descripción</th>
+                                            </tr>
+                                        </thead>
+
+                                        <asp:Repeater ID="rpPartidaEgresoPartida" runat="server">
+                                            <HeaderTemplate>
+                                            </HeaderTemplate>
+
+                                            <ItemTemplate>
+                                                <tr style="text-align: center">
+                                                    <td>
+                                                        <%# Eval("idPresupuestoEgreso") %>
                                     
-                                </td>
-                                <td>
-                                  <%# Eval("idPartida") %> 
+                                                    </td>
+                                                    <td>
+                                                        <%# Eval("idPartida") %> 
                                     
-                                </td>
-                               <td>
-                                     ₡  <%# Eval("monto") %> 
+                                                    </td>
+                                                    <td>₡  <%# Eval("monto") %> 
                                     
+                                                    </td>
+                                                    <td>
+                                                        <%# Eval("descripcion") %> 
+                                                    </td>
+                                                </tr>
+
+                                            </ItemTemplate>
+
+                                            <FooterTemplate>
+                                            </FooterTemplate>
+                                        </asp:Repeater>
+                                    </table>
+                                </div>
+
+
+                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                                    <center>
+                    <table class="table" style="max-width:664px;">
+                        <tr style="padding:1px !important">
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbPrimero2" runat="server" CssClass="btn btn-primary" OnClick="lbPrimero2_Click"><span class="glyphicon glyphicon-fast-backward"></span></asp:LinkButton>
                                 </td>
-                                 <td>
-                                    <%# Eval("descripcion") %> 
-                                  </td>
-                            </tr>
-
-                        </ItemTemplate>
-
-                        <FooterTemplate>
-                            </table>
-                        </FooterTemplate>
-                    </asp:Repeater>
-                </div>
-
-                               
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbAnterior2" runat="server" CssClass="btn btn-default" OnClick="lbAnterior2_Click"><span class="glyphicon glyphicon-backward"></asp:LinkButton>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:DataList ID="rptPaginacion2" runat="server"
+                                    OnItemCommand="rptPaginacion2_ItemCommand"
+                                    OnItemDataBound="rptPaginacion2_ItemDataBound" RepeatDirection="Horizontal">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lbPaginacion2" runat="server" CssClass="btn btn-default"
+                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
+                                            Text='<%# Eval("PaginaText") %>' ></asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:DataList>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbSiguiente2" CssClass="btn btn-default" runat="server" OnClick="lbSiguiente2_Click"><span class="glyphicon glyphicon-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbUltimo2" CssClass="btn btn-primary" runat="server" OnClick="lbUltimo2_Click"><span class="glyphicon glyphicon-fast-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:Label ID="lblpagina2" runat="server" Text=""></asp:Label>
+                            </td>
+                        </tr>
+                    </table>
+                        </center>
+                                </div>
 
                             </div>
                         </div>
@@ -305,17 +338,17 @@
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
-    <!-- Fin modal pasar escala -->
 
-      <script type="text/javascript">
+
+    <script type="text/javascript">
         function activarModalIngresarPartida() {
             $('#modalIngresarPartida').modal('show');
         };
         function activarModalMostrarPresupuestoEgresos() {
             $('#modalMostrarPresupuestoEgresos').modal('show');
         };
-        
-       
+
+
 
     </script>
 </asp:Content>
