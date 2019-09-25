@@ -7,10 +7,10 @@
 // </generado automáticamente>
 //------------------------------------------------------------------------------
 
-namespace Proyecto.Catalogos.Presupuesto {
+namespace Proyecto.Catalogos.Partidas {
     
     
-    public partial class PresupuestoEgreso {
+    public partial class AdministrarPartidas {
         
         /// <summary>
         /// Control ScriptManager1.
@@ -22,85 +22,67 @@ namespace Proyecto.Catalogos.Presupuesto {
         protected global::System.Web.UI.ScriptManager ScriptManager1;
         
         /// <summary>
-        /// Control UpdatePanel1.
+        /// Control UpdatePanel3.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel3;
         
         /// <summary>
-        /// Control PeriodosDDL.
+        /// Control label.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList PeriodosDDL;
+        protected global::System.Web.UI.WebControls.Label label;
         
         /// <summary>
-        /// Control ProyectosDDL.
+        /// Control ddlPeriodo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ProyectosDDL;
+        protected global::System.Web.UI.WebControls.DropDownList ddlPeriodo;
         
         /// <summary>
-        /// Control UnidadesDDL.
+        /// Control btnPartidas.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList UnidadesDDL;
+        protected global::System.Web.UI.WebControls.Button btnPartidas;
         
         /// <summary>
-        /// Control LblPresupuestoIngreso.
+        /// Control btnFiltrar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label LblPresupuestoIngreso;
+        protected global::System.Web.UI.WebControls.LinkButton btnFiltrar;
         
         /// <summary>
-        /// Control txtPAO.
+        /// Control txtBuscarDesc.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPAO;
+        protected global::System.Web.UI.WebControls.TextBox txtBuscarDesc;
         
         /// <summary>
-        /// Control divPAOIncorrecto.
+        /// Control rpPartidas.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divPAOIncorrecto;
-        
-        /// <summary>
-        /// Control lblPAOIncorrecto.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPAOIncorrecto;
-        
-        /// <summary>
-        /// Control rpPartida.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpPartida;
+        protected global::System.Web.UI.WebControls.Repeater rpPartidas;
         
         /// <summary>
         /// Control lbPrimero.
@@ -157,22 +139,13 @@ namespace Proyecto.Catalogos.Presupuesto {
         protected global::System.Web.UI.WebControls.Label lblpagina;
         
         /// <summary>
-        /// Control btnGuardar.
+        /// Control btnNuevaPartida.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnGuardar;
-        
-        /// <summary>
-        /// Control btnAprobar.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAprobar;
+        protected global::System.Web.UI.WebControls.Button btnNuevaPartida;
         
         /// <summary>
         /// Control UpdatePanel2.
@@ -184,40 +157,58 @@ namespace Proyecto.Catalogos.Presupuesto {
         protected global::System.Web.UI.UpdatePanel UpdatePanel2;
         
         /// <summary>
-        /// Control label4.
+        /// Control Label16.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label label4;
+        protected global::System.Web.UI.WebControls.Label Label16;
         
         /// <summary>
-        /// Control txtIdPartida.
+        /// Control ddlPeriodoModal.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label txtIdPartida;
+        protected global::System.Web.UI.WebControls.DropDownList ddlPeriodoModal;
         
         /// <summary>
-        /// Control Label10.
+        /// Control Label1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label10;
+        protected global::System.Web.UI.WebControls.Label Label1;
         
         /// <summary>
-        /// Control txtMontoIngresarModal.
+        /// Control ddlPartidasPadre.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtMontoIngresarModal;
+        protected global::System.Web.UI.WebControls.DropDownList ddlPartidasPadre;
+        
+        /// <summary>
+        /// Control Label3.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label3;
+        
+        /// <summary>
+        /// Control txtNumeroPartidas.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtNumeroPartidas;
         
         /// <summary>
         /// Control Label2.
@@ -229,93 +220,21 @@ namespace Proyecto.Catalogos.Presupuesto {
         protected global::System.Web.UI.WebControls.Label Label2;
         
         /// <summary>
-        /// Control txtdescripcionNuevaPartida.
+        /// Control txtDescripcionPartida.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtdescripcionNuevaPartida;
+        protected global::System.Web.UI.WebControls.TextBox txtDescripcionPartida;
         
         /// <summary>
-        /// Control btnNuevoIngresoPartidaModal.
+        /// Control btnNuevaPartidaModal.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnNuevoIngresoPartidaModal;
-        
-        /// <summary>
-        /// Control UpdatePanel5.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel5;
-        
-        /// <summary>
-        /// Control rpPartidaEgresoPartida.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpPartidaEgresoPartida;
-        
-        /// <summary>
-        /// Control lbPrimero2.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbPrimero2;
-        
-        /// <summary>
-        /// Control lbAnterior2.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbAnterior2;
-        
-        /// <summary>
-        /// Control rptPaginacion2.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DataList rptPaginacion2;
-        
-        /// <summary>
-        /// Control lbSiguiente2.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbSiguiente2;
-        
-        /// <summary>
-        /// Control lbUltimo2.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbUltimo2;
-        
-        /// <summary>
-        /// Control lblpagina2.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblpagina2;
+        protected global::System.Web.UI.WebControls.Button btnNuevaPartidaModal;
     }
 }

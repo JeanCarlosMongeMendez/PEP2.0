@@ -73,9 +73,9 @@
                             <ItemTemplate>
                                 <tr style="text-align: center">
                                     <td>
-                                        <asp:LinkButton ID="btnSelccionar" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("idFuncionario") %>'><span class="glyphicon glyphicon-ok"></span></asp:LinkButton>
-                                        <asp:LinkButton ID="btnEditar" runat="server" ToolTip="Editar" CommandArgument='<%# Eval("idFuncionario") %>'><span class="btn glyphicon glyphicon-pencil"></span></asp:LinkButton>
-                                        <asp:LinkButton ID="btnEliminar" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("idFuncionario") %>'><span class="btn glyphicon glyphicon-trash"></span></asp:LinkButton>
+                                        <asp:LinkButton ID="btnSelccionar" OnClick="btnSelccionar_Click" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("idFuncionario") %>'><span class="glyphicon glyphicon-ok"></span></asp:LinkButton>
+                                        <asp:LinkButton ID="btnEditar" OnClick="btnEditar_Click" runat="server" ToolTip="Editar" CommandArgument='<%# Eval("idFuncionario") %>'><span class="btn glyphicon glyphicon-pencil"></span></asp:LinkButton>
+                                        <asp:LinkButton ID="btnEliminar" OnClick="btnEliminar_Click" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("idFuncionario") %>'><span class="btn glyphicon glyphicon-trash"></span></asp:LinkButton>
                                     </td>
                                     <td>
                                         <%# Eval("nombreFuncionario") %>
@@ -136,17 +136,17 @@
     </div>
 
 
-    <!-- Modal nuevo funcionario -->
+    <!-- Modal funcionario -->
     <%--<asp:UpdatePanel ID="UpdatePanel2" runat="server">
         <ContentTemplate>--%>
     <div id="modalNuevoFuncionario" class="modal fade" role="alertdialog">
         <div class="modal-dialog modal-lg" style="min-width: 95%; margin: 2%">
-
+            <asp:HiddenField  ID="hdIdFuncionario" Value='<%# Eval("idFuncionario") %>' runat="server"/>
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #005da4; color: white">
                     <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
-                    <h4 class="modal-title">Nuevo funcionario</h4>
+                    <h4 class="modal-title" id="tituloModalFuncionario" runat="server">Nuevo funcionario</h4>
                 </div>
                 <div class="modal-body">
                     <%-- campos a llenar --%>
@@ -250,7 +250,6 @@
                                         </div>
                                     </ContentTemplate>
                                 </asp:UpdatePanel>
-
                                 <div class="col-md-12 col-xs-12 col-sm-12">
                                     <br />
                                 </div>
@@ -381,7 +380,7 @@
                                 <div class="row">
 
                                     <div class="col-md-4 col-xs-12 col-sm-12">
-                                        <asp:Label ID="Label13" runat="server" Text="Pago de Ley 8114" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                        <asp:Label runat="server" Text="Pago de Ley 8114" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                                     </div>
 
                                     <div class="col-md-8 col-xs-12 col-sm-12">
@@ -447,13 +446,12 @@
                                     </div>
                                 </div>
 
-
                                 <asp:UpdatePanel ID="UpdatePanel3" runat="server">
                                     <ContentTemplate>
                                         <div class="col-md-4 col-xs-6 col-sm-6">
                                             <div class="input-group">
                                                 <span class="input-group-addon">+</span>
-                                                <asp:TextBox ID="txtSumaSalarioBase2" runat="server" class="form-control" AutoPostBack="true" TextMode="Number" pattern="[0-9]+([\,][0-9]+)?" step="0.1"></asp:TextBox>
+                                                <asp:TextBox ID="txtSumaSalarioBase2" runat="server" class="form-control" AutoPostBack="true"></asp:TextBox>
                                             </div>
                                         </div>
                                     </ContentTemplate>
@@ -661,6 +659,22 @@
                                 <br />
                             </div>
 
+                            <div class="row" style="text-align: center">
+
+                                <div class="col-md-3 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Observaciones" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-6 col-xs-12 col-sm-12">
+                                    <asp:TextBox ID="txtObservaciones" runat="server" class="form-control" TextMode="MultiLine"></asp:TextBox>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
                         </asp:Panel>
 
                         <div class="col-xs-12">
@@ -681,6 +695,536 @@
     </asp:UpdatePanel>--%>
     <!-- Fin modal nuevo funcionario -->
 
+
+
+    <!-- Modal Ver funcionario -->
+    <div id="modalVerFuncionario" class="modal fade" role="alertdialog">
+        <div class="modal-dialog modal-lg" style="min-width: 95%; margin: 2%">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #005da4; color: white">
+                    <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
+                    <h4 class="modal-title" id="H1" runat="server">Ver funcionario</h4>
+                </div>
+                <div class="modal-body">
+                    <%-- campos a llenar --%>
+                    <div class="row">
+
+                        <%-- Datos generales --%>
+                        <asp:Panel ID="panel1" runat="server" CssClass="col-md-12 col-xs-12 col-sm-12">
+
+                            <div class="row" style="text-align: center">
+
+                                <div class="col-md-3 col-xs-12 col-sm-3">
+                                    <asp:Label runat="server" Text="Nombre Completo" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-6 col-xs-12 col-sm-12">
+                                    <asp:TextBox CssClass="form-control" ID="txtVerNombreCompleto" runat="server" TextMode="MultiLine" ReadOnly="true"></asp:TextBox>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <div class="row" style="text-align: center">
+
+                                <div class="col-md-3 col-xs-12 col-sm-3">
+                                    <asp:Label runat="server" Text="Escala salarial" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-6 col-xs-12 col-sm-12">
+                                    <asp:TextBox CssClass="form-control" ID="txtVerEscalaSalarial" runat="server" ReadOnly="true"></asp:TextBox>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <div class="row" style="text-align: center">
+
+                                <div class="col-md-3 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Fecha ingreso <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-6 col-xs-12 col-sm-12">
+                                    <asp:TextBox CssClass="form-control" ID="txtVerFecha" runat="server" ReadOnly="true"></asp:TextBox>
+                                </div>
+
+                            </div>
+
+                        </asp:Panel>
+
+                        <%-- Division --%>
+                        <div class="col-md-12 col-xs-12 col-sm-12">
+                            <br />
+                            <hr />
+                            <br />
+                        </div>
+
+                        <%-- Primer semestre --%>
+                        <asp:Panel ID="panel2" runat="server" CssClass="col-md-6 col-xs-12 col-sm-12" Style="text-align: center">
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <asp:Label runat="server" Text="Datos del primer semestre" Font-Size="Medium" ForeColor="Black" CssClass="label col-xs-12"></asp:Label>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <%-- Salario base --%>
+                            <div class="row">
+                                <div class="col-md-4 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Salario base I <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-4 col-xs-6 col-sm-6" style="text-align: center">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">₡</span>
+                                        <asp:TextBox ID="txtVerSalarioBaseI" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-xs-6 col-sm-6" style="text-align: center">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">+</span>
+                                        <asp:TextBox ID="txtVerSumaSalarioBase1" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <%-- Total Salario base --%>
+                            <div class="row">
+
+                                <div class="col-md-4 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Total salario base I" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-8 col-xs-12 col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">₡</span>
+                                        <asp:TextBox ID="txtVerSumaTotalSalarioBase1" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <%-- Escalafones --%>
+                            <div class="row">
+
+                                <div class="col-md-4 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Número escalafones <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-8 col-xs-12 col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">#</span>
+                                        <asp:TextBox class="form-control" ID="txtVerEscalafonesI" runat="server" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <%-- Monto Escalafones --%>
+                            <div class="row">
+                                <div class="col-md-4 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Monto escalafones <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-8 col-xs-12 col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">₡</span>
+                                        <asp:TextBox ID="txtVerMontoEscalafonesI" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <%-- Porcentaje anualidades --%>
+                            <div class="row">
+
+                                <div class="col-md-4 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Porcentaje anualidades <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-8 col-xs-12 col-sm-12">
+                                    <div class="input-group">
+                                        <asp:TextBox class="form-control" ID="txtVerPorcentajeAnualidadesI" runat="server" ReadOnly="true"></asp:TextBox>
+                                        <span class="input-group-addon">%</span>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <%-- Monto anualidades --%>
+                            <div class="row">
+
+                                <div class="col-md-4 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Monto anualidades <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-8 col-xs-12 col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">₡</span>
+                                        <asp:TextBox ID="txtVerMontoAnualidadesI" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <%-- Salario contatacion --%>
+                            <div class="row">
+
+                                <div class="col-md-4 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Salario Contratación <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-8 col-xs-12 col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">₡</span>
+                                        <asp:TextBox ID="txtVerSalContratacionI" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <%-- Ley 8114 --%>
+                            <div class="row">
+
+                                <div class="col-md-4 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Pago de Ley 8114" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-8 col-xs-12 col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">₡</span>
+                                        <asp:TextBox ID="txtVerPagoLey8114" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <%-- Salario mensual Ene-Jun --%>
+                            <div class="row">
+
+                                <div class="col-md-4 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Salario Enero - Junio <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label" AutoSize="true"></asp:Label>
+                                </div>
+
+                                <div class="col-md-8 col-xs-12 col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">₡</span>
+                                        <asp:TextBox ID="txtVerSalarioMensualEneroJunio" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+                        </asp:Panel>
+
+                        <%-- Segundo semestre --%>
+                        <asp:Panel ID="panel3" runat="server" CssClass="col-md-6 col-xs-12 col-sm-12" Style="text-align: center">
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <%-- Titulo --%>
+                            <asp:Label runat="server" Text="Datos del segundo semestre" Font-Size="Medium" ForeColor="Black" CssClass="label col-xs-12"></asp:Label>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <%-- Salario base --%>
+                            <div class="row">
+
+                                <div class="col-md-4 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Salario base II <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-4 col-xs-6 col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">₡</span>
+                                        <asp:TextBox ID="txtVerSalarioBase2" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 col-xs-6 col-sm-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">+</span>
+                                        <asp:TextBox ID="txtVerSumaSalarioBase2" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <%-- Total Salario base --%>
+                            <div class="row">
+
+                                <div class="col-md-4 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Total salario base II" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-8 col-xs-12 col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">₡</span>
+                                        <asp:TextBox ID="txtVerSumaTotalSalarioBaseII" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <%-- Escalafones --%>
+                            <div class="row">
+
+                                <div class="col-md-4 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Número escalafones <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-8 col-xs-12 col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">#</span>
+                                        <asp:TextBox class="form-control" ID="txtVerEscalafonesII" runat="server" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <%-- Monto escalafones --%>
+                            <div class="row">
+
+                                <div class="col-md-4 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Monto escalafones <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-8 col-xs-12 col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">₡</span>
+                                        <asp:TextBox ID="txtVerMontoEscalafonesII" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <%-- Porcentaje anualidades --%>
+                            <div class="row">
+
+                                <div class="col-md-4 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Porcentaje anualidades <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-8 col-xs-12 col-sm-12">
+                                    <div class="input-group">
+                                        <asp:TextBox class="form-control" ID="txtVerPorcentajeAnualidadesII" runat="server" ReadOnly="true"></asp:TextBox>
+                                        <span class="input-group-addon">%</span>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <%-- Monto anualidades --%>
+                            <div class="row">
+
+                                <div class="col-md-4 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Monto anualidades <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-8 col-xs-12 col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">₡</span>
+                                        <asp:TextBox ID="txtVerMontoAnualidadesII" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <%-- Salario contratacion --%>
+                            <div class="row">
+
+                                <div class="col-md-4 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Salario Contratación <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-8 col-xs-12 col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">₡</span>
+                                        <asp:TextBox ID="txtVerSalContratacionII" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <%-- Salario mensual Jun-Dic --%>
+                            <div class="row">
+
+                                <div class="col-md-4 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Salario Junio - Dic. <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label" AutoSize="true"></asp:Label>
+                                </div>
+
+                                <div class="col-md-8 col-xs-12 col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">₡</span>
+                                        <asp:TextBox ID="txtVerSalarioMensualJunioDiciembre" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+                        </asp:Panel>
+
+                        <%-- Division --%>
+                        <div class="col-md-12 col-xs-12 col-sm-12">
+                            <br />
+                            <hr />
+                            <br />
+                        </div>
+
+                        <%-- Datos generales --%>
+                        <asp:Panel ID="panel4" runat="server" CssClass="col-md-12 col-xs-12 col-sm-12">
+
+                            <div class="row" style="text-align: center">
+
+                                <div class="col-md-3 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Promedio de semestres" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-6 col-xs-12 col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">₡</span>
+                                        <asp:TextBox ID="txtVerPromedioSemestres" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <div class="row" style="text-align: center">
+
+                                <div class="col-md-3 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Salario propuesto" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-6 col-xs-12 col-sm-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">₡</span>
+                                        <asp:TextBox ID="txtVerSalarioPropuesto" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <div class="row" style="text-align: center">
+
+                                <div class="col-md-3 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Observaciones" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-6 col-xs-12 col-sm-12">
+                                    <asp:TextBox ID="txtVerObservaciones" runat="server" class="form-control" TextMode="MultiLine" ReadOnly="true"></asp:TextBox>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                        </asp:Panel>
+                    </div>
+
+                    <%-- Fin campos a llenar --%>
+                </div>
+                <div class="modal-footer" style="text-align: center">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%-- </ContentTemplate>
+    </asp:UpdatePanel>--%>
+    <!-- Fin modal nuevo funcionario -->
+
     <script src="../Scripts/moment.js"></script>
     <script src="../Scripts/transition.js"></script>
     <script src="../Scripts/collapse.js"></script>
@@ -690,6 +1234,10 @@
     <script type="text/javascript">
         function activarModalNuevoFuncionario() {
             $('#modalNuevoFuncionario').modal('show');
+        };
+
+        function activarModalVerFuncionario() {
+            $('#modalVerFuncionario').modal('show');
         };
 
         $(function () {
