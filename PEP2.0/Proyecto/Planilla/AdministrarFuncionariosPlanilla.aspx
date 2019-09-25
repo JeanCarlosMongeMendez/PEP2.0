@@ -245,6 +245,7 @@
                                             <div class="input-group">
                                                 <span class="input-group-addon">+</span>
                                                 <asp:TextBox ID="txtSumaSalarioBase1" runat="server" class="form-control" AutoPostBack="true"></asp:TextBox>
+                                                <span class="input-group-addon">%</span>
                                             </div>
                                         </div>
                                         </div>
@@ -439,23 +440,19 @@
                                     <asp:Label runat="server" Text="Salario base II <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                                 </div>
 
-                                <div class="col-md-4 col-xs-6 col-sm-6">
+                                <div class="col-md-8 col-xs-12 col-sm-12">
                                     <div class="input-group">
                                         <span class="input-group-addon">₡</span>
                                         <asp:TextBox ID="txtSalarioBase2" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
                                     </div>
                                 </div>
 
-                                <asp:UpdatePanel ID="UpdatePanel3" runat="server">
-                                    <ContentTemplate>
-                                        <div class="col-md-4 col-xs-6 col-sm-6">
+             <%--                           <div class="col-md-4 col-xs-6 col-sm-6">
                                             <div class="input-group">
                                                 <span class="input-group-addon">+</span>
                                                 <asp:TextBox ID="txtSumaSalarioBase2" runat="server" class="form-control" AutoPostBack="true"></asp:TextBox>
                                             </div>
-                                        </div>
-                                    </ContentTemplate>
-                                </asp:UpdatePanel>
+                                        </div>--%>
 
                             </div>
 

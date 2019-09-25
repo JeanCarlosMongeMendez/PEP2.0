@@ -285,7 +285,6 @@ namespace Proyecto.Planilla
         /// </summary>
         private void limpiarFormulario()
         {
-
             txtEscalafonesI.Text = "";
             txtEscalafonesII.Text = "";
             txtMontoAnualidadesI.Text = "";
@@ -306,7 +305,6 @@ namespace Proyecto.Planilla
             txtObservaciones.Text = "";
             txtPagoLey8114.Text = "";
             txtSumaSalarioBase1.Text = "";
-            txtSumaSalarioBase2.Text = "";
             txtSalarioPropuesto.Text = "";
         }
         #endregion
@@ -720,20 +718,19 @@ namespace Proyecto.Planilla
             LinkButton btnTotalSalarioBase = (LinkButton)sender;
             double salarioBase = 0;
             double sumaSalarioBase = 0;
+            Double.TryParse(txtSumaSalarioBase1.Text.Replace(".", ",").ToString(), out sumaSalarioBase);
             if (btnTotalSalarioBase.ID.Equals("btnCalcularTotalSalarioBaseI"))
             {
                 salarioBase = escalaSeleccionada.salarioBase1;
-                Double.TryParse(txtSumaSalarioBase1.Text.Replace(".", ",").ToString(), out sumaSalarioBase);
                 txtSumaTotalSalarioBase1.Text = calcularTotalSalarioBase(salarioBase, sumaSalarioBase).ToString();
-                txtSumaSalarioBase1.Text = sumaSalarioBase.ToString();
             }
             else if (btnTotalSalarioBase.ID.Equals("btnCalcularTotalSalarioBaseII"))
             {
                 salarioBase = escalaSeleccionada.salarioBase2;
-                Double.TryParse(txtSumaSalarioBase2.Text.Replace(".", ",").ToString(), out sumaSalarioBase);
                 txtSumaTotalSalarioBaseII.Text = calcularTotalSalarioBase(salarioBase, sumaSalarioBase).ToString();
-                txtSumaSalarioBase2.Text = sumaSalarioBase.ToString();
             }
+            txtSumaSalarioBase1.Text = sumaSalarioBase.ToString();
+
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
@@ -837,7 +834,6 @@ namespace Proyecto.Planilla
             txtSalContratacionI.Text = funcionarioEditar.salarioContratacion1.ToString();
             txtSalContratacionII.Text = funcionarioEditar.salarioContratacion2.ToString();
             txtSumaSalarioBase1.Text = funcionarioEditar.porcentajeSumaSalario.ToString();
-            txtSumaSalarioBase2.Text = funcionarioEditar.porcentajeSumaSalario.ToString();
             txtSumaTotalSalarioBase1.Text = funcionarioEditar.salarioBase1.ToString();
             txtSumaTotalSalarioBaseII.Text = funcionarioEditar.salarioBase2.ToString();
             hdIdFuncionario.Value = funcionarioEditar.idFuncionario.ToString();

@@ -409,24 +409,6 @@ namespace Proyecto.Planilla {
         protected global::System.Web.UI.WebControls.TextBox txtSalarioBase2;
         
         /// <summary>
-        /// Control UpdatePanel3.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel3;
-        
-        /// <summary>
-        /// Control txtSumaSalarioBase2.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSumaSalarioBase2;
-        
-        /// <summary>
         /// Control txtSumaTotalSalarioBaseII.
         /// </summary>
         /// <remarks>
