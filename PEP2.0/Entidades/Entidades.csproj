@@ -44,6 +44,7 @@
     <Compile Include="CargaSocial.cs" />
     <Compile Include="Contacto.cs" />
     <Compile Include="EscalaSalarial.cs" />
+    <Compile Include="EstadoPresupuesto.cs" />
     <Compile Include="Funcionario.cs" />
     <Compile Include="FuncionarioFundevi.cs" />
     <Compile Include="Jornada.cs" />
