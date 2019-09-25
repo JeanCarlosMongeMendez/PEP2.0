@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CargaSocial.cs" />
     <Compile Include="Contacto.cs" />
     <Compile Include="EscalaSalarial.cs" />
     <Compile Include="Funcionario.cs" />
