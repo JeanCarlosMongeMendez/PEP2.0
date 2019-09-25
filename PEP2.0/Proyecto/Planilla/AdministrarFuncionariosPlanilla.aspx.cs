@@ -898,6 +898,16 @@ namespace Proyecto.Planilla
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalVerFuncionario();", true);
         }
 
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 25/09/2019
+        /// Efecto : Elimina un funcionario 
+        /// Requiere : Clickear el  boton "Eliminar" del modal
+        /// Modifica : -
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnConfirmarEliminar_Click(object sender, EventArgs e)
         {
             Funcionario funcionario = new Funcionario();
