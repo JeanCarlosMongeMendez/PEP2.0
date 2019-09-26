@@ -139,12 +139,80 @@ namespace Proyecto.Catalogos.Partidas
 
         protected void btnEditar_Click(object sender, EventArgs e)
         {
+            String nombrePartidaPadre = "";
+            int idPartida = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+            LinkedList<Partida> listaPartidaFiltrada = (LinkedList<Partida>)Session["listaPartidasFiltrada"];
+            Partida partidaEditar = new Partida();
 
+            foreach (Partida partida in listaPartidaFiltrada)
+            {
+                if (idPartida == partida.idPartida)
+                {
+                    partidaEditar = partida;
+                    break;
+                }
+            }
+            Session["partidaSeleccionada"] = partidaEditar;
+            //if que determina si el valir del partida padre es igual a null, en caso de no serlo, buscara el nombre mas adelante
+            if (partidaEditar.partidaPadre != null)
+            {
+                //recorre la lista de todas las partida
+                foreach (Partida partida in listaPartidaFiltrada)
+                {
+                    //Determina el numero de la partida padre para darselo al String
+                    if (partidaEditar.partidaPadre.idPartida == partida.idPartida)
+                    {
+                        nombrePartidaPadre = partida.descripcionPartida;
+                        lbPartidaPadreModalModificar.Text = nombrePartidaPadre;
+                        break;
+                    }
+                }
+            }
+            
+            lbPeriodoModalModificar.Text = partidaEditar.periodo.anoPeriodo.ToString();
+            txtNumeroPartidasModalModificar.Text = partidaEditar.numeroPartida;
+            txtNumeroPartidasModalModificar.CssClass = "form-control";
+            txtDescripcionPartidaModalModificar.Text = partidaEditar.descripcionPartida;
+            txtDescripcionPartidaModalModificar.CssClass = "form-control";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalModificarPartida();", true);
         }
 
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
+            String nombrePartidaPadre = "";
+            int idPartida = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+            LinkedList<Partida> listaPartidaFiltrada = (LinkedList<Partida>)Session["listaPartidasFiltrada"];
+            Partida partidaEditar = new Partida();
 
+            foreach (Partida partida in listaPartidaFiltrada)
+            {
+                if (idPartida == partida.idPartida)
+                {
+                    partidaEditar = partida;
+                    break;
+                }
+            }
+            Session["partidaSeleccionada"] = partidaEditar;
+            //if que determina si el valir del partida padre es igual a null, en caso de no serlo, buscara el nombre mas adelante
+            if (partidaEditar.partidaPadre != null)
+            {
+                //recorre la lista de todas las partida
+                foreach (Partida partida in listaPartidaFiltrada)
+                {
+                    //Determina el numero de la partida padre para darselo al String
+                    if (partidaEditar.partidaPadre.idPartida == partida.idPartida)
+                    {
+                        nombrePartidaPadre = partida.descripcionPartida;
+                        lbPartidaPadreModalEliminar.Text = nombrePartidaPadre;
+                        break;
+                    }
+                }
+            }
+
+            lbPeriodoModalEliminar.Text = partidaEditar.periodo.anoPeriodo.ToString();
+            txtNumeroPartidasModalElimina.Text = partidaEditar.numeroPartida;
+            txtDescripcionPartidaModalEliminar.Text = partidaEditar.descripcionPartida;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalEliminarPartida();", true);
         }
 
         /// <summary>
@@ -255,6 +323,63 @@ namespace Proyecto.Catalogos.Partidas
             llenarPartidasPadreDDL(ddlPartidasPadre);
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevaPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevaPartida').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevaPartida();", true);
+        }
+
+        protected void btnModificar_Click(object sender, EventArgs e)
+        {
+            //se validan los campos antes de guardar los datos en la base de datos
+            if (validarCamposModificar())
+            {
+                Partida partida = (Partida)Session["partidaSeleccionada"];
+                partida.numeroPartida = txtNumeroPartidasModalModificar.Text;
+                partida.descripcionPartida = txtDescripcionPartidaModalModificar.Text;
+            
+                try
+                {
+                    this.partidaServicios.ActualizarPartida(partida);
+                    Periodo periodo = new Periodo();
+                    periodo.anoPeriodo = Convert.ToInt32(ddlPeriodo.SelectedValue);
+                    LinkedList<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(periodo.anoPeriodo);
+
+                    Session["listaPartidas"] = listaPartidas;
+                    Session["listaPartidasFiltrada"] = listaPartidas;
+
+                    mostrarDatosTabla();
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalModificarPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalModificarPartida').hide();", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se modificó la partida correctamente" + "');", true);
+                }
+                catch
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Error en la modificación, intentelo denuevo" + "');", true);
+                }
+
+            }
+            else
+            {
+
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalModificarPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalModificarPartida').hide();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalModificarPartida();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Todos los espacios son requeridos" + "');", true);
+            }
+        }
+
+
+        protected void btnEliminarPartidaModal_Click(object sender, EventArgs e)
+        {
+            Partida partida = (Partida)Session["partidaSeleccionada"];
+
+            partidaServicios.EliminarPartida(partida.idPartida);
+            Periodo periodo = new Periodo();
+            periodo.anoPeriodo = Convert.ToInt32(ddlPeriodo.SelectedValue);
+
+            LinkedList<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(periodo.anoPeriodo);
+            Session["listaPartidas"] = listaPartidas;
+            Session["listaPatidasFiltrada"] = listaPartidas;
+
+            mostrarDatosTabla();
+
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEliminarPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEliminarPartida').hide();", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se elimino la partida correctamente" + "');", true);
         }
 
         #endregion
@@ -410,6 +535,39 @@ namespace Proyecto.Catalogos.Partidas
             return validados;
         }
 
+        /// <summary>
+        /// Jesús Torres
+        /// 26/sept/2019
+        /// Efecto: valida los datos ingresados para modificar partida 
+        /// Requiere: -
+        /// Modifica: 
+        /// Devuelve: -Boolean true si aplica, false en caso de no
+        /// </summary>
+        public Boolean validarCamposModificar()
+        {
+            Boolean validados = true;
+
+
+            String numeroPartida = txtNumeroPartidasModalModificar.Text;
+
+            if (numeroPartida.Trim() == "" || numeroPartida.Length > 255)
+            {
+                txtNumeroPartidasModalModificar.CssClass = "form-control alert-danger";
+                validados = false;
+            }
+
+            String descripcionPartida = txtDescripcionPartidaModalModificar.Text;
+
+            if (descripcionPartida.Trim() == "" || descripcionPartida.Length > 255)
+            {
+                txtDescripcionPartidaModalModificar.CssClass = "form-control alert-danger";
+                validados = false;
+            }
+
+            return validados;
+        }
+
+
 
         #endregion
 
@@ -528,8 +686,6 @@ namespace Proyecto.Catalogos.Partidas
             paginaActual = Convert.ToInt32(e.CommandArgument.ToString());
             mostrarDatosTabla();
         }
-
-       
 
         /// <summary>
         /// Jesús Torres

@@ -26,7 +26,7 @@ namespace AccesoDatos
             SqlConnection sqlConnection = conexion.conexionPEP();
             LinkedList<Partida> partidas = new LinkedList<Partida>();
 
-            String consulta = @"select id_partida, numero_partida, descripcion_partida, id_partida_padre from Partida where ano_periodo=@ano_periodo_ AND disponible=1 order by numero_partida;";
+            String consulta = @"select id_partida, numero_partida, descripcion_partida, id_partida_padre, ano_periodo from Partida where ano_periodo=@ano_periodo_ AND disponible=1 order by numero_partida;";
 
             SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
             sqlCommand.Parameters.AddWithValue("@ano_periodo_", anoPeriodo);
@@ -41,6 +41,8 @@ namespace AccesoDatos
                 partida.idPartida = Convert.ToInt32(reader["id_partida"].ToString());
                 partida.numeroPartida = reader["numero_partida"].ToString();
                 partida.descripcionPartida = reader["descripcion_partida"].ToString();
+                partida.periodo = new Periodo();
+                partida.periodo.anoPeriodo = Convert.ToInt32(reader["ano_periodo"].ToString());
 
                 //Si la partida padre contiene un valor se le agrega, sino se deja como nulo
                 if (!DBNull.Value.Equals(reader["id_partida_padre"]))
