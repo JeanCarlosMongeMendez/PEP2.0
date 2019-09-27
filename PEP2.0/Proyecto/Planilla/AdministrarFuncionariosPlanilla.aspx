@@ -141,7 +141,7 @@
         <ContentTemplate>--%>
     <div id="modalNuevoFuncionario" class="modal fade" role="alertdialog">
         <div class="modal-dialog modal-lg" style="min-width: 95%; margin: 2%">
-            <asp:HiddenField  ID="hdIdFuncionario" runat="server"/>
+            <asp:HiddenField ID="hdIdFuncionario" runat="server" />
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #005da4; color: white">
@@ -199,6 +199,22 @@
                                         <span class="fa fa-calendar"></span>
                                     </span>
                                     <asp:TextBox CssClass="form-control" ID="txtFecha" runat="server" placeholder="dd/mm/yyyy"></asp:TextBox>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <div class="row" style="text-align: center">
+
+                                <div class="col-md-3 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Jornada laboral <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-9 col-xs-12 col-sm-12" style="text-align: left">
+                                    <asp:DropDownList ID="ddlJornadaLaboral" class="btn btn-default dropdown-toggle" runat="server" AutoPostBack="true"></asp:DropDownList>
                                 </div>
 
                             </div>
@@ -447,13 +463,12 @@
                                     </div>
                                 </div>
 
-             <%--                           <div class="col-md-4 col-xs-6 col-sm-6">
+                                <%--                           <div class="col-md-4 col-xs-6 col-sm-6">
                                             <div class="input-group">
                                                 <span class="input-group-addon">+</span>
                                                 <asp:TextBox ID="txtSumaSalarioBase2" runat="server" class="form-control" AutoPostBack="true"></asp:TextBox>
                                             </div>
                                         </div>--%>
-
                             </div>
 
                             <div class="col-md-12 col-xs-12 col-sm-12">
@@ -697,7 +712,7 @@
     <!-- Modal Ver funcionario -->
     <div id="modalVerFuncionario" class="modal fade" role="alertdialog">
         <div class="modal-dialog modal-lg" style="min-width: 95%; margin: 2%">
-            <asp:HiddenField ID="hdIdEliminarFuncionario" runat="server"/>
+            <asp:HiddenField ID="hdIdEliminarFuncionario" runat="server" />
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #005da4; color: white">
