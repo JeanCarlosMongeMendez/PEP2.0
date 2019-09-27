@@ -112,14 +112,15 @@ namespace AccesoDatos
                     ",monto_escalafones_1 ,porcentaje_anualidad_1 ,monto_anualidad_1 ,salario_contratacion_1" +
                     ",salario_enero ,concepto_pago_ley ,salario_base_2 ,no_escalafones_2 ,monto_escalafones_2" +
                     ",porcentaje_anualidad_2 ,monto_anualidad_2 ,salario_contratacion_2 ,salario_junio" +
-                    ",salario_promedio ,salario_propuesto ,observaciones ,nombre_funcionario, porcentaje_suma_salario)" +
+                    ",salario_promedio ,salario_propuesto ,observaciones ,nombre_funcionario, porcentaje_suma_salario, " +
+                    "id_jornada_laboral)" +
                     "VALUES (@id_planilla, @id_escala_salarial, @fecha_ingreso, @salario_base_1," +
                     "@no_escalafones_1, @monto_escalafones_1, @porcentaje_anualidad_1," +
                     "@monto_anualidad_1, @salario_contratacion_1, @salario_enero," +
                     "@concepto_pago_ley, @salario_base_2, @no_escalafones_2," +
                     "@monto_escalafones_2, @porcentaje_anualidad_2, @monto_anualidad_2," +
                     "@salario_contratacion_2, @salario_junio, @salario_promedio, @salario_propuesto," +
-                    "@observaciones, @nombre_funcionario, @porcentaje_suma_salario) ", sqlConnection);
+                    "@observaciones, @nombre_funcionario, @porcentaje_suma_salario, @id_jornada) ", sqlConnection);
 
                 sqlCommandInsertar.Parameters.AddWithValue("@id_planilla", funcionario.planilla.idPlanilla);
                 sqlCommandInsertar.Parameters.AddWithValue("@id_escala_salarial", funcionario.escalaSalarial.idEscalaSalarial);
@@ -144,6 +145,7 @@ namespace AccesoDatos
                 sqlCommandInsertar.Parameters.AddWithValue("@observaciones", funcionario.observaciones);
                 sqlCommandInsertar.Parameters.AddWithValue("@nombre_funcionario", funcionario.nombreFuncionario);
                 sqlCommandInsertar.Parameters.AddWithValue("@porcentaje_suma_salario", funcionario.porcentajeSumaSalario);
+                sqlCommandInsertar.Parameters.AddWithValue("@id_jornada", funcionario.JornadaLaboral.idJornada);
 
                 sqlConnection.Open();
                 sqlTransaction = sqlConnection.BeginTransaction();
@@ -205,6 +207,7 @@ namespace AccesoDatos
                     "salario_propuesto = @salario_propuesto," +
                     "observaciones = @observaciones," +
                     "nombre_funcionario = @nombre_funcionario," +
+                    "id_jornada_laboral = @id_jornada," +
                     "porcentaje_suma_salario = @porcentaje_suma_salario " +
                     "WHERE id_funionario = @id", sqlConnection);
 
@@ -230,6 +233,7 @@ namespace AccesoDatos
                 sqlCommandInsertar.Parameters.AddWithValue("@salario_propuesto", funcionario.salarioPropuesto);
                 sqlCommandInsertar.Parameters.AddWithValue("@observaciones", funcionario.observaciones);
                 sqlCommandInsertar.Parameters.AddWithValue("@nombre_funcionario", funcionario.nombreFuncionario);
+                sqlCommandInsertar.Parameters.AddWithValue("@id_jornada", funcionario.JornadaLaboral.idJornada);
                 sqlCommandInsertar.Parameters.AddWithValue("@porcentaje_suma_salario", funcionario.porcentajeSumaSalario);
                 sqlCommandInsertar.Parameters.AddWithValue("@id", funcionario.idFuncionario);
 

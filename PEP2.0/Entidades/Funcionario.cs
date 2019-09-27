@@ -37,5 +37,6 @@ namespace Entidades
         public String observaciones { get; set; }
         public String nombreFuncionario { get; set; }
         public double porcentajeSumaSalario { get; set; }
+        public Jornada JornadaLaboral { get; set; }
     }
 }
