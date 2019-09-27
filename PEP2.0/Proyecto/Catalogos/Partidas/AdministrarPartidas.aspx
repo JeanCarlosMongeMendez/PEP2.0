@@ -3,7 +3,7 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
      <asp:ScriptManager ID="ScriptManager1" runat="server" EnableCdn="true"></asp:ScriptManager>
-    <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+    <asp:UpdatePanel ID="UpdatePanel" runat="server">
      <ContentTemplate>
             <div class="row">
                 <%-- titulo pantalla --%>
@@ -127,12 +127,9 @@
                 </div>
 
             </div>
-        </ContentTemplate>
-      </asp:UpdatePanel> 
+      
 
     <!-- Modal nueva partida -->
-    <asp:UpdatePanel ID="UpdatePanel2" runat="server">
-        <ContentTemplate>
             <div id="modalNuevaPartida" class="modal fade" role="alertdialog">
                 <div class="modal-dialog modal-lg">
 
@@ -216,8 +213,6 @@
 
                 </div>
             </div>
-        </ContentTemplate>
-    </asp:UpdatePanel>
     <!-- Fin modal nueva partida -->
 
 
@@ -228,8 +223,6 @@
 
 
      <!-- Modal modificar partida -->
-    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-        <ContentTemplate>
             <div id="modalModificarPartida" class="modal fade" role="alertdialog">
                 <div class="modal-dialog modal-lg">
 
@@ -313,14 +306,10 @@
 
                 </div>
             </div>
-        </ContentTemplate>
-    </asp:UpdatePanel>
     <!-- Fin modal modificar partida -->
 
 
      <!-- Modal eliminar escala -->
-    <asp:UpdatePanel ID="UpdatePanel5" runat="server">
-        <ContentTemplate>
             <div id="modalEliminarPartida" class="modal fade" role="alertdialog">
                 <div class="modal-dialog modal-lg">
 
@@ -407,10 +396,6 @@
         </ContentTemplate>
     </asp:UpdatePanel>
     <!-- Fin modal eliminar escala -->
-
-
-
-
 
 
 

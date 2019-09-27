@@ -26,7 +26,9 @@ namespace AccesoDatos
             SqlConnection sqlConnection = conexion.conexionPEP();
             LinkedList<Partida> partidas = new LinkedList<Partida>();
 
-            String consulta = @"select id_partida, numero_partida, descripcion_partida, id_partida_padre, ano_periodo from Partida where ano_periodo=@ano_periodo_ AND disponible=1 order by numero_partida;";
+            String consulta = @"select ph.id_partida, ph.numero_partida, ph.descripcion_partida, ph.id_partida_padre, ph.ano_periodo, pp.descripcion_partida AS descripcion_padre from Partida ph left join Partida pp ON ph.id_partida_padre = pp.id_partida 
+
+where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_partida;";
 
             SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
             sqlCommand.Parameters.AddWithValue("@ano_periodo_", anoPeriodo);
@@ -49,7 +51,9 @@ namespace AccesoDatos
                 {
                     partida.partidaPadre = new Partida();
                     partida.partidaPadre.idPartida = Convert.ToInt32(reader["id_partida_padre"].ToString());
-                }else
+                    partida.partidaPadre.descripcionPartida = reader["descripcion_padre"].ToString();
+                }
+                else
                 {
                     partida.partidaPadre = null;
                 }
