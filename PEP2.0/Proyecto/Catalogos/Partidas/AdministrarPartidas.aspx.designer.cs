@@ -22,13 +22,13 @@ namespace Proyecto.Catalogos.Partidas {
         protected global::System.Web.UI.ScriptManager ScriptManager1;
         
         /// <summary>
-        /// Control UpdatePanel3.
+        /// Control UpdatePanel.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel3;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel;
         
         /// <summary>
         /// Control label.
@@ -148,15 +148,6 @@ namespace Proyecto.Catalogos.Partidas {
         protected global::System.Web.UI.WebControls.Button btnNuevaPartida;
         
         /// <summary>
-        /// Control UpdatePanel2.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
-        
-        /// <summary>
         /// Control Label16.
         /// </summary>
         /// <remarks>
@@ -238,15 +229,6 @@ namespace Proyecto.Catalogos.Partidas {
         protected global::System.Web.UI.WebControls.Button btnNuevaPartidaModal;
         
         /// <summary>
-        /// Control UpdatePanel1.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
-        
-        /// <summary>
         /// Control Label4.
         /// </summary>
         /// <remarks>
@@ -326,15 +308,6 @@ namespace Proyecto.Catalogos.Partidas {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnModificar;
-        
-        /// <summary>
-        /// Control UpdatePanel5.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel5;
         
         /// <summary>
         /// Control labelP.

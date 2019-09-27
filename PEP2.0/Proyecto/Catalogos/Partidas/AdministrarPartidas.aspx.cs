@@ -139,7 +139,8 @@ namespace Proyecto.Catalogos.Partidas
 
         protected void btnEditar_Click(object sender, EventArgs e)
         {
-            String nombrePartidaPadre = "";
+            String nombrePartidaPadre = "Partida Padre";
+            lbPartidaPadreModalEliminar.Text = nombrePartidaPadre;
             int idPartida = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
             LinkedList<Partida> listaPartidaFiltrada = (LinkedList<Partida>)Session["listaPartidasFiltrada"];
             Partida partidaEditar = new Partida();
@@ -156,17 +157,7 @@ namespace Proyecto.Catalogos.Partidas
             //if que determina si el valir del partida padre es igual a null, en caso de no serlo, buscara el nombre mas adelante
             if (partidaEditar.partidaPadre != null)
             {
-                //recorre la lista de todas las partida
-                foreach (Partida partida in listaPartidaFiltrada)
-                {
-                    //Determina el numero de la partida padre para darselo al String
-                    if (partidaEditar.partidaPadre.idPartida == partida.idPartida)
-                    {
-                        nombrePartidaPadre = partida.descripcionPartida;
-                        lbPartidaPadreModalModificar.Text = nombrePartidaPadre;
-                        break;
-                    }
-                }
+                lbPartidaPadreModalModificar.Text = partidaEditar.partidaPadre.descripcionPartida;
             }
             
             lbPeriodoModalModificar.Text = partidaEditar.periodo.anoPeriodo.ToString();
@@ -177,9 +168,20 @@ namespace Proyecto.Catalogos.Partidas
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalModificarPartida();", true);
         }
 
+        /// <summary>
+        /// Jesús Torres
+        /// 26/sept/2019
+        /// Efecto: Muestra el modal de eliminar una partida, se llenan los datos del valor seleccionado
+        /// Requiere:
+        /// Modifica: 
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
-            String nombrePartidaPadre = "";
+            String nombrePartidaPadre = "Partida Padre";
+            lbPartidaPadreModalEliminar.Text = nombrePartidaPadre;
             int idPartida = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
             LinkedList<Partida> listaPartidaFiltrada = (LinkedList<Partida>)Session["listaPartidasFiltrada"];
             Partida partidaEditar = new Partida();
@@ -196,16 +198,10 @@ namespace Proyecto.Catalogos.Partidas
             //if que determina si el valir del partida padre es igual a null, en caso de no serlo, buscara el nombre mas adelante
             if (partidaEditar.partidaPadre != null)
             {
-                //recorre la lista de todas las partida
-                foreach (Partida partida in listaPartidaFiltrada)
+                //if que determina si el valir del partida padre es igual a null, en caso de no serlo, buscara el nombre mas adelante
+                if (partidaEditar.partidaPadre != null)
                 {
-                    //Determina el numero de la partida padre para darselo al String
-                    if (partidaEditar.partidaPadre.idPartida == partida.idPartida)
-                    {
-                        nombrePartidaPadre = partida.descripcionPartida;
-                        lbPartidaPadreModalEliminar.Text = nombrePartidaPadre;
-                        break;
-                    }
+                    lbPartidaPadreModalModificar.Text = partidaEditar.partidaPadre.descripcionPartida;
                 }
             }
 
@@ -325,6 +321,17 @@ namespace Proyecto.Catalogos.Partidas
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevaPartida();", true);
         }
 
+
+        /// <summary>
+        /// Jesús Torres
+        /// 26/sept/2019
+        /// Efecto: modifica una partida seleccionada, 
+        /// Requiere: 
+        /// Modifica: datos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnModificar_Click(object sender, EventArgs e)
         {
             //se validan los campos antes de guardar los datos en la base de datos
@@ -363,7 +370,16 @@ namespace Proyecto.Catalogos.Partidas
             }
         }
 
-
+        /// <summary>
+        /// Jesús Torres
+        /// 26/sept/2019
+        /// Efecto: Elimina una partid seleccionada
+        /// Requiere: 
+        /// Modifica: datos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnEliminarPartidaModal_Click(object sender, EventArgs e)
         {
             Partida partida = (Partida)Session["partidaSeleccionada"];
