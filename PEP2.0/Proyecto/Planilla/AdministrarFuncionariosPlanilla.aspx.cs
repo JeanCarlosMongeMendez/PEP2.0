@@ -962,6 +962,9 @@ namespace Proyecto.Planilla
             funcionario.salarioJunio = Convert.ToDouble(txtSalarioMensualJunioDiciembre.Text);
             funcionario.salarioPromedio = Convert.ToDouble(txtPromedioSemestres.Text);
             funcionario.porcentajeSumaSalario = Convert.ToDouble(txtSumaSalarioBase1.Text);
+            Jornada jornadaLaboral = new Jornada();
+            jornadaLaboral.idJornada = Convert.ToInt32(ddlJornadaLaboral.SelectedValue);
+            funcionario.JornadaLaboral = jornadaLaboral;
             double salarioPropuesto = 0;
             Double.TryParse(txtSalarioPropuesto.Text, out salarioPropuesto);
             funcionario.salarioPropuesto = salarioPropuesto;
