@@ -26,7 +26,7 @@
 
                  <div class="col-md-6 col-xs-6 col-sm-6">
                     <h4>Pasar Partidas</h4>
-                    <asp:Button ID="btnPartidas" runat="server" Text="Pasar Partidas" CssClass="btn btn-primary boton-nuevo" OnClick="btnPartidas_Click" />
+                    <asp:Button ID="btnPasarPartidas" runat="server" Text="Pasar Partidas" CssClass="btn btn-primary boton-nuevo" OnClick="btnPasarPartidas_Click" />
                 </div>
                 
                 <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
@@ -309,7 +309,7 @@
     <!-- Fin modal modificar partida -->
 
 
-     <!-- Modal eliminar escala -->
+     <!-- Modal eliminar partida -->
             <div id="modalEliminarPartida" class="modal fade" role="alertdialog">
                 <div class="modal-dialog modal-lg">
 
@@ -393,11 +393,251 @@
 
                 </div>
             </div>
-        </ContentTemplate>
+ <!-- Fin modal eliminar partida -->
+
+
+
+         <!-- Modal pasar partidas -->
+         <div id="modalPasarPartida" class="modal fade" role="alertdialog">
+             <div class="modal-dialog modal-lg" style="width: 98% !important">
+
+                 <!-- Modal content-->
+                 <div class="modal-content">
+                     <div class="modal-header">
+                         <button type="button" class="close" data-dismiss="modal">&times;</button>
+                         <h4 class="modal-title">Pasar Partidas</h4>
+                     </div>
+                     <div class="modal-body">
+                         <%-- campos a llenar --%>
+                         <div class="row">
+
+                             <%-- fin campos a llenar --%>
+
+                             <div class="col-md-12 col-xs-12 col-sm-12">
+                                 <br />
+                             </div>
+
+                             <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                 <div class="col-md-6 col-xs-6 col-sm-6">
+                                     <asp:Label ID="Label8" runat="server" Text="Período seleccionado" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                 </div>
+
+                                 <div class="col-md-6 col-xs-6 col-sm-6">
+                                     <asp:Label ID="Label19" runat="server" Text="Período a pasar partidas" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                 </div>
+                             </div>
+
+                             <div class="col-md-12 col-xs-12 col-sm-12">
+                                 <br />
+                             </div>
+
+                             <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                 <div class="col-md-6 col-xs-6 col-sm-6">
+                                     <asp:Label ID="lblPeriodoSeleccionado" runat="server" Text="" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                 </div>
+
+                                 <div class="col-md-6 col-xs-6 col-sm-6">
+                                     <asp:DropDownList ID="ddlPeriodoModalPasaPartidas" class="btn btn-default dropdown-toggle" runat="server" AutoPostBack="true"></asp:DropDownList>
+                                 </div>
+
+                             </div>
+
+                             <div class="col-md-12 col-xs-12 col-sm-12">
+                                 <hr />
+                             </div>
+
+
+                             <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                 <!-- ------------------------ tabla partidas a pasar --------------------------- -->
+                                 <div class=" table-responsive col-md-6 col-xs-6 col-sm-6" style="text-align: center; overflow-y: auto;">
+
+                                     <table id="tblPartidasAPasar" class="table table-bordered">
+                                         <thead>
+                                             <tr style="text-align: center" class="btn-primary">
+                                                 <th></th>
+                                                 <th>Descripción Partida</th>
+                                                 <th>Número de Partida</th>
+
+                                             </tr>
+                                         </thead>
+                                         <tr>
+                                             <td>
+                                                 <asp:LinkButton ID="btnFiltrarPartidasAPasar" runat="server" CssClass="btn btn-primary"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton></td>
+                                             <td>
+                                                 <asp:TextBox ID="txtBuscarDescPartidasAPasar" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción"></asp:TextBox>
+                                             </td>
+                                             <td></td>
+                                         </tr>
+
+                                         <asp:Repeater ID="rpPartidasAPasar" runat="server">
+                                             <HeaderTemplate>
+                                             </HeaderTemplate>
+
+                                             <ItemTemplate>
+                                                 <tr style="text-align: center">
+                                                     <td>
+                                                         <asp:LinkButton ID="btnSeleccionarCargaSocial" runat="server" ToolTip="Copiar carga social" CommandArgument='<%# Eval("idPartida") %>'><span class="glyphicon glyphicon-share-alt"></span></asp:LinkButton>
+                                                     </td>
+                                                     <td>
+                                                         <%# Eval("descripcionPartida") %>
+                                                     </td>
+                                                     <td>
+                                                         <%# Eval("numeroPartida") %>
+                                                     </td>
+                                                 </tr>
+                                             </ItemTemplate>
+                                             <FooterTemplate>
+                                             </FooterTemplate>
+                                         </asp:Repeater>
+                                     </table>
+                                 </div>
+                                 <!-- ---------------------- FIN tabla partidas a pasar ------------------------- -->
+
+
+
+                                 <!-- ------------------------ tabla partidas agregadas pasar --------------------------- -->
+                                 <div class=" table-responsive col-md-6 col-xs-6 col-sm-6" style="text-align: center; overflow-y: auto;">
+
+                                     <table id="tblPartidasAgregadas" class="table table-bordered">
+                                         <thead>
+                                             <tr style="text-align: center" class="btn-primary">
+                                                 <th></th>
+                                                 <th>Descripción Partida</th>
+                                                 <th>Número de Partida</th>
+                                             </tr>
+                                         </thead>
+                                         <tr>
+                                             <td>
+                                                 <asp:LinkButton ID="btnFiltrarPartidasAgregadas" runat="server" CssClass="btn btn-primary"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton></td>
+                                             <td>
+                                                 <asp:TextBox ID="txtBuscarDescPartidasAgregadas" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción"></asp:TextBox>
+                                             </td>
+                                             <td></td>
+                                         </tr>
+                                         <asp:Repeater ID="rpPartidasAgregadas" runat="server">
+                                             <HeaderTemplate>
+                                             </HeaderTemplate>
+
+                                             <ItemTemplate>
+                                                 <tr style="text-align: center">
+                                                     <td></td>
+                                                     <td>
+                                                         <%# Eval("descripcionPartida") %>
+                                                     </td>
+                                                     <td>
+                                                         <%# Eval("numeroPartida") %>
+                                                     </td>
+                                                 </tr>
+
+                                             </ItemTemplate>
+
+                                             <FooterTemplate>
+                                             </FooterTemplate>
+                                         </asp:Repeater>
+                                     </table>
+                                 </div>
+                                 <!-- ---------------------- FIN tabla partidas agregadas pasar ------------------------- -->
+                             </div>
+
+
+
+
+                             <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                 <!-- ---------------------- tabla paginacion partidas a pasar ------------------------- -->
+                                 <div class="col-md-6 col-xs-6 col-sm-6" style="text-align: center; overflow-y: auto;">
+                                     <center>
+                    <table class="table" style="max-width:664px;">
+                        <tr style="padding:1px !important">
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbPrimero2" runat="server" CssClass="btn btn-primary" OnClick="lbPrimero2_Click"><span class="glyphicon glyphicon-fast-backward"></span></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbAnterior2" runat="server" CssClass="btn btn-default" OnClick="lbAnterior2_Click" ><span class="glyphicon glyphicon-backward"></asp:LinkButton>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:DataList ID="rptPaginacion2" runat="server"
+                                    RepeatDirection="Horizontal">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lbPaginacion2" runat="server" CssClass="btn btn-default"
+                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
+                                            Text='<%# Eval("PaginaText") %>' ></asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:DataList>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbSiguiente2" CssClass="btn btn-default" runat="server" OnClick="lbSiguiente2_Click"><span class="glyphicon glyphicon-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbUltimo2" CssClass="btn btn-primary" runat="server" OnClick="lbUltimo2_Click"><span class="glyphicon glyphicon-fast-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:Label ID="lblpagina2" runat="server" Text=""></asp:Label>
+                            </td>
+                        </tr>
+                    </table>
+                        </center>
+                                 </div>
+                                 <!-- ---------------------- FIN tabla paginacion partidas a pasar ------------------------- -->
+
+                                 <!-- ---------------------- tabla paginacion partidas agregadas ------------------------- -->
+                                 <div class="col-md-6 col-xs-6 col-sm-6" style="text-align: center; overflow-y: auto;">
+                                     <center>
+                    <table class="table" style="max-width:664px;">
+                        <tr style="padding:1px !important">
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbPrimero3" runat="server" CssClass="btn btn-primary" OnClick="lbPrimero3_Click" ><span class="glyphicon glyphicon-fast-backward"></span></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbAnterior3" runat="server" CssClass="btn btn-default" OnClick="lbAnterior3_Click"><span class="glyphicon glyphicon-backward"></asp:LinkButton>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:DataList ID="rptPaginacion3" runat="server"
+                                   
+                                    RepeatDirection="Horizontal">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lbPaginacion3" runat="server" CssClass="btn btn-default"
+                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
+                                            Text='<%# Eval("PaginaText") %>' ></asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:DataList>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbSiguiente3" CssClass="btn btn-default" runat="server" ><span class="glyphicon glyphicon-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbUltimo3" CssClass="btn btn-primary" runat="server" ><span class="glyphicon glyphicon-fast-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:Label ID="lblpagina3" runat="server" Text=""></asp:Label>
+                            </td>
+                        </tr>
+                    </table>
+                        </center>
+                                 </div>
+                                 <!-- ---------------------- FIN tabla paginacion cargas sociales agregadas ------------------------- -->
+                             </div>
+
+
+
+
+
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+
+
+
+
+
+
+
+
+
+     </ContentTemplate>
     </asp:UpdatePanel>
-    <!-- Fin modal eliminar escala -->
-
-
+    
 
      <!-- Script inicio -->
     <script type="text/javascript">
@@ -411,6 +651,10 @@
 
           function activarModalEliminarPartida() {
             $('#modalEliminarPartida').modal('show');
+        };
+
+         function activarModalPasarPartida() {
+            $('#modalPasarPartida').modal('show');
         };
     </script>
     <!-- Script fin -->

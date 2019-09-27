@@ -18,6 +18,8 @@ namespace Proyecto.Catalogos.Partidas
         PeriodoServicios periodoServicios = new PeriodoServicios();
         PartidaServicios partidaServicios = new PartidaServicios();
         readonly PagedDataSource pgsource = new PagedDataSource();
+        int primerIndex, ultimoIndex, primerIndex2, ultimoIndex2, primerIndex3, ultimoIndex3;
+        private int elmentosMostrar = 10;
         #endregion
 
         #region page_Load
@@ -79,10 +81,7 @@ namespace Proyecto.Catalogos.Partidas
             mostrarDatosTabla();
         }
 
-        protected void btnPartidas_Click(object sender, EventArgs e)
-        {
-
-        }
+        
         /// <summary>
         /// Jesús Torres
         /// 20/sept/2019
@@ -585,8 +584,6 @@ namespace Proyecto.Catalogos.Partidas
 
         #region paginacion Actual
         //Bloque que contiene get y set de pagina actual
-        int primerIndex, ultimoIndex;
-        private int elmentosMostrar = 10;
         private int paginaActual
         {
             get
@@ -600,6 +597,38 @@ namespace Proyecto.Catalogos.Partidas
             set
             {
                 ViewState["paginaActual"] = value;
+            }
+        }
+
+        private int paginaActual2
+        {
+            get
+            {
+                if (ViewState["paginaActual2"] == null)
+                {
+                    return 0;
+                }
+                return ((int)ViewState["paginaActual2"]);
+            }
+            set
+            {
+                ViewState["paginaActual2"] = value;
+            }
+        }
+
+        private int paginaActual3
+        {
+            get
+            {
+                if (ViewState["paginaActual3"] == null)
+                {
+                    return 0;
+                }
+                return ((int)ViewState["paginaActual3"]);
+            }
+            set
+            {
+                ViewState["paginaActual3"] = value;
             }
         }
         #endregion
@@ -699,6 +728,51 @@ namespace Proyecto.Catalogos.Partidas
             mostrarDatosTabla();
         }
 
+        protected void lbPrimero2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void lbAnterior2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void lbSiguiente2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void lbUltimo2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void lbPrimero3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void lbAnterior3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnPasarPartidas_Click(object sender, EventArgs e)
+        {
+            Periodo periodo = new Periodo();
+            periodo.anoPeriodo = Convert.ToInt32(ddlPeriodo.SelectedValue);
+
+            lblPeriodoSeleccionado.Text = periodo.anoPeriodo.ToString();
+            LinkedList<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(periodo.anoPeriodo);
+
+            Session["listaPartidasAPasar"] = listaPartidas;
+            Session["listaPartidasAPasarFiltrada"] = listaPartidas;
+
+            cargarDatosTblPartidasAPasar();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarPartida();", true);
+        }
+
         /// <summary>
         /// Jesús Torres
         /// 19/sep/2019
@@ -719,10 +793,143 @@ namespace Proyecto.Catalogos.Partidas
         }
 
 
-        
+
         #endregion
 
+        /// <summary>
+        /// Jesús Torres
+        /// 24/sep/2019
+        /// Efecto: Metodo para llenar la tabla de partidas en modal de pasarPartidas
+        /// Requiere: -
+        /// Modifica: -
+        /// Devuelve: -
+        /// </summary>
+        private void cargarDatosTblPartidasAPasar()
+        {
+            
+            LinkedList<Partida> listaSession = (LinkedList<Partida>)Session["listaPartidasAPasar"];
+            String desc = "";
 
+            if (!String.IsNullOrEmpty(txtBuscarDescPartidasAPasar.Text))
+                desc = txtBuscarDescPartidasAPasar.Text;
+
+            List<Partida> listaPartidas = (List<Partida>)listaSession.Where(partida => partida.descripcionPartida.ToUpper().Contains(desc.ToUpper())).ToList();
+            Session["listaPartidasAPasarFiltrada"] = listaPartidas;
+
+            //lista solicitudes
+            var dt2 = listaPartidas;
+            pgsource.DataSource = dt2;
+            pgsource.AllowPaging = true;
+
+            //numero de items que se muestran en el Repeater
+            pgsource.PageSize = elmentosMostrar;
+            pgsource.CurrentPageIndex = paginaActual2;
+            //mantiene el total de paginas en View State
+            ViewState["TotalPaginas2"] = pgsource.PageCount;
+            //Ejemplo: "Página 1 al 10"
+            lblpagina2.Text = "Página " + (paginaActual2 + 1) + " de " + pgsource.PageCount + " (" + dt2.Count + " - elementos)";
+            //Habilitar los botones primero, último, anterior y siguiente
+            lbAnterior2.Enabled = !pgsource.IsFirstPage;
+            lbSiguiente2.Enabled = !pgsource.IsLastPage;
+            lbPrimero2.Enabled = !pgsource.IsFirstPage;
+            lbUltimo2.Enabled = !pgsource.IsLastPage;
+
+            rpPartidasAPasar.DataSource = listaPartidas;
+            rpPartidasAPasar.DataBind();
+
+            //metodo que realiza la paginacion
+            Paginacion2();
+
+
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarPartidas').hide();", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarPartida();", true);
+        }
+
+        /// <summary>
+        /// Jesús Torres
+        /// 27/sep/2019
+        /// Efecto: realiza la paginacion
+        /// Requiere: -
+        /// Modifica: paginacion mostrada en pantalla
+        /// Devuelve: -
+        /// </summary>
+        private void Paginacion2()
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("IndexPagina"); //Inicia en 0
+            dt.Columns.Add("PaginaText"); //Inicia en 1
+
+            primerIndex2 = paginaActual2 - 2;
+            if (paginaActual2 > 2)
+                ultimoIndex2 = paginaActual2 + 2;
+            else
+                ultimoIndex2 = 4;
+
+            //se revisa que la ultima pagina sea menor que el total de paginas a mostrar, sino se resta para que muestre bien la paginacion
+            if (ultimoIndex2 > Convert.ToInt32(ViewState["TotalPaginas2"]))
+            {
+                ultimoIndex2 = Convert.ToInt32(ViewState["TotalPaginas2"]);
+                primerIndex2 = ultimoIndex2 - 4;
+            }
+
+            if (primerIndex2 < 0)
+                primerIndex2 = 0;
+
+            //se crea el numero de paginas basado en la primera y ultima pagina
+            for (var i = primerIndex2; i < ultimoIndex2; i++)
+            {
+                var dr = dt.NewRow();
+                dr[0] = i;
+                dr[1] = i + 1;
+                dt.Rows.Add(dr);
+            }
+
+            rptPaginacion2.DataSource = dt;
+            rptPaginacion2.DataBind();
+        }
+
+        /// <summary>
+        /// Jesus Torres
+        /// 27/sep/2019
+        /// Efecto: realiza la paginacion
+        /// Requiere: -
+        /// Modifica: paginacion mostrada en pantalla
+        /// Devuelve: -
+        /// </summary>
+        private void Paginacion3()
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("IndexPagina"); //Inicia en 0
+            dt.Columns.Add("PaginaText"); //Inicia en 1
+
+            primerIndex3 = paginaActual3 - 2;
+            if (paginaActual3 > 2)
+                ultimoIndex3 = paginaActual3 + 2;
+            else
+                ultimoIndex3 = 4;
+
+            //se revisa que la ultima pagina sea menor que el total de paginas a mostrar, sino se resta para que muestre bien la paginacion
+            if (ultimoIndex3 > Convert.ToInt32(ViewState["TotalPaginas3"]))
+            {
+                ultimoIndex3 = Convert.ToInt32(ViewState["TotalPaginas3"]);
+                primerIndex3 = ultimoIndex3 - 4;
+            }
+
+            if (primerIndex3 < 0)
+                primerIndex3 = 0;
+
+            //se crea el numero de paginas basado en la primera y ultima pagina
+            for (var i = primerIndex3; i < ultimoIndex3; i++)
+            {
+                var dr = dt.NewRow();
+                dr[0] = i;
+                dr[1] = i + 1;
+                dt.Rows.Add(dr);
+            }
+
+            rptPaginacion3.DataSource = dt;
+            rptPaginacion3.DataBind();
+        }
 
     }
 }
