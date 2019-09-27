@@ -140,7 +140,7 @@ namespace Proyecto.Catalogos.Partidas
         protected void btnEditar_Click(object sender, EventArgs e)
         {
             String nombrePartidaPadre = "Partida Padre";
-            lbPartidaPadreModalEliminar.Text = nombrePartidaPadre;
+            lbPartidaPadreModalModificar.Text = nombrePartidaPadre;
             int idPartida = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
             LinkedList<Partida> listaPartidaFiltrada = (LinkedList<Partida>)Session["listaPartidasFiltrada"];
             Partida partidaEditar = new Partida();
@@ -195,15 +195,11 @@ namespace Proyecto.Catalogos.Partidas
                 }
             }
             Session["partidaSeleccionada"] = partidaEditar;
-            //if que determina si el valir del partida padre es igual a null, en caso de no serlo, buscara el nombre mas adelante
-            if (partidaEditar.partidaPadre != null)
-            {
                 //if que determina si el valir del partida padre es igual a null, en caso de no serlo, buscara el nombre mas adelante
                 if (partidaEditar.partidaPadre != null)
                 {
-                    lbPartidaPadreModalModificar.Text = partidaEditar.partidaPadre.descripcionPartida;
-                }
-            }
+                lbPartidaPadreModalEliminar.Text = partidaEditar.partidaPadre.descripcionPartida;
+                }      
 
             lbPeriodoModalEliminar.Text = partidaEditar.periodo.anoPeriodo.ToString();
             txtNumeroPartidasModalElimina.Text = partidaEditar.numeroPartida;
