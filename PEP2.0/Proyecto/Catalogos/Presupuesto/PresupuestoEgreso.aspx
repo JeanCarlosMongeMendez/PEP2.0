@@ -78,12 +78,12 @@
                                     
                                     </td>
                                     <td> 
-                                       <%# Eval("montoTotal") %>
-                                      ₡ <asp:TextBox ID="montoTablaPrincipal" runat="server" > </asp:TextBox>
+                                       
+                                      ₡ <asp:TextBox ID="montoTablaPrincipal" runat="server" Text='<%# Eval("montoTotal") %>'> </asp:TextBox>
                                     </td>
                                      <td> 
-                                         <%# Eval("descripcion") %>
-                                      <asp:TextBox ID="descripcionTablaPrincipal" runat="server"  ></asp:TextBox>
+                                         
+                                      <asp:TextBox ID="descripcionTablaPrincipal" runat="server"  Text='<%# Eval("descripcion") %>'></asp:TextBox>
                                     </td>
                                   
                                 </tr>
