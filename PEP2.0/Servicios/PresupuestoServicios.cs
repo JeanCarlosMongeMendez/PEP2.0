@@ -125,6 +125,15 @@ namespace Servicios
             this.presupuestoDatos.editarPresupuestoEgresoPartida(presupuestoEgresoPartida);
         }
 
-            #endregion
+        /// <summary>
+        /// Este método se encarga de eliminar las partidas egresos
+        /// </summary>
+        /// <param name="presupuesto"></param>
+        public void eliminarPresupuestoEgresoPartida(PresupuestoEgresoPartida presupuestoEgresoPartida)
+        {
+            this.presupuestoDatos.eliminarPresupuestoEgresoPartida(presupuestoEgresoPartida);
         }
+
+        #endregion
+    }
 }

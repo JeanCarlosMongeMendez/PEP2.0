@@ -457,9 +457,9 @@ namespace AccesoDatos
             readerPresupuestoEgreso = sqlCommandPresupuestoEgreso.ExecuteReader();
             while (readerPresupuestoEgreso.Read())
             {
-                descricpcion += "-";
-                descricpcion += readerPresupuestoEgreso["descripcion"].ToString()+"\n";
-               descricpcion += "\n";
+                descricpcion +=readerPresupuestoEgreso["descripcion"].ToString()+"<br/>";
+               
+               
             }
 
             sqlConnectionPresupuestoEgreso.Close();
@@ -598,8 +598,9 @@ namespace AccesoDatos
         public void editarPresupuestoEgresoPartida(PresupuestoEgresoPartida presupuestoEgresoPartida)
         {
             SqlConnection sqlConnectionPresupuestoEgreso = conexion.conexionPEP();
-            SqlCommand sqlCommandPresupuestoEgreso = new SqlCommand("UPDATE Presupuesto_Egreso_Partida  SET monto = @monto_, descripcion= @descripcion_ where id_partida=@id_partida_", sqlConnectionPresupuestoEgreso);
+            SqlCommand sqlCommandPresupuestoEgreso = new SqlCommand("UPDATE Presupuesto_Egreso_Partida  SET monto = @monto_, descripcion= @descripcion_ where id_partida=@id_partida_ and id_presupuesto_egreso=@id_presupuesto_egreso_", sqlConnectionPresupuestoEgreso);
             sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@id_partida_", presupuestoEgresoPartida.idPartida);
+            sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@id_presupuesto_egreso_", presupuestoEgresoPartida.idPresupuestoEgreso);
             sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@monto_", presupuestoEgresoPartida.monto);
             sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@descripcion_", presupuestoEgresoPartida.descripcion);
             sqlConnectionPresupuestoEgreso.Open();
@@ -607,6 +608,23 @@ namespace AccesoDatos
             sqlConnectionPresupuestoEgreso.Close();
 
         }
+       
+        /// <summary>
+        /// Este método se encarga de eliminar las partidas egresos
+        /// </summary>
+        /// <param name="presupuesto"></param>
+        public void eliminarPresupuestoEgresoPartida(PresupuestoEgresoPartida presupuestoEgresoPartida)
+        {
+            SqlConnection sqlConnectionPresupuestoEgreso = conexion.conexionPEP();
+            SqlCommand sqlCommandPresupuestoEgreso = new SqlCommand("delete Presupuesto_Egreso_Partida where id_partida=@id_partida_ and id_presupuesto_egreso=@id_presupuesto_egreso_", sqlConnectionPresupuestoEgreso);
+            sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@id_partida_", presupuestoEgresoPartida.idPartida);
+            sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@id_presupuesto_egreso_", presupuestoEgresoPartida.idPresupuestoEgreso);
+            sqlConnectionPresupuestoEgreso.Open();
+            sqlCommandPresupuestoEgreso.ExecuteScalar();
+            sqlConnectionPresupuestoEgreso.Close();
+
+        }
+
         #endregion PRESUPUESTO DE EGRESO
     }
 }

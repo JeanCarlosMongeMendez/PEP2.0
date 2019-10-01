@@ -43,10 +43,12 @@
   <ItemGroup>
     <Compile Include="Contacto.cs" />
     <Compile Include="EscalaSalarial.cs" />
+    <Compile Include="EstadoPresupuesto.cs" />
     <Compile Include="Funcionario.cs" />
     <Compile Include="FuncionarioFundevi.cs" />
     <Compile Include="Jornada.cs" />
     <Compile Include="Partida.cs" />
+    <Compile Include="PartidaPresupuestoEgreso.cs" />
     <Compile Include="Periodo.cs" />
     <Compile Include="Planilla.cs" />
     <Compile Include="PlanillaFundevi.cs" />

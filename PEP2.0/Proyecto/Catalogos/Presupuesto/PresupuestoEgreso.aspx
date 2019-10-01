@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMaster.Master" AutoEventWireup="true" CodeBehind="PresupuestoEgreso.aspx.cs" Inherits="Proyecto.Catalogos.Presupuesto.PresupuestoEgreso" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMaster.Master" AutoEventWireup="true" CodeBehind="PresupuestoEgreso.aspx.cs" Inherits="Proyecto.Catalogos.Presupuesto.PresupuestoEgreso" MaintainScrollPositionOnPostback="true"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -69,21 +69,23 @@
                             <ItemTemplate>
                                 <tr style="text-align: center">
                                     <td>
-                                        <asp:LinkButton ID="btnAnadirPartida" runat="server" ToolTip="Anadir" CommandArgument='<%# Eval("idPresupuestoEgreso") %>' OnClick="btnNuevoPresupuesto_Click"><span class="btn glyphicon glyphicon-plus"></span></asp:LinkButton>
-                                        <asp:LinkButton ID="btnVerPartida" runat="server" ToolTip="Ver" CommandArgument='<%# Eval("idPresupuestoEgreso") %>' OnClick="btnVerPartidasEgreso_Click"><span class="btn glyphicon glyphicon-eye-open"></span></asp:LinkButton>
+                                        <asp:LinkButton ID="btnAnadirPartida" runat="server" ToolTip="Anadir" CommandArgument='<%# Eval("numeroPartida") %>' OnClick="btnNuevoPresupuesto_Click"><span class="btn glyphicon glyphicon-plus"></span></asp:LinkButton>
+                                        <asp:LinkButton ID="btnVerPartida" runat="server" ToolTip="Ver" CommandArgument='<%# Eval("numeroPartida") %>' OnClick="btnVerPartidasEgreso_Click"><span class="btn glyphicon glyphicon-eye-open"></span></asp:LinkButton>
 
                                     </td>
                                     <td>
-                                        <%# Eval("idPresupuestoEgreso") %>
+                                        <%# Eval("numeroPartida") %>
                                     
                                     </td>
-                                    <td>₡  <%# Eval("montoTotal") %> 
-                                    
+                                    <td> 
+                                       <%# Eval("montoTotal") %>
+                                      ₡ <asp:TextBox ID="montoTablaPrincipal" runat="server" > </asp:TextBox>
                                     </td>
-
-                                    <td>
-                                        <%# Eval("descripcion") %>
+                                     <td> 
+                                         <%# Eval("descripcion") %>
+                                      <asp:TextBox ID="descripcionTablaPrincipal" runat="server"  ></asp:TextBox>
                                     </td>
+                                  
                                 </tr>
 
                             </ItemTemplate>
@@ -255,8 +257,8 @@
                                         <thead>
                                             <tr style="text-align: center" class="btn-primary">
                                                 <th></th>
+                                                <th>Presupuesto egreso </th>
                                                 <th>Partida</th>
-                                                <th>Presupuesto  </th>
                                                 <th>Monto </th>
                                                 <th>Descripción</th>
                                             </tr>
@@ -270,7 +272,8 @@
                                                 <tr style="text-align: center">
                                                     <td>
 
-                                                     <asp:LinkButton ID="btnEditarPartidaEgreso" runat="server" ToolTip="Anadir" CommandArgument='<%# Eval("idPartida") %>' OnClick="btnEditarPresupuestoEgreso_Click"><span class="btn glyphicon glyphicon-edit"></span></asp:LinkButton>
+                                                     <asp:LinkButton ID="btnEditarPartidaEgreso" runat="server" ToolTip="Editar" CommandArgument='<%# Eval("idPartida") %>' OnClick="btnEditarPresupuestoEgreso_Click"><span class="btn glyphicon glyphicon-edit"></span></asp:LinkButton>
+                                                     <asp:LinkButton ID="btnEliminarPartidaEgreso" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("idPartida") %>' OnClick="btnEliminarPresupuestoEgreso_Click"><span class="btn glyphicon glyphicon-remove"></span></asp:LinkButton>
                                                
                                                     </td>
                                                     <td>
@@ -439,7 +442,75 @@
         </ContentTemplate>
     </asp:UpdatePanel>
     <!-- Fin modal nueva escala -->
+    
+    <asp:UpdatePanel ID="UpdatePanel4" runat="server">
+        <ContentTemplate>
+            <div id="modalEliminarPartidaEgreso" class="modal fade" role="alertdialog">
+                <div class="modal-dialog modal-lg">
 
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Eliminar partida egreso</h4>
+                        </div>
+                        <div class="modal-body">
+                            <%-- campos a llenar --%>
+                            <div class="row">
+
+                                <%-- fin campos a llenar --%>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <br />
+                                </div>
+                                      <p class="mt-1">Desea eliminar la partida egreso con la siguientes información</p>
+                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                    <div class="col-md-3 col-xs-3 col-sm-3">
+                                        <asp:Label ID="label3" runat="server" Text="Partida" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    </div>
+
+                                    <div class="col-md-4 col-xs-4 col-sm-4">
+                                        <asp:Label ID="idPartidaEliminar" runat="server" Font-Size="Medium" ForeColor="Black" CssClass="label" Enabled="false"></asp:Label>
+                                    </div>
+                                </div>
+                                <br />
+                                <br />
+                                <br />
+                                 <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                    <div class="col-md-3 col-xs-3 col-sm-3">
+                                        <asp:Label ID="label8" runat="server" Text="Presupuesto" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    </div>
+
+                                    <div class="col-md-4 col-xs-4 col-sm-4">
+                                        <asp:Label ID="idPresupuestoEliminar" runat="server" Font-Size="Medium" ForeColor="Black" CssClass="label" Enabled="false"></asp:Label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <br />
+                                </div>
+
+                               
+
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <br />
+                                </div>
+
+                                
+
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="text-align: center">
+                            <asp:Button ID="btnEliminar" runat="server" Text="Eliminar" CssClass="btn btn-primary" OnClick="btnEliminarPartidaEgresoModal_Click" />
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+    <!-- Fin modal nueva escala -->
 
     <script type="text/javascript">
         function activarModalIngresarPartida() {
@@ -451,7 +522,9 @@
           function activarModalEditarPartidaEgreso() {
             $('#modalEditarPartidaEgreso').modal('show');
         };
-
+        function activarModalEliminarPartidaEgreso() {
+            $('#modalEliminarPartidaEgreso').modal('show');
+        };
 
     </script>
 </asp:Content>
