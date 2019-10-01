@@ -227,6 +227,7 @@
         </ContentTemplate>
     </asp:UpdatePanel>
     <!-- Fin modal nueva escala -->
+
     <!-- Nuevo modal nueva escala -->
 
     <asp:UpdatePanel ID="UpdatePanel5" runat="server">
@@ -253,7 +254,7 @@
                                     <table id="tblEscalasAgregadas" class="table table-bordered">
                                         <thead>
                                             <tr style="text-align: center" class="btn-primary">
-
+                                                <th></th>
                                                 <th>Partida</th>
                                                 <th>Presupuesto  </th>
                                                 <th>Monto </th>
@@ -267,6 +268,11 @@
 
                                             <ItemTemplate>
                                                 <tr style="text-align: center">
+                                                    <td>
+
+                                                     <asp:LinkButton ID="btnEditarPartidaEgreso" runat="server" ToolTip="Anadir" CommandArgument='<%# Eval("idPartida") %>' OnClick="btnEditarPresupuestoEgreso_Click"><span class="btn glyphicon glyphicon-edit"></span></asp:LinkButton>
+                                               
+                                                    </td>
                                                     <td>
                                                         <%# Eval("idPresupuestoEgreso") %>
                                     
@@ -340,6 +346,101 @@
     </asp:UpdatePanel>
 
 
+      <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+        <ContentTemplate>
+            <div id="modalEditarPartidaEgreso" class="modal fade" role="alertdialog">
+                <div class="modal-dialog modal-lg">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Editar partida egreso</h4>
+                        </div>
+                        <div class="modal-body">
+                            <%-- campos a llenar --%>
+                            <div class="row">
+
+                                <%-- fin campos a llenar --%>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <br />
+                                </div>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                    <div class="col-md-3 col-xs-3 col-sm-3">
+                                        <asp:Label ID="label1" runat="server" Text="Partida" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    </div>
+
+                                    <div class="col-md-4 col-xs-4 col-sm-4">
+                                        <asp:Label ID="idPartidaEditar" runat="server" Font-Size="Medium" ForeColor="Black" CssClass="label" Enabled="false"></asp:Label>
+                                    </div>
+                                </div>
+                                <br />
+                                <br />
+                                <br />
+                                 <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                    <div class="col-md-3 col-xs-3 col-sm-3">
+                                        <asp:Label ID="label7" runat="server" Text="Presupuesto" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    </div>
+
+                                    <div class="col-md-4 col-xs-4 col-sm-4">
+                                        <asp:Label ID="idPresupuestoEditar" runat="server" Font-Size="Medium" ForeColor="Black" CssClass="label" Enabled="false"></asp:Label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <br />
+                                </div>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                    <div class="col-md-3 col-xs-3 col-sm-3">
+                                        <asp:Label ID="label34" runat="server" Text="Monto" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    </div>
+
+
+                                    <div class="col-md-4 col-xs-4 col-sm-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">₡</span>
+                                            <asp:TextBox class="form-control" ID="txtMontoNuevoEditar" runat="server" Enabled="true"></asp:TextBox>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <br />
+                                </div>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                    <div class="col-md-3 col-xs-3 col-sm-3">
+                                        <asp:Label ID="Label6" runat="server" Text="Descripción" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    </div>
+
+                                    <div class="col-md-4 col-xs-4 col-sm-4">
+                                        <div class="input-group">
+
+                                            <asp:TextBox class="form-control" ID="txtDescripcionEditar" type="text" runat="server"></asp:TextBox>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="text-align: center">
+                            <asp:Button ID="Button1" runat="server" Text="Editar" CssClass="btn btn-primary" OnClick="btnEditarPartidaEgresoModal_Click" />
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+    <!-- Fin modal nueva escala -->
+
+
     <script type="text/javascript">
         function activarModalIngresarPartida() {
             $('#modalIngresarPartida').modal('show');
@@ -347,7 +448,9 @@
         function activarModalMostrarPresupuestoEgresos() {
             $('#modalMostrarPresupuestoEgresos').modal('show');
         };
-
+          function activarModalEditarPartidaEgreso() {
+            $('#modalEditarPartidaEgreso').modal('show');
+        };
 
 
     </script>

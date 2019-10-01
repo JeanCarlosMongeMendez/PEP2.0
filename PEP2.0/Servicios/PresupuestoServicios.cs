@@ -116,6 +116,14 @@ namespace Servicios
             this.presupuestoDatos.guardarPartidasPresupuestoEgreso(presupuestosE);
         }
 
+        /// <summary>
+        /// Este método se encarga de actualizar las descripciones y montos de las partidas egresos
+        /// </summary>
+        /// <param name="presupuesto"></param>
+        public void editarPresupuestoEgresoPartida(PresupuestoEgresoPartida presupuestoEgresoPartida)
+        {
+            this.presupuestoDatos.editarPresupuestoEgresoPartida(presupuestoEgresoPartida);
+        }
 
             #endregion
         }

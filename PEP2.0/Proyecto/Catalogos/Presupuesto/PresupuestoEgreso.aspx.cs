@@ -22,6 +22,7 @@ namespace Proyecto.Catalogos.Presupuesto
         readonly PagedDataSource pgsource = new PagedDataSource();
         int primerIndex, ultimoIndex, primerIndex2, ultimoIndex2;
         private int elmentosMostrar = 10;
+
         private int paginaActual
         {
             get
@@ -86,6 +87,7 @@ namespace Proyecto.Catalogos.Presupuesto
             {
                 Session["ListaPresupuestoEgresoGuardar"] = null;
                 MostrarDatosTabla();
+                
             }
         }
         #endregion
@@ -415,15 +417,16 @@ namespace Proyecto.Catalogos.Presupuesto
         private double MontoPresupuestoIngreso()
         {
             LinkedList<Entidades.PresupuestoIngreso> presupuestoIngresos = new LinkedList<Entidades.PresupuestoIngreso>();
-            presupuestoIngresos = this.presupuestoServicios.ObtenerPorProyecto(Int32.Parse(ProyectosDDL.SelectedValue));
+            //presupuestoIngresos = this.presupuestoServicios.ObtenerPorProyecto(Int32.Parse(ProyectosDDL.SelectedValue));
             double montoTotalPresupuestoIngreso = 0;
 
             foreach (Entidades.PresupuestoIngreso presupuestoIngreso in presupuestoIngresos)
             {
-                if (presupuestoIngreso.estado)
+                 montoTotalPresupuestoIngreso += presupuestoIngreso.monto;
+               /* if (presupuestoIngreso.estado)
                 {
                     montoTotalPresupuestoIngreso += presupuestoIngreso.monto;
-                }
+                }*/
             }
 
             return montoTotalPresupuestoIngreso;
@@ -699,7 +702,8 @@ namespace Proyecto.Catalogos.Presupuesto
 
             LinkedList<Entidades.PresupuestoEgresoPartida> presupuestos = new LinkedList<Entidades.PresupuestoEgresoPartida>();
             int idPartida = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
-            presupuestoEgresoBuscar.idPartida = idPartida;
+            Session["idPartidaVer"] = idPartida;
+           presupuestoEgresoBuscar.idPartida = idPartida;
 
             presupuestos = presupuestoServicios.presupuestoEgresoPartidasPorPresupuesto(presupuestoEgresoBuscar);
             Session["listaPresupuestosEgresosPartida"] = presupuestos;
@@ -709,12 +713,78 @@ namespace Proyecto.Catalogos.Presupuesto
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalMostrarPresupuestoEgresos();", true);
 
         }
+        
+        /// <summary>
+        /// Josseline M
+        /// Pemite editar las pantallas de editar presupuesto egreso
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnEditarPresupuestoEgreso_Click(object sender, EventArgs e)
+        {
+            int idPartida = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+            LinkedList<Entidades.PresupuestoEgresoPartida> listaSession = (LinkedList<Entidades.PresupuestoEgresoPartida>)Session["listaPresupuestosEgresosPartida"];
+
+            foreach (Entidades.PresupuestoEgresoPartida partidaEgreso in listaSession)
+            {
+                if (partidaEgreso.idPartida==idPartida)
+                {
+
+                    txtDescripcionEditar.Text = partidaEgreso.descripcion;
+                    txtMontoNuevoEditar.Text = partidaEgreso.monto + "";
+                    idPartidaEditar.Text = idPartida + "";
+                    idPresupuestoEditar.Text = partidaEgreso.idPresupuestoEgreso+"";
+
+                }
+               
+            }
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEditarPartidaEgreso", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEditarPartidaEgreso').hide();", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalEditarPartidaEgreso();", true);
+
+        }
+
+
+        /// <summary>
+        /// Almacena la actualización del presupuesto egreso
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnEditarPartidaEgresoModal_Click(object sender, EventArgs e)
+        {
+            Entidades.PresupuestoEgresoPartida partidaEgreso = new Entidades.PresupuestoEgresoPartida();
+            Double salario = 0;
+            String txtMonto = txtMontoNuevoEditar.Text.Replace(".", ",");
+            if (Double.TryParse(txtMonto, out salario))
+            {
+                partidaEgreso.idPresupuestoEgreso = Convert.ToInt32(idPresupuestoEditar.Text);
+                partidaEgreso.idPartida = Convert.ToInt32(idPartidaEditar.Text);
+                partidaEgreso.monto = salario;
+                partidaEgreso.descripcion = txtDescripcionEditar.Text;
+                presupuestoServicios.editarPresupuestoEgresoPartida(partidaEgreso);
+                
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalMostrarPresupuestoEgresos", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalMostrarPresupuestoEgresos').hide();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalMostrarPresupuestoEgresos();", true);
+
+
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEditarPartidaEgreso", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEditarPartidaEgreso').hide();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalEditarPartidaEgreso();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El monto asignado es incorrecto" + "');", true);
+            }
+        }
 
         protected void Proyectos_OnChanged(object sender, EventArgs e)
         {
             CargarUnidades();
         }
-
+        
+        /// <summary>
+        /// Este metodo se encarga de actualizar el estado del presupuesto de egreso
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void Guardar_Click(object sender, EventArgs e)
         {
           

@@ -280,37 +280,7 @@ namespace AccesoDatos
 
             return presupuestoEgresosPartidaL;
         }
-       /*
-        /// <summary>
-        /// Verifica si el monto total de las partidas de egresos es menor a la asignada al presupuesto
-        /// </summary>
-        /// <param name="idPresupuestoEgreso"></param>
-        /// <returns></returns>
-        public int AprobarPresupuestoEgreso(int idPresupuestoEgreso)
-        {
-            SqlConnection sqlConnection = conexion.conexionPEP();
-            sqlConnection.Open();
-            int respuesta = 0;
-
-            try
-            {
-                SqlCommand sqlCommand = new SqlCommand("update Presupuesto_Egreso set estado=1 output INSERTED.id_presupuesto_egreso " +
-                    "where id_presupuesto_egreso=@id_presupuesto_egreso_;", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@id_presupuesto_egreso_", idPresupuestoEgreso);
-
-                respuesta = (int)sqlCommand.ExecuteScalar();
-            }
-            catch (SqlException ex)
-            {
-                //Utilidades.ErrorBitacora(ex.Message, "Error al insertar el periodo");
-            }
-
-            sqlConnection.Close();
-
-            return respuesta;
-        }*/
-
-       
+             
         /// <summary>
         /// Josseline M 
         /// Este metodo retorna una lista de presuestos egresos destinados por unidad
@@ -621,6 +591,22 @@ namespace AccesoDatos
            
         }
        
+        /// <summary>
+       /// Este método se encarga de actualizar las descripciones y montos de las partidas egresos
+       /// </summary>
+       /// <param name="presupuesto"></param>
+        public void editarPresupuestoEgresoPartida(PresupuestoEgresoPartida presupuestoEgresoPartida)
+        {
+            SqlConnection sqlConnectionPresupuestoEgreso = conexion.conexionPEP();
+            SqlCommand sqlCommandPresupuestoEgreso = new SqlCommand("UPDATE Presupuesto_Egreso_Partida  SET monto = @monto_, descripcion= @descripcion_ where id_partida=@id_partida_", sqlConnectionPresupuestoEgreso);
+            sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@id_partida_", presupuestoEgresoPartida.idPartida);
+            sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@monto_", presupuestoEgresoPartida.monto);
+            sqlCommandPresupuestoEgreso.Parameters.AddWithValue("@descripcion_", presupuestoEgresoPartida.descripcion);
+            sqlConnectionPresupuestoEgreso.Open();
+            sqlCommandPresupuestoEgreso.ExecuteScalar();
+            sqlConnectionPresupuestoEgreso.Close();
+
+        }
         #endregion PRESUPUESTO DE EGRESO
     }
 }
