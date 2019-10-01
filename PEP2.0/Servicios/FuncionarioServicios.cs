@@ -45,5 +45,35 @@ namespace Servicios
         {
             return funcionarioDatos.guardar(funcionario);
         }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 25/09/2019
+        /// Efecto : Modifica un funcionario
+        /// Requiere : Funcionario que se desea modificar
+        /// Modifica : Funcionarios
+        /// Devuelve : true si se modificó correctamente, false si falló
+        /// </summary>
+        /// <param name="funcionario"></param>
+        /// <returns></returns>
+        public bool modificar(Funcionario funcionario)
+        {
+            return funcionarioDatos.modificar(funcionario);
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 25/09/2019
+        /// Efecto : Elimina un funcionario
+        /// Requiere : Funcionario que se desea eliminar
+        /// Modifica : Funcionarios
+        /// Devuelve : true si se eliminó correctamente, false si falló
+        /// </summary>
+        /// <param name="funcionario"></param>
+        /// <returns></returns>
+        public bool eliminar(Funcionario funcionario)
+        {
+            return funcionarioDatos.eliminar(funcionario);
+        }
     }
 }

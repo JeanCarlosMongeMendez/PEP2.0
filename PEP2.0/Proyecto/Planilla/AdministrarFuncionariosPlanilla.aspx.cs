@@ -19,6 +19,7 @@ namespace Proyecto.Planilla
         private EscalaSalarialServicios escalaSalarialServicios = new EscalaSalarialServicios();
         private static Funcionario funcionarioSeleccionado = new Funcionario();
         private static EscalaSalarial escalaSeleccionada = new EscalaSalarial();
+        private JornadaServicios jornadaServicios = new JornadaServicios();
         #endregion
 
         #region variables globales paginacion
@@ -69,6 +70,12 @@ namespace Proyecto.Planilla
                 ddlEscalaSalarial.DataTextField = "descEscalaSalarial";
                 ddlEscalaSalarial.DataValueField = "idEscalaSalarial";
                 ddlEscalaSalarial.DataBind();
+
+                List<Jornada> jornadas = jornadaServicios.getJornadasActivas();
+                ddlJornadaLaboral.DataSource = jornadas;
+                ddlJornadaLaboral.DataTextField = "descJornada";
+                ddlJornadaLaboral.DataValueField = "idJornada";
+                ddlJornadaLaboral.DataBind();
             }
         }
         #endregion
@@ -180,7 +187,7 @@ namespace Proyecto.Planilla
         /// <param name="salarioPrimerSemestre"></param>
         /// <param name="salarioSegundoSemestre"></param>
         /// <returns></returns>
-        private Double calcularPromedioSemestres (double salarioPrimerSemestre, double salarioSegundoSemestre)
+        private Double calcularPromedioSemestres(double salarioPrimerSemestre, double salarioSegundoSemestre)
         {
             double promedio = (salarioPrimerSemestre + salarioSegundoSemestre) / 2;
             return promedio;
@@ -273,6 +280,39 @@ namespace Proyecto.Planilla
 
             rptPaginacion.DataSource = dt;
             rptPaginacion.DataBind();
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 25/09/2019
+        /// Efecto : Deja todos los campos del formulario en blanco
+        /// Requiere : -
+        /// Modifica : Formulario de editar y agregar
+        /// Devuelve : -
+        /// </summary>
+        private void limpiarFormulario()
+        {
+            txtEscalafonesI.Text = "";
+            txtEscalafonesII.Text = "";
+            txtMontoAnualidadesI.Text = "";
+            txtMontoAnualidadesII.Text = "";
+            txtMontoEscalafonesI.Text = "";
+            txtMontoEscalafonesII.Text = "";
+            txtPorcentajeAnualidadesI.Text = "";
+            txtPorcentajeAnualidadesII.Text = "";
+            txtPromedioSemestres.Text = "";
+            txtSalarioBase1.Text = "";
+            txtSalarioBase2.Text = "";
+            txtSalarioMensualEneroJunio.Text = "";
+            txtSalarioMensualJunioDiciembre.Text = "";
+            txtSalContratacionI.Text = "";
+            txtSalContratacionII.Text = "";
+            txtSumaTotalSalarioBase1.Text = "";
+            txtSumaTotalSalarioBaseII.Text = "";
+            txtObservaciones.Text = "";
+            txtPagoLey8114.Text = "";
+            txtSumaSalarioBase1.Text = "";
+            txtSalarioPropuesto.Text = "";
         }
         #endregion
 
@@ -409,10 +449,8 @@ namespace Proyecto.Planilla
         protected void btnNuevoFuncionario_Click(object sender, EventArgs e)
         {
             List<EscalaSalarial> listaEscalas = (List<EscalaSalarial>)Session["listaEscalas"];
-
             EscalaSalarial escalaSeleccionadaModal = new EscalaSalarial();
             escalaSeleccionadaModal.idEscalaSalarial = Convert.ToInt32(ddlEscalaSalarial.SelectedValue);
-
             foreach (EscalaSalarial escalaSalarial in listaEscalas)
             {
                 if (escalaSalarial.idEscalaSalarial == escalaSeleccionadaModal.idEscalaSalarial)
@@ -422,7 +460,12 @@ namespace Proyecto.Planilla
                     txtSalarioBase2.Text = escalaSalarial.salarioBase2.ToString();
                 }
             }
-
+            tituloModalFuncionario.InnerText = "Nuevo Funcionario";
+            btnGuardar.Text = "Guardar";
+            txtFecha.Text = "";
+            txtNombreCompleto.Text = "";
+            hdIdFuncionario.Value = "0";
+            limpiarFormulario();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
@@ -463,26 +506,10 @@ namespace Proyecto.Planilla
             {
                 if (escalaSalarial.idEscalaSalarial == escalaSeleccionadaModal.idEscalaSalarial)
                 {
+                    limpiarFormulario();
                     escalaSeleccionada = escalaSalarial;
                     txtSalarioBase1.Text = escalaSalarial.salarioBase1.ToString();
                     txtSalarioBase2.Text = escalaSalarial.salarioBase2.ToString();
-                    txtEscalafonesI.Text = "";
-                    txtEscalafonesII.Text = "";
-                    txtMontoAnualidadesI.Text = "";
-                    txtMontoAnualidadesII.Text = "";
-                    txtMontoEscalafonesI.Text = "";
-                    txtMontoEscalafonesII.Text = "";
-                    txtPorcentajeAnualidadesI.Text = "";
-                    txtPorcentajeAnualidadesII.Text = "";
-                    txtPromedioSemestres.Text = "";
-                    txtSalarioBase1.Text = "";
-                    txtSalarioBase2.Text = "";
-                    txtSalarioMensualEneroJunio.Text = "";
-                    txtSalarioMensualJunioDiciembre.Text = "";
-                    txtSalContratacionI.Text = "";
-                    txtSalContratacionII.Text = "";
-                    txtSumaTotalSalarioBase1.Text = "";
-                    txtSumaTotalSalarioBaseII.Text = "";
                 }
             }
 
@@ -649,7 +676,7 @@ namespace Proyecto.Planilla
 
             int.TryParse(txtEscalafonesI.Text, out cantidadEscalafonesIsemestre);
             DateTime.TryParse(txtFecha.Text, out fechaIngreso);
-            DateTime fechaDivisionSemestres = Convert.ToDateTime("1/06/"+fechaIngreso.Year);
+            DateTime fechaDivisionSemestres = Convert.ToDateTime("1/06/" + fechaIngreso.Year);
             if (cantidadEscalafonesIsemestre < escalaSeleccionada.topeEscalafones && DateTime.Compare(fechaDivisionSemestres, fechaIngreso) < 0)
             {
                 txtEscalafonesII.Text = (cantidadEscalafonesIsemestre + 1).ToString();
@@ -698,20 +725,19 @@ namespace Proyecto.Planilla
             LinkButton btnTotalSalarioBase = (LinkButton)sender;
             double salarioBase = 0;
             double sumaSalarioBase = 0;
+            Double.TryParse(txtSumaSalarioBase1.Text.Replace(".", ",").ToString(), out sumaSalarioBase);
             if (btnTotalSalarioBase.ID.Equals("btnCalcularTotalSalarioBaseI"))
             {
                 salarioBase = escalaSeleccionada.salarioBase1;
-                Double.TryParse(txtSumaSalarioBase1.Text.Replace(".", ",").ToString(), out sumaSalarioBase);
                 txtSumaTotalSalarioBase1.Text = calcularTotalSalarioBase(salarioBase, sumaSalarioBase).ToString();
-                txtSumaSalarioBase1.Text = sumaSalarioBase.ToString();
             }
             else if (btnTotalSalarioBase.ID.Equals("btnCalcularTotalSalarioBaseII"))
             {
                 salarioBase = escalaSeleccionada.salarioBase2;
-                Double.TryParse(txtSumaSalarioBase2.Text.Replace(".", ",").ToString(), out sumaSalarioBase);
                 txtSumaTotalSalarioBaseII.Text = calcularTotalSalarioBase(salarioBase, sumaSalarioBase).ToString();
-                txtSumaSalarioBase2.Text = sumaSalarioBase.ToString();
             }
+            txtSumaSalarioBase1.Text = sumaSalarioBase.ToString();
+
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
@@ -728,52 +754,174 @@ namespace Proyecto.Planilla
         protected void btnSelccionar_Click(object sender, EventArgs e)
         {
             int id = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
-            Funcionario funcionarioSeleccionado = null;
+            Funcionario funcionarioVer = null;
             List<Funcionario> funcionarios = (List<Funcionario>)Session["listaFuncionariosFiltrada"];
             foreach (Funcionario funcionario in funcionarios)
             {
                 if (funcionario.idFuncionario == id)
                 {
-                    funcionarioSeleccionado = funcionario;
+                    funcionarioVer = funcionario;
                     break;
                 }
             }
-            txtVerNombreCompleto.Text = funcionarioSeleccionado.nombreFuncionario;
-            txtVerEscalafonesI.Text = funcionarioSeleccionado.noEscalafones1.ToString();
-            txtVerEscalafonesII.Text = funcionarioSeleccionado.noEscalafones2.ToString();
-            txtVerEscalaSalarial.Text = funcionarioSeleccionado.escalaSalarial.descEscalaSalarial;
-            txtVerFecha.Text = funcionarioSeleccionado.fechaIngreso.ToString();
-            txtVerMontoAnualidadesI.Text = funcionarioSeleccionado.montoAnualidad1.ToString();
-            txtVerMontoAnualidadesII.Text = funcionarioSeleccionado.montoAnualidad2.ToString();
-            txtVerMontoEscalafonesI.Text = funcionarioSeleccionado.montoEscalafones1.ToString();
-            txtVerMontoEscalafonesII.Text = funcionarioSeleccionado.montoEscalafones2.ToString();
-            txtVerObservaciones.Text = funcionarioSeleccionado.observaciones;
-            txtVerPagoLey8114.Text = funcionarioSeleccionado.conceptoPagoLey.ToString();
-            txtVerPorcentajeAnualidadesI.Text = funcionarioSeleccionado.porcentajeAnualidad1.ToString();
-            txtVerPorcentajeAnualidadesII.Text = funcionarioSeleccionado.porcentajeAnualidad2.ToString();
-            txtVerPromedioSemestres.Text = funcionarioSeleccionado.salarioPromedio.ToString();
-            txtVerSalarioBaseI.Text = funcionarioSeleccionado.escalaSalarial.salarioBase1.ToString();
-            txtVerSalarioBase2.Text = funcionarioSeleccionado.escalaSalarial.salarioBase2.ToString();
-            txtVerSalarioMensualEneroJunio.Text = funcionarioSeleccionado.salarioEnero.ToString();
-            txtVerSalarioMensualJunioDiciembre.Text = funcionarioSeleccionado.salarioJunio.ToString();
-            txtVerSalarioPropuesto.Text = funcionarioSeleccionado.salarioPropuesto.ToString();
-            txtVerSalContratacionI.Text = funcionarioSeleccionado.salarioContratacion1.ToString();
-            txtVerSalContratacionII.Text = funcionarioSeleccionado.salarioContratacion2.ToString();
-            txtVerSumaSalarioBase1.Text = funcionarioSeleccionado.porcentajeSumaSalario.ToString();
-            txtVerSumaSalarioBase2.Text = funcionarioSeleccionado.porcentajeSumaSalario.ToString();
-            txtVerSumaTotalSalarioBase1.Text = funcionarioSeleccionado.salarioBase1.ToString();
-            txtVerSumaTotalSalarioBaseII.Text = funcionarioSeleccionado.salarioBase2.ToString();
+            txtVerNombreCompleto.Text = funcionarioVer.nombreFuncionario;
+            txtVerEscalafonesI.Text = funcionarioVer.noEscalafones1.ToString();
+            txtVerEscalafonesII.Text = funcionarioVer.noEscalafones2.ToString();
+            txtVerEscalaSalarial.Text = funcionarioVer.escalaSalarial.descEscalaSalarial;
+            txtVerFecha.Text = funcionarioVer.fechaIngreso.ToString();
+            txtVerMontoAnualidadesI.Text = funcionarioVer.montoAnualidad1.ToString();
+            txtVerMontoAnualidadesII.Text = funcionarioVer.montoAnualidad2.ToString();
+            txtVerMontoEscalafonesI.Text = funcionarioVer.montoEscalafones1.ToString();
+            txtVerMontoEscalafonesII.Text = funcionarioVer.montoEscalafones2.ToString();
+            txtVerObservaciones.Text = funcionarioVer.observaciones;
+            txtVerPagoLey8114.Text = funcionarioVer.conceptoPagoLey.ToString();
+            txtVerPorcentajeAnualidadesI.Text = funcionarioVer.porcentajeAnualidad1.ToString();
+            txtVerPorcentajeAnualidadesII.Text = funcionarioVer.porcentajeAnualidad2.ToString();
+            txtVerPromedioSemestres.Text = funcionarioVer.salarioPromedio.ToString();
+            txtVerSalarioBaseI.Text = funcionarioVer.escalaSalarial.salarioBase1.ToString();
+            txtVerSalarioBase2.Text = funcionarioVer.escalaSalarial.salarioBase2.ToString();
+            txtVerSalarioMensualEneroJunio.Text = funcionarioVer.salarioEnero.ToString();
+            txtVerSalarioMensualJunioDiciembre.Text = funcionarioVer.salarioJunio.ToString();
+            txtVerSalarioPropuesto.Text = funcionarioVer.salarioPropuesto.ToString();
+            txtVerSalContratacionI.Text = funcionarioVer.salarioContratacion1.ToString();
+            txtVerSalContratacionII.Text = funcionarioVer.salarioContratacion2.ToString();
+            txtVerSumaSalarioBase1.Text = funcionarioVer.porcentajeSumaSalario.ToString();
+            txtVerSumaSalarioBase2.Text = funcionarioVer.porcentajeSumaSalario.ToString();
+            txtVerSumaTotalSalarioBase1.Text = funcionarioVer.salarioBase1.ToString();
+            txtVerSumaTotalSalarioBaseII.Text = funcionarioVer.salarioBase2.ToString();
+            btnConfirmarEliminar.Visible = false;
+            tituloVerFuncionario.InnerText = "Ver Funcionario";
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalVerFuncionario();", true);
         }
 
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 25/09/2019
+        /// Efecto : Muestra en un modal los datos de un funcionario que se desea modificar
+        /// Requiere : Clickear el boton "Editar" de un funcionario 
+        /// Modifica : Formulario de editar
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnEditar_Click(object sender, EventArgs e)
         {
-
+            int id = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+            Funcionario funcionarioEditar = null;
+            List<Funcionario> funcionarios = (List<Funcionario>)Session["listaFuncionariosFiltrada"];
+            foreach (Funcionario funcionario in funcionarios)
+            {
+                if (funcionario.idFuncionario == id)
+                {
+                    funcionarioEditar = funcionario;
+                    break;
+                }
+            }
+            tituloModalFuncionario.InnerText = "Editar Funcionario";
+            btnGuardar.Text = "Actualizar";
+            txtNombreCompleto.Text = funcionarioEditar.nombreFuncionario;
+            txtEscalafonesI.Text = funcionarioEditar.noEscalafones1.ToString();
+            txtEscalafonesII.Text = funcionarioEditar.noEscalafones2.ToString();
+            ddlEscalaSalarial.SelectedValue = funcionarioEditar.escalaSalarial.idEscalaSalarial.ToString();
+            txtFecha.Text = funcionarioEditar.fechaIngreso.ToString();
+            txtMontoAnualidadesI.Text = funcionarioEditar.montoAnualidad1.ToString();
+            txtMontoAnualidadesII.Text = funcionarioEditar.montoAnualidad2.ToString();
+            txtMontoEscalafonesI.Text = funcionarioEditar.montoEscalafones1.ToString();
+            txtMontoEscalafonesII.Text = funcionarioEditar.montoEscalafones2.ToString();
+            txtObservaciones.Text = funcionarioEditar.observaciones;
+            txtPagoLey8114.Text = funcionarioEditar.conceptoPagoLey.ToString();
+            txtPorcentajeAnualidadesI.Text = funcionarioEditar.porcentajeAnualidad1.ToString();
+            txtPorcentajeAnualidadesII.Text = funcionarioEditar.porcentajeAnualidad2.ToString();
+            txtPromedioSemestres.Text = funcionarioEditar.salarioPromedio.ToString();
+            txtSalarioBase1.Text = funcionarioEditar.escalaSalarial.salarioBase1.ToString();
+            txtSalarioBase2.Text = funcionarioEditar.escalaSalarial.salarioBase2.ToString();
+            txtSalarioMensualEneroJunio.Text = funcionarioEditar.salarioEnero.ToString();
+            txtSalarioMensualJunioDiciembre.Text = funcionarioEditar.salarioJunio.ToString();
+            txtSalarioPropuesto.Text = funcionarioEditar.salarioPropuesto.ToString();
+            txtSalContratacionI.Text = funcionarioEditar.salarioContratacion1.ToString();
+            txtSalContratacionII.Text = funcionarioEditar.salarioContratacion2.ToString();
+            txtSumaSalarioBase1.Text = funcionarioEditar.porcentajeSumaSalario.ToString();
+            txtSumaTotalSalarioBase1.Text = funcionarioEditar.salarioBase1.ToString();
+            txtSumaTotalSalarioBaseII.Text = funcionarioEditar.salarioBase2.ToString();
+            hdIdFuncionario.Value = funcionarioEditar.idFuncionario.ToString();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
 
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 25/09/2019
+        /// Efecto : Muestra en un modal los datos de un funcionario que se desea eliminar
+        /// Requiere : Clickear el boton "Eliminar" de un funcionario
+        /// Modifica : Modal Ver
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
+            int id = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+            Funcionario funcionarioEliminar = null;
+            List<Funcionario> funcionarios = (List<Funcionario>)Session["listaFuncionariosFiltrada"];
+            foreach (Funcionario funcionario in funcionarios)
+            {
+                if (funcionario.idFuncionario == id)
+                {
+                    funcionarioEliminar = funcionario;
+                    break;
+                }
+            }
+            txtVerNombreCompleto.Text = funcionarioEliminar.nombreFuncionario;
+            txtVerEscalafonesI.Text = funcionarioEliminar.noEscalafones1.ToString();
+            txtVerEscalafonesII.Text = funcionarioEliminar.noEscalafones2.ToString();
+            txtVerEscalaSalarial.Text = funcionarioEliminar.escalaSalarial.descEscalaSalarial;
+            txtVerFecha.Text = funcionarioEliminar.fechaIngreso.ToString();
+            txtVerMontoAnualidadesI.Text = funcionarioEliminar.montoAnualidad1.ToString();
+            txtVerMontoAnualidadesII.Text = funcionarioEliminar.montoAnualidad2.ToString();
+            txtVerMontoEscalafonesI.Text = funcionarioEliminar.montoEscalafones1.ToString();
+            txtVerMontoEscalafonesII.Text = funcionarioEliminar.montoEscalafones2.ToString();
+            txtVerObservaciones.Text = funcionarioEliminar.observaciones;
+            txtVerPagoLey8114.Text = funcionarioEliminar.conceptoPagoLey.ToString();
+            txtVerPorcentajeAnualidadesI.Text = funcionarioEliminar.porcentajeAnualidad1.ToString();
+            txtVerPorcentajeAnualidadesII.Text = funcionarioEliminar.porcentajeAnualidad2.ToString();
+            txtVerPromedioSemestres.Text = funcionarioEliminar.salarioPromedio.ToString();
+            txtVerSalarioBaseI.Text = funcionarioEliminar.escalaSalarial.salarioBase1.ToString();
+            txtVerSalarioBase2.Text = funcionarioEliminar.escalaSalarial.salarioBase2.ToString();
+            txtVerSalarioMensualEneroJunio.Text = funcionarioEliminar.salarioEnero.ToString();
+            txtVerSalarioMensualJunioDiciembre.Text = funcionarioEliminar.salarioJunio.ToString();
+            txtVerSalarioPropuesto.Text = funcionarioEliminar.salarioPropuesto.ToString();
+            txtVerSalContratacionI.Text = funcionarioEliminar.salarioContratacion1.ToString();
+            txtVerSalContratacionII.Text = funcionarioEliminar.salarioContratacion2.ToString();
+            txtVerSumaSalarioBase1.Text = funcionarioEliminar.porcentajeSumaSalario.ToString();
+            txtVerSumaSalarioBase2.Text = funcionarioEliminar.porcentajeSumaSalario.ToString();
+            txtVerSumaTotalSalarioBase1.Text = funcionarioEliminar.salarioBase1.ToString();
+            txtVerSumaTotalSalarioBaseII.Text = funcionarioEliminar.salarioBase2.ToString();
+            tituloVerFuncionario.InnerText = "Eliminar Funcionario";
+            btnConfirmarEliminar.Visible = true;
+            hdIdEliminarFuncionario.Value = funcionarioEliminar.idFuncionario.ToString();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalVerFuncionario();", true);
+        }
 
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 25/09/2019
+        /// Efecto : Elimina un funcionario 
+        /// Requiere : Clickear el  boton "Eliminar" del modal
+        /// Modifica : -
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnConfirmarEliminar_Click(object sender, EventArgs e)
+        {
+            Funcionario funcionario = new Funcionario();
+            int idFuncionarioEliminar = 0;
+            Int32.TryParse(hdIdEliminarFuncionario.Value, out idFuncionarioEliminar);
+            funcionario.idFuncionario = idFuncionarioEliminar;
+            bool result = funcionarioServicios.eliminar(funcionario);
+            List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios();
+            Session["listaFuncionarios"] = listaFuncionarios;
+            Session["listaFuncionariosFiltrada"] = listaFuncionarios;
+            mostrarDatosTabla();
         }
 
         /// <summary>
@@ -788,9 +936,12 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
+            bool result = false;
             Funcionario funcionario = new Funcionario();
             funcionario.conceptoPagoLey = Convert.ToDouble(txtPagoLey8114.Text);
-            funcionario.escalaSalarial = escalaSeleccionada;
+            EscalaSalarial escalaSalarial = new EscalaSalarial();
+            escalaSalarial.idEscalaSalarial = Convert.ToInt32(ddlEscalaSalarial.SelectedValue);
+            funcionario.escalaSalarial = escalaSalarial;
             funcionario.fechaIngreso = Convert.ToDateTime(txtFecha.Text);
             funcionario.montoAnualidad1 = Convert.ToDouble(txtMontoAnualidadesI.Text);
             funcionario.montoAnualidad2 = Convert.ToDouble(txtMontoAnualidadesII.Text);
@@ -811,18 +962,27 @@ namespace Proyecto.Planilla
             funcionario.salarioJunio = Convert.ToDouble(txtSalarioMensualJunioDiciembre.Text);
             funcionario.salarioPromedio = Convert.ToDouble(txtPromedioSemestres.Text);
             funcionario.porcentajeSumaSalario = Convert.ToDouble(txtSumaSalarioBase1.Text);
+            Jornada jornadaLaboral = new Jornada();
+            jornadaLaboral.idJornada = Convert.ToInt32(ddlJornadaLaboral.SelectedValue);
+            funcionario.JornadaLaboral = jornadaLaboral;
             double salarioPropuesto = 0;
             Double.TryParse(txtSalarioPropuesto.Text, out salarioPropuesto);
             funcionario.salarioPropuesto = salarioPropuesto;
-            bool result = funcionarioServicios.guardar(funcionario);
-
-            if (result && IsPostBack)
+            int idFuncionario = 0;
+            Int32.TryParse(hdIdFuncionario.Value, out idFuncionario);
+            funcionario.idFuncionario = idFuncionario;
+            if (idFuncionario > 0)
             {
-                List<Funcionario>listaFuncionarioFiltrada = (List<Funcionario>)Session["listaFuncionariosFiltrada"];
-                listaFuncionarioFiltrada.Add(funcionario);
-                rpFuncionarios.DataSource = listaFuncionarioFiltrada;
-                rpFuncionarios.DataBind();
+                result = funcionarioServicios.modificar(funcionario);
             }
+            else
+            {
+                result = funcionarioServicios.guardar(funcionario);
+            }
+            List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios();
+            Session["listaFuncionarios"] = listaFuncionarios;
+            Session["listaFuncionariosFiltrada"] = listaFuncionarios;
+            mostrarDatosTabla();
         }
         #endregion
     }

@@ -106,6 +106,7 @@
       <Link>SqlServerTypes\x86\SqlServerSpatial110.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Catalogos\CargasSociales\AdministrarCargasSociales.aspx" />
     <Content Include="Catalogos\Jornadas\AdministrarJornadas.aspx" />
     <Content Include="Catalogos\Partidas\AdministrarPartida.aspx" />
     <Content Include="Catalogos\Partidas\AdministrarPartidas.aspx" />
@@ -160,10 +161,12 @@
     <Content Include="Imagenes\UCR informe.png" />
     <Content Include="Login.aspx" />
     <Content Include="Mantenimiento\EscalasSalariales\AdministrarEscalas.aspx" />
+    <Content Include="Planilla\AdministrarDistribucionUcr.aspx" />
     <Content Include="Planilla\AdministrarFuncionarioFundevi.aspx" />
     <Content Include="Planilla\AdministrarFuncionariosPlanilla.aspx" />
     <Content Include="Planilla\AdministrarPlanilla.aspx" />
     <Content Include="Planilla\AdministrarPlanillaFundevi.aspx" />
+    <Content Include="Planilla\AdministrarProyeccion.aspx" />
     <Content Include="Planilla\AgregarFuncionarioFundevi.aspx" />
     <Content Include="Planilla\AsignarFuncionariosPlanillaFundevi.aspx" />
     <Content Include="Scripts\abrirfile.js" />
@@ -193,6 +196,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Catalogos\CargasSociales\AdministrarCargasSociales.aspx.cs">
+      <DependentUpon>AdministrarCargasSociales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Catalogos\CargasSociales\AdministrarCargasSociales.aspx.designer.cs">
+      <DependentUpon>AdministrarCargasSociales.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Catalogos\Jornadas\AdministrarJornadas.aspx.cs">
       <DependentUpon>AdministrarJornadas.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -343,6 +353,13 @@
     <Compile Include="Mantenimiento\EscalasSalariales\AdministrarEscalas.aspx.designer.cs">
       <DependentUpon>AdministrarEscalas.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Planilla\AdministrarDistribucionUcr.aspx.cs">
+      <DependentUpon>AdministrarDistribucionUcr.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Planilla\AdministrarDistribucionUcr.aspx.designer.cs">
+      <DependentUpon>AdministrarDistribucionUcr.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Planilla\AdministrarFuncionarioFundevi.aspx.cs">
       <DependentUpon>AdministrarFuncionarioFundevi.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -370,6 +387,13 @@
     </Compile>
     <Compile Include="Planilla\AdministrarPlanillaFundevi.aspx.designer.cs">
       <DependentUpon>AdministrarPlanillaFundevi.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Planilla\AdministrarProyeccion.aspx.cs">
+      <DependentUpon>AdministrarProyeccion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Planilla\AdministrarProyeccion.aspx.designer.cs">
+      <DependentUpon>AdministrarProyeccion.aspx</DependentUpon>
     </Compile>
     <Compile Include="Planilla\AgregarFuncionarioFundevi.aspx.cs">
       <DependentUpon>AgregarFuncionarioFundevi.aspx</DependentUpon>
