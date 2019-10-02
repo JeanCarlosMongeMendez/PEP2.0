@@ -234,5 +234,42 @@ namespace AccesoDatos
 
             sqlConnection.Close();
         }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 27/sep/2019
+        /// Efecto: devuelve los proyectos que se encuentran en el periodo consultado
+        /// Requiere: periodo
+        /// Modifica: -
+        /// Devuelve: lista de proyectos
+        /// </summary>
+        /// <param name="periodo"></param>
+        /// <returns></returns>
+        public List<Proyectos> getProyectosPorPeriodo(Periodo periodo)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+            List<Proyectos> proyectos = new List<Proyectos>();
+
+            SqlCommand sqlCommand = new SqlCommand("select id_proyecto, nombre_proyecto, codigo, es_UCR" +
+                " from Proyecto where ano_periodo=@ano_periodo_ AND disponible=1; ", sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@ano_periodo_", periodo.anoPeriodo);
+
+            sqlConnection.Open();
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Proyectos proyecto = new Proyectos();
+                proyecto.idProyecto = Convert.ToInt32(reader["id_proyecto"].ToString());
+                proyecto.nombreProyecto = reader["nombre_proyecto"].ToString();
+                proyecto.codigo = reader["codigo"].ToString();
+                proyecto.esUCR = Boolean.Parse(reader["es_UCR"].ToString());
+                proyectos.Add(proyecto);
+            }
+
+            sqlConnection.Close();
+
+            return proyectos;
+        }
     }
 }
