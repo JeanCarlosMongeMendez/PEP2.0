@@ -52,6 +52,7 @@
     <Compile Include="FuncionarioFundeviDatos.cs" />
     <Compile Include="JornadaDatos.cs" />
     <Compile Include="PartidaDatos.cs" />
+    <Compile Include="PartidaPresupuestoEgresoDatos.cs" />
     <Compile Include="PeriodoDatos.cs" />
     <Compile Include="PlanillaDatos.cs" />
     <Compile Include="PlanillaFundeviDatos.cs" />

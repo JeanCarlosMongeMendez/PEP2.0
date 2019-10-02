@@ -19,6 +19,7 @@ namespace Proyecto.Planilla
         private EscalaSalarialServicios escalaSalarialServicios = new EscalaSalarialServicios();
         private static Funcionario funcionarioSeleccionado = new Funcionario();
         private static EscalaSalarial escalaSeleccionada = new EscalaSalarial();
+        private JornadaServicios jornadaServicios = new JornadaServicios();
         #endregion
 
         #region variables globales paginacion
@@ -69,6 +70,12 @@ namespace Proyecto.Planilla
                 ddlEscalaSalarial.DataTextField = "descEscalaSalarial";
                 ddlEscalaSalarial.DataValueField = "idEscalaSalarial";
                 ddlEscalaSalarial.DataBind();
+
+                List<Jornada> jornadas = jornadaServicios.getJornadasActivas();
+                ddlJornadaLaboral.DataSource = jornadas;
+                ddlJornadaLaboral.DataTextField = "descJornada";
+                ddlJornadaLaboral.DataValueField = "idJornada";
+                ddlJornadaLaboral.DataBind();
             }
         }
         #endregion
@@ -955,6 +962,9 @@ namespace Proyecto.Planilla
             funcionario.salarioJunio = Convert.ToDouble(txtSalarioMensualJunioDiciembre.Text);
             funcionario.salarioPromedio = Convert.ToDouble(txtPromedioSemestres.Text);
             funcionario.porcentajeSumaSalario = Convert.ToDouble(txtSumaSalarioBase1.Text);
+            Jornada jornadaLaboral = new Jornada();
+            jornadaLaboral.idJornada = Convert.ToInt32(ddlJornadaLaboral.SelectedValue);
+            funcionario.JornadaLaboral = jornadaLaboral;
             double salarioPropuesto = 0;
             Double.TryParse(txtSalarioPropuesto.Text, out salarioPropuesto);
             funcionario.salarioPropuesto = salarioPropuesto;

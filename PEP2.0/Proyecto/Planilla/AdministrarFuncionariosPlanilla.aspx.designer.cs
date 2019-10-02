@@ -238,6 +238,15 @@ namespace Proyecto.Planilla {
         protected global::System.Web.UI.WebControls.TextBox txtFecha;
         
         /// <summary>
+        /// Control ddlJornadaLaboral.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlJornadaLaboral;
+        
+        /// <summary>
         /// Control panelPrimerSemestre.
         /// </summary>
         /// <remarks>

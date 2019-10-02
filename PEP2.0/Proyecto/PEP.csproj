@@ -161,6 +161,7 @@
     <Content Include="Imagenes\UCR informe.png" />
     <Content Include="Login.aspx" />
     <Content Include="Mantenimiento\EscalasSalariales\AdministrarEscalas.aspx" />
+    <Content Include="Planilla\AdministrarDistribucionUcr.aspx" />
     <Content Include="Planilla\AdministrarFuncionarioFundevi.aspx" />
     <Content Include="Planilla\AdministrarFuncionariosPlanilla.aspx" />
     <Content Include="Planilla\AdministrarPlanilla.aspx" />
@@ -351,6 +352,13 @@
     </Compile>
     <Compile Include="Mantenimiento\EscalasSalariales\AdministrarEscalas.aspx.designer.cs">
       <DependentUpon>AdministrarEscalas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Planilla\AdministrarDistribucionUcr.aspx.cs">
+      <DependentUpon>AdministrarDistribucionUcr.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Planilla\AdministrarDistribucionUcr.aspx.designer.cs">
+      <DependentUpon>AdministrarDistribucionUcr.aspx</DependentUpon>
     </Compile>
     <Compile Include="Planilla\AdministrarFuncionarioFundevi.aspx.cs">
       <DependentUpon>AdministrarFuncionarioFundevi.aspx</DependentUpon>
