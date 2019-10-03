@@ -393,6 +393,390 @@ namespace Proyecto.Catalogos.Partidas
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se elimino la partida correctamente" + "');", true);
         }
 
+        protected void btnPasarPartidas_Click(object sender, EventArgs e)
+        {
+            txtBuscarDescPartidasAPasar.Text = "";
+            Periodo periodo = new Periodo();
+            periodo.anoPeriodo = Convert.ToInt32(ddlPeriodo.SelectedValue);
+            lblPeriodoSeleccionado.Text = periodo.anoPeriodo.ToString();
+
+
+            // cargar periodos en dropdownlist
+            LinkedList<Periodo> periodos = new LinkedList<Periodo>();
+            ddlPeriodoModalPasaPartidas.Items.Clear();
+            periodos = this.periodoServicios.ObtenerTodos();
+            int anoHabilitado = 0;
+
+            if (periodos.Count > 0)
+            {
+                foreach (Periodo periodoTemp in periodos)
+                {
+                    string nombre;
+
+                    if (periodoTemp.habilitado)
+                    {
+                        nombre = periodoTemp.anoPeriodo.ToString() + " (Actual)";
+                        anoHabilitado = periodoTemp.anoPeriodo;
+                    }
+                    else
+                    {
+                        nombre = periodoTemp.anoPeriodo.ToString();
+                    }
+
+                    if (periodo.anoPeriodo != periodoTemp.anoPeriodo)
+                    {
+                        ListItem itemPeriodo = new ListItem(nombre, periodoTemp.anoPeriodo.ToString());
+                        ddlPeriodoModalPasaPartidas.Items.Add(itemPeriodo);
+                    }
+                }
+
+            }
+            //fin de dopdownlist
+
+
+            //Determina los valores a cargar de la lista de partidas a pasar
+            LinkedList<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(periodo.anoPeriodo);
+            Session["listaPartidasAPasar"] = listaPartidas;
+            Session["listaPartidasAPasarFiltrada"] = listaPartidas;
+            cargarDatosTblPartidasAPasar();
+
+            //Determina los valores a cargar de la lista de partidas Agregadas
+            Periodo periodoAgregados = new Periodo();
+            periodoAgregados.anoPeriodo = Convert.ToInt32(ddlPeriodoModalPasaPartidas.SelectedValue);
+
+            LinkedList<Partida> listaPartidasAgregadas = partidaServicios.ObtenerPorPeriodo(periodoAgregados.anoPeriodo);
+
+            Session["listaPartidasAgregadas"] = listaPartidasAgregadas;
+            Session["listaPartidasAgregadasFiltrada"] = listaPartidasAgregadas;
+
+            cargarDatosTblPartidasAgregadas();
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarPartida();", true);
+        }
+
+
+        /// <summary>
+        /// Jesús Torres
+        /// 19/sept/2019
+        /// Efecto: se devuelve a la pagina anterior y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Anterior pagina"
+        /// Modifica: elementos mostrados en la tabla de contactos
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbAnterior_Click(object sender, EventArgs e)
+        {
+            paginaActual -= 1;
+            mostrarDatosTabla();
+        }
+
+        /// <summary>
+        /// Jesús Torres
+        /// 19/sept/2019
+        /// Efecto: se devuelve a la pagina siguiente y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Siguiente pagina"
+        /// Modifica: elementos mostrados en la tabla de contactos
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbSiguiente_Click(object sender, EventArgs e)
+        {
+            paginaActual += 1;
+            mostrarDatosTabla();
+        }
+
+        /// <summary>
+        /// Jesús Torres 
+        /// 19/sept/2019
+        /// Efecto: actualiza la la pagina actual y muestra los datos de la misma
+        /// Requiere: -
+        /// Modifica: elementos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacion_ItemCommand(object source, DataListCommandEventArgs e)
+        {
+            if (!e.CommandName.Equals("nuevaPagina")) return;
+            paginaActual = Convert.ToInt32(e.CommandArgument.ToString());
+            mostrarDatosTabla();
+        }
+
+        /// <summary>
+        /// Jessus Torres
+        /// 03/oct/2019
+        /// Efecto: se devuelve a la primera pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Primer pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbPrimero2_Click(object sender, EventArgs e)
+        {
+            paginaActual2 = 0;
+            cargarDatosTblPartidasAPasar();
+        }
+
+        /// <summary>
+        /// Jesus Torres
+        /// 03/oct/2019
+        /// Efecto: se devuelve a la pagina anterior y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Anterior pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbAnterior2_Click(object sender, EventArgs e)
+        {
+            paginaActual2 -= 1;
+            cargarDatosTblPartidasAPasar();
+        }
+
+        /// <summary>
+        /// Jesus Torres
+        /// 03/oct/2019
+        /// Efecto: se devuelve a la pagina siguiente y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Siguiente pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbSiguiente2_Click(object sender, EventArgs e)
+        {
+            paginaActual2 += 1;
+            cargarDatosTblPartidasAPasar();
+        }
+        /// <summary>
+        ///  Jesus Torres
+        /// 03/oct/2019
+        /// Efecto: se devuelve a la ultima pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Ultima pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbUltimo2_Click(object sender, EventArgs e)
+        {
+            paginaActual2 = (Convert.ToInt32(ViewState["TotalPaginas2"]) - 1);
+            cargarDatosTblPartidasAPasar();
+        }
+
+
+        /// <summary>
+        /// Jesus Torres
+        /// 03/oct/2019
+        /// Efecto: actualiza la la pagina actual y muestra los datos de la misma
+        /// Requiere: -
+        /// Modifica: elementos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacion2_ItemCommand(object source, DataListCommandEventArgs e)
+        {
+            if (!e.CommandName.Equals("nuevaPagina")) return;
+            paginaActual2 = Convert.ToInt32(e.CommandArgument.ToString());
+            cargarDatosTblPartidasAPasar();
+        }
+
+        /// <summary>
+        /// Jesus Torres
+        /// 03/oct/2019
+        /// Efecto: marca el boton de la pagina seleccionada
+        /// Requiere: dar clic al boton de paginacion
+        /// Modifica: color del boton seleccionado
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacion2_ItemDataBound(object sender, DataListItemEventArgs e)
+        {
+            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion2");
+            if (lnkPagina.CommandArgument != paginaActual2.ToString()) return;
+            lnkPagina.Enabled = false;
+            lnkPagina.BackColor = Color.FromName("#005da4");
+            lnkPagina.ForeColor = Color.FromName("#FFFFFF");
+        }
+        /// <summary>
+        /// Jessus Torres
+        /// 03/oct/2019
+        /// Efecto: se devuelve a la primera pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Primer pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbPrimero3_Click(object sender, EventArgs e)
+        {
+            paginaActual3 = 0;
+            cargarDatosTblPartidasAgregadas();
+        }
+        /// <summary>
+        /// Jesus Torres
+        /// 03/oct/2019
+        /// Efecto: se devuelve a la pagina anterior y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Anterior pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbAnterior3_Click(object sender, EventArgs e)
+        {
+            paginaActual3 -= 1;
+            cargarDatosTblPartidasAgregadas();
+        }
+        /// <summary>
+        /// Jesus Torres
+        /// 03/oct/2019
+        /// Efecto: filtra la tabla de partidas que estan al lado izquierdo para pasar 
+        /// Requiere: dar clic al boton de "Buscar" o darle enter al campo de texto
+        /// Modifica: los datos que se muestran en la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnFiltrarPartidasAPasar_Click(object sender, EventArgs e)
+        {
+            paginaActual2 = 0;
+            cargarDatosTblPartidasAPasar();
+
+        }
+        /// <summary>
+        /// Jesus Torres
+        /// 03/oct/2019
+        /// Efecto: filtra la tabla de de acuerdo a el ddl seleccionado
+        /// Requiere: seleccionar un valor del ddl
+        /// Modifica: los datos que se muestran en la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void ddlPeriodoModalPasaPartidas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtBuscarDescPartidasAgregadas.Text = "";
+            Periodo periodoAgregados = new Periodo();
+            periodoAgregados.anoPeriodo = Convert.ToInt32(ddlPeriodoModalPasaPartidas.SelectedValue);
+
+            LinkedList<Partida> listaPartidasAgregadas = partidaServicios.ObtenerPorPeriodo(periodoAgregados.anoPeriodo);
+
+            Session["listaPartidasAgregadas"] = listaPartidasAgregadas;
+            Session["listaPartidasAgregadasFiltrada"] = listaPartidasAgregadas;
+            cargarDatosTblPartidasAgregadas();
+
+        }
+
+
+
+        /// <summary>
+        /// Jesus Torres
+        /// 03/oct/2019
+        /// Efecto: filtra la tabla de partidas que estan al lado derecho a agregar
+        /// Requiere: dar clic al boton de "Buscar" o darle enter al campo de texto
+        /// Modifica: los datos que se muestran en la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnFiltrarPartidasAgregadas_Click(object sender, EventArgs e)
+        {
+            paginaActual3 = 0;
+            cargarDatosTblPartidasAgregadas();
+        }
+        /// <summary>
+        /// Jesus Torres
+        /// 03/oct/2019
+        /// Efecto: se devuelve a la pagina siguiente y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Siguiente pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbSiguiente3_Click(object sender, EventArgs e)
+        {
+            paginaActual3 += 1;
+            cargarDatosTblPartidasAgregadas();
+        }
+        /// <summary>
+        ///  Jesus Torres
+        /// 03/oct/2019
+        /// Efecto: se devuelve a la ultima pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Ultima pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbUltimo3_Click(object sender, EventArgs e)
+        {
+            paginaActual3 = (Convert.ToInt32(ViewState["TotalPaginas3"]) - 1);
+            cargarDatosTblPartidasAgregadas();
+        }
+
+        /// <summary>
+        /// Jesús Torres
+        /// 19/sep/2019
+        /// Efecto: marca el boton de la pagina seleccionada
+        /// Requiere: dar clic al boton de paginacion
+        /// Modifica: color del boton seleccionado
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacion_ItemDataBound(object sender, DataListItemEventArgs e)
+        {
+            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion");
+            if (lnkPagina.CommandArgument != paginaActual.ToString()) return;
+            lnkPagina.Enabled = false;
+            lnkPagina.BackColor = Color.FromName("#005da4");
+            lnkPagina.ForeColor = Color.FromName("#FFFFFF");
+        }
+
+        /// <summary>
+        /// Jesus Torres
+        /// 03/oct/2019
+        /// Efecto: actualiza la la pagina actual y muestra los datos de la misma
+        /// Requiere: -
+        /// Modifica: elementos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacion3_ItemCommand(object source, DataListCommandEventArgs e)
+        {
+            if (!e.CommandName.Equals("nuevaPagina")) return;
+            paginaActual3 = Convert.ToInt32(e.CommandArgument.ToString());
+            cargarDatosTblPartidasAgregadas();
+        }
+
+        /// <summary>
+        /// Jesus Torres
+        /// 03/oct/2019
+        /// Efecto: marca el boton de la pagina seleccionada
+        /// Requiere: dar clic al boton de paginacion
+        /// Modifica: color del boton seleccionado
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacion3_ItemDataBound(object sender, DataListItemEventArgs e)
+        {
+            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion3");
+            if (lnkPagina.CommandArgument != paginaActual3.ToString()) return;
+            lnkPagina.Enabled = false;
+            lnkPagina.BackColor = Color.FromName("#005da4");
+            lnkPagina.ForeColor = Color.FromName("#FFFFFF");
+        }
+
+
         #endregion
 
         #region metodos
@@ -679,121 +1063,7 @@ namespace Proyecto.Catalogos.Partidas
 
       
 
-        /// <summary>
-        /// Jesús Torres
-        /// 19/sept/2019
-        /// Efecto: se devuelve a la pagina anterior y muestra los datos de la misma
-        /// Requiere: dar clic al boton de "Anterior pagina"
-        /// Modifica: elementos mostrados en la tabla de contactos
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void lbAnterior_Click(object sender, EventArgs e)
-        {
-            paginaActual -= 1;
-            mostrarDatosTabla();
-        }
-
-        /// <summary>
-        /// Jesús Torres
-        /// 19/sept/2019
-        /// Efecto: se devuelve a la pagina siguiente y muestra los datos de la misma
-        /// Requiere: dar clic al boton de "Siguiente pagina"
-        /// Modifica: elementos mostrados en la tabla de contactos
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void lbSiguiente_Click(object sender, EventArgs e)
-        {
-            paginaActual += 1;
-            mostrarDatosTabla();
-        }
-
-        /// <summary>
-        /// Jesús Torres 
-        /// 19/sept/2019
-        /// Efecto: actualiza la la pagina actual y muestra los datos de la misma
-        /// Requiere: -
-        /// Modifica: elementos de la tabla
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="e"></param>
-        protected void rptPaginacion_ItemCommand(object source, DataListCommandEventArgs e)
-        {
-            if (!e.CommandName.Equals("nuevaPagina")) return;
-            paginaActual = Convert.ToInt32(e.CommandArgument.ToString());
-            mostrarDatosTabla();
-        }
-
-        protected void lbPrimero2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void lbAnterior2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void lbSiguiente2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void lbUltimo2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void lbPrimero3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void lbAnterior3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void btnPasarPartidas_Click(object sender, EventArgs e)
-        {
-            Periodo periodo = new Periodo();
-            periodo.anoPeriodo = Convert.ToInt32(ddlPeriodo.SelectedValue);
-
-            lblPeriodoSeleccionado.Text = periodo.anoPeriodo.ToString();
-            LinkedList<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(periodo.anoPeriodo);
-
-            Session["listaPartidasAPasar"] = listaPartidas;
-            Session["listaPartidasAPasarFiltrada"] = listaPartidas;
-
-            cargarDatosTblPartidasAPasar();
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarPartida();", true);
-        }
-
-        /// <summary>
-        /// Jesús Torres
-        /// 19/sep/2019
-        /// Efecto: marca el boton de la pagina seleccionada
-        /// Requiere: dar clic al boton de paginacion
-        /// Modifica: color del boton seleccionado
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void rptPaginacion_ItemDataBound(object sender, DataListItemEventArgs e)
-        {
-            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion");
-            if (lnkPagina.CommandArgument != paginaActual.ToString()) return;
-            lnkPagina.Enabled = false;
-            lnkPagina.BackColor = Color.FromName("#005da4");
-            lnkPagina.ForeColor = Color.FromName("#FFFFFF");
-        }
-
-
-
+      
         #endregion
 
         /// <summary>
@@ -834,12 +1104,51 @@ namespace Proyecto.Catalogos.Partidas
             lbPrimero2.Enabled = !pgsource.IsFirstPage;
             lbUltimo2.Enabled = !pgsource.IsLastPage;
 
-            rpPartidasAPasar.DataSource = listaPartidas;
+            //rpPartidasAPasar.DataSource = listaPartidas;
+            rpPartidasAPasar.DataSource = pgsource;
             rpPartidasAPasar.DataBind();
 
             //metodo que realiza la paginacion
             Paginacion2();
 
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarPartidas').hide();", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarPartida();", true);
+        }
+
+        public void cargarDatosTblPartidasAgregadas()
+        {
+            LinkedList<Partida> listaSession = (LinkedList<Partida>)Session["listaPartidasAgregadas"];
+
+            String desc = "";
+
+            if (!String.IsNullOrEmpty(txtBuscarDescPartidasAgregadas.Text))
+                desc = txtBuscarDescPartidasAgregadas.Text;
+
+            List<Partida> listaPartida = (List<Partida>)listaSession.Where(partida => partida.descripcionPartida.ToUpper().Contains(desc.ToUpper())).ToList();
+            Session["listaPartidasAgregadasFiltrada"] = listaPartida;
+
+            //lista solicitudes
+            var dt3 = listaPartida;
+            pgsource.DataSource = dt3;
+            pgsource.AllowPaging = true;
+            //numero de items que se muestran en el Repeater
+            pgsource.PageSize = elmentosMostrar;
+            pgsource.CurrentPageIndex = paginaActual3;
+            //mantiene el total de paginas en View State
+            ViewState["TotalPaginas3"] = pgsource.PageCount;
+            //Ejemplo: "Página 1 al 10"
+            lblpagina3.Text = "Página " + (paginaActual3 + 1) + " de " + pgsource.PageCount + " (" + dt3.Count + " - elementos)";
+            //Habilitar los botones primero, último, anterior y siguiente
+            lbAnterior3.Enabled = !pgsource.IsFirstPage;
+            lbSiguiente3.Enabled = !pgsource.IsLastPage;
+            lbPrimero3.Enabled = !pgsource.IsFirstPage;
+            lbUltimo3.Enabled = !pgsource.IsLastPage;
+
+            rpPartidasAgregadas.DataSource = pgsource;
+            rpPartidasAgregadas.DataBind();
+
+            //metodo que realiza la paginacion
+            Paginacion3();
 
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarPartidas').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarPartida();", true);
