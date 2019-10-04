@@ -115,7 +115,7 @@ namespace Proyecto.Catalogos.Partidas
                 AnoActual.Text = PeriodosDDL.SelectedValue;
                 Session["periodo"] = PeriodosDDL.SelectedValue;
 
-                LinkedList<Partida> partidas = new LinkedList<Partida>();
+                List<Partida> partidas = new List<Partida>();
                 partidas = this.partidaServicios.ObtenerPorPeriodo(Int32.Parse(PeriodosDDL.SelectedValue));
 
                 if (partidas.Count > 0)
@@ -138,7 +138,7 @@ namespace Proyecto.Catalogos.Partidas
 
             if (!PeriodosNuevosDDL.SelectedValue.Equals(""))
             {
-                LinkedList<Partida> partidas = new LinkedList<Partida>();
+                List<Partida> partidas = new List<Partida>();
                 partidas = this.partidaServicios.ObtenerPorPeriodo(Int32.Parse(PeriodosNuevosDDL.SelectedValue));
 
                 if (partidas.Count > 0)

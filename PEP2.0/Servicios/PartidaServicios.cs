@@ -23,7 +23,7 @@ namespace Servicios
             return this.partidaDatos.Insertar(partida);
         }
 
-        public LinkedList<Partida> ObtenerPorPeriodo(int anoPeriodo)
+        public List<Partida> ObtenerPorPeriodo(int anoPeriodo)
         {
             return this.partidaDatos.ObtenerPorPeriodo(anoPeriodo);
         }

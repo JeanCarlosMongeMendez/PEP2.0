@@ -21,12 +21,12 @@ namespace AccesoDatos
         /// Obtiene las partidas de la base de datos segun el periodo
         /// </summary>
         /// <returns>Retorna una lista <code>LinkedList<Partida></code> que contiene las partidas</returns>
-        public LinkedList<Partida> ObtenerPorPeriodo(int anoPeriodo)
+        public List<Partida> ObtenerPorPeriodo(int anoPeriodo)
         {
             SqlConnection sqlConnection = conexion.conexionPEP();
-            LinkedList<Partida> partidas = new LinkedList<Partida>();
+            List<Partida> partidas = new List<Partida>();
 
-            String consulta = @"select ph.id_partida, ph.numero_partida, ph.descripcion_partida, ph.id_partida_padre, ph.ano_periodo, pp.descripcion_partida AS descripcion_padre from Partida ph left join Partida pp ON ph.id_partida_padre = pp.id_partida 
+            String consulta = @"select ph.id_partida, ph.numero_partida, ph.descripcion_partida, ph.id_partida_padre, ph.ano_periodo, pp.numero_partida AS numero_partida_padre, pp.descripcion_partida AS descripcion_padre from Partida ph left join Partida pp ON ph.id_partida_padre = pp.id_partida 
 
 where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_partida;";
 
@@ -52,13 +52,15 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_p
                     partida.partidaPadre = new Partida();
                     partida.partidaPadre.idPartida = Convert.ToInt32(reader["id_partida_padre"].ToString());
                     partida.partidaPadre.descripcionPartida = reader["descripcion_padre"].ToString();
+                    partida.partidaPadre.numeroPartida = reader["numero_partida_padre"].ToString();
+                    
                 }
                 else
                 {
                     partida.partidaPadre = null;
                 }
-
-                partidas.AddLast(partida);
+                
+                partidas.Add(partida);
             }
 
             sqlConnection.Close();
