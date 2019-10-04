@@ -18,10 +18,12 @@ namespace Proyecto.Catalogos.Presupuesto
         private ProyectoServicios proyectoServicios;
         private UnidadServicios unidadServicios;
         private PartidaServicios partidaServicios;
+        private PartidaPresupuestoEgresoServicio partidaPresupuestoEgresoServicio;
         private PresupuestoServicios presupuestoServicios;
         readonly PagedDataSource pgsource = new PagedDataSource();
         int primerIndex, ultimoIndex, primerIndex2, ultimoIndex2;
         private int elmentosMostrar = 10;
+
         private int paginaActual
         {
             get
@@ -69,12 +71,13 @@ namespace Proyecto.Catalogos.Presupuesto
             this.unidadServicios = new UnidadServicios();
             this.partidaServicios = new PartidaServicios();
             this.presupuestoServicios = new PresupuestoServicios();
-
+            partidaPresupuestoEgresoServicio = new PartidaPresupuestoEgresoServicio();
             if (!IsPostBack)
             {
                 Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());
-
-                Session["listaPresupuestoEgresos"] = null;
+                Session["periodoSeleccionado"] = null;
+                Session["listaPartidasPresupuestoEgresos"] = null;
+                Session["partidasPorPeriodo"] = null;
                 Session["ListaPresupuestoEgresoGuardar"] = null;
                 PeriodosDDL.Items.Clear();
                 ProyectosDDL.Items.Clear();
@@ -85,7 +88,8 @@ namespace Proyecto.Catalogos.Presupuesto
             else
             {
                 Session["ListaPresupuestoEgresoGuardar"] = null;
-                MostrarDatosTabla();
+                MostrarPartidas();
+                
             }
         }
         #endregion
@@ -170,7 +174,7 @@ namespace Proyecto.Catalogos.Presupuesto
                     UnidadesDDL.Items.Add(itemLB);
                 }
 
-                MostrarDatosTabla();
+                MostrarPartidas();
             }
         }
 
@@ -335,6 +339,43 @@ namespace Proyecto.Catalogos.Presupuesto
             rptPaginacion2.DataBind();
         }
 
+        private void MostrarPartidas()
+        {
+            if (ProyectosDDL.Items.Count > 0)
+            {
+                LinkedList<PartidaPresupuestoEgreso> partidas = new LinkedList<PartidaPresupuestoEgreso>();
+                partidas = partidaPresupuestoEgresoServicio.ObtenerPartidaPresupuestoEgresoDatosPorPeriodo(Convert.ToInt32(PeriodosDDL.SelectedValue));
+                Session["listaPartidasPresupuestoEgresos"] = partidas;
+                var dt = partidas;
+                pgsource.DataSource = dt;
+                pgsource.AllowPaging = true;
+                //numero de items que se muestran en el Repeater
+                pgsource.PageSize = elmentosMostrar;
+                pgsource.CurrentPageIndex = paginaActual;
+                //mantiene el total de paginas en View State
+                ViewState["TotalPaginas"] = pgsource.PageCount;
+                //Ejemplo: "Página 1 al 10"
+                lblpagina.Text = "Página " + (paginaActual + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
+                //Habilitar los botones primero, último, anterior y siguiente
+                lbAnterior.Enabled = !pgsource.IsFirstPage;
+                lbSiguiente.Enabled = !pgsource.IsLastPage;
+                lbPrimero.Enabled = !pgsource.IsFirstPage;
+                lbUltimo.Enabled = !pgsource.IsLastPage;
+
+                rpPartida.DataSource = pgsource;
+                rpPartida.DataBind();
+
+                //metodo que realiza la paginacion
+                Paginacion();
+
+            }
+            else
+            {
+                LinkedList<PartidaPresupuestoEgreso> partidas = new LinkedList<PartidaPresupuestoEgreso>();
+                rpPartida.DataSource = partidas;
+                rpPartida.DataBind();
+            }
+        }
 
         /// <summary>
         /// Muestra los presupuestos relacionados con con un proyecto y una unidad
@@ -342,12 +383,13 @@ namespace Proyecto.Catalogos.Presupuesto
         /// </summary>
         private void MostrarDatosTabla()
         {
-
+            /*
             if (ProyectosDDL.Items.Count > 0)
             {
                 LinkedList<Entidades.PresupuestoEgreso> listaPresupuestosEgresos = presupuestoServicios.ObtenerPresupuestoPorProyecto(Convert.ToInt32(UnidadesDDL.SelectedValue), Convert.ToInt32(ProyectosDDL.SelectedValue));
                 Session["idUnidadElegida"]= Convert.ToInt32(UnidadesDDL.SelectedValue) ;
                 Session["ListaPresupuestoEgresoGuardar"] = listaPresupuestosEgresos;
+                Session["periodoSeleccionado"] = Convert.ToInt32(PeriodosDDL.SelectedValue);
                 var dt = listaPresupuestosEgresos;
                 pgsource.DataSource = dt;
                 pgsource.AllowPaging = true;
@@ -376,9 +418,8 @@ namespace Proyecto.Catalogos.Presupuesto
                 LinkedList<Entidades.PresupuestoEgreso> listaPresupuestosEgresos = new LinkedList<Entidades.PresupuestoEgreso>();
                 rpPartida.DataSource = listaPresupuestosEgresos;
                 rpPartida.DataBind();
-            }
+            }*/
         }
-
 
         /// <summary>
         /// Muestra una lista de detalles relacionados a una partida y a un egresos 
@@ -415,15 +456,16 @@ namespace Proyecto.Catalogos.Presupuesto
         private double MontoPresupuestoIngreso()
         {
             LinkedList<Entidades.PresupuestoIngreso> presupuestoIngresos = new LinkedList<Entidades.PresupuestoIngreso>();
-            presupuestoIngresos = this.presupuestoServicios.ObtenerPorProyecto(Int32.Parse(ProyectosDDL.SelectedValue));
+            //presupuestoIngresos = this.presupuestoServicios.ObtenerPorProyecto(Int32.Parse(ProyectosDDL.SelectedValue));
             double montoTotalPresupuestoIngreso = 0;
 
             foreach (Entidades.PresupuestoIngreso presupuestoIngreso in presupuestoIngresos)
             {
-                if (presupuestoIngreso.estado)
+                 montoTotalPresupuestoIngreso += presupuestoIngreso.monto;
+               /* if (presupuestoIngreso.estado)
                 {
                     montoTotalPresupuestoIngreso += presupuestoIngreso.monto;
-                }
+                }*/
             }
 
             return montoTotalPresupuestoIngreso;
@@ -629,7 +671,12 @@ namespace Proyecto.Catalogos.Presupuesto
             paginaActual = Convert.ToInt32(e.CommandArgument.ToString());
             MostrarDatosTabla();
         }
-
+        /// <summary>
+        ///  Josseline M
+        /// este metodo insertar un nuevo registro de una partida apartir de la unidad y partidac
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnNuevoPresupuesto_Click(object sender, EventArgs e)
         {
             int idPartida = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
@@ -658,7 +705,11 @@ namespace Proyecto.Catalogos.Presupuesto
             PresupuestoEgresoPartida presupuestoEgresoPartida = new PresupuestoEgresoPartida();
             LinkedList<Entidades.PresupuestoEgreso> presupuestoEgresos = new LinkedList<Entidades.PresupuestoEgreso>();
             presupuestoEgresos = this.presupuestoServicios.ObtenerPorUnidadEgresos(Int32.Parse(UnidadesDDL.SelectedValue));
-
+            int partidaBuscarPorPeriodo=(int)Session["periodoSeleccionado"];
+            int idPartidaN = 0;
+            LinkedList<Partida> partidas = new LinkedList<Partida>();
+            partidas= partidaServicios.ObtenerPorPeriodo(partidaBuscarPorPeriodo);
+            Session["partidasPorPeriodo"] = partidas;
             Double salario = 0;
             String txtMonto = txtMontoIngresarModal.Text.Replace(".", ",");
             if (Double.TryParse(txtMonto, out salario))
@@ -699,7 +750,8 @@ namespace Proyecto.Catalogos.Presupuesto
 
             LinkedList<Entidades.PresupuestoEgresoPartida> presupuestos = new LinkedList<Entidades.PresupuestoEgresoPartida>();
             int idPartida = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
-            presupuestoEgresoBuscar.idPartida = idPartida;
+            Session["idPartidaVer"] = idPartida;
+           presupuestoEgresoBuscar.idPartida = idPartida;
 
             presupuestos = presupuestoServicios.presupuestoEgresoPartidasPorPresupuesto(presupuestoEgresoBuscar);
             Session["listaPresupuestosEgresosPartida"] = presupuestos;
@@ -709,12 +761,146 @@ namespace Proyecto.Catalogos.Presupuesto
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalMostrarPresupuestoEgresos();", true);
 
         }
+        
+        /// <summary>
+        /// Josseline M
+        /// Pemite editar las pantallas de editar presupuesto egreso
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnEditarPresupuestoEgreso_Click(object sender, EventArgs e)
+        {
+            int idPartida = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+            LinkedList<Entidades.PresupuestoEgresoPartida> listaSession = (LinkedList<Entidades.PresupuestoEgresoPartida>)Session["listaPresupuestosEgresosPartida"];
+
+            foreach (Entidades.PresupuestoEgresoPartida partidaEgreso in listaSession)
+            {
+                if (partidaEgreso.idPartida==idPartida)
+                {
+
+                    txtDescripcionEditar.Text = partidaEgreso.descripcion;
+                    txtMontoNuevoEditar.Text = partidaEgreso.monto + "";
+                    idPartidaEditar.Text = idPartida + "";
+                    idPresupuestoEditar.Text = partidaEgreso.idPresupuestoEgreso+"";
+
+                }
+               
+            }
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEditarPartidaEgreso", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEditarPartidaEgreso').hide();", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalEditarPartidaEgreso();", true);
+
+        }
+
+        /// <summary>
+        /// Se encarga de eliminar el  una partida egreso
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnEliminarPresupuestoEgreso_Click(object sender, EventArgs e)
+        {
+            int idPartida = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+            LinkedList<Entidades.PresupuestoEgresoPartida> listaSession = (LinkedList<Entidades.PresupuestoEgresoPartida>)Session["listaPresupuestosEgresosPartida"];
+
+            foreach (Entidades.PresupuestoEgresoPartida partidaEgreso in listaSession)
+            {
+                if (partidaEgreso.idPartida == idPartida)
+                {
+
+                   
+                    idPartidaEliminar.Text = idPartida + "";
+                    idPresupuestoEliminar.Text = partidaEgreso.idPresupuestoEgreso + "";
+
+                }
+
+            }
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEliminarPartidaEgreso", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEliminarPartidaEgreso').hide();", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalEliminarPartidaEgreso();", true);
+
+        }
+        
+        /// <summary>
+        /// Almacena la actualización del presupuesto egreso
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnEditarPartidaEgresoModal_Click(object sender, EventArgs e)
+        {
+            Entidades.PresupuestoEgresoPartida partidaEgreso = new Entidades.PresupuestoEgresoPartida();
+            Double salario = 0;
+            String txtMonto = txtMontoNuevoEditar.Text.Replace(".", ",");
+            if (Double.TryParse(txtMonto, out salario))
+            {
+                partidaEgreso.idPresupuestoEgreso = Convert.ToInt32(idPresupuestoEditar.Text);
+                partidaEgreso.idPartida = Convert.ToInt32(idPartidaEditar.Text);
+                partidaEgreso.monto = salario;
+                partidaEgreso.descripcion = txtDescripcionEditar.Text;
+                presupuestoServicios.editarPresupuestoEgresoPartida(partidaEgreso);
+
+                int idPartida = (int)Session["idPartidaVer"];
+                PresupuestoEgresoPartida presupuestoEgresoBuscar = new PresupuestoEgresoPartida();
+                presupuestoEgresoBuscar.idPartida = idPartida;
+
+                LinkedList<PresupuestoEgresoPartida> presupuestos = new LinkedList<PresupuestoEgresoPartida>();
+
+                presupuestos = presupuestoServicios.presupuestoEgresoPartidasPorPresupuesto(presupuestoEgresoBuscar);
+                Session["listaPresupuestosEgresosPartida"] = presupuestos;
+                presupuestoEgresosPorPartida();
+                MostrarDatosTabla();
+
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalMostrarPresupuestoEgresos", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalMostrarPresupuestoEgresos').hide();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalMostrarPresupuestoEgresos();", true);
+
+
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEditarPartidaEgreso", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEditarPartidaEgreso').hide();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalEditarPartidaEgreso();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El monto asignado es incorrecto" + "');", true);
+            }
+        }
+        /// <summary>
+        /// Almacena la actualización del presupuesto egreso
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnEliminarPartidaEgresoModal_Click(object sender, EventArgs e)
+        {
+            Entidades.PresupuestoEgresoPartida partidaEgreso = new Entidades.PresupuestoEgresoPartida();
+           
+                partidaEgreso.idPresupuestoEgreso = Convert.ToInt32(idPresupuestoEliminar.Text);
+                partidaEgreso.idPartida = Convert.ToInt32(idPartidaEliminar.Text);
+
+              presupuestoServicios.eliminarPresupuestoEgresoPartida(partidaEgreso);
+
+                int idPartida = (int)Session["idPartidaVer"];
+                PresupuestoEgresoPartida presupuestoEgresoBuscar = new PresupuestoEgresoPartida();
+                presupuestoEgresoBuscar.idPartida = idPartida;
+
+                LinkedList<PresupuestoEgresoPartida> presupuestos = new LinkedList<PresupuestoEgresoPartida>();
+
+                presupuestos = presupuestoServicios.presupuestoEgresoPartidasPorPresupuesto(presupuestoEgresoBuscar);
+                Session["listaPresupuestosEgresosPartida"] = presupuestos;
+                presupuestoEgresosPorPartida();
+                MostrarDatosTabla();
+
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalMostrarPresupuestoEgresos", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalMostrarPresupuestoEgresos').hide();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalMostrarPresupuestoEgresos();", true);
+
+
+           
+        }
 
         protected void Proyectos_OnChanged(object sender, EventArgs e)
         {
             CargarUnidades();
         }
-
+        
+        /// <summary>
+        /// Este metodo se encarga de actualizar el estado del presupuesto de egreso
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void Guardar_Click(object sender, EventArgs e)
         {
           

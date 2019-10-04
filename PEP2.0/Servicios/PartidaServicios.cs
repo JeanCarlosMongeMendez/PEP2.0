@@ -27,7 +27,7 @@ namespace Servicios
         {
             return this.partidaDatos.ObtenerPorPeriodo(anoPeriodo);
         }
-        
+
         public Partida ObtenerPorId(int idPartida)
         {
             return this.partidaDatos.ObtenerPorId(idPartida);
@@ -47,5 +47,22 @@ namespace Servicios
         {
             this.partidaDatos.EliminarPartida(idPartida);
         }
+
+        // <summary>
+        /// Leonardo Carrion
+        /// 25/sep/2019
+        /// Efecto: devuelve la partida que cumple con los datos ingresados de numero de partida y periodo
+        /// Requiere: partida y periodo
+        /// Modifica: -
+        /// Devuelve: partida
+        /// </summary>
+        /// <param name="partida"></param>
+        /// <param name="periodo"></param>
+        /// <returns></returns>
+        public Partida getPartidaPorNumeroYPeriodo(Partida partida, Periodo periodo)
+        {
+            return partidaDatos.getPartidaPorNumeroYPeriodo(partida,periodo);
+        }
+
     }
 }

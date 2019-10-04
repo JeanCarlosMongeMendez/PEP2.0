@@ -136,17 +136,17 @@
     </div>
 
 
-    <!-- Modal nuevo funcionario -->
+    <!-- Modal funcionario -->
     <%--<asp:UpdatePanel ID="UpdatePanel2" runat="server">
         <ContentTemplate>--%>
     <div id="modalNuevoFuncionario" class="modal fade" role="alertdialog">
         <div class="modal-dialog modal-lg" style="min-width: 95%; margin: 2%">
-
+            <asp:HiddenField ID="hdIdFuncionario" runat="server" />
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #005da4; color: white">
                     <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
-                    <h4 class="modal-title">Nuevo funcionario</h4>
+                    <h4 class="modal-title" id="tituloModalFuncionario" runat="server">Nuevo funcionario</h4>
                 </div>
                 <div class="modal-body">
                     <%-- campos a llenar --%>
@@ -203,6 +203,22 @@
 
                             </div>
 
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <div class="row" style="text-align: center">
+
+                                <div class="col-md-3 col-xs-12 col-sm-12">
+                                    <asp:Label runat="server" Text="Jornada laboral <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                                <div class="col-md-9 col-xs-12 col-sm-12" style="text-align: left">
+                                    <asp:DropDownList ID="ddlJornadaLaboral" class="btn btn-default dropdown-toggle" runat="server" AutoPostBack="true"></asp:DropDownList>
+                                </div>
+
+                            </div>
+
                         </asp:Panel>
 
                         <%-- Division --%>
@@ -245,6 +261,7 @@
                                             <div class="input-group">
                                                 <span class="input-group-addon">+</span>
                                                 <asp:TextBox ID="txtSumaSalarioBase1" runat="server" class="form-control" AutoPostBack="true"></asp:TextBox>
+                                                <span class="input-group-addon">%</span>
                                             </div>
                                         </div>
                                         </div>
@@ -439,24 +456,19 @@
                                     <asp:Label runat="server" Text="Salario base II <span style='color:red'>*</span>" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                                 </div>
 
-                                <div class="col-md-4 col-xs-6 col-sm-6">
+                                <div class="col-md-8 col-xs-12 col-sm-12">
                                     <div class="input-group">
                                         <span class="input-group-addon">₡</span>
                                         <asp:TextBox ID="txtSalarioBase2" runat="server" class="form-control" ReadOnly="true"></asp:TextBox>
                                     </div>
                                 </div>
 
-                                <asp:UpdatePanel ID="UpdatePanel3" runat="server">
-                                    <ContentTemplate>
-                                        <div class="col-md-4 col-xs-6 col-sm-6">
+                                <%--                           <div class="col-md-4 col-xs-6 col-sm-6">
                                             <div class="input-group">
                                                 <span class="input-group-addon">+</span>
                                                 <asp:TextBox ID="txtSumaSalarioBase2" runat="server" class="form-control" AutoPostBack="true"></asp:TextBox>
                                             </div>
-                                        </div>
-                                    </ContentTemplate>
-                                </asp:UpdatePanel>
-
+                                        </div>--%>
                             </div>
 
                             <div class="col-md-12 col-xs-12 col-sm-12">
@@ -700,12 +712,12 @@
     <!-- Modal Ver funcionario -->
     <div id="modalVerFuncionario" class="modal fade" role="alertdialog">
         <div class="modal-dialog modal-lg" style="min-width: 95%; margin: 2%">
-
+            <asp:HiddenField ID="hdIdEliminarFuncionario" runat="server" />
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #005da4; color: white">
                     <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
-                    <h4 class="modal-title" id="H1" runat="server">Ver funcionario</h4>
+                    <h4 class="modal-title" id="tituloVerFuncionario" runat="server">Ver funcionario</h4>
                 </div>
                 <div class="modal-body">
                     <%-- campos a llenar --%>
@@ -1216,6 +1228,7 @@
                     <%-- Fin campos a llenar --%>
                 </div>
                 <div class="modal-footer" style="text-align: center">
+                    <asp:Button ID="btnConfirmarEliminar" runat="server" Text="Eliminar" CssClass="btn btn-primary" OnClick="btnConfirmarEliminar_Click" />
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>

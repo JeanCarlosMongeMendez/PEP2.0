@@ -46,5 +46,20 @@ namespace Servicios
         {
             proyectoDatos.ActualizarProyecto(proyecto);
         }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 27/sep/2019
+        /// Efecto: devuelve los proyectos que se encuentran en el periodo consultado
+        /// Requiere: periodo
+        /// Modifica: -
+        /// Devuelve: lista de proyectos
+        /// </summary>
+        /// <param name="periodo"></param>
+        /// <returns></returns>
+        public List<Proyectos> getProyectosPorPeriodo(Periodo periodo)
+        {
+            return proyectoDatos.getProyectosPorPeriodo(periodo);
+        }
     }
 }

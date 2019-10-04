@@ -12,12 +12,16 @@ using System.Web.UI.WebControls;
 
 namespace Proyecto.Planilla
 {
-    public partial class AdministrarProyeccion : System.Web.UI.Page
+    public partial class AdministrarDistribucionUcr : System.Web.UI.Page
     {
+
         #region variables globales
+        private FuncionarioServicios funcionarioServicios = new FuncionarioServicios();
+        private PeriodoServicios periodoServicios = new PeriodoServicios();
+        private ProyectoServicios proyectoServicios = new ProyectoServicios();
         #endregion
 
-        #region paginacion
+        #region variables globales paginacion
         readonly PagedDataSource pgsource = new PagedDataSource();
         int primerIndex, ultimoIndex;
         private int elmentosMostrar = 10;
@@ -47,27 +51,56 @@ namespace Proyecto.Planilla
             Utilidades.escogerMenu(Page, rolesPermitidos);
             if (!IsPostBack)
             {
+                List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios();
+
+                Session["listaFuncionarios"] = listaFuncionarios;
+                Session["listaFuncionariosFiltrada"] = listaFuncionarios;
+
+                mostrarDatosTabla();
+
+                //llenar drop down list
+                LinkedList<Periodo> periodos = (LinkedList<Periodo>)periodoServicios.ObtenerTodos();
+                ddlPeriodo.DataSource = periodos;
+                ddlPeriodo.DataTextField = "anoPeriodo";
+                ddlPeriodo.DataValueField = "anoPeriodo";
+                ddlPeriodo.DataBind();
+
+
+                LinkedList<Proyectos> proyectos = proyectoServicios.ObtenerPorPeriodo(periodos.First().anoPeriodo);
+                ddlProyecto.DataSource = proyectos;
+                ddlProyecto.DataTextField = "nombreProyecto";
+                ddlProyecto.DataValueField = "idProyecto";
+                ddlProyecto.DataBind();
             }
         }
         #endregion
 
         #region logica
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 14/jun/2019
+        /// Efecto: carga los datos filtrados en la tabla y realiza la paginacion correspondiente
+        /// Requiere: -
+        /// Modifica: los datos mostrados en pantalla
+        /// Devuelve: -
+        /// </summary>
         public void mostrarDatosTabla()
         {
-            List<Jornada> listaJornadas = (List<Jornada>)Session["listaJornadas"];
+            List<Funcionario> listaFuncionarios = (List<Funcionario>)Session["listaFuncionarios"];
 
-            String desc = "";
+            String nombre = "";
 
-            if (!String.IsNullOrEmpty(txtBuscarDesc.Text))
+            if (!String.IsNullOrEmpty(txtBuscarNombre.Text))
             {
-                desc = txtBuscarDesc.Text;
+                nombre = txtBuscarNombre.Text;
             }
 
-            List<Jornada> listaJornadasFiltrada = (List<Jornada>)listaJornadas.Where(jornada => jornada.descJornada.ToUpper().Contains(desc.ToUpper())).ToList();
+            List<Funcionario> listaFuncionarioFiltrada = (List<Funcionario>)listaFuncionarios.Where(funcionario => funcionario.nombreFuncionario.ToString().Contains(nombre)).ToList();
 
-            Session["listaJornadasFiltrada"] = listaJornadasFiltrada;
+            Session["listaFuncionariosFiltrada"] = listaFuncionarioFiltrada;
 
-            var dt = listaJornadasFiltrada;
+            var dt = listaFuncionarioFiltrada;
             pgsource.DataSource = dt;
             pgsource.AllowPaging = true;
             //numero de items que se muestran en el Repeater
@@ -83,18 +116,16 @@ namespace Proyecto.Planilla
             lbPrimero.Enabled = !pgsource.IsFirstPage;
             lbUltimo.Enabled = !pgsource.IsLastPage;
 
-            rpJornadas.DataSource = pgsource;
-            rpJornadas.DataBind();
+            rpFuncionarios.DataSource = pgsource;
+            rpFuncionarios.DataBind();
 
             //metodo que realiza la paginacion
             Paginacion();
         }
-        #endregion
 
-        #region paginacion
         /// <summary>
         /// Leonardo Carrion
-        /// 18/sep/2019
+        /// 14/jun/2019
         /// Efecto: realiza la paginacion
         /// Requiere: -
         /// Modifica: paginacion mostrada en pantalla
@@ -134,10 +165,14 @@ namespace Proyecto.Planilla
             rptPaginacion.DataSource = dt;
             rptPaginacion.DataBind();
         }
+        #endregion
 
+        #region eventos
+
+        #region paginacion
         /// <summary>
         /// Leonardo Carrion
-        /// 18/sep/2019
+        /// 14/jun/2019
         /// Efecto: se devuelve a la primera pagina y muestra los datos de la misma
         /// Requiere: dar clic al boton de "Primer pagina"
         /// Modifica: elementos mostrados en la tabla de contactos
@@ -153,7 +188,7 @@ namespace Proyecto.Planilla
 
         /// <summary>
         /// Leonardo Carrion
-        /// 18/sep/2019
+        /// 14/jun/2019
         /// Efecto: se devuelve a la ultima pagina y muestra los datos de la misma
         /// Requiere: dar clic al boton de "Ultima pagina"
         /// Modifica: elementos mostrados en la tabla de contactos
@@ -169,7 +204,7 @@ namespace Proyecto.Planilla
 
         /// <summary>
         /// Leonardo Carrion
-        /// 18/sep/2019
+        /// 14/jun/2019
         /// Efecto: se devuelve a la pagina anterior y muestra los datos de la misma
         /// Requiere: dar clic al boton de "Anterior pagina"
         /// Modifica: elementos mostrados en la tabla de contactos
@@ -185,7 +220,7 @@ namespace Proyecto.Planilla
 
         /// <summary>
         /// Leonardo Carrion
-        /// 18/sep/2019
+        /// 14/jun/2019
         /// Efecto: se devuelve a la pagina siguiente y muestra los datos de la misma
         /// Requiere: dar clic al boton de "Siguiente pagina"
         /// Modifica: elementos mostrados en la tabla de contactos
@@ -201,7 +236,7 @@ namespace Proyecto.Planilla
 
         /// <summary>
         /// Leonardo Carrion
-        /// 18/sep/2019
+        /// 14/jun/2019
         /// Efecto: actualiza la la pagina actual y muestra los datos de la misma
         /// Requiere: -
         /// Modifica: elementos de la tabla
@@ -218,7 +253,7 @@ namespace Proyecto.Planilla
 
         /// <summary>
         /// Leonardo Carrion
-        /// 18/sep/2019
+        /// 14/jun/2019
         /// Efecto: marca el boton de la pagina seleccionada
         /// Requiere: dar clic al boton de paginacion
         /// Modifica: color del boton seleccionado
@@ -234,13 +269,72 @@ namespace Proyecto.Planilla
             lnkPagina.BackColor = Color.FromName("#005da4");
             lnkPagina.ForeColor = Color.FromName("#FFFFFF");
         }
-        
         #endregion
 
-        #region eventos
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 20/09/2019
+        /// Efecto : Muestra los datos del funcionario seleccionado
+        /// Requiere : Clickear el boton "Seleccionar"
+        /// Modifica : -
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnSelccionar_Click(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+            Funcionario funcionarioVer = null;
+            List<Funcionario> funcionarios = (List<Funcionario>)Session["listaFuncionariosFiltrada"];
+            foreach (Funcionario funcionario in funcionarios)
+            {
+                if (funcionario.idFuncionario == id)
+                {
+                    funcionarioVer = funcionario;
+                    break;
+                }
+            }
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalDistribuirJornada();", true);
+        }
+
         /// <summary>
         /// Leonardo Carrion
-        /// 18/sep/2019
+        /// 16/jul/2019
+        /// Efecto: devuelve a la pantalla de administrar planillas
+        /// Requiere: dar clic al boton de "regresar"
+        /// Modifica: -
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnRegresar_Click(object sender, EventArgs e)
+        {
+            String url = Page.ResolveUrl("~/Default.aspx");
+            Response.Redirect(url);
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 27/09/2019
+        /// Efecto : Actualiza la lista de proyectos de un periodo
+        /// Requiere : Cambiar el periodo
+        /// Modifica : Lista de proyectos 
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void ddlPeriodo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32(ddlPeriodo.SelectedValue);
+            LinkedList<Proyectos> proyectos = proyectoServicios.ObtenerPorPeriodo(id);
+            ddlProyecto.DataSource = proyectos;
+            ddlProyecto.DataBind();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 12/jun/2019
         /// Efecto: filtra la tabla segun los datos ingresados en los filtros
         /// Requiere: dar clic en el boton de flitrar e ingresar datos en los filtros
         /// Modifica: datos de la tabla
@@ -253,39 +347,7 @@ namespace Proyecto.Planilla
             paginaActual = 0;
             mostrarDatosTabla();
         }
-        
-        /// <summary>
-        /// Leonardo Carrion
-        /// 18/sep/2019
-        /// Efecto: levanta modal para ingresar una nueva jornada
-        /// Requiere: dar clic en el boton de "Nueva jornada"
-        /// Modifica: -
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnNuevaJornada_Click(object sender, EventArgs e)
-        {
-            txtDescModalNuevo.Text = "";
-            txtPorcentajeModalNuevo.Text = "";
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevaJornada();", true);
-        }
 
-        /// <summary>
-        /// Leonardo Carrion
-        /// 19/sep/2019
-        /// Efecto:
-        /// Requiere:
-        /// Modifica:
-        /// Devuelve:
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnNuevaJornadaModal_Click(object sender, EventArgs e)
-        {
-
-        }
         #endregion
-
     }
 }

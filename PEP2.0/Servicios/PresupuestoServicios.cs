@@ -42,6 +42,51 @@ namespace Servicios
         {
             return this.presupuestoDatos.EliminarPresupuestoIngreso(idPresupuesto);
         }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 27/sep/2019
+        /// Efecto: devuelve lista de presupuestos de ingresos segun el proyecto ingresado
+        /// Requiere: proyecto a consultar
+        /// Modifica: -
+        /// Devuelve: lista de presupuestos de ingresos
+        /// </summary>
+        /// <param name="proyecto"></param>
+        /// <returns></returns>
+        public List<PresupuestoIngreso> getPresupuestosIngresosPorProyecto(Proyectos proyecto)
+        {
+            return presupuestoDatos.getPresupuestosIngresosPorProyecto(proyecto);
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 01/oct/2019
+        /// Efecto: actualiza dado de monto del presupuesto de ingreso 
+        /// Requiere: presupuesto de ingreso a modificar
+        /// Modifica: dato de monto del presupuesto ingreso
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="presupuestoIngreso"></param>
+        /// <returns></returns>
+        public void actualizarPresupuestoIngreso(PresupuestoIngreso presupuestoIngreso)
+        {
+            presupuestoDatos.actualizarPresupuestoIngreso(presupuestoIngreso);
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 02/oct/2019
+        /// Efecto: actualiza dado de estado del presupuesto de ingreso 
+        /// Requiere: presupuesto de ingreso a modificar
+        /// Modifica: dato de estado del presupuesto ingreso
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="presupuestoIngreso"></param>
+        /// <returns></returns>
+        public void actualizarEstadoPresupuestoIngreso(PresupuestoIngreso presupuestoIngreso)
+        {
+            presupuestoDatos.actualizarEstadoPresupuestoIngreso(presupuestoIngreso);
+        }
         #endregion
 
         #region PRESUPUESTO DE EGRESO
@@ -116,7 +161,24 @@ namespace Servicios
             this.presupuestoDatos.guardarPartidasPresupuestoEgreso(presupuestosE);
         }
 
-
-            #endregion
+        /// <summary>
+        /// Este método se encarga de actualizar las descripciones y montos de las partidas egresos
+        /// </summary>
+        /// <param name="presupuesto"></param>
+        public void editarPresupuestoEgresoPartida(PresupuestoEgresoPartida presupuestoEgresoPartida)
+        {
+            this.presupuestoDatos.editarPresupuestoEgresoPartida(presupuestoEgresoPartida);
         }
+
+        /// <summary>
+        /// Este método se encarga de eliminar las partidas egresos
+        /// </summary>
+        /// <param name="presupuesto"></param>
+        public void eliminarPresupuestoEgresoPartida(PresupuestoEgresoPartida presupuestoEgresoPartida)
+        {
+            this.presupuestoDatos.eliminarPresupuestoEgresoPartida(presupuestoEgresoPartida);
+        }
+
+        #endregion
+    }
 }

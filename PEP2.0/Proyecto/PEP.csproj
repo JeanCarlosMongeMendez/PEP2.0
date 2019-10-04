@@ -106,7 +106,7 @@
       <Link>SqlServerTypes\x86\SqlServerSpatial110.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Catalogos\Ejecucion\AdministrarEjecucion.aspx" />
+    <Content Include="Catalogos\CargasSociales\AdministrarCargasSociales.aspx" />
     <Content Include="Catalogos\Jornadas\AdministrarJornadas.aspx" />
     <Content Include="Catalogos\Partidas\AdministrarPartida.aspx" />
     <Content Include="Catalogos\Partidas\AdministrarPartidas.aspx" />
@@ -116,8 +116,8 @@
     <Content Include="Catalogos\Periodos\AdministrarPeriodo.aspx" />
     <Content Include="Catalogos\Periodos\EliminarPeriodo.aspx" />
     <Content Include="Catalogos\Periodos\NuevoPeriodo.aspx" />
+    <Content Include="Catalogos\Presupuesto\AdministrarPresupuestoIngreso.aspx" />
     <Content Include="Catalogos\Presupuesto\PresupuestoEgreso.aspx" />
-    <Content Include="Catalogos\Presupuesto\PresupuestoIngreso.aspx" />
     <Content Include="Catalogos\Proyecto\EditarProyecto.aspx" />
     <Content Include="Catalogos\Proyecto\EliminarProyecto.aspx" />
     <Content Include="Catalogos\Proyecto\NuevoProyecto.aspx" />
@@ -161,10 +161,12 @@
     <Content Include="Imagenes\UCR informe.png" />
     <Content Include="Login.aspx" />
     <Content Include="Mantenimiento\EscalasSalariales\AdministrarEscalas.aspx" />
+    <Content Include="Planilla\AdministrarDistribucionUcr.aspx" />
     <Content Include="Planilla\AdministrarFuncionarioFundevi.aspx" />
     <Content Include="Planilla\AdministrarFuncionariosPlanilla.aspx" />
     <Content Include="Planilla\AdministrarPlanilla.aspx" />
     <Content Include="Planilla\AdministrarPlanillaFundevi.aspx" />
+    <Content Include="Planilla\AdministrarProyeccion.aspx" />
     <Content Include="Planilla\AgregarFuncionarioFundevi.aspx" />
     <Content Include="Planilla\AsignarFuncionariosPlanillaFundevi.aspx" />
     <Content Include="Scripts\abrirfile.js" />
@@ -194,12 +196,12 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Catalogos\Ejecucion\AdministrarEjecucion.aspx.cs">
-      <DependentUpon>AdministrarEjecucion.aspx</DependentUpon>
+    <Compile Include="Catalogos\CargasSociales\AdministrarCargasSociales.aspx.cs">
+      <DependentUpon>AdministrarCargasSociales.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Catalogos\Ejecucion\AdministrarEjecucion.aspx.designer.cs">
-      <DependentUpon>AdministrarEjecucion.aspx</DependentUpon>
+    <Compile Include="Catalogos\CargasSociales\AdministrarCargasSociales.aspx.designer.cs">
+      <DependentUpon>AdministrarCargasSociales.aspx</DependentUpon>
     </Compile>
     <Compile Include="Catalogos\Jornadas\AdministrarJornadas.aspx.cs">
       <DependentUpon>AdministrarJornadas.aspx</DependentUpon>
@@ -264,19 +266,19 @@
     <Compile Include="Catalogos\Periodos\NuevoPeriodo.aspx.designer.cs">
       <DependentUpon>NuevoPeriodo.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Catalogos\Presupuesto\AdministrarPresupuestoIngreso.aspx.cs">
+      <DependentUpon>AdministrarPresupuestoIngreso.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Catalogos\Presupuesto\AdministrarPresupuestoIngreso.aspx.designer.cs">
+      <DependentUpon>AdministrarPresupuestoIngreso.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Catalogos\Presupuesto\PresupuestoEgreso.aspx.cs">
       <DependentUpon>PresupuestoEgreso.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Catalogos\Presupuesto\PresupuestoEgreso.aspx.designer.cs">
       <DependentUpon>PresupuestoEgreso.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Catalogos\Presupuesto\PresupuestoIngreso.aspx.cs">
-      <DependentUpon>PresupuestoIngreso.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Catalogos\Presupuesto\PresupuestoIngreso.aspx.designer.cs">
-      <DependentUpon>PresupuestoIngreso.aspx</DependentUpon>
     </Compile>
     <Compile Include="Catalogos\Proyecto\EditarProyecto.aspx.cs">
       <DependentUpon>EditarProyecto.aspx</DependentUpon>
@@ -351,6 +353,13 @@
     <Compile Include="Mantenimiento\EscalasSalariales\AdministrarEscalas.aspx.designer.cs">
       <DependentUpon>AdministrarEscalas.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Planilla\AdministrarDistribucionUcr.aspx.cs">
+      <DependentUpon>AdministrarDistribucionUcr.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Planilla\AdministrarDistribucionUcr.aspx.designer.cs">
+      <DependentUpon>AdministrarDistribucionUcr.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Planilla\AdministrarFuncionarioFundevi.aspx.cs">
       <DependentUpon>AdministrarFuncionarioFundevi.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -378,6 +387,13 @@
     </Compile>
     <Compile Include="Planilla\AdministrarPlanillaFundevi.aspx.designer.cs">
       <DependentUpon>AdministrarPlanillaFundevi.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Planilla\AdministrarProyeccion.aspx.cs">
+      <DependentUpon>AdministrarProyeccion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Planilla\AdministrarProyeccion.aspx.designer.cs">
+      <DependentUpon>AdministrarProyeccion.aspx</DependentUpon>
     </Compile>
     <Compile Include="Planilla\AgregarFuncionarioFundevi.aspx.cs">
       <DependentUpon>AgregarFuncionarioFundevi.aspx</DependentUpon>

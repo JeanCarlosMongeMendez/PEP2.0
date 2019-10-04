@@ -338,10 +338,10 @@ namespace Proyecto.Catalogos.Jornadas
         /// <summary>
         /// Leonardo Carrion
         /// 19/sep/2019
-        /// Efecto:
-        /// Requiere:
-        /// Modifica:
-        /// Devuelve:
+        /// Efecto: filtra la tabla segun los datos ingresados en el textbox
+        /// Requiere: ingresar datos en textbox
+        /// Modifica: datos de la tabla
+        /// Devuelve: -
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

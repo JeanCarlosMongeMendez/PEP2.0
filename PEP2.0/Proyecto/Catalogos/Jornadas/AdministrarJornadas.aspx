@@ -109,7 +109,7 @@
                 <%-- fin tabla--%>
 
                 <div class="col-md-2 col-xs-2 col-sm-2 col-md-offset-10 col-xs-offset-10 col-sm-offset-10">
-                    <asp:Button ID="btnNuevaJornada" runat="server" Text="Nuevo" CssClass="btn btn-primary boton-nuevo" OnClick="btnNuevaJornada_Click" />
+                    <asp:Button ID="btnNuevaJornada" runat="server" Text="Nueva jornada" CssClass="btn btn-primary boton-nuevo" OnClick="btnNuevaJornada_Click" />
                 </div>
 
             </div>
