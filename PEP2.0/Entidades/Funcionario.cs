@@ -13,31 +13,30 @@ namespace Entidades
     /// </summary>
     public class Funcionario
     {
-        public int idFunionario { get; set; }
+        public int idFuncionario { get; set; }
         public Planilla planilla { get; set; }
         public EscalaSalarial escalaSalarial { get; set; }
         public DateTime fechaIngreso { get; set; }
         public Double salarioBase1 { get; set; }
-        public String formulaSalarioBase1 { get; set; }
         public int noEscalafones1 { get; set; }
         public Double montoEscalafones1 { get; set; }
         public Double porcentajeAnualidad1 { get; set; }
         public Double montoAnualidad1 { get; set; }
         public Double salarioContratacion1 { get; set; }
         public Double salarioEnero { get; set; }
-        public Double conceptoPagoLey1 { get; set; }
+        public Double conceptoPagoLey { get; set; }
         public Double salarioBase2 { get; set; }
-        public String formulaSalarioBase2 { get; set; }
         public int noEscalafones2 { get; set; }
         public Double montoEscalafones2 { get; set; }
         public Double porcentajeAnualidad2 { get; set; }
         public Double montoAnualidad2 { get; set; }
         public Double salarioContratacion2 { get; set; }
         public Double salarioJunio { get; set; }
-        public Double conceptoPagoLey2 { get; set; }
         public Double salarioPromedio { get; set; }
         public Double salarioPropuesto { get; set; }
         public String observaciones { get; set; }
         public String nombreFuncionario { get; set; }
+        public double porcentajeSumaSalario { get; set; }
+        public Jornada JornadaLaboral { get; set; }
     }
 }

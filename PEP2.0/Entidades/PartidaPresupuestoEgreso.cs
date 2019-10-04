@@ -6,18 +6,16 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
+
     /// <summary>
-    /// Adrián Serrano
-    /// 27/may/2019
-    /// Clase para administrar la entidad de Partida
+    /// Josseline M
+    /// Entidad encargada de llevar el control de asigación de partidas y su debido monto
     /// </summary>
-    public class Partida
+   public class PartidaPresupuestoEgreso
     {
         public int idPartida { get; set; }
         public string numeroPartida { get; set; }
-        public string descripcionPartida { get; set; }
-        public Partida partidaPadre { get; set; }
-        public Periodo periodo { get; set; }
-      
+        public double montoTotal { get; set; }
+        public string descripcion { get; set; }
     }
 }

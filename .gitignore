@@ -350,3 +350,5 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+PEP2.0/Entidades/Entidades.csproj
+PEP2.0/Proyecto/PEP.csproj
