@@ -20,7 +20,6 @@ namespace PEP.Catalogos.Periodos
         private static int periodoActualSelec;
         public static int proyectoActualSelec = 0;
         private bool botones = false;
-        /*VARIABLES PAGINACIÓN */
         private static Periodo periodoSelccionado = new Periodo();
         private static Proyectos proyectoSelccionado = new Proyectos();
         private static Proyectos proyectoSelccionadoUnidades = new Proyectos();
@@ -126,33 +125,27 @@ namespace PEP.Catalogos.Periodos
             if (!IsPostBack)
             {
                 Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());
-
                 CargarPeriodos();
-
-
             }
-            else
-            {
-                //AgregarPeriodoBtn.Click += new EventHandler((snd, evt) => AgregarPeriodo_Click(snd, evt));
-                //AgregarProyectoBtn.Click += new EventHandler((snd, evt) => AgregarProyecto_Click(snd, evt));
-                //EstablecerPeriodoActualBtn.Click += new EventHandler((snd, evt) => EstablecerPeriodoActual_Click(snd, evt));
 
-
-                //GuardarProyectosBtn.Click += new EventHandler((snd, evt) => GuardarProyectos_Click(snd, evt));
-                //AgregarUnidadBtn.Click += new EventHandler((snd, evt) => AgregarUnidad_Click(snd, evt));
-            }
             if (proyectoActualSelec == 0) divUnidades.Visible = false;
             else divUnidades.Visible = true;
             if (periodoActualSelec == 0) divPaginacionProyectos.Visible = false;
             else divPaginacionProyectos.Visible = true;
             MostrarPeriodos();
-
-
         }
         #endregion
 
         #region logica
 
+        /// <summary>
+        /// Mariela Calvo
+        /// septiembre/2019
+        /// Efecto: llena los DropDownList con los periodos que se encuentran en la base de datos 
+        /// Requiere: - 
+        /// Modifica: DropDownList
+        /// Devuelve: -
+        /// </summary>
         private void CargarPeriodos()
         {
             PeriodosDDL.Items.Clear();
@@ -188,208 +181,24 @@ namespace PEP.Catalogos.Periodos
                     PeriodosDDL.Items.FindByValue(anoHabilitado.ToString()).Selected = true;
                     PeriodosDDL2.Items.FindByValue(anoHabilitado.ToString()).Selected = true;
                 }
-
-                //CargarPeriodosNuevos();
-                //CargarProyectosActuales();
                 MostrarPeriodos();
             }
         }
 
 
-        private void CargarProyectosActuales()
-        {
-            //ProyectosActualesDDL.Items.Clear();
-
-
-            if (!PeriodosDDL.SelectedValue.Equals(""))
-            {
-                AnoActual.Text = PeriodosDDL.SelectedValue;
-                Session["periodo"] = PeriodosDDL.SelectedValue;
-
-                LinkedList<Proyectos> proyectos = new LinkedList<Proyectos>();
-                proyectos = this.proyectoServicios.ObtenerPorPeriodo(Int32.Parse(PeriodosDDL.SelectedValue));
-
-                if (proyectos.Count > 0)
-                {
-                    foreach (Proyectos proyecto in proyectos)
-                    {
-                        ListItem itemLB = new ListItem(proyecto.nombreProyecto, proyecto.idProyecto.ToString());
-
-
-                        //if (proyecto.esUCR)
-                        //{
-                        //    ListItem itemDDL = new ListItem(proyecto.nombreProyecto, proyecto.idProyecto.ToString());
-                        //    ProyectosActualesDDL.Items.Add(itemDDL);
-                        //}
-                    }
-
-                    //CargarUnidadesActuales2();
-                }
-            }
-        }
-
-        private void CargarProyectosNuevos()
-        {
-
-        }
-
-        //private void CargarUnidadesActuales()
-        //{
-        //    UnidadesActualesLB.Items.Clear();
-
-        //    if (!ProyectosActualesDDL.SelectedValue.Equals(""))
-        //    {
-        //        LinkedList<Unidad> unidades = new LinkedList<Unidad>();
-        //        unidades = this.unidadServicios.ObtenerPorProyecto(Int32.Parse(ProyectosActualesDDL.SelectedValue));
-        //        Session["proyecto"] = ProyectosActualesDDL.SelectedValue;
-
-        //        foreach (Unidad unidad in unidades)
-        //        {
-        //            ListItem itemLB = new ListItem(unidad.nombreUnidad, unidad.idUnidad.ToString());
-        //            UnidadesActualesLB.Items.Add(itemLB);
-        //        }
-        //    }
-        //}
-
-
-        /*private void CargarUnidadesActuales2()
-        {
-            UnidadesActualesLB.Items.Clear();
-
-            int[] indices = null;
-            if (indices.Length == 1)
-            //if (!ProyectosActualesLB.SelectedValue.Equals(""))
-            {
-                LinkedList<Unidad> unidades = new LinkedList<Unidad>();
-                Proyectos proyecto = null;
-                unidades = this.unidadServicios.ObtenerPorProyecto(proyecto.idProyecto);
-
-                Session["proyecto"] = proyecto.idProyecto;
-
-                if (proyecto.esUCR)
-                {
-                    foreach (Unidad unidad in unidades)
-                    {
-                        ListItem itemLB = new ListItem(unidad.nombreUnidad, unidad.idUnidad.ToString());
-                        UnidadesActualesLB.Items.Add(itemLB);
-                    }
-                    divUnidades.Visible = true;
-                }
-                else
-                {
-                    divUnidades.Visible = false;
-                }
-            }
-            else
-            {
-                divUnidades.Visible = false;
-            }
-        }*/
-
         #endregion
 
-        #region eventos click
-
-        protected void AgregarPeriodo_Click(object sender, EventArgs e)
-        {
-            String url = Page.ResolveUrl("~/Catalogos/Periodos/NuevoPeriodo.aspx");
-            Response.Redirect(url);
-        }
-
-        protected void EliminarPeriodo_Click(object sender, EventArgs e)
-        {
-            if (!PeriodosDDL.SelectedValue.Equals(""))
-            {
-                Periodo periodo = new Periodo();
-                periodo.anoPeriodo = Int32.Parse(PeriodosDDL.SelectedValue);
-                Session["periodoEliminar"] = periodo;
-
-                String url = Page.ResolveUrl("~/Catalogos/Periodos/EliminarPeriodo.aspx");
-                Response.Redirect(url);
-            }
-        }
-
-
-
-        protected void EditarProyecto_Click(object sender, EventArgs e)
-        {
-            int[] indices = null;
-            if (indices.Length == 1)
-            {
-                Proyectos proyecto = null;
-                Session["proyectoEditar"] = proyecto;
-
-                String url = Page.ResolveUrl("~/Catalogos/Proyecto/EditarProyecto.aspx");
-                Response.Redirect(url);
-            }
-        }
-
-        protected void EliminarProyecto_Click(object sender, EventArgs e)
-        {
-            int[] indices = null;
-            if (indices.Length == 1)
-            {
-                Proyectos proyecto = null;
-                Session["proyectoEliminar"] = proyecto;
-
-                String url = Page.ResolveUrl("~/Catalogos/Proyecto/EliminarProyecto.aspx");
-                Response.Redirect(url);
-            }
-        }
-
-
-
-        /*
-         * protected void EditarUnidad_Click(object sender, EventArgs e)
-        {
-            int[] indices = UnidadesActualesLB.GetSelectedIndices();
-            if (indices.Length == 1)
-            {
-                Unidad unidad = this.unidadServicios.ObtenerPorId(Int32.Parse(UnidadesActualesLB.SelectedValue));
-                Session["unidadEditar"] = unidad;
-
-                String url = Page.ResolveUrl("~/Catalogos/Unidades/EditarUnidad.aspx");
-                Response.Redirect(url);
-            }
-        }
-
-        protected void EliminarUnidad_Click(object sender, EventArgs e)
-        {
-            int[] indices = UnidadesActualesLB.GetSelectedIndices();
-            if (indices.Length == 1)
-            {
-                Unidad unidad = this.unidadServicios.ObtenerPorId(Int32.Parse(UnidadesActualesLB.SelectedValue));
-                Session["unidadEliminar"] = unidad;
-
-                String url = Page.ResolveUrl("~/Catalogos/Unidades/EliminarUnidad.aspx");
-                Response.Redirect(url);
-            }
-        }
-        */
-
-
-
-
-        #endregion
-
-        #region eventos onchanged
-
-
-
-        protected void PeriodosNuevos_OnChanged(object sender, EventArgs e)
-        {
-            CargarProyectosNuevos();
-        }
-
-        protected void ProyectosActualesLB_OnChanged(object sender, EventArgs e)
-        {
-            //CargarUnidadesActuales2();
-        }
-
-        #endregion
 
         #region paginación
 
+        /// <summary>
+        /// Mariela Calvo
+        /// septiembre/2019
+        /// Efecto: Paginación Tabla Periodos
+        /// Requiere: - 
+        /// Modifica: Tabla Periodos
+        /// Devuelve: -
+        /// </summary>
         private void Paginacion()
         {
             var dt = new DataTable();
@@ -426,9 +235,109 @@ namespace PEP.Catalogos.Periodos
         }
 
         /// <summary>
-        /// Leonardo Carrion
-        /// 29/abr/2019
-        /// Efecto: realiza la paginacion
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: actualiza la la pagina actual y muestra los datos de la misma
+        /// Requiere: -
+        /// Modifica: elementos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacion_ItemCommand(object source, DataListCommandEventArgs e)
+        {
+            if (!e.CommandName.Equals("nuevaPagina")) return;
+            paginaActual = Convert.ToInt32(e.CommandArgument.ToString());
+            MostrarPeriodos();
+        }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: marca el boton de la pagina seleccionada
+        /// Requiere: dar clic al boton de paginacion
+        /// Modifica: color del boton seleccionado
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacion_ItemDataBound(object sender, DataListItemEventArgs e)
+        {
+            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion");
+            if (lnkPagina.CommandArgument != paginaActual.ToString()) return;
+            lnkPagina.Enabled = false;
+            lnkPagina.BackColor = Color.FromName("#005da4");
+            lnkPagina.ForeColor = Color.FromName("#FFFFFF");
+        }
+
+        /// <summary>
+        /// Mariela Calvo   
+        /// Septiembre/2019
+        /// Efecto: se devuelve a la págian pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Ultima pagina"
+        /// Modifica: elementos mostrados en la tabla de contactos
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbPrimero_Click(object sender, EventArgs e)
+        {
+            paginaActual = 0;
+            MostrarPeriodos();
+        }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: se devuelve a la ultima pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Ultima pagina"
+        /// Modifica: elementos mostrados en la tabla de contactos
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbUltimo_Click(object sender, EventArgs e)
+        {
+            paginaActual = (Convert.ToInt32(ViewState["TotalPaginas"]) - 1);
+            MostrarPeriodos();
+        }
+
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: se devuelve a la pagina anterior y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Anterior pagina"
+        /// Modifica: elementos mostrados en la tabla de contactos
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbAnterior_Click(object sender, EventArgs e)
+        {
+            paginaActual -= 1;
+            MostrarPeriodos();
+        }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: se devuelve a la pagina siguiente y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Siguiente pagina"
+        /// Modifica: elementos mostrados en la tabla de contactos
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        protected void lbSiguiente_Click(object sender, EventArgs e)
+        {
+            paginaActual += 1;
+            MostrarPeriodos();
+        }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: realiza la paginacion de la tabla proyectos
         /// Requiere: -
         /// Modifica: paginacion mostrada en pantalla
         /// Devuelve: -
@@ -469,10 +378,100 @@ namespace PEP.Catalogos.Periodos
 
         }
 
+        protected void lbPrimero2_Click(object sender, EventArgs e)
+        {
+            paginaActual2 = 0;
+            cargarTablaProyectosAtransferir();
+        }
+
         /// <summary>
-        /// Leonardo Carrion
-        /// 30/abr/2019
-        /// Efecto: realiza la paginacion
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: se devuelve a la pagina anterior y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Anterior pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbAnterior2_Click(object sender, EventArgs e)
+        {
+            paginaActual2 -= 1;
+            cargarTablaProyectosAtransferir();
+        }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: actualiza la la pagina actual y muestra los datos de la misma
+        /// Requiere: -
+        /// Modifica: elementos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacion2_ItemCommand(object source, DataListCommandEventArgs e)
+        {
+            if (!e.CommandName.Equals("nuevaPagina")) return;
+            paginaActual2 = Convert.ToInt32(e.CommandArgument.ToString());
+            cargarTablaProyectosAtransferir();
+        }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: actualiza la la pagina actual y muestra los datos de la misma
+        /// Requiere: -
+        /// Modifica: elementos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacion2_ItemDataBound(object sender, DataListItemEventArgs e)
+        {
+            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion2");
+            if (lnkPagina.CommandArgument != paginaActual2.ToString()) return;
+            lnkPagina.Enabled = false;
+            lnkPagina.BackColor = Color.FromName("#005da4");
+            lnkPagina.ForeColor = Color.FromName("#FFFFFF");
+        }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: se devuelve a la pagina siguiente y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Siguiente pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbSiguiente2_Click(object sender, EventArgs e)
+        {
+            paginaActual2 += 1;
+            cargarTablaProyectosAtransferir();
+        }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: se devuelve a la ultima pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Ultima pagina"
+        /// Modifica: elementos mostrados en la tabla de contactos
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbUltimo2_Click(object sender, EventArgs e)
+        {
+            paginaActual2 = (Convert.ToInt32(ViewState["TotalPaginas2"]) - 1);
+            cargarTablaProyectosAtransferir();
+        }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// septiembre/2019
+        /// Efecto: realiza la paginacion de la tabla proyectos a transferir
         /// Requiere: -
         /// Modifica: paginacion mostrada en pantalla
         /// Devuelve: -
@@ -511,11 +510,112 @@ namespace PEP.Catalogos.Periodos
             rptPaginacion3.DataBind();
 
         }
-        #region paginacion tabla proyectos
+
         /// <summary>
-        /// Leonardo Carrion
-        /// 29/abr/2019
-        /// Efecto: realiza la paginacion
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: marca el boton de la pagina seleccionada
+        /// Requiere: dar clic al boton de paginacion
+        /// Modifica: color del boton seleccionado
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacion3_ItemDataBound(object sender, DataListItemEventArgs e)
+        {
+            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion3");
+            if (lnkPagina.CommandArgument != paginaActual3.ToString()) return;
+            lnkPagina.Enabled = false;
+            lnkPagina.BackColor = Color.FromName("#005da4");
+            lnkPagina.ForeColor = Color.FromName("#FFFFFF");
+        }
+     
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: actualiza la la pagina actual y muestra los datos de la misma
+        /// Requiere: -
+        /// Modifica: elementos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacion3_ItemCommand(object source, DataListCommandEventArgs e)
+        {
+            if (!e.CommandName.Equals("nuevaPagina")) return;
+            paginaActual3 = Convert.ToInt32(e.CommandArgument.ToString());
+            cargarTablaProyectosTransferidos();
+        }
+
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: se devuelve a la primera pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Primer pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbPrimero3_Click(object sender, EventArgs e)
+        {
+            paginaActual3 = 0;
+            cargarTablaProyectosTransferidos();
+        }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: se devuelve a la pagina anterior y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Anterior pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbAnterior3_Click(object sender, EventArgs e)
+        {
+            paginaActual3 -= 1;
+            cargarTablaProyectosTransferidos();
+        }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: se devuelve a la pagina siguiente y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Siguiente pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbSiguiente3_Click(object sender, EventArgs e)
+        {
+            paginaActual3 += 1;
+            cargarTablaProyectosTransferidos();
+        }
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: se devuelve a la ultima pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Ultima pagina"
+        /// Modifica: elementos mostrados en la tabla de contactos
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbUltimo3_Click(object sender, EventArgs e)
+        {
+            paginaActual3 = (Convert.ToInt32(ViewState["TotalPaginas3"]) - 1);
+            cargarTablaProyectosTransferidos();
+        }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// septiembre/2019
+        /// Efecto: realiza la paginacion de la tabla proyectos transferidos
         /// Requiere: -
         /// Modifica: paginacion mostrada en pantalla
         /// Devuelve: -
@@ -553,6 +653,114 @@ namespace PEP.Catalogos.Periodos
             rptPaginacion4.DataSource = dt;
             rptPaginacion4.DataBind();
         }
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: se devuelve a la primera pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Primer pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbPrimero4_Click(object sender, EventArgs e)
+        {
+            paginaActual4 = 0;
+            MostrarTablaProyectos();
+        }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: se devuelve a la pagina anterior y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Anterior pagina"
+        /// Modifica: elementos mostrados en la tabla de contactos
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbAnterior4_Click(object sender, EventArgs e)
+        {
+            paginaActual4 -= 1;
+            MostrarTablaProyectos();
+        }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: actualiza la la pagina actual y muestra los datos de la misma
+        /// Requiere: -
+        /// Modifica: elementos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacion4_ItemCommand(object source, DataListCommandEventArgs e)
+        {
+
+            if (!e.CommandName.Equals("nuevaPagina")) return;
+            paginaActual4 = Convert.ToInt32(e.CommandArgument.ToString());
+            MostrarTablaProyectos();
+        }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: marca el boton de la pagina seleccionada
+        /// Requiere: dar clic al boton de paginacion
+        /// Modifica: color del boton seleccionado
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacion4_ItemDataBound(object sender, DataListItemEventArgs e)
+        {
+            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion4");
+            if (lnkPagina.CommandArgument != paginaActual4.ToString()) return;
+            lnkPagina.Enabled = false;
+            lnkPagina.BackColor = Color.FromName("#005da4");
+            lnkPagina.ForeColor = Color.FromName("#FFFFFF");
+        }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: se devuelve a la pagina siguiente y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Siguiente pagina"
+        /// Modifica: elementos mostrados en la tabla de contactos
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        protected void lbSiguiente4_Click(object sender, EventArgs e)
+        {
+            paginaActual4 += 1;
+
+        }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: se devuelve a la ultima pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Ultima pagina"
+        /// Modifica: elementos mostrados en la tabla de contactos
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbUltimo4_Click(object sender, EventArgs e)
+        {
+            paginaActual4 = (Convert.ToInt32(ViewState["TotalPaginas4"]) - 1);
+            MostrarTablaProyectos();
+        }
+
+
+        /// <summary>
+        /// Mariela Calvo
+        /// septiembre/2019
+        /// Efecto: realiza la paginacion de la tabla proyectos unidades
+        /// Requiere: - 
+        /// Modifica: DropDownList
+        /// Devuelve: -
         /// </summary>
         private void Paginacion5()
         {
@@ -588,155 +796,7 @@ namespace PEP.Catalogos.Periodos
             rptPaginacion5.DataSource = dt;
             rptPaginacion5.DataBind();
         }
-        protected void lbPrimero4_Click(object sender, EventArgs e)
-        {
-            paginaActual4 = 0;
-            MostrarTablaProyectos();
-        }
-        protected void lbAnterior4_Click(object sender, EventArgs e)
-        {
-            paginaActual4 -= 1;
-            MostrarTablaProyectos();
-        }
-        protected void rptPaginacion4_ItemCommand(object source, DataListCommandEventArgs e)
-        {
 
-            if (!e.CommandName.Equals("nuevaPagina")) return;
-            paginaActual4 = Convert.ToInt32(e.CommandArgument.ToString());
-            MostrarTablaProyectos();
-        }
-        protected void rptPaginacion4_ItemDataBound(object sender, DataListItemEventArgs e)
-        {
-            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion4");
-            if (lnkPagina.CommandArgument != paginaActual4.ToString()) return;
-            lnkPagina.Enabled = false;
-            lnkPagina.BackColor = Color.FromName("#005da4");
-            lnkPagina.ForeColor = Color.FromName("#FFFFFF");
-        }
-
-        protected void lbSiguiente4_Click(object sender, EventArgs e)
-        {
-            paginaActual4 += 1;
-
-        }
-
-        protected void lbUltimo4_Click(object sender, EventArgs e)
-        {
-            paginaActual4 = (Convert.ToInt32(ViewState["TotalPaginas4"]) - 1);
-            MostrarTablaProyectos();
-        }
-        #endregion
-
-        #region paginacion tabla periodos
-        protected void lbPrimero_Click(object sender, EventArgs e)
-        {
-            paginaActual = 0;
-            MostrarPeriodos();
-        }
-
-        /// <summary>
-        /// Leonardo Carrion
-        /// 10/abr/2019
-        /// Efecto: se devuelve a la ultima pagina y muestra los datos de la misma
-        /// Requiere: dar clic al boton de "Ultima pagina"
-        /// Modifica: elementos mostrados en la tabla de contactos
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void lbUltimo_Click(object sender, EventArgs e)
-        {
-            paginaActual = (Convert.ToInt32(ViewState["TotalPaginas"]) - 1);
-            MostrarPeriodos();
-        }
-
-        /// <summary>
-        /// Leonardo Carrion
-        /// 10/abr/2019
-        /// Efecto: se devuelve a la pagina anterior y muestra los datos de la misma
-        /// Requiere: dar clic al boton de "Anterior pagina"
-        /// Modifica: elementos mostrados en la tabla de contactos
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void lbAnterior_Click(object sender, EventArgs e)
-        {
-            paginaActual -= 1;
-            MostrarPeriodos();
-        }
-
-        /// <summary>
-        /// Leonardo Carrion
-        /// 10/abr/2019
-        /// Efecto: se devuelve a la pagina siguiente y muestra los datos de la misma
-        /// Requiere: dar clic al boton de "Siguiente pagina"
-        /// Modifica: elementos mostrados en la tabla de contactos
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="sender"></param>
-        protected void lbSiguiente_Click(object sender, EventArgs e)
-        {
-            paginaActual += 1;
-            MostrarPeriodos();
-        }
-
-        /// <summary>
-        /// Leonardo Carrion
-        /// 10/abr/2019
-        /// Efecto: actualiza la la pagina actual y muestra los datos de la misma
-        /// Requiere: -
-        /// Modifica: elementos de la tabla
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="e"></param>
-        protected void rptPaginacion_ItemCommand(object source, DataListCommandEventArgs e)
-        {
-            if (!e.CommandName.Equals("nuevaPagina")) return;
-            paginaActual = Convert.ToInt32(e.CommandArgument.ToString());
-            MostrarPeriodos();
-        }
-
-        /// <summary>
-        /// Leonardo Carrion
-        /// 10/abr/2019
-        /// Efecto: marca el boton de la pagina seleccionada
-        /// Requiere: dar clic al boton de paginacion
-        /// Modifica: color del boton seleccionado
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void rptPaginacion_ItemDataBound(object sender, DataListItemEventArgs e)
-        {
-            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion");
-            if (lnkPagina.CommandArgument != paginaActual.ToString()) return;
-            lnkPagina.Enabled = false;
-            lnkPagina.BackColor = Color.FromName("#005da4");
-            lnkPagina.ForeColor = Color.FromName("#FFFFFF");
-        }
-        #endregion
-
-        #region paginacion tabla transferir y tranferidos
-        /// <summary>
-        /// Leonardo Carrion
-        /// 16/jul/2019
-        /// Efecto: marca el boton de la pagina seleccionada
-        /// Requiere: dar clic al boton de paginacion
-        /// Modifica: color del boton seleccionado
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void rptPaginacion3_ItemDataBound(object sender, DataListItemEventArgs e)
-        {
-            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion3");
-            if (lnkPagina.CommandArgument != paginaActual3.ToString()) return;
-            lnkPagina.Enabled = false;
-            lnkPagina.BackColor = Color.FromName("#005da4");
-            lnkPagina.ForeColor = Color.FromName("#FFFFFF");
-        }
         /// <summary>
         /// Leonardo Carrion
         /// 16/jul/2019
@@ -747,15 +807,15 @@ namespace PEP.Catalogos.Periodos
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void lbPrimero2_Click(object sender, EventArgs e)
+        protected void lbPrimero5_Click(object sender, EventArgs e)
         {
-            paginaActual2 = 0;
-            cargarTablaProyectosAtransferir();
+            paginaActual5 = 0;
+            mostrarTablaUnidades();
         }
 
         /// <summary>
-        /// Leonardo Carrion
-        /// 16/jul/2019
+        ///Mariela Calvo
+        /// septiembre/2019
         /// Efecto: se devuelve a la pagina anterior y muestra los datos de la misma
         /// Requiere: dar clic al boton de "Anterior pagina"
         /// Modifica: elementos mostrados en la tabla de notas
@@ -763,15 +823,15 @@ namespace PEP.Catalogos.Periodos
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void lbAnterior2_Click(object sender, EventArgs e)
+        protected void lbAnterior5_Click(object sender, EventArgs e)
         {
             paginaActual2 -= 1;
-            cargarTablaProyectosAtransferir();
+            mostrarTablaUnidades();
         }
 
         /// <summary>
-        /// Leonardo Carrion
-        /// 16/jul/2019
+        /// Mariela Calvo
+        /// septiembre/2019
         /// Efecto: actualiza la la pagina actual y muestra los datos de la misma
         /// Requiere: -
         /// Modifica: elementos de la tabla
@@ -779,24 +839,35 @@ namespace PEP.Catalogos.Periodos
         /// </summary>
         /// <param name="source"></param>
         /// <param name="e"></param>
-        protected void rptPaginacion2_ItemCommand(object source, DataListCommandEventArgs e)
+        protected void rptPaginacion5_ItemCommand(object source, DataListCommandEventArgs e)
         {
             if (!e.CommandName.Equals("nuevaPagina")) return;
-            paginaActual2 = Convert.ToInt32(e.CommandArgument.ToString());
-            cargarTablaProyectosAtransferir();
+            paginaActual5 = Convert.ToInt32(e.CommandArgument.ToString());
+            mostrarTablaUnidades();
         }
-        protected void rptPaginacion2_ItemDataBound(object sender, DataListItemEventArgs e)
+
+        /// <summary>
+        /// Mariela Calvo
+        /// septiembre/2019
+        /// Efecto: marca el boton de la pagina seleccionada
+        /// Requiere: dar clic al boton de paginacion
+        /// Modifica: color del boton seleccionado
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacion5_ItemDataBound(object sender, DataListItemEventArgs e)
         {
-            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion2");
-            if (lnkPagina.CommandArgument != paginaActual2.ToString()) return;
+            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion5");
+            if (lnkPagina.CommandArgument != paginaActual5.ToString()) return;
             lnkPagina.Enabled = false;
             lnkPagina.BackColor = Color.FromName("#005da4");
             lnkPagina.ForeColor = Color.FromName("#FFFFFF");
         }
 
         /// <summary>
-        /// Leonardo Carrion
-        /// 16/jul/2019
+        /// Mariela Calvo
+        /// Septiembre/2019
         /// Efecto: se devuelve a la pagina siguiente y muestra los datos de la misma
         /// Requiere: dar clic al boton de "Siguiente pagina"
         /// Modifica: elementos mostrados en la tabla de notas
@@ -804,97 +875,41 @@ namespace PEP.Catalogos.Periodos
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void lbSiguiente2_Click(object sender, EventArgs e)
+        protected void lbSiguiente5_Click(object sender, EventArgs e)
         {
             paginaActual2 += 1;
-            cargarTablaProyectosAtransferir();
-        }
-
-        protected void lbUltimo2_Click(object sender, EventArgs e)
-        {
-            paginaActual2 = (Convert.ToInt32(ViewState["TotalPaginas2"]) - 1);
-            cargarTablaProyectosAtransferir();
+            mostrarTablaUnidades();
         }
 
         /// <summary>
-        /// Leonardo Carrion
-        /// 16/jul/2019
-        /// Efecto: actualiza la la pagina actual y muestra los datos de la misma
-        /// Requiere: -
-        /// Modifica: elementos de la tabla
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="e"></param>
-        protected void rptPaginacion3_ItemCommand(object source, DataListCommandEventArgs e)
-        {
-            if (!e.CommandName.Equals("nuevaPagina")) return;
-            paginaActual3 = Convert.ToInt32(e.CommandArgument.ToString());
-            cargarTablaProyectosTransferidos();
-        }
-        #endregion
-
-        #region paginacion tabla proyectos transferidos
-
-        /// <summary>
-        /// Leonardo Carrion
-        /// 16/jul/2019
-        /// Efecto: se devuelve a la primera pagina y muestra los datos de la misma
-        /// Requiere: dar clic al boton de "Primer pagina"
+        /// Mariela Calvo
+        /// septiembre/2019
+        /// Efecto: se devuelve a la ultima pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Ultima pagina"
         /// Modifica: elementos mostrados en la tabla de notas
-        /// Devuelve: -
+        /// Devuelve: -lbPrimero
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void lbPrimero3_Click(object sender, EventArgs e)
+        protected void lbUltimo5_Click(object sender, EventArgs e)
         {
-            paginaActual3 = 0;
-            cargarTablaProyectosTransferidos();
-        }
-
-        /// <summary>
-        /// Leonardo Carrion
-        /// 16/jul/2019
-        /// Efecto: se devuelve a la pagina anterior y muestra los datos de la misma
-        /// Requiere: dar clic al boton de "Anterior pagina"
-        /// Modifica: elementos mostrados en la tabla de notas
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void lbAnterior3_Click(object sender, EventArgs e)
-        {
-            paginaActual3 -= 1;
-            cargarTablaProyectosTransferidos();
-        }
-
-        /// <summary>
-        /// Leonardo Carrion
-        /// 16/jul/2019
-        /// Efecto: se devuelve a la pagina siguiente y muestra los datos de la misma
-        /// Requiere: dar clic al boton de "Siguiente pagina"
-        /// Modifica: elementos mostrados en la tabla de notas
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void lbSiguiente3_Click(object sender, EventArgs e)
-        {
-            paginaActual3 += 1;
-            cargarTablaProyectosTransferidos();
-        }
-
-        protected void lbUltimo3_Click(object sender, EventArgs e)
-        {
-            paginaActual3 = (Convert.ToInt32(ViewState["TotalPaginas3"]) - 1);
-            cargarTablaProyectosTransferidos();
+            paginaActual5 = (Convert.ToInt32(ViewState["TotalPaginas5"]) - 1);
+            mostrarTablaUnidades();
         }
         #endregion
 
 
 
         #region eventos nuevos
-        /********************FILTRO PERIODO*******************************************/
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Muestra el filtro del periodo seleccionado
+        /// Requiere: - 
+        /// Modifica: Tabla Periodos
+        /// Devuelve: -
+        /// </summary>
         protected void Periodos_OnChanged(object sender, EventArgs e)
         {
 
@@ -930,14 +945,21 @@ namespace PEP.Catalogos.Periodos
         }
 
 
-
-        /*********************CARGAR DATOS PERIODOS**********************/
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Muestra la tabla con todos los periodos de la base de datos
+        /// Requiere: - 
+        /// Modifica: Tabla Periodos
+        /// Devuelve: -
+        /// </summary>
         private void MostrarPeriodos()
         {
             LinkedList<Periodo> listaPeriodos = new LinkedList<Periodo>();
             listaPeriodos = periodoServicios.ObtenerTodos();
             Session["listaPeriodos"] = listaPeriodos;
             var dt = listaPeriodos;
+
             pgsource.DataSource = dt;
             pgsource.AllowPaging = true;
             //numero de items que se muestran en el Repeater
@@ -964,22 +986,15 @@ namespace PEP.Catalogos.Periodos
 
 
 
-        /*****************ELIMINAR PERIODO*********************************/
-        protected void btnEliminar_Click1(object sender, EventArgs e)
-        {
-            int anoPeriodo = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
 
-            List<Periodo> listaPeriodos = (List<Periodo>)Session["listaPeriodos"];
-            Periodo periodo = new Periodo();
-            periodo.anoPeriodo = anoPeriodo;
-            Session["periodoEliminar"] = periodo;
-
-            String url = Page.ResolveUrl("~/Catalogos/Periodos/EliminarPeriodo.aspx");
-            Response.Redirect(url);
-
-        }
-
-        /*****************EVENTO SELECCIONAR PERIODO**********************/
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Seleccionar un periodo para ver sus proyectos
+        /// Requiere: Seleccionar el check del Periodo
+        /// Modifica: Tabla Proyectos
+        /// Devuelve: -
+        /// </summary>
         protected void btnSelccionar_Click(object sender, EventArgs e)
         {
             divPaginacionProyectos.Visible = true;
@@ -1008,7 +1023,14 @@ namespace PEP.Catalogos.Periodos
         }
 
 
-        /*****************CARGAR PROYECTOS POR PERIODO***********************/
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Mostrar los datos de los proyectos del periodo seleccionado
+        /// Requiere: Seleccionar el check del Periodo deseado
+        /// Modifica: Tabla Proyectos
+        /// Devuelve: -
+        /// </summary>
         private void MostrarTablaProyectos()
         {
             int anoPeriodo = Convert.ToInt32(Session["periodo"]);
@@ -1034,12 +1056,34 @@ namespace PEP.Catalogos.Periodos
             rpProyectos.DataSource = pgsourceProyectos;
             rpProyectos.DataBind();
 
-
             //metodo que realiza la paginacion
             Paginacion4();
         }
-        /****************EVENTOS MODAL NUEVO PERIODO**********************************/
 
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Activar modal nuevo periodo
+        /// Requiere: Presionar boton nuevo periodo
+        /// Modifica: Tabla Periodos
+        /// Devuelve: -
+        /// </summary>
+        protected void btnNuevoPeriodo_Click(object sender, EventArgs e)
+        {
+            txtNuevoP.CssClass = "form-control";
+            txtNuevoP.Text = "";
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoPeriodo();", true);
+        }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Guardar un nuevo periodo
+        /// Requiere: SIntroducir datos del nuevo periodo
+        /// Modifica: Tabla Periodos
+        /// Devuelve: -
+        /// </summary>
         protected void btnNuevoPeriodoModal_Click(object sender, EventArgs e)
         {
             if (validarPeriodoNuevo())
@@ -1060,6 +1104,15 @@ namespace PEP.Catalogos.Periodos
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoPeriodo();", true);
             }
         }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Validar que los datos del nuevo periodo sean ingresados
+        /// Requiere: -
+        /// Modifica: Tabla Periodos
+        /// Devuelve: -
+        /// </summary>
         public Boolean validarPeriodoNuevo()
         {
             Boolean valido = true;
@@ -1075,15 +1128,16 @@ namespace PEP.Catalogos.Periodos
 
             return valido;
         }
-        protected void btnNuevoPeriodo_Click(object sender, EventArgs e)
-        {
-            txtNuevoP.CssClass = "form-control";
-            txtNuevoP.Text = "";
 
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoPeriodo();", true);
-        }
 
-        /**********************EVENTOS MODAL ELIMINAR PERIODO*************************/
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Activar modal eliminar periodo para proceder a eliminar un periodo
+        /// Requiere: Presionar boto nuevo periodo
+        /// Modifica: Tabla Periodos
+        /// Devuelve: -
+        /// </summary>
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
             txtPeriodoEliminarModal.CssClass = "form-control";
@@ -1106,16 +1160,31 @@ namespace PEP.Catalogos.Periodos
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalEliminarPeriodo();", true);
         }
 
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Mensaje de confirmacion para la eliminacion de un periodo
+        /// Requiere: Presionar boto eliminar del modal eliminar periodo
+        /// Modifica: Tabla Periodos
+        /// Devuelve: -
+        /// </summary>
         public void btnConfirmarEliminarPeriodo_Click(Object sender, EventArgs e)
         {
-
             lbConfPer.Text = periodoSelccionado.anoPeriodo.ToString();
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalConfirmarPeriodo", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalConfirmarPeriodo').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalConfirmarPeriodo()", true);
         }
-        /*******************************MODAL CONFIRMAR ELIMINACIÓN DE PERIODO******************************************/
-       
 
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Encargado de eliminar el periodo luego de la confirmacion
+        /// Requiere: Presionar boton confirmar del modal confirmar eliminar periodo
+        /// Modifica: Tabla Periodos
+        /// Devuelve: -
+        /// </summary>
+        /// 
         protected void btnEliminarModal_Click(object sender, EventArgs e)
         {
             Periodo periodo = periodoSelccionado;
@@ -1131,7 +1200,15 @@ namespace PEP.Catalogos.Periodos
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalConfirmarPeriodo", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalConfirmarPeriodo').hide();", true);
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEliminarPeriodo", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEliminarPeriodo').hide();", true);
         }
-        /*********************************EVENTOS MODAL EDITAR PROYECTO*************************************************************/
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Mostrar modal de editar proyect
+        /// Requiere: Presionar boton con icono editar en tabla proyectos del proyecto deseado
+        /// Modifica: Tabla Proyectos
+        /// Devuelve: -
+        /// </summary>
         protected void btnEditarProyecto_Click(object sender, EventArgs e)
         {
             int idProyecto = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
@@ -1166,6 +1243,14 @@ namespace PEP.Catalogos.Periodos
             ClientScript.RegisterStartupScript(GetType(), "activar", "activarModalEditarProyecto();", true);
         }
 
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: MEncargado de modificar el proyecto que se selcciono
+        /// Requiere: Presionar boton con icono actualizar del proyecto deseado
+        /// Modifica: Tabla Proyectos
+        /// Devuelve: -
+        /// </summary>
         protected void btnActualizarProyectoModal_Click(object sender, EventArgs e)
         {
             if (validarProyectoAEditar())
@@ -1187,6 +1272,15 @@ namespace PEP.Catalogos.Periodos
             }
 
         }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Valida que los campos del proyecto a editar estén llenos
+        /// Requiere: Presionar boton actualizar
+        /// Modifica: Tabla Proyectos
+        /// Devuelve: -
+        /// </summary>
         public Boolean validarProyectoAEditar()
         {
             Boolean valido = true;
@@ -1202,7 +1296,15 @@ namespace PEP.Catalogos.Periodos
 
             return valido;
         }
-        /**********************ESTABLECER PERIODO COMO ACTUAL*******************************************************/
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Establecer un periodo como actual
+        /// Requiere: Presionar boton con icono de manita arriba en tabla periodo de algun periodo
+        /// Modifica: Tabla Periodos
+        /// Devuelve: -
+        /// </summary>
         protected void EstablecerPeriodoActual_Click(object sender, EventArgs e)
         {
             int anoPeriodo = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
@@ -1234,7 +1336,14 @@ namespace PEP.Catalogos.Periodos
             }
         }
 
-        /**************************EVENTOS MODAL ELIMINAR PROYECTO**********************************************************/
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Modal para eliminar proyecto
+        /// Requiere: Presionar boton con icono de basurero en tabla proyectos de algun proyecto
+        /// Modifica: Tabla Proyectos
+        /// Devuelve: -
+        /// </summary>
         public void btnEliminarProyecto_Click(Object sender, EventArgs e)
         {
             int codigoProyecto = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
@@ -1260,7 +1369,14 @@ namespace PEP.Catalogos.Periodos
 
         }
 
-
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Mensaje de confirmacion para la eliminacion de un proyectos
+        /// Requiere: Presionar boton eliminar del modal eliminar proyecto
+        /// Modifica: Tabla Periodos
+        /// Devuelve: -
+        /// </summary>
         public void btnConfirmarEliminarProyecto_Click(Object sender, EventArgs e)
         {
 
@@ -1269,6 +1385,15 @@ namespace PEP.Catalogos.Periodos
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalConfirmarProyecto()", true);
         }
 
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Encargado de eliminar el proyecto luego de la confirmacion
+        /// Requiere: Presionar boton confirmar del modal confirmar eliminar proyecto
+        /// Modifica: Tabla Periodos
+        /// Devuelve: -
+        /// </summary>
+        /// 
         protected void btnEliminarProyectoModal_Click(object sende, EventArgs e)
         {
             int codigoP = proyectoSelccionado.idProyecto;
@@ -1282,7 +1407,15 @@ namespace PEP.Catalogos.Periodos
 
         }
 
-        /*****************************************NUEVO PROYECTO *******************************************************/
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Modal de agrgar proyecto
+        /// Requiere: Presionar boton Nuevo Proyecto d
+        /// Modifica: Tabla Proyectos
+        /// Devuelve: -
+        /// </summary>
+        /// 
         protected void AgregarProyecto_Click(object sender, EventArgs e)
         {
             txtCodigoProyecto.CssClass = "form-control";
@@ -1296,6 +1429,16 @@ namespace PEP.Catalogos.Periodos
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoProyecto();", true);
         }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Encargado de insertar un nuevo proyecto en un periodo especifico en la BD
+        /// Requiere: Presionar boton guardar del modal nuevo proyecto
+        /// Modifica: Tabla Proyectos
+        /// Devuelve: -
+        /// </summary>
+        /// 
         public void btnAgregarProyectoModal_Click(object sende, EventArgs e)
         {
             if (validarProyectoNuevo())
@@ -1325,6 +1468,15 @@ namespace PEP.Catalogos.Periodos
 
         }
 
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Encargado de validar que todos los campos del nuevo modelo estén llenos
+        /// Requiere: Presionar boton guardar del modal nuevo proyecto
+        /// Modifica: Tabla Proyectos
+        /// Devuelve: -
+        /// </summary>
+        /// 
         public Boolean validarProyectoNuevo()
         {
             Boolean validados = true;
@@ -1359,8 +1511,14 @@ namespace PEP.Catalogos.Periodos
 
             return validados;
         }
-        /*************************Transferir Proyectos*******************************************/
 
+        /// <summary>
+        /// Mariela Calvotransferir proyectos
+        /// Requiere: Presionar Tranferir proyectos
+        /// Modifica: Tabla Proyectos
+        /// Devuelve: -
+        /// </summary>
+        /// 
         public void btnTransferirProyecto_Click(object sender, EventArgs e)
         {
             Periodo periodo = new Periodo();
@@ -1417,13 +1575,15 @@ namespace PEP.Catalogos.Periodos
 
         }
 
-        public void btnSeleccionarProyectoTransferir(object sender, EventArgs e)
-        {
-            int idProyecto = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
-            LinkedList<Proyectos> listaProyectos = (LinkedList<Proyectos>)Session["listaProyectosTransferir"];
-
-        }
-
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Encargado de mostrar la tabla del periodo al cual se van a transferir proyectos
+        /// Requiere: Presionar boton Nuevo Proyecto d
+        /// Modifica: DropDownList y Tabla Proyectos Tranferidos
+        /// Devuelve: -
+        /// </summary>
+        ///
         protected void ddlPeriodoModalTransfeririP_SelectedIndexChanged(object sender, EventArgs e)
         {
             Periodo periodoAgregado = new Periodo();
@@ -1440,6 +1600,15 @@ namespace PEP.Catalogos.Periodos
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalTransferirProyecto();", true);
         }
 
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Carga los datos de la tabla de proyectos de acuerdo al periodo anteriormente elegido para pasar transferir proyectos
+        /// Requiere:- 
+        /// Modifica: Tabla de Proyectos a tranferir
+        /// Devuelve: -
+        /// </summary>
+        ///
         public void cargarTablaProyectosAtransferir()
         {
             LinkedList<Proyectos> listaProyectos = (LinkedList<Proyectos>)Session["ListaProyectoTransferir"];
@@ -1469,6 +1638,15 @@ namespace PEP.Catalogos.Periodos
 
         }
 
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Carga los datos de la tabla de proyectos transferidos de acuerdo al periodo que se selecciono para pasar periodos
+        /// Requiere:- 
+        /// Modifica: Tabla de Proyectos a tranferir
+        /// Devuelve: -
+        /// </summary>
+        ///
         public void cargarTablaProyectosTransferidos()
         {
             LinkedList<Proyectos> llistaProyectosT = (LinkedList<Proyectos>)Session["ListaProyectoTransferidos"];
@@ -1497,10 +1675,20 @@ namespace PEP.Catalogos.Periodos
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalTransferirProyecto();", true);
         }
 
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Se encarga de transferir del proyecto actualmente seleccionado al periodo al que se selcciono transferir
+        /// Requiere:Seleccionar icono de flecha en alguno de los proyectos en el modal de tranferir proyectos 
+        /// Modifica: Tabla Proyectos Transferidos
+        /// Devuelve: -
+        /// </summary>
+        ///
         public void btnSeleccionarProyectoT_Click(object sender, EventArgs e)
         {
-
+            
             string idProyecto = ((LinkButton)(sender)).CommandArgument.ToString();
+            
             int anioPeriodo = periodoActualSelec;
             int periodoTransferido = 0;
 
@@ -1509,11 +1697,13 @@ namespace PEP.Catalogos.Periodos
             foreach (Proyectos proyecto in listaProyectos)
             {
                 
-                if (proyecto.codigo.Equals(idProyecto))
+                if (proyecto.idProyecto.ToString().Equals(idProyecto))
                 {
-                    Toastr("success", "Periodo establecido con éxito!");
+                    
                     Proyectos proyectoInsertar = proyecto;
-                    proyectoInsertar.periodo.anoPeriodo = Convert.ToInt32(ddlPeriodoTranferir.SelectedValue);
+                    Periodo periodoInsertar = new Periodo();
+                    periodoInsertar.anoPeriodo = Convert.ToInt32(ddlPeriodoTranferir.SelectedValue);
+                    proyectoInsertar.periodo = periodoInsertar;
                     periodoTransferido = proyectoInsertar.periodo.anoPeriodo;
                     proyectoServicios.Insertar(proyectoInsertar);
 
@@ -1530,6 +1720,7 @@ namespace PEP.Catalogos.Periodos
             
 
             cargarTablaProyectosAtransferir();
+
             listaProyectos = proyectoServicios.ObtenerPorPeriodo(periodoTransferido);
             Session["listaProyectoTranferidos"] = listaProyectos;
             Session["listaProyectosTranferidosFiltrado"] = listaProyectos;
@@ -1544,13 +1735,21 @@ namespace PEP.Catalogos.Periodos
             LinkedList<Proyectos> listaProyectosAgregados = proyectoServicios.ObtenerPorPeriodo(proyectoAgregado.periodo.anoPeriodo);
             Session["listaProyectoTransferidos"] = listaProyectosAgregados;
             Session["listaProyectosTranferidosFiltrado"] = listaProyectosAgregados;
+            cargarTablaProyectosTransferidos();
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalTransferirProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalTransferirProyecto').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalTransferirProyecto();", true);
         }
 
-        #region acciones partidas
 
-        /*Seleccionar partida*/
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Mostrar las unidaddes de un proyecto al seleccionar el mismo en la tabla de proyectos
+        /// Requiere: Presionar el boton con el icono check de laguno de los proyectos de la tabala de proyectos
+        /// Modifica: Tabla de PrUnidades
+        /// Devuelve: -
+        /// </summary>
+        ///
         public void btnSelccionarProyecto_Click(object sender, EventArgs e)
         {
             divUnidades.Visible = true;
@@ -1563,7 +1762,15 @@ namespace PEP.Catalogos.Periodos
             mostrarTablaUnidades();
         }
 
-        /*Mostrar Partidas*/
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Carga los datos de la tabla de unidades de acuerdo al proyectos seleccionado de la BD
+        /// Requiere: Seleccionar un proyecto de la tabla proyectos
+        /// Modifica: Tabla Unidades
+        /// Devuelve: -
+        /// </summary>
+        ///
         public void mostrarTablaUnidades()
         {
             LinkedList<Unidad> listaUnidades = (LinkedList<Unidad>)Session["listaUnidades"];
@@ -1591,7 +1798,16 @@ namespace PEP.Catalogos.Periodos
             //metodo que realiza la paginacion
             Paginacion5();
         }
-        /*Cargar proyectos para nuevas partidas*/
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Cargar todos los proyectos del periodo anteriormente seleccionado en un dropDown para usarlos en la inserción de unidades
+        /// Requiere: 
+        /// Modifica: DropDown Periodos
+        /// Devuelve: -
+        /// </summary>
+        ///
         public void cargarProyectosUnidades() { 
             int anioP = proyectoSelccionadoUnidades.periodo.anoPeriodo;
         
@@ -1620,7 +1836,16 @@ namespace PEP.Catalogos.Periodos
                 }
             }
         }
-        /*agregar nueva unidad*/
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Modal de nueva unidad
+        /// Requiere: Presionar boton Nuevo Unidad
+        /// Modifica: Tabla PUnidades
+        /// Devuelve: -
+        /// </summary>
+        /// 
         protected void AgregarUnidad_Click(object sender, EventArgs e)
         {
             txtNombreUnidad.CssClass = "form-control";
@@ -1632,7 +1857,16 @@ namespace PEP.Catalogos.Periodos
             PeriodosDDL.SelectedIndex = 0;
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevaUnidad();", true);
         }
-        /*agregar nueva unidad*/
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Encargado de insertar una unidad nueva en la BD
+        /// Requiere: Presionar el boton con el icono check de laguno de los proyectos de la tabala de proyectos
+        /// Modifica: Tabla de PrUnidades
+        /// Devuelve: -
+        /// </summary>
+        ///
         protected void btnNuevaUnidadModal_Click(object sender, EventArgs e)
         {
             //se validan los campos antes de guardar los datos en la base de datos
@@ -1657,7 +1891,15 @@ namespace PEP.Catalogos.Periodos
             }
         }
 
-        /*validar nueva unidad*/
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Encargado de validar que todos los campos de la nueva estén llenos
+        /// Requiere: Presionar boton guardar del modal nueva unidad
+        /// Modifica: Tabla Unidad
+        /// Devuelve: -
+        /// </summary>
+        /// 
         public Boolean validarUnidadNueva()
         {
             Boolean valido = true;
@@ -1680,7 +1922,15 @@ namespace PEP.Catalogos.Periodos
             return valido;
         }
 
-        /*Eliminar unidad*/
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Modal de eliminar unidad
+        /// Requiere: Presionar boton con icono de basurero de alguna unidad de la tabla unidades
+        /// Modifica: Tabla Unidades
+        /// Devuelve: -
+        /// </summary>
+        /// 
         public void btnEliminarUnidad_Click(Object sender, EventArgs e)
         {
             int idUnidad= Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString()); ;
@@ -1693,6 +1943,15 @@ namespace PEP.Catalogos.Periodos
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEliminarUnidad", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEliminarUnidad').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalEliminarUnidad()", true);
         }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Mensaje de confirmacion para la eliminacion de una unidad
+        /// Requiere: Presionar boton eliminar del modal eliminar unidad
+        /// Modifica: Tabla Periodos
+        /// Devuelve: -
+        /// </summary>
         public void btnConfirmarEliminarUnidad_Click(Object sender, EventArgs e)
         {
             
@@ -1701,6 +1960,15 @@ namespace PEP.Catalogos.Periodos
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalConfirmar()", true);
         }
 
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Encargado de eliminar la unidad seleccionada
+        /// Requiere: Presionar el boton con el icono check de laguno de los proyectos de la tabala de proyectos
+        /// Modifica: Tabla de Unidades
+        /// Devuelve: -
+        /// </summary>
+        ///
         public void btnEliminarUnidadModal_Click(Object sender, EventArgs e)
         {
             Unidad unidadEliminar = unidadSeleccionada;
@@ -1714,7 +1982,16 @@ namespace PEP.Catalogos.Periodos
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEliminarUnidad", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEliminarUnidad').hide();", true);
 
         }
-        /*Editar unidad*/
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Modal de agrgar proyecto
+        /// Requiere: Presionar con el icono editar de una de las unidades en la tabla de unidades
+        /// Modifica: Tabla Unidades
+        /// Devuelve: -
+        /// </summary>
+        /// 
         public void btnEditarUnidad_Click(object sender, EventArgs e)
         {
             int idUnidad = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
@@ -1741,6 +2018,16 @@ namespace PEP.Catalogos.Periodos
             txtCoordinadorEditar.Text = unidadSeleccionada.coordinador;
             ClientScript.RegisterStartupScript(GetType(), "activar", "activarModalEditarUnidad();", true);
         }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Encargado de moddifcar la unidad selccionada
+        /// Requiere: Presionar el boton guardar del modal editar unidad
+        /// Modifica: Tabla de PrUnidades
+        /// Devuelve: -
+        /// </summary>
+        ///
         protected void btnActualizarUnidadModal_Click(object sender, EventArgs e)
         {
             if (validarUnidadAEditar())
@@ -1765,7 +2052,15 @@ namespace PEP.Catalogos.Periodos
             }
 
         }
-
+        /// <summary>
+        /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Encargado de validar que todos los campos de la unidad a editar estén llenos
+        /// Requiere: Presionar boton guardar del modal nueva unidad
+        /// Modifica: Tabla Unidad
+        /// Devuelve: -
+        /// </summary>
+        /// 
         public Boolean validarUnidadAEditar()
         {
             Boolean valido = true;
@@ -1785,112 +2080,7 @@ namespace PEP.Catalogos.Periodos
         }
        
 
-        #endregion Fin acciones partidas
-        #region paginacion tabla unidades
-
-        /// <summary>
-        /// Leonardo Carrion
-        /// 16/jul/2019
-        /// Efecto: se devuelve a la primera pagina y muestra los datos de la misma
-        /// Requiere: dar clic al boton de "Primer pagina"
-        /// Modifica: elementos mostrados en la tabla de notas
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void lbPrimero5_Click(object sender, EventArgs e)
-        {
-            paginaActual5 = 0;
-            mostrarTablaUnidades();
-        }
-
-        /// <summary>
-        /// Leonardo Carrion
-        /// 16/jul/2019
-        /// Efecto: se devuelve a la pagina anterior y muestra los datos de la misma
-        /// Requiere: dar clic al boton de "Anterior pagina"
-        /// Modifica: elementos mostrados en la tabla de notas
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void lbAnterior5_Click(object sender, EventArgs e)
-        {
-            paginaActual2 -= 1;
-            mostrarTablaUnidades();
-        }
-
-        /// <summary>
-        /// Leonardo Carrion
-        /// 16/jul/2019
-        /// Efecto: actualiza la la pagina actual y muestra los datos de la misma
-        /// Requiere: -
-        /// Modifica: elementos de la tabla
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="source"></param>
-        /// <param name="e"></param>
-        protected void rptPaginacion5_ItemCommand(object source, DataListCommandEventArgs e)
-        {
-            if (!e.CommandName.Equals("nuevaPagina")) return;
-            paginaActual5 = Convert.ToInt32(e.CommandArgument.ToString());
-            mostrarTablaUnidades();
-        }
-
-        /// <summary>
-        /// Leonardo Carrion
-        /// 16/jul/2019
-        /// Efecto: marca el boton de la pagina seleccionada
-        /// Requiere: dar clic al boton de paginacion
-        /// Modifica: color del boton seleccionado
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void rptPaginacion5_ItemDataBound(object sender, DataListItemEventArgs e)
-        {
-            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion5");
-            if (lnkPagina.CommandArgument != paginaActual5.ToString()) return;
-            lnkPagina.Enabled = false;
-            lnkPagina.BackColor = Color.FromName("#005da4");
-            lnkPagina.ForeColor = Color.FromName("#FFFFFF");
-        }
-        protected void lbSiguiente5_Click(object sender, EventArgs e)
-        {
-            paginaActual2 += 1;
-            mostrarTablaUnidades();
-        }
-
-        /// <summary>
-        /// Leonardo Carrion
-        /// 16/jul/2019
-        /// Efecto: se devuelve a la ultima pagina y muestra los datos de la misma
-        /// Requiere: dar clic al boton de "Ultima pagina"
-        /// Modifica: elementos mostrados en la tabla de notas
-        /// Devuelve: -lbPrimero
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void lbUltimo5_Click(object sender, EventArgs e)
-        {
-            paginaActual5 = (Convert.ToInt32(ViewState["TotalPaginas5"]) - 1);
-            mostrarTablaUnidades();
-        }
-        #endregion FIN paginacion tabla unidades
-
-        public void desactivarBotonesUnidades()
-        {
-            btnNuevaUnidad.Visible = false;
-        }
-
-        public void activarBotonesUnidades()
-        {
-            btnNuevaUnidad.Visible = true;
-        }
-
-
-
-        #endregion
+    
 
         #region otros
 
@@ -1902,18 +2092,6 @@ namespace PEP.Catalogos.Periodos
         protected void Page_PreRender(object sender, EventArgs e)
         {
             ViewState["CheckRefresh"] = Session["CheckRefresh"];
-        }
-
-
-        /**********CONFIRMAR***************/
-        protected void CONFIRMAR(object sender, EventArgs e)
-        {
-
-
-            MostrarPeriodos();
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalConfirmarEliminarPeriodo", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalConfirmarEliminarPeriodo').hide();", true);
-
-
         }
         #endregion
         #endregion
