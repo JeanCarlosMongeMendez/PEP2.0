@@ -162,7 +162,7 @@
                         <%--periodo--%>
                         <div class="row">
                             <div class="col-md-12 col-xs-12 col-sm-12" style="align-content: center; text-align: center;">
-                                <asp:Label ID="label1" runat="server" Text="Período" Font-Size="Large" ForeColor="Black"></asp:Label>
+                                <asp:Label ID="label1" runat="server" Text="Periodo : " Font-Size="Large" ForeColor="Black"></asp:Label>
                                 <asp:Label ID="lblPeriodo" runat="server" Text="" Font-Size="Large" ForeColor="Black"></asp:Label>
                             </div>
 
@@ -174,8 +174,20 @@
                         <%--proyecto--%>
                         <div class="row">
                             <div class="col-md-12 col-xs-12 col-sm-12" style="align-content: center; text-align: center;">
-                                <asp:Label runat="server" Text="Proyecto" Font-Size="Large" ForeColor="Black"></asp:Label>
+                                <asp:Label runat="server" Text="Proyecto : " Font-Size="Large" ForeColor="Black"></asp:Label>
                                 <asp:Label ID="lblProyecto" runat="server" Text="" Font-Size="Large" ForeColor="Black"></asp:Label>
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+                        </div>
+
+                        <%--proyecto--%>
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12 col-sm-12" style="align-content: center; text-align: center;">
+                                <asp:Label runat="server" Text="Funcionario : " Font-Size="Large" ForeColor="Black"></asp:Label>
+                                <asp:Label ID="lblFuncionario" runat="server" Text="" Font-Size="Large" ForeColor="Black"></asp:Label>
                             </div>
 
                             <div class="col-md-12 col-xs-12 col-sm-12">
@@ -186,7 +198,7 @@
                         <%--jornada--%>
                         <div class="row">
                             <div class="col-md-12 col-xs-12 col-sm-12" style="align-content: center; text-align: center;">
-                                <asp:Label runat="server" Text="jornada" Font-Size="Large" ForeColor="Black"></asp:Label>
+                                <asp:Label runat="server" Text="Jornada : " Font-Size="Large" ForeColor="Black"></asp:Label>
                                 <asp:Label ID="lblJornada" runat="server" Text="" Font-Size="Large" ForeColor="Black"></asp:Label>
                             </div>
 
@@ -197,29 +209,25 @@
 
                         <%--progress bar--%>
                         <div class="row">
-                            <div class="progress col-md-10 col-md-offset-1" style="padding-left:0px;">
-                                <div class="progress-bar progress-bar-success" role="progressbar" style="width: 40%">
-                                    Free Space
-                                </div>
-                                <div class="progress-bar progress-bar-warning" role="progressbar" style="width: 10%">
-                                    Warning
-                                </div>
-                                <div class="progress-bar progress-bar-danger" role="progressbar" style="width: 20%">
-                                    Danger
+                            <div id="progressBar" class="progress col-md-10 col-md-offset-1" style="padding-left: 0px;">
+                                <div id="progressBarFree" class="progress-bar progress-bar-success" role="progressbar" style="width: 0%">
+                                    
                                 </div>
                             </div>
-
-                            <div class="col-md-12 col-xs-12 col-sm-12">
-                                <br />
-                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12 col-sm-12">
+                            <br />
                         </div>
                     </div>
 
                     <%--unidades--%>
+
+
                 </div>
 
                 <%--footer--%>
                 <div class="modal-footer" style="text-align: center">
+                    <button type="button" class="btn btn-default" onclick="agregarDistribucion()">Agregar</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
@@ -230,6 +238,23 @@
         function activarModalDistribuirJornada() {
             $('#modalDistribuirJornada').modal('show');
         };
+
+        function agregarDistribucion() {
+            var porcentajeDistribucion = 50;
+            var div = document.createElement('div');
+            div.className = 'progress-bar';
+            div.role = "progressbar";
+            var progreso = 0;
+            var interval = setInterval(function () {
+                progreso += 5;
+                div.style.width = progreso + '%';
+                if (progreso >= porcentajeDistribucion) {
+                    clearInterval(interval);
+                }
+            }, 200);
+            document.getElementById('progressBar').appendChild(div);
+            $('#modalDistribuirJornada').modal('show');
+        }
     </script>
 
 </asp:Content>

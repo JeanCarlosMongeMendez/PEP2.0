@@ -32,9 +32,11 @@ namespace AccesoDatos
             List<Funcionario> funcionarios = new List<Funcionario>();
 
             String consulta = @"select f.*, es.id_escala_salarial, es.desc_escala_salarial, 
-                es.salario_base_1 AS escala_salario_base_1, es.salario_base_2 AS escala_salario_base_2
+                es.salario_base_1 AS escala_salario_base_1, es.salario_base_2 AS escala_salario_base_2, 
+                jl.*
                 FROM Funcionario f 
-                JOIN EscalaSalarial es ON f.id_escala_salarial = es.id_escala_salarial  
+                JOIN EscalaSalarial es ON f.id_escala_salarial = es.id_escala_salarial
+                JOIN Jornada jl ON jl.id_jornada = f.id_jornada_laboral 
                 ORDER BY nombre_funcionario;";
 
             SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
@@ -54,9 +56,15 @@ namespace AccesoDatos
                 escalaSalarial.salarioBase1 = Convert.ToDouble(reader["escala_salario_base_1"].ToString());
                 escalaSalarial.salarioBase2 = Convert.ToDouble(reader["escala_salario_base_2"].ToString());
 
+                Jornada jornada = new Jornada();
+                jornada.idJornada = Convert.ToInt32(reader["id_jornada"].ToString());
+                jornada.porcentajeJornada = Convert.ToDouble(reader["porcentaje_jornada"].ToString());
+                jornada.descJornada = reader["desc_jornada"].ToString();
+
                 Funcionario funcionario = new Funcionario();
                 funcionario.planilla = planilla;
                 funcionario.escalaSalarial = escalaSalarial;
+                funcionario.JornadaLaboral = jornada;
                 funcionario.fechaIngreso = Convert.ToDateTime(reader["fecha_ingreso"].ToString());
                 funcionario.salarioBase1 = Convert.ToDouble(reader["salario_base_1"].ToString());
                 funcionario.noEscalafones1 = Convert.ToInt32(reader["no_escalafones_1"].ToString());

@@ -294,7 +294,10 @@ namespace Proyecto.Planilla
                     break;
                 }
             }
-
+            lblPeriodo.Text = ddlPeriodo.SelectedValue;
+            lblProyecto.Text = ddlProyecto.SelectedItem.Text;
+            lblJornada.Text = funcionarioVer.JornadaLaboral.descJornada + " , " + funcionarioVer.JornadaLaboral.porcentajeJornada+"%";
+            lblFuncionario.Text = funcionarioVer.nombreFuncionario;
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalDistribuirJornada();", true);
         }
 
