@@ -211,7 +211,6 @@
                         <div class="row">
                             <div id="progressBar" class="progress col-md-10 col-md-offset-1" style="padding-left: 0px;">
                                 <div id="progressBarFree" class="progress-bar progress-bar-success" role="progressbar" style="width: 0%">
-                                    
                                 </div>
                             </div>
                         </div>
@@ -221,8 +220,81 @@
                     </div>
 
                     <%--unidades--%>
-
-
+                    <!-- ------------------------ tabla unidades proyecto --------------------------- -->
+                    <div class="row">
+                        <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                            <table id="tblUnidadesProyecto" class="table table-bordered">
+                                <thead>
+                                    <tr style="text-align: center" class="btn-primary">
+                                        <th>Nombre Unidad</th>
+                                        <th>Coordinador</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <asp:Repeater ID="rpUnidProyecto" runat="server">
+                                    <HeaderTemplate>
+                                    </HeaderTemplate>
+                                    <ItemTemplate>
+                                        <tr style="text-align: center">
+                                            <td>
+                                                <%# Eval("nombreUnidad") %>
+                                            </td>
+                                            <td>
+                                                <%# Eval("coordinador") %>
+                                            </td>
+                                            <td>
+                                                <asp:DropDownList ID="ddlDistribucionJornada" runat="server"></asp:DropDownList>
+                                            </td>
+                                        </tr>
+                                    </ItemTemplate>
+                                    <FooterTemplate>
+                                    </FooterTemplate>
+                                </asp:Repeater>
+                            </table>
+                        </div>
+                    </div>
+                    <%--paginacion de unidades--%>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 mt-2">
+                            <hr />
+                        </div>
+                        <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                            <center>
+                    <table class="table" style="max-width:664px;">
+                        <tr style="padding:1px !important">
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbPrimeroUnidad" runat="server" CssClass="btn btn-primary" OnClick="lbPrimeroUnidad_Click"><span class="glyphicon glyphicon-fast-backward"></span></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbAnteriorUnidad" runat="server" CssClass="btn btn-default" OnClick="lbAnteriorUnidad_Click"><span class="glyphicon glyphicon-backward"></asp:LinkButton>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:DataList ID="rptPaginacionUnidad" runat="server"
+                                    OnItemCommand="rptPaginacionUnidad_ItemCommand"
+                                    OnItemDataBound="rptPaginacionUnidad_ItemDataBound" RepeatDirection="Horizontal">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lbPaginacionUnidad" runat="server" CssClass="btn btn-default"
+                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
+                                            Text='<%# Eval("PaginaText") %>' ></asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:DataList>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbSiguienteUnidad" CssClass="btn btn-default" runat="server" OnClick="lbSiguienteUnidad_Click"><span class="glyphicon glyphicon-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbUltimoUnidad" CssClass="btn btn-primary" runat="server" OnClick="lbUltimoUnidad_Click"><span class="glyphicon glyphicon-fast-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:Label ID="lblpaginaUnidad" runat="server" Text=""></asp:Label>
+                            </td>
+                        </tr>
+                    </table>
+                        </center>
+                        </div>
+                    </div>
+                    <!-- ---------------------- FIN tabla unidades proyecto  ------------------------- -->
+                    <%-- fin unidades--%>
                 </div>
 
                 <%--footer--%>
