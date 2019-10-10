@@ -2,6 +2,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnableCdn="true"></asp:ScriptManager>
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
@@ -67,6 +68,10 @@
                         </asp:Repeater>
                     </table>
                 </div>
+                </div>
+            
+        </ContentTemplate>
+    </asp:UpdatePanel>
 
                 <!-- Modal Elegir unidad -->
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server">
@@ -152,13 +157,12 @@
                     </ContentTemplate>
                 </asp:UpdatePanel>
                 <!-- Fin modal elegir unidad -->
-        </ContentTemplate>
-    </asp:UpdatePanel>
-      <script type="text/javascript">
+
+    <script type="text/javascript">
         function activarModalElegirUnidad() {
             $('#modalElegirUnidad').modal('show');
         };
-      
+
     </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ScriptContent" runat="server">
