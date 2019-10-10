@@ -807,12 +807,14 @@ namespace Proyecto.Catalogos.Partidas
             int idPartida = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
 
             List<Partida> listaPartidas = (List<Partida>)Session["listaPartidasAPasarFiltrada"];
-            //recorre la lista para encontar la partida
+            //recorre la lista para encontrar la partida
             foreach (Partida partida in listaPartidas)
             {
                 //Entra cuando existe una partida
                 if (partida.idPartida == idPartida)
                 {
+                    int idPadre = 0;
+                    int periodoAPasar = partida.periodo.anoPeriodo;
                     //Determina el periodo a la partida que ira a guardar
                     Periodo periodo = new Periodo();
                     periodo.anoPeriodo = Convert.ToInt32(ddlPeriodoModalPasaPartidas.SelectedValue);
@@ -820,17 +822,30 @@ namespace Proyecto.Catalogos.Partidas
                     Partida partidaSeleccionada = partida;
                     partidaSeleccionada.periodo = periodo;
                     //si la partida seleccionada tiene un padre, este tambien se pasará al periosdo seleccionado
-                    if (partidaSeleccionada.partidaPadre != null)//la partida tiene un padre si es diferente de null
+                    if (partidaSeleccionada.partidaPadre != null)//la partida tiene un padre si patida.partidaPadre es diferente de null
                     {
-                        int idPadre = 0;
                         //Como tiene padre, inserto primero el padre, averiguo el id con el que se guardo en BD,
                         //y se lo paso al atributo correspondinte de la partida hija
                         Partida partidaPadre = partidaSeleccionada.partidaPadre;
                         partidaPadre.periodo = periodo;
                         idPadre = partidaServicios.Insertar(partidaPadre);
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La partida seleccionada y su padre se transfirieron correctamente" + "');", true);
                         partidaSeleccionada.partidaPadre.idPartida = idPadre;
                     }
-                    partidaServicios.Insertar(partidaSeleccionada);
+
+                    idPadre = partidaServicios.Insertar(partidaSeleccionada);
+                    if (partidaSeleccionada.partidaPadre == null)
+                    {
+                        List<Partida> listaPartidasHijas = partidaServicios.obtenerPorIdPartidaPadre(partidaSeleccionada.idPartida, periodoAPasar);
+                        foreach (Partida partidaHija in listaPartidasHijas)
+                        {
+                            partidaHija.periodo = periodo;
+                            partidaHija.partidaPadre = partidaSeleccionada;
+                            partidaHija.partidaPadre.idPartida = idPadre;
+                            partidaServicios.Insertar(partidaHija);
+                        }
+                    }
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La partida seleccionada se transfirió correctamente" + "');", true);
                     break;
                 }
             }

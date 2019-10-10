@@ -145,33 +145,33 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_p
             return resultado;
         }
 
-        /// <summary>
-        /// Recibe un numero de partida y un ano de periodo, si devuelve un ID significa que ya la partida padre existe y no se debe insertar de nuevo
-        /// </summary>
-        /// <param name="numeroPartida">Valor de tipo <code>int</code> que corresponde al numero de la partida</param>
-        /// <param name="anoPeriodo">Valor de tipo <code>int</code> que corresponde al ano del periodo</param>
-        /// <returns>Retorna el elemento de tipo <code>int</code> que coincida con los parametros dados</returns>
-        public int PadresDuplicados(string numeroPartida, int anoPeriodo)
-        {
-            SqlConnection sqlConnection = conexion.conexionPEP();
-            SqlCommand sqlCommand = new SqlCommand("select id_partida from Partida where numero_partida=@numero_partida_ AND ano_periodo=@ano_periodo_ AND disponible=1;", sqlConnection);
-            sqlCommand.Parameters.AddWithValue("@numero_partida_", numeroPartida);
-            sqlCommand.Parameters.AddWithValue("@ano_periodo_", anoPeriodo);
+        ///// <summary>
+        ///// Recibe un numero de partida y un ano de periodo, si devuelve un ID significa que ya la partida padre existe y no se debe insertar de nuevo
+        ///// </summary>
+        ///// <param name="numeroPartida">Valor de tipo <code>int</code> que corresponde al numero de la partida</param>
+        ///// <param name="anoPeriodo">Valor de tipo <code>int</code> que corresponde al ano del periodo</param>
+        ///// <returns>Retorna el elemento de tipo <code>int</code> que coincida con los parametros dados</returns>
+        //public int PadresDuplicados(string numeroPartida, int anoPeriodo)
+        //{
+        //    SqlConnection sqlConnection = conexion.conexionPEP();
+        //    SqlCommand sqlCommand = new SqlCommand("select id_partida from Partida where numero_partida=@numero_partida_ AND ano_periodo=@ano_periodo_ AND disponible=1;", sqlConnection);
+        //    sqlCommand.Parameters.AddWithValue("@numero_partida_", numeroPartida);
+        //    sqlCommand.Parameters.AddWithValue("@ano_periodo_", anoPeriodo);
 
-            int idPartida = 0;
-            SqlDataReader reader;
-            sqlConnection.Open();
-            reader = sqlCommand.ExecuteReader();
+        //    int idPartida = 0;
+        //    SqlDataReader reader;
+        //    sqlConnection.Open();
+        //    reader = sqlCommand.ExecuteReader();
 
-            if (reader.Read())
-            {
-                idPartida = Convert.ToInt32(reader["id_partida"].ToString());
-            }
+        //    if (reader.Read())
+        //    {
+        //        idPartida = Convert.ToInt32(reader["id_partida"].ToString());
+        //    }
 
-            sqlConnection.Close();
+        //    sqlConnection.Close();
 
-            return idPartida;
-        }
+        //    return idPartida;
+        //}
 
         /// <summary>
         /// Obtiene una partida basado en su identificador
@@ -217,62 +217,62 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_p
             return partida;
         }
 
-        /// <summary>
-        /// Transfiere las partidas seleccionadas de un periodo a otro
-        /// </summary>
-        /// <param name="partidasId">Lista de identificadores de las partidas que se desean transferir al nuevo periodo</param>
-        /// <param name="anoPeriodo">Nuevo periodo a los que las partidas serán transferidas</param>
-        /// <returns>Retorna si las partidas y los periodos fueron guardados</returns>
-        public bool Guardar(LinkedList<int> partidasId, int anoPeriodo)
-        {
-            //transferir padre tambien cuando transfiero las hijas
+        ///// <summary>
+        ///// Transfiere las partidas seleccionadas de un periodo a otro
+        ///// </summary>
+        ///// <param name="partidasId">Lista de identificadores de las partidas que se desean transferir al nuevo periodo</param>
+        ///// <param name="anoPeriodo">Nuevo periodo a los que las partidas serán transferidas</param>
+        ///// <returns>Retorna si las partidas y los periodos fueron guardados</returns>
+        //public bool Guardar(LinkedList<int> partidasId, int anoPeriodo)
+        //{
+        //    //transferir padre tambien cuando transfiero las hijas
 
-            SqlConnection sqlConnection = conexion.conexionPEP();
-            bool guardado = false;
-            int nuevoId = 0;
-            int nuevoIdPadre = 0;
+        //    SqlConnection sqlConnection = conexion.conexionPEP();
+        //    bool guardado = false;
+        //    int nuevoId = 0;
+        //    int nuevoIdPadre = 0;
 
-            foreach (int idPartida in partidasId)
-            {
-                Partida partida = ObtenerPorId(idPartida);
+        //    foreach (int idPartida in partidasId)
+        //    {
+        //        Partida partida = ObtenerPorId(idPartida);
 
-                /*
-                 * Verifica si el periodo de las partidas que se desean guardar es igual al periodo indicado,
-                 * esto para evitar partidas duplicadas en el mismo periodo
-                 * De lo contrario asigna el nuevo periodo a la partida para duplicar su información cambiando el periodo al que pertenece
-                 */
-                if (partida.periodo.anoPeriodo != anoPeriodo)
-                {
-                    //Duplicar tambien los padres
-                    Partida partidaPadre = ObtenerPorId(partida.partidaPadre.idPartida);
-                    partidaPadre.periodo.anoPeriodo = anoPeriodo;
+        //        /*
+        //         * Verifica si el periodo de las partidas que se desean guardar es igual al periodo indicado,
+        //         * esto para evitar partidas duplicadas en el mismo periodo
+        //         * De lo contrario asigna el nuevo periodo a la partida para duplicar su información cambiando el periodo al que pertenece
+        //         */
+        //        if (partida.periodo.anoPeriodo != anoPeriodo)
+        //        {
+        //            //Duplicar tambien los padres
+        //            Partida partidaPadre = ObtenerPorId(partida.partidaPadre.idPartida);
+        //            partidaPadre.periodo.anoPeriodo = anoPeriodo;
 
-                    nuevoIdPadre = PadresDuplicados(partidaPadre.numeroPartida, anoPeriodo);
+        //            nuevoIdPadre = PadresDuplicados(partidaPadre.numeroPartida, anoPeriodo);
 
-                    if (nuevoIdPadre == 0)
-                    {
-                        nuevoIdPadre = Insertar(partidaPadre);
-                    }
+        //            if (nuevoIdPadre == 0)
+        //            {
+        //                nuevoIdPadre = Insertar(partidaPadre);
+        //            }
 
-                    partidaPadre.idPartida = nuevoIdPadre;
+        //            partidaPadre.idPartida = nuevoIdPadre;
                     
-                    partida.periodo.anoPeriodo = anoPeriodo;
-                    partida.partidaPadre = partidaPadre;
-                    nuevoId = Insertar(partida);
+        //            partida.periodo.anoPeriodo = anoPeriodo;
+        //            partida.partidaPadre = partidaPadre;
+        //            nuevoId = Insertar(partida);
 
-                    if (nuevoId > 0)
-                    {
-                        guardado = true;
-                    }
-                    else
-                    {
-                        guardado = false;
-                    }
-                }
-            }
+        //            if (nuevoId > 0)
+        //            {
+        //                guardado = true;
+        //            }
+        //            else
+        //            {
+        //                guardado = false;
+        //            }
+        //        }
+        //    }
 
-            return guardado;
-        }
+        //    return guardado;
+        //}
 
         // <summary>
         // Adrián Serrano
@@ -375,5 +375,52 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_p
 
             return partidaBD;
         }
+
+
+        /// <summary>
+        /// Jesus Torres
+        /// 10/oct/2019
+        /// Efecto: busca en base de datos las partidas con igual id de padre al parametro enviadop
+        /// Requiere:  id de partida padre
+        /// Modifica: 
+        /// Devuelve: -
+        /// <param name="idPartidaPadre">Valor de tipo <code>int</code> que corresponde a la partida padre a buscar</param>
+        /// <returns>Retorna el elemento de tipo <code>Partida</code> que coincida con el identificador dado</returns>
+        public List<Partida> obtenerPorIdPartidaPadre(int idPartidaPadre, int periodo)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+            List<Partida> partidas = new List<Partida>();
+
+            String consulta = @"select id_partida, numero_partida, descripcion_partida, id_partida_padre, ano_periodo from Partida where id_partida_padre=@id_partida_padre AND ano_periodo=@ano_periodo AND disponible=1 order by descripcion_partida;";
+
+            SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@id_partida_padre", idPartidaPadre);
+            sqlCommand.Parameters.AddWithValue("@ano_periodo", periodo);
+
+            SqlDataReader reader;
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Partida partida = new Partida();
+                partida.idPartida = Convert.ToInt32(reader["id_partida"].ToString());
+                partida.numeroPartida = reader["numero_partida"].ToString();
+                partida.descripcionPartida = reader["descripcion_partida"].ToString();
+                partida.periodo = new Periodo();
+                partida.periodo.anoPeriodo = Convert.ToInt32(reader["ano_periodo"].ToString());
+
+                partidas.Add(partida);
+            }
+
+            sqlConnection.Close();
+
+            return partidas;
+        }
+
+
+
+
+
     }
 }
