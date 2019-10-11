@@ -8,7 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-
+using System.Web.UI.HtmlControls;
 namespace Proyecto.Catalogos.Ejecucion
 {
 
@@ -104,7 +104,7 @@ namespace Proyecto.Catalogos.Ejecucion
             this.proyectoServicios = new ProyectoServicios();
             this.unidadServicios = new UnidadServicios();
             this.partidaServicios = new PartidaServicios();
-
+          
             if (!IsPostBack)
             {
                 Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());
@@ -113,7 +113,8 @@ namespace Proyecto.Catalogos.Ejecucion
                 PeriodosDDL.Items.Clear();
                 ProyectosDDL.Items.Clear();
                 CargarPeriodos();
-
+                UpdatePanel10.Visible = false;
+                ButtonRepartir.Visible = false;
             }
             else
             {
@@ -889,7 +890,7 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         private void MostrarDatosTablaUnidad(List<Unidad> listaUnidad)
         {
-
+            
             var dt = listaUnidad;
             pgsource.DataSource = dt;
             pgsource.AllowPaging = true;
@@ -911,7 +912,7 @@ namespace Proyecto.Catalogos.Ejecucion
 
             //metodo que realiza la paginacion
             Paginacion2();
-
+            MostrarTablaRepartirGastos();
 
         }
       
@@ -932,10 +933,22 @@ namespace Proyecto.Catalogos.Ejecucion
             listaUnidad.RemoveAll(item => item.idUnidad > 0);
             MostrarDatosTablaUnidad(listaUnidad);
             count = 0;
-            
+            MostrarTablaRepartirGastos();
         }
 
-
+        private void MostrarTablaRepartirGastos()
+        {
+            if (listaUnidad.Count >= 2)
+            {
+                UpdatePanel10.Visible = true;
+                ButtonRepartir.Visible = true;
+            }
+            else
+            {
+                UpdatePanel10.Visible =false;
+                ButtonRepartir.Visible = false;
+            }
+        }
         /// <summary>
         /// Leonardo Carrion
         /// 16/jul/2019
