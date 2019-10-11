@@ -46,7 +46,7 @@ namespace Proyecto.Catalogos.Partidas
                 periodo.anoPeriodo = Convert.ToInt32(ddlPeriodo.SelectedValue);
 
 
-                LinkedList<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(Int32.Parse(ddlPeriodo.SelectedValue));
+                List<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(Int32.Parse(ddlPeriodo.SelectedValue));
 
                 Session["listaPartidas"] = listaPartidas;
                 Session["listaPartidasFiltrada"] = listaPartidas;
@@ -73,7 +73,7 @@ namespace Proyecto.Catalogos.Partidas
             Periodo periodo = new Periodo();
             periodo.anoPeriodo = Convert.ToInt32(ddlPeriodo.SelectedValue);
 
-            LinkedList<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(periodo.anoPeriodo);
+            List<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(periodo.anoPeriodo);
 
             Session["listaPartidas"] = listaPartidas;
             Session["listaPartidasFiltrada"] = listaPartidas;
@@ -136,12 +136,22 @@ namespace Proyecto.Catalogos.Partidas
             mostrarDatosTabla();
         }
 
+        /// <summary>
+        /// Jesús Torres
+        /// 04/oct/2019
+        /// Efecto: permite mostrar el modal de editar una partida seleccionada
+        /// Requiere: 
+        /// Modifica: datos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnEditar_Click(object sender, EventArgs e)
         {
             String nombrePartidaPadre = "Partida Padre";
             lbPartidaPadreModalModificar.Text = nombrePartidaPadre;
             int idPartida = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
-            LinkedList<Partida> listaPartidaFiltrada = (LinkedList<Partida>)Session["listaPartidasFiltrada"];
+            List<Partida> listaPartidaFiltrada = (List<Partida>)Session["listaPartidasFiltrada"];
             Partida partidaEditar = new Partida();
 
             foreach (Partida partida in listaPartidaFiltrada)
@@ -182,7 +192,7 @@ namespace Proyecto.Catalogos.Partidas
             String nombrePartidaPadre = "Partida Padre";
             lbPartidaPadreModalEliminar.Text = nombrePartidaPadre;
             int idPartida = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
-            LinkedList<Partida> listaPartidaFiltrada = (LinkedList<Partida>)Session["listaPartidasFiltrada"];
+            List<Partida> listaPartidaFiltrada = (List<Partida>)Session["listaPartidasFiltrada"];
             Partida partidaEditar = new Partida();
 
             foreach (Partida partida in listaPartidaFiltrada)
@@ -273,7 +283,7 @@ namespace Proyecto.Catalogos.Partidas
                     int idPartida = this.partidaServicios.Insertar(partida);
                     Periodo periodo = new Periodo();
                     periodo.anoPeriodo = Convert.ToInt32(ddlPeriodo.SelectedValue);
-                    LinkedList<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(periodo.anoPeriodo);
+                    List<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(periodo.anoPeriodo);
 
                     Session["listaPartidas"] = listaPartidas;
                     Session["listaPartidasFiltrada"] = listaPartidas;
@@ -341,7 +351,7 @@ namespace Proyecto.Catalogos.Partidas
                     this.partidaServicios.ActualizarPartida(partida);
                     Periodo periodo = new Periodo();
                     periodo.anoPeriodo = Convert.ToInt32(ddlPeriodo.SelectedValue);
-                    LinkedList<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(periodo.anoPeriodo);
+                    List<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(periodo.anoPeriodo);
 
                     Session["listaPartidas"] = listaPartidas;
                     Session["listaPartidasFiltrada"] = listaPartidas;
@@ -383,7 +393,7 @@ namespace Proyecto.Catalogos.Partidas
             Periodo periodo = new Periodo();
             periodo.anoPeriodo = Convert.ToInt32(ddlPeriodo.SelectedValue);
 
-            LinkedList<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(periodo.anoPeriodo);
+            List<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(periodo.anoPeriodo);
             Session["listaPartidas"] = listaPartidas;
             Session["listaPatidasFiltrada"] = listaPartidas;
 
@@ -393,6 +403,16 @@ namespace Proyecto.Catalogos.Partidas
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se elimino la partida correctamente" + "');", true);
         }
 
+        /// <summary>
+        /// Jesús Torres
+        /// 04/oct/2019
+        /// Efecto: Abre el modal que permite pasr partidas a el periodo seleccionado
+        /// Requiere: 
+        /// Modifica: 
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnPasarPartidas_Click(object sender, EventArgs e)
         {
             txtBuscarDescPartidasAPasar.Text = "";
@@ -435,7 +455,7 @@ namespace Proyecto.Catalogos.Partidas
 
 
             //Determina los valores a cargar de la lista de partidas a pasar
-            LinkedList<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(periodo.anoPeriodo);
+            List<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(periodo.anoPeriodo);
             Session["listaPartidasAPasar"] = listaPartidas;
             Session["listaPartidasAPasarFiltrada"] = listaPartidas;
             cargarDatosTblPartidasAPasar();
@@ -444,7 +464,7 @@ namespace Proyecto.Catalogos.Partidas
             Periodo periodoAgregados = new Periodo();
             periodoAgregados.anoPeriodo = Convert.ToInt32(ddlPeriodoModalPasaPartidas.SelectedValue);
 
-            LinkedList<Partida> listaPartidasAgregadas = partidaServicios.ObtenerPorPeriodo(periodoAgregados.anoPeriodo);
+            List<Partida> listaPartidasAgregadas = partidaServicios.ObtenerPorPeriodo(periodoAgregados.anoPeriodo);
 
             Session["listaPartidasAgregadas"] = listaPartidasAgregadas;
             Session["listaPartidasAgregadasFiltrada"] = listaPartidasAgregadas;
@@ -453,7 +473,6 @@ namespace Proyecto.Catalogos.Partidas
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarPartida();", true);
         }
-
 
         /// <summary>
         /// Jesús Torres
@@ -567,7 +586,6 @@ namespace Proyecto.Catalogos.Partidas
             cargarDatosTblPartidasAPasar();
         }
 
-
         /// <summary>
         /// Jesus Torres
         /// 03/oct/2019
@@ -665,15 +683,13 @@ namespace Proyecto.Catalogos.Partidas
             Periodo periodoAgregados = new Periodo();
             periodoAgregados.anoPeriodo = Convert.ToInt32(ddlPeriodoModalPasaPartidas.SelectedValue);
 
-            LinkedList<Partida> listaPartidasAgregadas = partidaServicios.ObtenerPorPeriodo(periodoAgregados.anoPeriodo);
+            List<Partida> listaPartidasAgregadas = partidaServicios.ObtenerPorPeriodo(periodoAgregados.anoPeriodo);
 
             Session["listaPartidasAgregadas"] = listaPartidasAgregadas;
             Session["listaPartidasAgregadasFiltrada"] = listaPartidasAgregadas;
             cargarDatosTblPartidasAgregadas();
 
         }
-
-
 
         /// <summary>
         /// Jesus Torres
@@ -776,6 +792,96 @@ namespace Proyecto.Catalogos.Partidas
             lnkPagina.ForeColor = Color.FromName("#FFFFFF");
         }
 
+        /// <summary>
+        /// Jesus Torres
+        /// 04/oct/2019
+        /// Efecto: pone la partida seleccionada en el perido seleccionado, en caso que la partida tenga un padre, este tambien se tiene que traladar al periodo indicado
+        /// Requiere: escoger período a pasar y darle clic al boton de "seleccionar"
+        /// Modifica: partidas agregadas al período
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnSeleccionarPasarPartida_Click(object sender, EventArgs e)
+        {
+            int idPartida = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+
+            List<Partida> listaPartidas = (List<Partida>)Session["listaPartidasAPasarFiltrada"];
+            //recorre la lista para encontrar la partida
+            foreach (Partida partida in listaPartidas)
+            {
+                //Entra cuando existe una partida
+                if (partida.idPartida == idPartida)
+                {
+                    int idPadre = 0;
+                    int periodoAPasar = partida.periodo.anoPeriodo;
+                    //Determina el periodo a la partida que ira a guardar
+                    Periodo periodo = new Periodo();
+                    periodo.anoPeriodo = Convert.ToInt32(ddlPeriodoModalPasaPartidas.SelectedValue);
+
+                    Partida partidaSeleccionada = partida;
+                    partidaSeleccionada.periodo = periodo;
+                    //si la partida seleccionada tiene un padre, este tambien se pasará al periosdo seleccionado
+                    if (partidaSeleccionada.partidaPadre != null)//la partida tiene un padre si patida.partidaPadre es diferente de null
+                    {
+                        //Como tiene padre, inserto primero el padre, averiguo el id con el que se guardo en BD,
+                        //y se lo paso al atributo correspondinte de la partida hija
+                        Partida partidaPadre = partidaSeleccionada.partidaPadre;
+                        partidaPadre.periodo = periodo;
+                        idPadre = partidaServicios.Insertar(partidaPadre);
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La partida seleccionada y su padre se transfirieron correctamente" + "');", true);
+                        partidaSeleccionada.partidaPadre.idPartida = idPadre;
+                    }
+
+                    idPadre = partidaServicios.Insertar(partidaSeleccionada);
+                    if (partidaSeleccionada.partidaPadre == null)
+                    {
+                        List<Partida> listaPartidasHijas = partidaServicios.obtenerPorIdPartidaPadre(partidaSeleccionada.idPartida, periodoAPasar);
+                        foreach (Partida partidaHija in listaPartidasHijas)
+                        {
+                            partidaHija.periodo = periodo;
+                            partidaHija.partidaPadre = partidaSeleccionada;
+                            partidaHija.partidaPadre.idPartida = idPadre;
+                            partidaServicios.Insertar(partidaHija);
+                        }
+                    }
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La partida seleccionada se transfirió correctamente" + "');", true);
+                    break;
+                }
+            }
+
+            #region Actualiza pag Principal
+            //Bloque que actualiza la tabla de la pagina principal, de manera que al pasar una partida, se actualice el contenido en la pag principal
+            Periodo periodoActual = new Periodo();
+            periodoActual.anoPeriodo = Convert.ToInt32(ddlPeriodo.SelectedValue);
+
+           // listaPartidas = partidaServicios.ObtenerPorPeriodo(periodoActual.anoPeriodo);
+
+            Session["listaPartidas"] = listaPartidas;
+            Session["listaPartidasFiltrada"] = listaPartidas;
+
+            mostrarDatosTabla();
+            #endregion
+
+            #region Actualiza tabla de partidas a pasar
+            Session["listaPartidasAPasar"] = listaPartidas;
+            Session["listaPartidasAPasarFiltrada"] = listaPartidas;
+            cargarDatosTblPartidasAPasar();
+            #endregion
+
+            #region Actualiza tabal de partidas agregadas
+            Periodo periodoAgregados = new Periodo();
+            periodoAgregados.anoPeriodo = Convert.ToInt32(ddlPeriodoModalPasaPartidas.SelectedValue);
+
+            List<Partida> listaPartidasAgregadas = partidaServicios.ObtenerPorPeriodo(periodoAgregados.anoPeriodo);
+
+            Session["listaPartidasAgregadas"] = listaPartidasAgregadas;
+            Session["listaPartidasAgregadasFiltrada"] = listaPartidasAgregadas;
+
+            cargarDatosTblPartidasAgregadas();
+            #endregion
+            
+        }
 
         #endregion
 
@@ -832,7 +938,7 @@ namespace Proyecto.Catalogos.Partidas
         /// </summary>
         private void mostrarDatosTabla()
         {
-            LinkedList<Partida> listaPartidas = (LinkedList<Partida>)Session["listaPartidas"];
+            List<Partida> listaPartidas = (List<Partida>)Session["listaPartidas"];
 
             String desc = "";
 
@@ -879,8 +985,8 @@ namespace Proyecto.Catalogos.Partidas
             ddl.Items.Clear();
             ddl.Items.Add(new ListItem("Partida Padre", "null"));
 
-            LinkedList<Partida> partidas = new LinkedList<Partida>();
-            partidas = (LinkedList<Partida>)Session["listaPartidasPorPeriodo"];
+            List<Partida> partidas = new List<Partida>();
+            partidas = (List<Partida>)Session["listaPartidasPorPeriodo"];
             foreach (Partida partida in partidas)
             {
                 if (partida.partidaPadre == null)
@@ -890,8 +996,6 @@ namespace Proyecto.Catalogos.Partidas
                 }
             }
         }
-
-
 
         /// <summary>
         /// Jesús Torres
@@ -962,110 +1066,6 @@ namespace Proyecto.Catalogos.Partidas
             return validados;
         }
 
-
-
-        #endregion
-
-        #region paginacion Actual
-        //Bloque que contiene get y set de pagina actual
-        private int paginaActual
-        {
-            get
-            {
-                if (ViewState["paginaActual"] == null)
-                {
-                    return 0;
-                }
-                return ((int)ViewState["paginaActual"]);
-            }
-            set
-            {
-                ViewState["paginaActual"] = value;
-            }
-        }
-
-        private int paginaActual2
-        {
-            get
-            {
-                if (ViewState["paginaActual2"] == null)
-                {
-                    return 0;
-                }
-                return ((int)ViewState["paginaActual2"]);
-            }
-            set
-            {
-                ViewState["paginaActual2"] = value;
-            }
-        }
-
-        private int paginaActual3
-        {
-            get
-            {
-                if (ViewState["paginaActual3"] == null)
-                {
-                    return 0;
-                }
-                return ((int)ViewState["paginaActual3"]);
-            }
-            set
-            {
-                ViewState["paginaActual3"] = value;
-            }
-        }
-        #endregion
-
-        #region paginacion
-        /// <summary>
-        /// Jesús Torres
-        /// 19/sept/2019
-        /// Efecto: realiza la paginacion
-        /// Requiere: -
-        /// Modifica: paginacion mostrada en pantalla
-        /// Devuelve: -
-        /// </summary>
-        private void Paginacion()
-        {
-            var dt = new DataTable();
-            dt.Columns.Add("IndexPagina"); //Inicia en 0
-            dt.Columns.Add("PaginaText"); //Inicia en 1
-
-            primerIndex = paginaActual - 2;
-            if (paginaActual > 2)
-                ultimoIndex = paginaActual + 2;
-            else
-                ultimoIndex = 4;
-
-            //se revisa que la ultima pagina sea menor que el total de paginas a mostrar, sino se resta para que muestre bien la paginacion
-            if (ultimoIndex > Convert.ToInt32(ViewState["TotalPaginas"]))
-            {
-                ultimoIndex = Convert.ToInt32(ViewState["TotalPaginas"]);
-                primerIndex = ultimoIndex - 4;
-            }
-
-            if (primerIndex < 0)
-                primerIndex = 0;
-
-            //se crea el numero de paginas basado en la primera y ultima pagina
-            for (var i = primerIndex; i < ultimoIndex; i++)
-            {
-                var dr = dt.NewRow();
-                dr[0] = i;
-                dr[1] = i + 1;
-                dt.Rows.Add(dr);
-            }
-
-            rptPaginacion.DataSource = dt;
-            rptPaginacion.DataBind();
-        }
-
-      
-
-      
-        #endregion
-
         /// <summary>
         /// Jesús Torres
         /// 24/sep/2019
@@ -1076,8 +1076,8 @@ namespace Proyecto.Catalogos.Partidas
         /// </summary>
         private void cargarDatosTblPartidasAPasar()
         {
-            
-            LinkedList<Partida> listaSession = (LinkedList<Partida>)Session["listaPartidasAPasar"];
+
+            List<Partida> listaSession = (List<Partida>)Session["listaPartidasAPasar"];
             String desc = "";
 
             if (!String.IsNullOrEmpty(txtBuscarDescPartidasAPasar.Text))
@@ -1114,10 +1114,17 @@ namespace Proyecto.Catalogos.Partidas
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarPartidas').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarPartida();", true);
         }
-
+        /// <summary>
+        /// Jesús Torres
+        /// 03/oct/2019
+        /// Efecto: Metodo para llenar la tabla de partidas en modal de pasarPartidasAgregadas
+        /// Requiere: -
+        /// Modifica: -
+        /// Devuelve: -
+        /// </summary>
         public void cargarDatosTblPartidasAgregadas()
         {
-            LinkedList<Partida> listaSession = (LinkedList<Partida>)Session["listaPartidasAgregadas"];
+            List<Partida> listaSession = (List<Partida>)Session["listaPartidasAgregadas"];
 
             String desc = "";
 
@@ -1239,6 +1246,107 @@ namespace Proyecto.Catalogos.Partidas
             rptPaginacion3.DataSource = dt;
             rptPaginacion3.DataBind();
         }
+
+        #endregion
+
+        #region paginacion Actual
+        //Bloque que contiene get y set de pagina actual
+        private int paginaActual
+        {
+            get
+            {
+                if (ViewState["paginaActual"] == null)
+                {
+                    return 0;
+                }
+                return ((int)ViewState["paginaActual"]);
+            }
+            set
+            {
+                ViewState["paginaActual"] = value;
+            }
+        }
+
+        private int paginaActual2
+        {
+            get
+            {
+                if (ViewState["paginaActual2"] == null)
+                {
+                    return 0;
+                }
+                return ((int)ViewState["paginaActual2"]);
+            }
+            set
+            {
+                ViewState["paginaActual2"] = value;
+            }
+        }
+
+        private int paginaActual3
+        {
+            get
+            {
+                if (ViewState["paginaActual3"] == null)
+                {
+                    return 0;
+                }
+                return ((int)ViewState["paginaActual3"]);
+            }
+            set
+            {
+                ViewState["paginaActual3"] = value;
+            }
+        }
+        #endregion
+
+        #region paginacion
+        /// <summary>
+        /// Jesús Torres
+        /// 19/sept/2019
+        /// Efecto: realiza la paginacion
+        /// Requiere: -
+        /// Modifica: paginacion mostrada en pantalla
+        /// Devuelve: -
+        /// </summary>
+        private void Paginacion()
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("IndexPagina"); //Inicia en 0
+            dt.Columns.Add("PaginaText"); //Inicia en 1
+
+            primerIndex = paginaActual - 2;
+            if (paginaActual > 2)
+                ultimoIndex = paginaActual + 2;
+            else
+                ultimoIndex = 4;
+
+            //se revisa que la ultima pagina sea menor que el total de paginas a mostrar, sino se resta para que muestre bien la paginacion
+            if (ultimoIndex > Convert.ToInt32(ViewState["TotalPaginas"]))
+            {
+                ultimoIndex = Convert.ToInt32(ViewState["TotalPaginas"]);
+                primerIndex = ultimoIndex - 4;
+            }
+
+            if (primerIndex < 0)
+                primerIndex = 0;
+
+            //se crea el numero de paginas basado en la primera y ultima pagina
+            for (var i = primerIndex; i < ultimoIndex; i++)
+            {
+                var dr = dt.NewRow();
+                dr[0] = i;
+                dr[1] = i + 1;
+                dt.Rows.Add(dr);
+            }
+
+            rptPaginacion.DataSource = dt;
+            rptPaginacion.DataBind();
+        }
+      
+        #endregion
+
+       
 
     }
 }

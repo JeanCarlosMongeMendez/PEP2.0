@@ -10,6 +10,6 @@ namespace Entidades
     {
        public int idTramite { get; set; }
         public string nombreTramite { get; set; }
-        public Boolean EsUCR { get; set; }
+        public int EsUCR { get; set; }
     }
 }

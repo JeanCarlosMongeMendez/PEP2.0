@@ -23,7 +23,7 @@ namespace Servicios
             return this.partidaDatos.Insertar(partida);
         }
 
-        public LinkedList<Partida> ObtenerPorPeriodo(int anoPeriodo)
+        public List<Partida> ObtenerPorPeriodo(int anoPeriodo)
         {
             return this.partidaDatos.ObtenerPorPeriodo(anoPeriodo);
         }
@@ -33,10 +33,10 @@ namespace Servicios
             return this.partidaDatos.ObtenerPorId(idPartida);
         }
 
-        public bool Guardar(LinkedList<int> partidasId, int anoPeriodo)
-        {
-            return this.partidaDatos.Guardar(partidasId, anoPeriodo);
-        }
+        //public bool Guardar(LinkedList<int> partidasId, int anoPeriodo)
+        //{
+        //    return this.partidaDatos.Guardar(partidasId, anoPeriodo);
+        //}
 
         public void ActualizarPartida(Partida partida)
         {
@@ -48,20 +48,52 @@ namespace Servicios
             this.partidaDatos.EliminarPartida(idPartida);
         }
 
+        public List<Partida> ObtienePartidaPorPeriodoUnidadProyecto(int proyecto, LinkedList<int> unidad, int periodo)
+        {
+            return this.partidaDatos.ObtienePartidaPorPeriodoUnidadProyecto( proyecto,  unidad,  periodo);
+        }
+        /// <summary>
+        /// Josseline M
+        /// Obtiene una partida a partir en su numeroPartida
+        /// </summary>
+        /// <param name="idPartida">Valor de tipo <code>int</code> que corresponde a la partida a buscar</param>
+        /// <returns>Retorna el elemento de tipo <code>Partida</code> que coincida con el identificador dado</returns>
+        public Partida ObtenerPorNumeroPartida(string numeroPartida)
+        {
+            return this.partidaDatos.ObtenerPorNumeroPartida(numeroPartida);
+        }
+
+            // <summary>
+            /// Leonardo Carrion
+            /// 25/sep/2019
+            /// Efecto: devuelve la partida que cumple con los datos ingresados de numero de partida y periodo
+            /// Requiere: partida y periodo
+            /// Modifica: -
+            /// Devuelve: partida
+            /// </summary>
+            /// <param name="partida"></param>
+            /// <param name="periodo"></param>
+            /// <returns></returns>
+            public Partida getPartidaPorNumeroYPeriodo(Partida partida, Periodo periodo)
+        {
+            return partidaDatos.getPartidaPorNumeroYPeriodo(partida,periodo);
+        }
+
+
         // <summary>
-        /// Leonardo Carrion
-        /// 25/sep/2019
-        /// Efecto: devuelve la partida que cumple con los datos ingresados de numero de partida y periodo
+        /// Jesus Torres
+        /// 10/oct/2019
+        /// Efecto: devuelve la lista de partidas con mismo padre
         /// Requiere: partida y periodo
         /// Modifica: -
-        /// Devuelve: partida
+        /// Devuelve: lista de partidas
         /// </summary>
         /// <param name="partida"></param>
         /// <param name="periodo"></param>
         /// <returns></returns>
-        public Partida getPartidaPorNumeroYPeriodo(Partida partida, Periodo periodo)
+        public List<Partida> obtenerPorIdPartidaPadre(int partida, int periodo)
         {
-            return partidaDatos.getPartidaPorNumeroYPeriodo(partida,periodo);
+            return partidaDatos.obtenerPorIdPartidaPadre(partida, periodo);
         }
 
     }
