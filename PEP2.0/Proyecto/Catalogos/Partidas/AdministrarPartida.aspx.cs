@@ -39,7 +39,7 @@ namespace Proyecto.Catalogos.Partidas
             {
                 PasarPartidasBtn.Click += new EventHandler((snd, evt) => PasarPartidasBtn_Click(snd, evt));
                 DevolverPartidasBtn.Click += new EventHandler((snd, evt) => DevolverPartidasBtn_Click(snd, evt));
-                GuardarPartidasBtn.Click += new EventHandler((snd, evt) => GuardarPartidas_Click(snd, evt));
+              //  GuardarPartidasBtn.Click += new EventHandler((snd, evt) => GuardarPartidas_Click(snd, evt));
             }
         }
         #endregion
@@ -115,7 +115,7 @@ namespace Proyecto.Catalogos.Partidas
                 AnoActual.Text = PeriodosDDL.SelectedValue;
                 Session["periodo"] = PeriodosDDL.SelectedValue;
 
-                LinkedList<Partida> partidas = new LinkedList<Partida>();
+                List<Partida> partidas = new List<Partida>();
                 partidas = this.partidaServicios.ObtenerPorPeriodo(Int32.Parse(PeriodosDDL.SelectedValue));
 
                 if (partidas.Count > 0)
@@ -138,7 +138,7 @@ namespace Proyecto.Catalogos.Partidas
 
             if (!PeriodosNuevosDDL.SelectedValue.Equals(""))
             {
-                LinkedList<Partida> partidas = new LinkedList<Partida>();
+                List<Partida> partidas = new List<Partida>();
                 partidas = this.partidaServicios.ObtenerPorPeriodo(Int32.Parse(PeriodosNuevosDDL.SelectedValue));
 
                 if (partidas.Count > 0)
@@ -236,34 +236,34 @@ namespace Proyecto.Catalogos.Partidas
             }
         }
 
-        protected void GuardarPartidas_Click(object sender, EventArgs e)
-        {
-            if (Session["CheckRefresh"].ToString() == ViewState["CheckRefresh"].ToString())
-            {
-                if (PartidasNuevasLB.Items.Count > 0)
-                {
-                    LinkedList<int> partidasId = new LinkedList<int>();
+        //protected void GuardarPartidas_Click(object sender, EventArgs e)
+        //{
+        //    if (Session["CheckRefresh"].ToString() == ViewState["CheckRefresh"].ToString())
+        //    {
+        //        if (PartidasNuevasLB.Items.Count > 0)
+        //        {
+        //            LinkedList<int> partidasId = new LinkedList<int>();
 
-                    foreach (ListItem idPartida in PartidasNuevasLB.Items)
-                    {
-                        partidasId.AddLast(Int32.Parse(idPartida.Value));
-                    }
+        //            foreach (ListItem idPartida in PartidasNuevasLB.Items)
+        //            {
+        //                partidasId.AddLast(Int32.Parse(idPartida.Value));
+        //            }
 
-                    bool guardado = this.partidaServicios.Guardar(partidasId, Int32.Parse(PeriodosNuevosDDL.SelectedValue));
+        //           // bool guardado = this.partidaServicios.Guardar(partidasId, Int32.Parse(PeriodosNuevosDDL.SelectedValue));
 
-                    if (guardado)
-                    {
-                        Toastr("success", "Se han guardado los cambios con éxito!");
-                    }
-                    else
-                    {
-                        Toastr("error", "Error al guardar los proyectos");
-                    }
-                }
+        //            if (guardado)
+        //            {
+        //                Toastr("success", "Se han guardado los cambios con éxito!");
+        //            }
+        //            else
+        //            {
+        //                Toastr("error", "Error al guardar los proyectos");
+        //            }
+        //        }
 
-                Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());
-            }
-        }
+        //        Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());
+        //    }
+        //}
 
         #endregion
 

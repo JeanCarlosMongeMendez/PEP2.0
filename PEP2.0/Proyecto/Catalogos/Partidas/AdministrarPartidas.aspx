@@ -476,7 +476,7 @@
                                              <ItemTemplate>
                                                  <tr style="text-align: center">
                                                      <td>
-                                                         <asp:LinkButton ID="btnSeleccionarCargaSocial" runat="server" ToolTip="Copiar carga social" CommandArgument='<%# Eval("idPartida") %>'><span class="glyphicon glyphicon-share-alt"></span></asp:LinkButton>
+                                                         <asp:LinkButton ID="btnSeleccionarPasarPartida" runat="server" ToolTip="Copiar partida" CommandArgument='<%# Eval("idPartida") %>' OnClick="btnSeleccionarPasarPartida_Click"><span class="glyphicon glyphicon-share-alt"></span></asp:LinkButton>
                                                      </td>
                                                      <td>
                                                          <%# Eval("descripcionPartida") %>

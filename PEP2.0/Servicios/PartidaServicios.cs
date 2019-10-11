@@ -23,7 +23,7 @@ namespace Servicios
             return this.partidaDatos.Insertar(partida);
         }
 
-        public LinkedList<Partida> ObtenerPorPeriodo(int anoPeriodo)
+        public List<Partida> ObtenerPorPeriodo(int anoPeriodo)
         {
             return this.partidaDatos.ObtenerPorPeriodo(anoPeriodo);
         }
@@ -33,10 +33,10 @@ namespace Servicios
             return this.partidaDatos.ObtenerPorId(idPartida);
         }
 
-        public bool Guardar(LinkedList<int> partidasId, int anoPeriodo)
-        {
-            return this.partidaDatos.Guardar(partidasId, anoPeriodo);
-        }
+        //public bool Guardar(LinkedList<int> partidasId, int anoPeriodo)
+        //{
+        //    return this.partidaDatos.Guardar(partidasId, anoPeriodo);
+        //}
 
         public void ActualizarPartida(Partida partida)
         {
@@ -77,6 +77,23 @@ namespace Servicios
             public Partida getPartidaPorNumeroYPeriodo(Partida partida, Periodo periodo)
         {
             return partidaDatos.getPartidaPorNumeroYPeriodo(partida,periodo);
+        }
+
+
+        // <summary>
+        /// Jesus Torres
+        /// 10/oct/2019
+        /// Efecto: devuelve la lista de partidas con mismo padre
+        /// Requiere: partida y periodo
+        /// Modifica: -
+        /// Devuelve: lista de partidas
+        /// </summary>
+        /// <param name="partida"></param>
+        /// <param name="periodo"></param>
+        /// <returns></returns>
+        public List<Partida> obtenerPorIdPartidaPadre(int partida, int periodo)
+        {
+            return partidaDatos.obtenerPorIdPartidaPadre(partida, periodo);
         }
 
     }

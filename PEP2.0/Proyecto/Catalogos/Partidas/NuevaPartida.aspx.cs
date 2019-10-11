@@ -77,7 +77,7 @@ namespace Proyecto.Catalogos.Partidas
 
                 PartidasPadreDDL.Items.Add(new ListItem("Partida Padre", "null"));
 
-                LinkedList<Partida> partidas = new LinkedList<Partida>();
+                List<Partida> partidas = new List<Partida>();
                 partidas = this.partidaServicios.ObtenerPorPeriodo(Convert.ToInt32(Session["periodo"].ToString()));
                 foreach (Partida partida in partidas)
                 {
