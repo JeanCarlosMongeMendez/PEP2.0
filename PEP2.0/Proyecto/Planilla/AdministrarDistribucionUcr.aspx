@@ -144,7 +144,6 @@
     <%--modal distribuir jornada--%>
     <div id="modalDistribuirJornada" class="modal fade" role="alertdialog">
         <div class="modal-dialog modal-lg" style="min-width: 95%; margin: 2%">
-            <asp:HiddenField ID="hdIdFuncionario" runat="server" />
             <%--modal--%>
             <div class="modal-content">
 
@@ -162,7 +161,7 @@
                         <%--periodo--%>
                         <div class="row">
                             <div class="col-md-12 col-xs-12 col-sm-12" style="align-content: center; text-align: center;">
-                                <asp:Label ID="label1" runat="server" Text="Periodo : " Font-Size="Large" ForeColor="Black"></asp:Label>
+                                <asp:Label runat="server" Text="Periodo : " Font-Size="Large" ForeColor="Black"></asp:Label>
                                 <asp:Label ID="lblPeriodo" runat="server" Text="" Font-Size="Large" ForeColor="Black"></asp:Label>
                             </div>
 
@@ -209,7 +208,7 @@
 
                         <%--progress bar--%>
                         <div class="row">
-                            <div id="progressBar" class="progress col-md-10 col-md-offset-1" style="padding-left: 0px;">
+                            <div id="progressBar" class="progress col-md-10 col-md-offset-1" style="padding-left: 0px; padding-right:0px;">
                                 <div id="progressBarFree" class="progress-bar progress-bar-success" role="progressbar" style="width: 0%">
                                 </div>
                             </div>
@@ -228,6 +227,7 @@
                                     <tr style="text-align: center" class="btn-primary">
                                         <th>Nombre Unidad</th>
                                         <th>Coordinador</th>
+                                        <th>Jornada en unidad</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -243,7 +243,10 @@
                                                 <%# Eval("coordinador") %>
                                             </td>
                                             <td>
-                                                <asp:DropDownList ID="ddlDistribucionJornada" runat="server"></asp:DropDownList>
+                                                <%--<%# Eval("jornadaEnUnidad") %>--%>
+                                            </td>
+                                            <td>
+                                                <asp:LinkButton ID="btnSelccionarUnidad" OnClick="btnSelccionarUnidad_Click" runat="server" CommandArgument='<%# Eval("idUnidad") %>'>Asignar Jornada</asp:LinkButton>
                                             </td>
                                         </tr>
                                     </ItemTemplate>
@@ -299,7 +302,62 @@
 
                 <%--footer--%>
                 <div class="modal-footer" style="text-align: center">
-                    <button type="button" class="btn btn-default" onclick="agregarDistribucion()">Agregar</button>
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%--modal asignar jornada--%>
+    <div id="modalAsignarJornada" class="modal fade" role="alertdialog">
+        <div class="modal-dialog modal-lg" style="min-width: 30%; margin: 20%">
+            <%--modal--%>
+            <div class="modal-content">
+
+                <%--header--%>
+                <div class="modal-header" style="background-color: #005da4; color: white">
+                    <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
+                    <h4 class="modal-title" runat="server">Asignar Jornada</h4>
+                </div>
+
+                <%--body--%>
+                <div class="modal-body">
+
+                    <%--datos generales--%>
+                    <asp:HiddenField runat="server" ID="IdUnidadSeleccionada"/>
+                    <div>
+
+                        <%--Unidad--%>
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12 col-sm-12" style="align-content: center; text-align: center;">
+                                <asp:Label runat="server" Text="Unidad : " Font-Size="Large" ForeColor="Black"></asp:Label>
+                                <asp:Label ID="lblUnidad" runat="server" Text="" Font-Size="Large" ForeColor="Black"></asp:Label>
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+                        </div>
+
+                        <%--jornada--%>
+                        <div class="row">
+                            <div class="col-md-12 col-xs-12 col-sm-12" style="align-content: center; text-align: center;">
+                                <asp:Label runat="server" Text="Jornada : " Font-Size="Large" ForeColor="Black"></asp:Label>
+                                <asp:DropDownList ID="ddlAsignarJornada" class="btn btn-default dropdown-toggle" runat="server"></asp:DropDownList>
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <%--footer--%>
+                <div class="modal-footer" style="text-align: center">
+                    <asp:LinkButton ID="btnAsignarJornada" class="btn btn-default" OnClick="btnAsignarJornada_Click" runat="server">Asignar</asp:LinkButton>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
@@ -308,14 +366,36 @@
 
     <script>
         function activarModalDistribuirJornada() {
+            $('#modalDistribuirJornada').modal({
+                backdrop: true
+            });
             $('#modalDistribuirJornada').modal('show');
         };
 
+        function activarModalAsignarJornada() {
+            $('#modalDistribuirJornada').modal({
+                backdrop: "static"
+            });
+            $('#modalAsignarJornada').modal({
+                focus: true
+            });
+            $('#modalAsignarJornada').modal('show');
+        };
+
         function agregarDistribucion() {
-            var porcentajeDistribucion = 50;
+
+            var listaUnidadesConJornadaAsignada = '<%= Session["listaUnidadesConJornadaAsignada"] %>';
+            console.log(listaUnidadesConJornadaAsignada);
+
+            var porcentajeDistribucion = porcentaje;
             var div = document.createElement('div');
+            var divCheckpoint = document.createElement('div');
+            div.id = 'progress' + unidad;
             div.className = 'progress-bar';
             div.role = "progressbar";
+            div.innerText = unidad;
+            divCheckpoint.className = 'progress-checkpoint';
+            divCheckpoint.style = 'left: ' + porcentaje + '%';
             var progreso = 0;
             var interval = setInterval(function () {
                 progreso += 5;
@@ -325,6 +405,7 @@
                 }
             }, 200);
             document.getElementById('progressBar').appendChild(div);
+            document.getElementById('progress' + unidad).appendChild(divCheckpoint);
             $('#modalDistribuirJornada').modal('show');
         }
     </script>

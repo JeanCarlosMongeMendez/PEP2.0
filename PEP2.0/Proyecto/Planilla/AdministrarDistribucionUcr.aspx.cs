@@ -90,10 +90,8 @@ namespace Proyecto.Planilla
                 ddlProyecto.SelectedValue = proyectos.First.Value.idProyecto.ToString();
                 ddlProyecto.DataBind();
                 Session["listaUnidades"] = unidadServicios.ObtenerPorProyecto(Convert.ToInt32(ddlProyecto.SelectedValue));
+                Session["listaUnidadesConJornadaAsignada"] = new List<UnidadFuncionario>();
                 mostrarTablaUnidades();
-                List<Jornada> jornadas = jornadaServicios.getJornadasActivas();
-                ddlDis
-
             }
         }
         #endregion
@@ -296,6 +294,14 @@ namespace Proyecto.Planilla
 
         #region paginacion tabla unidades
 
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 07/10/2019
+        /// Efecto : Llena la tabla con las unidades de un proyecto
+        /// Requiere : -
+        /// Modifica : Tabla de unidades
+        /// Devuelve : -
+        /// </summary>
         public void mostrarTablaUnidades()
         {
             LinkedList<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(Convert.ToInt32(ddlProyecto.SelectedValue));
@@ -319,11 +325,19 @@ namespace Proyecto.Planilla
 
             rpUnidProyecto.DataSource = pgsourceUnidad;
             rpUnidProyecto.DataBind();
-
+            
             //metodo que realiza la paginacion
             PaginacionUnidad();
         }
 
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 07/10/2019
+        /// Efecto : Realiza la paginacion en la tabla de unidades
+        /// Requiere : -
+        /// Modifica : Tabla de unidades
+        /// Devuelve : -
+        /// </summary>
         private void PaginacionUnidad()
         {
             var dt = new DataTable();
@@ -426,6 +440,17 @@ namespace Proyecto.Planilla
             lnkPagina.BackColor = Color.FromName("#00Unidadda4");
             lnkPagina.ForeColor = Color.FromName("#000000");
         }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 14/jun/2019
+        /// Efecto: se devuelve a la pagina siguiente y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Siguiente pagina"
+        /// Modifica: elementos mostrados en la tabla 
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void lbSiguienteUnidad_Click(object sender, EventArgs e)
         {
             paginaActualUnidad += 1;
@@ -476,6 +501,7 @@ namespace Proyecto.Planilla
             lblProyecto.Text = ddlProyecto.SelectedItem.Text;
             lblJornada.Text = funcionarioVer.JornadaLaboral.descJornada + " , " + funcionarioVer.JornadaLaboral.porcentajeJornada+"%";
             lblFuncionario.Text = funcionarioVer.nombreFuncionario;
+            Session["idFuncionarioSeleccionado"] = funcionarioVer.idFuncionario;
             mostrarTablaUnidades();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalDistribuirJornada();", true);
         }
@@ -494,6 +520,64 @@ namespace Proyecto.Planilla
         {
             String url = Page.ResolveUrl("~/Default.aspx");
             Response.Redirect(url);
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 07/10/2019
+        /// Efecto : Completa el formulario para asinar una jornada laboral a una unidad
+        /// Requiere : Seleccionar una unidad
+        /// Modifica : Formulario de asignar jornada 
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnSelccionarUnidad_Click(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+            Unidad unidadSeleccionada = null;
+            LinkedList<Unidad> unidades = unidadServicios.ObtenerPorProyecto(Convert.ToInt32(ddlProyecto.SelectedValue));
+            foreach (Unidad unidad in unidades)
+            {
+                if (unidad.idUnidad == id)
+                {
+                    unidadSeleccionada = unidad;
+                    break;
+                }
+            }
+            IdUnidadSeleccionada.Value = unidadSeleccionada.idUnidad.ToString();
+            lblUnidad.Text = unidadSeleccionada.nombreUnidad;
+            List<Jornada> jornadas = jornadaServicios.getJornadasActivas();
+            ddlAsignarJornada.DataSource = jornadas;
+            ddlAsignarJornada.DataTextField = "porcentajeJornada";
+            ddlAsignarJornada.DataValueField = "porcentajeJornada";
+            ddlAsignarJornada.DataBind();
+            mostrarTablaUnidades();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalAsignarJornada();", true);
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 07/10/2019
+        /// Efecto : Asigna una jornada laboral a la unidad seleccionada 
+        /// Requiere : Seleccionar la jornada laboral y clickear el boton "Asignar" del formulario
+        /// Modifica : Jornada laboral del funcionario
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnAsignarJornada_Click(object sender, EventArgs e)
+        {
+            int idUnidad = Convert.ToInt32(IdUnidadSeleccionada.Value);
+            string unidad = lblUnidad.Text;
+            double porcentaje = Convert.ToDouble(ddlAsignarJornada.SelectedValue);
+            UnidadFuncionario unidadAsignada = new UnidadFuncionario();
+            unidadAsignada.idUnidad = idUnidad;
+            unidadAsignada.jornadaAsignada = porcentaje;
+            unidadAsignada.idFuncionario = Convert.ToInt32(Session["idFuncionarioSeleccionado"]);
+            List<UnidadFuncionario> unidadesFuncionario = (List<UnidadFuncionario>)Session["listaUnidadesConJornadaAsignada"];
+            unidadesFuncionario.Add(unidadAsignada);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "agregarDistribucion();", true);
         }
 
         /// <summary>
