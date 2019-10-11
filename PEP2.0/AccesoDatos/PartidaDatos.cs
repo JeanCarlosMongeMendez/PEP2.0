@@ -271,6 +271,48 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_p
 
             return guardado;
         }
+        /// <summary>
+        /// Josseline M
+        /// Este método se encarga de obtener las partidas en funcion al proyecto, periodo y unidades seleccionadas
+        /// </summary>
+        /// <param name="proyecto"></param>
+        /// <param name="unidades"></param>
+        /// <param name="periodo"></param>
+        /// <returns></returns>
+        public List<Partida> ObtienePartidaPorPeriodoUnidadProyecto(int proyecto, LinkedList<int> unidades, int periodo)
+        {
+            List<Partida> partidas = new List<Partida>();
+            SqlConnection sqlConnection = conexion.conexionPEP();
+            foreach(int idUnidad in unidades)
+            {
+                SqlCommand sqlCommand = new SqlCommand("select id_partida, numero_partida, descripcion_partida " +
+               "from Proyecto,Unidad,Periodo,Partida " +
+               "where Periodo.ano_periodo=@periodo and  Proyecto.ano_periodo=Periodo.ano_periodo AND Partida.ano_periodo=Proyecto.ano_periodo" +
+               " and Unidad.id_proyecto=Proyecto.id_proyecto and Proyecto.id_proyecto = @proyecto and Unidad.id_unidad=@unidad and Partida.disponible=1  order by numero_partida;", sqlConnection);
+
+                sqlCommand.Parameters.AddWithValue("@periodo", periodo);
+                sqlCommand.Parameters.AddWithValue("@proyecto", proyecto);
+                sqlCommand.Parameters.AddWithValue("@unidad", idUnidad);
+                SqlDataReader reader;
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Partida partida = new Partida();
+                    partida.idPartida = Convert.ToInt32(reader["id_partida"].ToString());
+                    partida.numeroPartida = reader["numero_partida"].ToString();
+                    partida.descripcionPartida = reader["descripcion_partida"].ToString();
+
+                    partidas.Add(partida);
+                }
+
+                sqlConnection.Close();
+            }
+
+
+            return partidas;
+        }
 
         // <summary>
         // Adrián Serrano
@@ -372,6 +414,52 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_p
             sqlConnection.Close();
 
             return partidaBD;
+        }
+
+
+        /// <summary>
+        /// Josseline M
+        /// Obtiene una partida a partir en su numeroPartida
+        /// </summary>
+        /// <param name="idPartida">Valor de tipo <code>int</code> que corresponde a la partida a buscar</param>
+        /// <returns>Retorna el elemento de tipo <code>Partida</code> que coincida con el identificador dado</returns>
+        public Partida ObtenerPorNumeroPartida(string numeroPartida)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+            SqlCommand sqlCommand = new SqlCommand("select id_partida, numero_partida, descripcion_partida, id_partida_padre, ano_periodo " +
+                "from Partida where numero_partida=@numero_partida_ AND disponible=1 order by numero_partida;", sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@numero_partida_", numeroPartida);
+
+            Partida partida = new Partida();
+
+            SqlDataReader reader;
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                partida.idPartida = Convert.ToInt32(reader["id_partida"].ToString());
+                partida.numeroPartida = reader["numero_partida"].ToString();
+                partida.descripcionPartida = reader["descripcion_partida"].ToString();
+
+                //Si la partida padre contiene un valor se le agrega, sino se deja como nulo
+                if (!DBNull.Value.Equals(reader["id_partida_padre"]))
+                {
+                    partida.partidaPadre = new Partida();
+                    partida.partidaPadre.idPartida = Convert.ToInt32(reader["id_partida_padre"].ToString());
+                }
+                else
+                {
+                    partida.partidaPadre = null;
+                }
+
+                partida.periodo = new Periodo();
+                partida.periodo.anoPeriodo = Convert.ToInt32(reader["ano_periodo"].ToString());
+            }
+
+            sqlConnection.Close();
+
+            return partida;
         }
     }
 }
