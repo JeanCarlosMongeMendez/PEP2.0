@@ -28,9 +28,9 @@ namespace AccesoDatos
 
             String consulta = @"select ph.id_partida, ph.numero_partida, ph.descripcion_partida, ph.id_partida_padre, ph.ano_periodo, pp.numero_partida AS numero_partida_padre, pp.descripcion_partida AS descripcion_padre from Partida ph left join Partida pp ON ph.id_partida_padre = pp.id_partida 
 
-where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_partida;";
+where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.numero_partida;";
 
-            SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
+           SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
             sqlCommand.Parameters.AddWithValue("@ano_periodo_", anoPeriodo);
 
             SqlDataReader reader;
@@ -249,14 +249,18 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_p
         // Requiere: Partida
         // Modifica: -
         // Devuelve: -
+        // Editado por: Jesus Torres
+        // 11/oct/2019
+        // Se cambia la consulta a BD, de manera que realice el eliminado logico, de partidas con el ID del padre y todas sus hijas
         // </summary>
         // <param name="idPartida"></param>
-        public void EliminarPartida(int idPartida)
+        public void EliminarPartida(int idPartida, int periodo)
         {
             SqlConnection sqlConnection = conexion.conexionPEP();
 
-            SqlCommand sqlCommand = new SqlCommand("update Partida set disponible=0 where id_partida=@id_partida_;", sqlConnection);
+            SqlCommand sqlCommand = new SqlCommand("update Partida set disponible=0 where (id_partida = @id_partida_ OR id_partida_padre = @id_partida_) AND ano_periodo = @periodo_;", sqlConnection);
             sqlCommand.Parameters.AddWithValue("@id_partida_", idPartida);
+            sqlCommand.Parameters.AddWithValue("@periodo_", periodo);
 
             sqlConnection.Open();
 
@@ -359,7 +363,7 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_p
             SqlConnection sqlConnection = conexion.conexionPEP();
             List<Partida> partidas = new List<Partida>();
 
-            String consulta = @"select id_partida, numero_partida, descripcion_partida, id_partida_padre, ano_periodo from Partida where id_partida_padre=@id_partida_padre AND ano_periodo=@ano_periodo AND disponible=1 order by descripcion_partida;";
+            String consulta = @"select id_partida, numero_partida, descripcion_partida, id_partida_padre, ano_periodo from Partida where id_partida_padre=@id_partida_padre AND ano_periodo=@ano_periodo AND disponible=1 order by numero_partida;";
 
             SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
             sqlCommand.Parameters.AddWithValue("@id_partida_padre", idPartidaPadre);

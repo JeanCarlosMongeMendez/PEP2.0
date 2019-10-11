@@ -388,11 +388,11 @@ namespace Proyecto.Catalogos.Partidas
         protected void btnEliminarPartidaModal_Click(object sender, EventArgs e)
         {
             Partida partida = (Partida)Session["partidaSeleccionada"];
-
-            partidaServicios.EliminarPartida(partida.idPartida);
             Periodo periodo = new Periodo();
             periodo.anoPeriodo = Convert.ToInt32(ddlPeriodo.SelectedValue);
 
+            partidaServicios.EliminarPartida(partida.idPartida, periodo.anoPeriodo);
+            
             List<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(periodo.anoPeriodo);
             Session["listaPartidas"] = listaPartidas;
             Session["listaPatidasFiltrada"] = listaPartidas;

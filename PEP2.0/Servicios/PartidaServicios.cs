@@ -43,9 +43,9 @@ namespace Servicios
             this.partidaDatos.ActualizarPartida(partida);
         }
 
-        public void EliminarPartida(int idPartida)
+        public void EliminarPartida(int idPartida, int periodo)
         {
-            this.partidaDatos.EliminarPartida(idPartida);
+            this.partidaDatos.EliminarPartida(idPartida, periodo);
         }
 
         public List<Partida> ObtienePartidaPorPeriodoUnidadProyecto(int proyecto, LinkedList<int> unidad, int periodo)
