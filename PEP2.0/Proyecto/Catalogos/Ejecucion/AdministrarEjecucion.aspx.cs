@@ -19,6 +19,7 @@ namespace Proyecto.Catalogos.Ejecucion
         readonly PagedDataSource pgsource = new PagedDataSource();
         PeriodoServicios periodoServicios;
         ProyectoServicios proyectoServicios;
+        TipoTramiteServicios tipoTramiteServicios;
         UnidadServicios unidadServicios;
         PartidaServicios partidaServicios;
         private int elmentosMostrar = 10;
@@ -104,7 +105,7 @@ namespace Proyecto.Catalogos.Ejecucion
             this.proyectoServicios = new ProyectoServicios();
             this.unidadServicios = new UnidadServicios();
             this.partidaServicios = new PartidaServicios();
-
+            this.tipoTramiteServicios = new TipoTramiteServicios();
             if (!IsPostBack)
             {
                 Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());
@@ -112,15 +113,16 @@ namespace Proyecto.Catalogos.Ejecucion
                 Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
                 PeriodosDDL.Items.Clear();
                 ProyectosDDL.Items.Clear();
+                DDLTipoTramite.Items.Clear();
                 CargarPeriodos();
-
+               
             }
             else
             {
                 obtenerPartidasSeleccionadas();
             }
 
-           
+
 
         }
 
@@ -171,24 +173,23 @@ namespace Proyecto.Catalogos.Ejecucion
                 //metodo que realiza la paginacion
                 Paginacion3();
 
-
-
             }
             else
             {
-                List<Partida> partidasF  = new List<Partida>();
+                List<Partida> partidasF = new List<Partida>();
                 rpPartidasSeleccionada.DataSource = partidasF;
                 rpPartidasSeleccionada.DataBind();
             }
         }
 
 
-                /// <summary>
-                /// Josseline M
-                /// Este método se encarga de actualizar las partidas a partir del periodo, proyecto y unidades elegidas
-                /// </summary>
+        /// <summary>
+        /// Josseline M
+        /// Este método se encarga de actualizar las partidas a partir del periodo, proyecto y unidades elegidas
+        /// </summary>
         private void obtenerPartidasPorProyectoUnidadPeriodo()
         {
+            
             List<Partida> partidas = (List<Partida>)Session["partidasPorUnidadesProyectoPeriodo"];
             if (partidas == null)
             {
@@ -241,7 +242,9 @@ namespace Proyecto.Catalogos.Ejecucion
                     rpElegirPartida.DataBind();
                 }
 
-            }else {
+            }
+            else
+            {
                 List<Partida> partidasN = (List<Partida>)Session["partidasPorUnidadesProyectoPeriodo"];
                 var dt5 = partidasN;
                 pgsource.DataSource = dt5;
@@ -270,7 +273,7 @@ namespace Proyecto.Catalogos.Ejecucion
 
             }
 
-                }
+        }
 
         /// <summary>
         /// Leonardo Carrion
@@ -314,6 +317,7 @@ namespace Proyecto.Catalogos.Ejecucion
             rptPaginacion2.DataSource = dt;
             rptPaginacion2.DataBind();
         }
+
         /// <summary>
         /// Leonardo Carrion
         /// 27/sep/2019
@@ -392,7 +396,7 @@ namespace Proyecto.Catalogos.Ejecucion
             rptPaginacion4.DataSource = dt;
             rptPaginacion4.DataBind();
         }
-        
+
         /// <summary>
         /// Leonardo Carrion
         /// 27/sep/2019
@@ -538,12 +542,12 @@ namespace Proyecto.Catalogos.Ejecucion
                 }
 
                 CargarProyectos();
-
+              
 
             }
 
         }
-       
+
         /// <summary>
         /// Kevin Picado
         /// 09//2019
@@ -575,6 +579,7 @@ namespace Proyecto.Catalogos.Ejecucion
                     //CargarUnidades();
                 }
             }
+
         }
 
 
@@ -681,7 +686,7 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         private void MostrarDatosTabla()
         {
-
+        
             if ((ProyectosDDL.Items.Count > 0) && (count == 0))
             {
 
@@ -744,8 +749,8 @@ namespace Proyecto.Catalogos.Ejecucion
             Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
             CargarProyectos();
             reiniciarTablaUnidad();
-          
-        } 
+
+        }
 
 
         protected void Proyectos_OnChanged(object sender, EventArgs e)
@@ -754,6 +759,8 @@ namespace Proyecto.Catalogos.Ejecucion
             Session["partidasPorUnidadesProyectoPeriodo"] = null;
             Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
             reiniciarTablaUnidad();
+            
+            
         }
         protected void EliminarUnidadSeleccionada_OnChanged(object sender, EventArgs e)
         {
@@ -766,9 +773,15 @@ namespace Proyecto.Catalogos.Ejecucion
 
         }
 
+        /// <summary>
+        /// Josseline M
+        /// Este método se encarga de permitir eliminar una partida añadida desde el modal
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void EliminarPartidaSeleccionada_OnChanged(object sender, EventArgs e)
         {
-            String numeroPartida =((LinkButton)(sender)).CommandArgument.ToString();
+            String numeroPartida = ((LinkButton)(sender)).CommandArgument.ToString();
             Partida partida = partidaServicios.ObtenerPorNumeroPartida(numeroPartida);
             List<Partida> partidasElegidas = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
             if (partidasElegidas == null)
@@ -781,7 +794,7 @@ namespace Proyecto.Catalogos.Ejecucion
             bool exists = partidasElegidas.Exists(element => element.numeroPartida.Equals(numeroPartida));
             if (exists == true)
             {
-               
+
                 partidasElegidas.RemoveAll(item => item.numeroPartida.Equals(numeroPartida));
 
                 Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = partidasElegidas;
@@ -790,15 +803,16 @@ namespace Proyecto.Catalogos.Ejecucion
             }
             obtenerPartidasSeleccionadas();
         }
+
         protected void ButtonAsociar_Click(object sender, EventArgs e)
         {
-
+            CargarTramites();
             MostrarDatosTabla();
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalElegirUnidad", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalElegirUnidad').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalElegirUnidad();", true);
 
         }
-      
+
         /// <summary>
         /// Kevin Picado
         /// 09/oct/2019
@@ -830,10 +844,46 @@ namespace Proyecto.Catalogos.Ejecucion
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalElegirUnidad();", true);
         }
 
-
+        /// <summary>
+        /// Josseline M
+        /// Método encargado de cargar lo trámites apartir del tipo de proyecto si es UCR o fundevi
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void TipoTramites_OnChanged(object sender, EventArgs e)
         {
-            
+            CargarTramites();
+        }
+        /// <summary>
+        /// Josseline M
+        /// Método encargado de cargar lo trámites apartir del tipo de proyecto si es UCR o fundevi
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CargarTramites()
+        {
+            int idProyecto = Int32.Parse(ProyectosDDL.SelectedValue);
+            Proyectos proyecto = new Proyectos();
+            proyecto = this.proyectoServicios.ObtenerPorId(idProyecto);
+
+            DDLTipoTramite.Items.Clear();
+
+            if (DDLTipoTramite.SelectedValue.Equals(""))
+            {
+                List<TipoTramite> tramites = new List<TipoTramite>();
+                tramites = this.tipoTramiteServicios.obtenerTipoTramitesPorProyecto(proyecto);
+
+                if (tramites.Count > 0)
+                {
+                    foreach (TipoTramite tramite in tramites)
+                    {
+                        ListItem itemLB = new ListItem(tramite.nombreTramite, tramite.idTramite.ToString());
+                        DDLTipoTramite.Items.Add(itemLB);
+                    }
+
+
+                }
+            }
         }
 
         /// <summary>
@@ -849,26 +899,26 @@ namespace Proyecto.Catalogos.Ejecucion
         {
             string nombrePartida = (((LinkButton)(sender)).CommandArgument).ToString();
             Partida partida = partidaServicios.ObtenerPorNumeroPartida(nombrePartida);
-            List<Partida> partidasElegidas = (List < Partida > )Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
-            if (partidasElegidas ==null)
+            List<Partida> partidasElegidas = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
+            if (partidasElegidas == null)
             {
                 partidasElegidas = new List<Partida>();
             }
-           
+
             List<Partida> partidasFiltradas = (List<Partida>)Session["partidasPorUnidadesProyectoPeriodo"];
-      
+
             bool exists = partidasFiltradas.Exists(element => element.numeroPartida.Equals(nombrePartida));
             if (exists == true)
             {
                 partidasElegidas.Add(partida);
-                
+
                 partidasFiltradas.RemoveAll(item => item.numeroPartida.Equals(nombrePartida));
 
                 Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = partidasElegidas;
-                Session["partidasPorUnidadesProyectoPeriodo"]=partidasFiltradas;
+                Session["partidasPorUnidadesProyectoPeriodo"] = partidasFiltradas;
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La partida fue seleccionada con exito" + "');", true);
             }
-            
+
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalElegirPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalElegirPartida').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalElegirPartida();", true);
             obtenerPartidasPorProyectoUnidadPeriodo();
@@ -914,7 +964,7 @@ namespace Proyecto.Catalogos.Ejecucion
 
 
         }
-      
+
         /// <summary>
         /// Kevin Picado
         /// 09/oct/2019
@@ -932,7 +982,7 @@ namespace Proyecto.Catalogos.Ejecucion
             listaUnidad.RemoveAll(item => item.idUnidad > 0);
             MostrarDatosTablaUnidad(listaUnidad);
             count = 0;
-            
+
         }
 
 

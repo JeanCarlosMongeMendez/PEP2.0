@@ -16,7 +16,8 @@
                 
                 <p class="mt-1">Seleccione un proyecto</p>
                 <asp:DropDownList AutoPostBack="true" ID="ProyectosDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="Proyectos_OnChanged"></asp:DropDownList>
-                </div>
+                
+                            </div>
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                     <asp:Label ID="Unidades" runat="server" Text="Unidades" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                     <asp:Button ID="ButtonAsociar" runat="server" Text="Asociar" CssClass="btn btn-primary" OnClick="ButtonAsociar_Click" />
@@ -181,14 +182,12 @@
             </div>
 
                 <br />
-                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
-                    <asp:Label ID="Label3" runat="server" Text="Tipo de tramite" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
-                   <asp:DropDownList AutoPostBack="true" ID="DDLTipoTramite" runat="server" CssClass="form-control" OnSelectedIndexChanged="TipoTramites_OnChanged"></asp:DropDownList>
+                  
+               
                  
-                 </div>
                     <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                     <asp:Label ID="Label6" runat="server" Text="Número de referencia" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
-                    <asp:TextBox class="form-control" ID="TextBox1" runat="server" Enabled="true"></asp:TextBox>
+                    <asp:TextBox class="form-control" ID="txtNumeroReferencia" runat="server" Enabled="true"></asp:TextBox>
                                    
                   </div>
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
@@ -197,7 +196,9 @@
                                    
                   </div>
             
-           
+             <p class="mt-1">Tipo de trámite: </p>
+                 <asp:DropDownList AutoPostBack="True" ID="DDLTipoTramite" runat="server" CssClass="form-control" OnSelectedIndexChanged="TipoTramites_OnChanged"></asp:DropDownList>
+                 
                 </div>
         </ContentTemplate>
     </asp:UpdatePanel>
