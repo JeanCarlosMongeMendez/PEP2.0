@@ -48,18 +48,33 @@ namespace Servicios
             this.partidaDatos.EliminarPartida(idPartida);
         }
 
-        // <summary>
-        /// Leonardo Carrion
-        /// 25/sep/2019
-        /// Efecto: devuelve la partida que cumple con los datos ingresados de numero de partida y periodo
-        /// Requiere: partida y periodo
-        /// Modifica: -
-        /// Devuelve: partida
+        public List<Partida> ObtienePartidaPorPeriodoUnidadProyecto(int proyecto, LinkedList<int> unidad, int periodo)
+        {
+            return this.partidaDatos.ObtienePartidaPorPeriodoUnidadProyecto( proyecto,  unidad,  periodo);
+        }
+        /// <summary>
+        /// Josseline M
+        /// Obtiene una partida a partir en su numeroPartida
         /// </summary>
-        /// <param name="partida"></param>
-        /// <param name="periodo"></param>
-        /// <returns></returns>
-        public Partida getPartidaPorNumeroYPeriodo(Partida partida, Periodo periodo)
+        /// <param name="idPartida">Valor de tipo <code>int</code> que corresponde a la partida a buscar</param>
+        /// <returns>Retorna el elemento de tipo <code>Partida</code> que coincida con el identificador dado</returns>
+        public Partida ObtenerPorNumeroPartida(string numeroPartida)
+        {
+            return this.partidaDatos.ObtenerPorNumeroPartida(numeroPartida);
+        }
+
+            // <summary>
+            /// Leonardo Carrion
+            /// 25/sep/2019
+            /// Efecto: devuelve la partida que cumple con los datos ingresados de numero de partida y periodo
+            /// Requiere: partida y periodo
+            /// Modifica: -
+            /// Devuelve: partida
+            /// </summary>
+            /// <param name="partida"></param>
+            /// <param name="periodo"></param>
+            /// <returns></returns>
+            public Partida getPartidaPorNumeroYPeriodo(Partida partida, Periodo periodo)
         {
             return partidaDatos.getPartidaPorNumeroYPeriodo(partida,periodo);
         }
