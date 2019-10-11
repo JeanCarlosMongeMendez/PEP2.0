@@ -243,8 +243,8 @@ namespace Proyecto.Catalogos.Ejecucion
 
             }else {
                 List<Partida> partidasN = (List<Partida>)Session["partidasPorUnidadesProyectoPeriodo"];
-                var dt2 = partidasN;
-                pgsource.DataSource = dt2;
+                var dt5 = partidasN;
+                pgsource.DataSource = dt5;
                 pgsource.AllowPaging = true;
                 //numero de items que se muestran en el Repeater
                 pgsource.PageSize = elmentosMostrar;
@@ -252,7 +252,7 @@ namespace Proyecto.Catalogos.Ejecucion
                 //mantiene el total de paginas en View State
                 ViewState["TotalPaginas4"] = pgsource.PageCount;
                 //Ejemplo: "Página 1 al 10"
-                lblpagina4.Text = "Página " + (paginaActual4 + 1) + " de " + pgsource.PageCount + " (" + dt2.Count + " - elementos)";
+                lblpagina4.Text = "Página " + (paginaActual4 + 1) + " de " + pgsource.PageCount + " (" + dt5.Count + " - elementos)";
                 //Habilitar los botones primero, último, anterior y siguiente
                 lbAnterior4.Enabled = !pgsource.IsFirstPage;
                 lbSiguiente4.Enabled = !pgsource.IsLastPage;
@@ -405,7 +405,7 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         protected void lbPrimero2_Click(object sender, EventArgs e)
         {
-            paginaActual = 0;
+            paginaActual2 = 0;
             MostrarDatosTablaUnidad(listaUnidad);
         }
 
@@ -421,7 +421,7 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         protected void lbUltimo2_Click(object sender, EventArgs e)
         {
-            paginaActual = (Convert.ToInt32(ViewState["TotalPaginas"]) - 1);
+            paginaActual2 = (Convert.ToInt32(ViewState["TotalPaginas"]) - 1);
             MostrarDatosTablaUnidad(listaUnidad);
         }
 
@@ -437,7 +437,7 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         protected void lbAnterior2_Click(object sender, EventArgs e)
         {
-            paginaActual -= 1;
+            paginaActual2 -= 1;
             MostrarDatosTablaUnidad(listaUnidad);
         }
 
@@ -453,7 +453,7 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         protected void lbSiguiente2_Click(object sender, EventArgs e)
         {
-            paginaActual += 1;
+            paginaActual2 += 1;
             MostrarDatosTablaUnidad(listaUnidad);
         }
 
@@ -470,7 +470,7 @@ namespace Proyecto.Catalogos.Ejecucion
         protected void rptPaginacion2_ItemCommand(object source, DataListCommandEventArgs e)
         {
             if (!e.CommandName.Equals("nuevaPagina")) return;
-            paginaActual = Convert.ToInt32(e.CommandArgument.ToString());
+            paginaActual2 = Convert.ToInt32(e.CommandArgument.ToString());
             MostrarDatosTablaUnidad(listaUnidad);
         }
 
@@ -486,7 +486,7 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         protected void rptPaginacion2_ItemDataBound(object sender, DataListItemEventArgs e)
         {
-            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion");
+            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion2");
             if (lnkPagina.CommandArgument != paginaActual.ToString()) return;
             lnkPagina.Enabled = false;
             lnkPagina.BackColor = Color.FromName("#005da4");
@@ -510,7 +510,8 @@ namespace Proyecto.Catalogos.Ejecucion
             PeriodosDDL.Items.Clear();
             periodos = this.periodoServicios.ObtenerTodos();
             int anoHabilitado = 0;
-
+            Session["partidasPorUnidadesProyectoPeriodo"] = null;
+            Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
             if (periodos.Count > 0)
             {
                 foreach (Periodo periodo in periodos)
@@ -739,14 +740,19 @@ namespace Proyecto.Catalogos.Ejecucion
 
         protected void Periodos_OnChanged(object sender, EventArgs e)
         {
+            Session["partidasPorUnidadesProyectoPeriodo"] = null;
+            Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
             CargarProyectos();
             reiniciarTablaUnidad();
+          
         } 
 
 
         protected void Proyectos_OnChanged(object sender, EventArgs e)
         {
             //CargarUnidades();
+            Session["partidasPorUnidadesProyectoPeriodo"] = null;
+            Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
             reiniciarTablaUnidad();
         }
         protected void EliminarUnidadSeleccionada_OnChanged(object sender, EventArgs e)
@@ -762,7 +768,27 @@ namespace Proyecto.Catalogos.Ejecucion
 
         protected void EliminarPartidaSeleccionada_OnChanged(object sender, EventArgs e)
         {
-          
+            String numeroPartida =((LinkButton)(sender)).CommandArgument.ToString();
+            Partida partida = partidaServicios.ObtenerPorNumeroPartida(numeroPartida);
+            List<Partida> partidasElegidas = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
+            if (partidasElegidas == null)
+            {
+                partidasElegidas = new List<Partida>();
+            }
+
+            List<Partida> partidasFiltradas = (List<Partida>)Session["partidasPorUnidadesProyectoPeriodo"];
+
+            bool exists = partidasElegidas.Exists(element => element.numeroPartida.Equals(numeroPartida));
+            if (exists == true)
+            {
+               
+                partidasElegidas.RemoveAll(item => item.numeroPartida.Equals(numeroPartida));
+
+                Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = partidasElegidas;
+
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La partida fue borrada con exito" + "');", true);
+            }
+            obtenerPartidasSeleccionadas();
         }
         protected void ButtonAsociar_Click(object sender, EventArgs e)
         {
@@ -842,11 +868,11 @@ namespace Proyecto.Catalogos.Ejecucion
                 Session["partidasPorUnidadesProyectoPeriodo"]=partidasFiltradas;
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La partida fue seleccionada con exito" + "');", true);
             }
-            obtenerPartidasPorProyectoUnidadPeriodo();
-            obtenerPartidasSeleccionadas();
+            
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalElegirPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalElegirPartida').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalElegirPartida();", true);
-            
+            obtenerPartidasPorProyectoUnidadPeriodo();
+            obtenerPartidasSeleccionadas();
 
         }
 
@@ -869,11 +895,11 @@ namespace Proyecto.Catalogos.Ejecucion
             pgsource.AllowPaging = true;
             //numero de items que se muestran en el Repeater
             pgsource.PageSize = elmentosMostrar;
-            pgsource.CurrentPageIndex = paginaActual;
+            pgsource.CurrentPageIndex = paginaActual2;
             //mantiene el total de paginas en View State
-            ViewState["TotalPaginas"] = pgsource.PageCount;
+            ViewState["TotalPaginas2"] = pgsource.PageCount;
             //Ejemplo: "Página 1 al 10"
-            lblpagina2.Text = "Página " + (paginaActual + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
+            lblpagina2.Text = "Página " + (paginaActual2 + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
             //Habilitar los botones primero, último, anterior y siguiente
             lbAnterior2.Enabled = !pgsource.IsFirstPage;
             lbSiguiente2.Enabled = !pgsource.IsLastPage;
@@ -901,10 +927,12 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         private void reiniciarTablaUnidad()
         {
+            Session["partidasPorUnidadesProyectoPeriodo"] = null;
+            Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
             listaUnidad.RemoveAll(item => item.idUnidad > 0);
             MostrarDatosTablaUnidad(listaUnidad);
             count = 0;
-
+            
         }
 
 

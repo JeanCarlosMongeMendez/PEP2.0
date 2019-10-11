@@ -186,16 +186,17 @@
                    <asp:DropDownList AutoPostBack="true" ID="DDLTipoTramite" runat="server" CssClass="form-control" OnSelectedIndexChanged="TipoTramites_OnChanged"></asp:DropDownList>
                  
                  </div>
-                  <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
-                    <asp:Label ID="Label5" runat="server" Text="Monto" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
-                   ₡ <asp:TextBox class="form-control" ID="txtMontoIngresar" runat="server" Enabled="true"></asp:TextBox>
-                                   
-                  </div>
-                <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+                    <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                     <asp:Label ID="Label6" runat="server" Text="Número de referencia" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                     <asp:TextBox class="form-control" ID="TextBox1" runat="server" Enabled="true"></asp:TextBox>
                                    
                   </div>
+                <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+                    <asp:Label ID="Label5" runat="server" Text="Monto" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                   ₡ <asp:TextBox class="form-control" ID="txtMontoIngresar" runat="server" Enabled="true"></asp:TextBox>
+                                   
+                  </div>
+            
            
                 </div>
         </ContentTemplate>
@@ -337,11 +338,7 @@
                             <h4 class="modal-title">Elegir Unidad</h4>
                         </div>
                         <div class="modal-body">
-                            <%-- campos a llenar 
-                                        <div class="row">
-
-                                            <%-- fin campos a llenar --%>
-
+                           
                             <div class="col-md-12 col-xs-12 col-sm-12">
                                 <br />
                             </div>
