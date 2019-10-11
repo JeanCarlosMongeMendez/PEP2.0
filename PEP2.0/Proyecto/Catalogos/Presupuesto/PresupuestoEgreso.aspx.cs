@@ -707,7 +707,7 @@ namespace Proyecto.Catalogos.Presupuesto
             presupuestoEgresos = this.presupuestoServicios.ObtenerPorUnidadEgresos(Int32.Parse(UnidadesDDL.SelectedValue));
             int partidaBuscarPorPeriodo=(int)Session["periodoSeleccionado"];
             int idPartidaN = 0;
-            LinkedList<Partida> partidas = new LinkedList<Partida>();
+            List<Partida> partidas = new List<Partida>();
             partidas= partidaServicios.ObtenerPorPeriodo(partidaBuscarPorPeriodo);
             Session["partidasPorPeriodo"] = partidas;
             Double salario = 0;
