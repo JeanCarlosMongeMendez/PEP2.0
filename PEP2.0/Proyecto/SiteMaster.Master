@@ -118,7 +118,7 @@
                                         <ul class="dropdown-menu" role="menu">
                                             <%--<li><a href='<%=Page.ResolveUrl("~/Default.aspx") %>'>Default</a></li>--%>
                                             <li><a href='<%=Page.ResolveUrl("~/Catalogos/Periodos/AdministrarPeriodo.aspx") %>'>Apertura de Periodo</a></li>
-                                            <li><a href='<%=Page.ResolveUrl("~/Catalogos/Partidas/AdministrarPartida.aspx") %>'>Administrar Partidas</a></li>
+                                            <li><a href='<%=Page.ResolveUrl("~/Catalogos/Partidas/AdministrarPartidas.aspx") %>'>Administrar Partidas</a></li>
                                              <li><a href='<%=Page.ResolveUrl("~/Catalogos/Presupuesto/AdministrarPresupuestoIngreso.aspx") %>'>Presupuesto de Ingreso</a></li>
                                             <li><a href='<%=Page.ResolveUrl("~/Catalogos/Presupuesto/PresupuestoEgreso.aspx") %>'>Presupuesto de Egreso</a></li>
                                         </ul>

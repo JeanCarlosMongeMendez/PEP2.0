@@ -120,7 +120,6 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_p
 
                 SqlDataReader readerPadre;
                 sqlConnection.Open();
-
                 readerPadre = sqlConsultaDuplicadosPadre.ExecuteReader();
 
                 if (!readerPadre.Read())
@@ -137,6 +136,12 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_p
 
                     sqlConnection.Open();
                     resultado = (int)sqlCommandPadre.ExecuteScalar();
+                }
+                else
+                {
+                    sqlConnection.Close();
+                    sqlConnection.Open();
+                    resultado = (int) sqlConsultaDuplicadosPadre.ExecuteScalar();
                 }
 
                 sqlConnection.Close();

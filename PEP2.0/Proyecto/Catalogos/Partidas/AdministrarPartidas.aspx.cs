@@ -832,8 +832,11 @@ namespace Proyecto.Catalogos.Partidas
                         ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La partida seleccionada y su padre se transfirieron correctamente" + "');", true);
                         partidaSeleccionada.partidaPadre.idPartida = idPadre;
                     }
-
+                    //si tengo un padre, se inserta primero el padre y luego la partida seleccionada
+                    //si la partida seleccionada es el padre, se inserta primero, y luego inserto a mis hijas
                     idPadre = partidaServicios.Insertar(partidaSeleccionada);
+                    //si la partida seleccionada es padre entra al if despues de insertarla
+                    //el if busca en BD, las partidas hijas de la partida seleccionada
                     if (partidaSeleccionada.partidaPadre == null)
                     {
                         List<Partida> listaPartidasHijas = partidaServicios.obtenerPorIdPartidaPadre(partidaSeleccionada.idPartida, periodoAPasar);
