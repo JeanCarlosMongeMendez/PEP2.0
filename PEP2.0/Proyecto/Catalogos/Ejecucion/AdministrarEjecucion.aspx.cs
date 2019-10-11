@@ -115,7 +115,8 @@ namespace Proyecto.Catalogos.Ejecucion
                 ProyectosDDL.Items.Clear();
                 DDLTipoTramite.Items.Clear();
                 CargarPeriodos();
-               
+                UpdatePanel10.Visible = false;
+                ButtonRepartir.Visible = false;
             }
             else
             {
@@ -962,7 +963,7 @@ namespace Proyecto.Catalogos.Ejecucion
             //metodo que realiza la paginacion
             Paginacion2();
 
-
+            MostrarTablaRepartirGastos();
         }
 
         /// <summary>
@@ -982,9 +983,22 @@ namespace Proyecto.Catalogos.Ejecucion
             listaUnidad.RemoveAll(item => item.idUnidad > 0);
             MostrarDatosTablaUnidad(listaUnidad);
             count = 0;
-
+            MostrarTablaRepartirGastos();
         }
 
+        private void MostrarTablaRepartirGastos()
+        {
+            if (listaUnidad.Count >= 2)
+            {
+                UpdatePanel10.Visible = true;
+                ButtonRepartir.Visible = true;
+            }
+            else
+            {
+                UpdatePanel10.Visible = false;
+                ButtonRepartir.Visible = false;
+            }
+        }
 
         /// <summary>
         /// Leonardo Carrion
