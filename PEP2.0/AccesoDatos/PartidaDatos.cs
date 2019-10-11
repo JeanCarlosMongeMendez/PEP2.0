@@ -150,33 +150,7 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_p
             return resultado;
         }
 
-        ///// <summary>
-        ///// Recibe un numero de partida y un ano de periodo, si devuelve un ID significa que ya la partida padre existe y no se debe insertar de nuevo
-        ///// </summary>
-        ///// <param name="numeroPartida">Valor de tipo <code>int</code> que corresponde al numero de la partida</param>
-        ///// <param name="anoPeriodo">Valor de tipo <code>int</code> que corresponde al ano del periodo</param>
-        ///// <returns>Retorna el elemento de tipo <code>int</code> que coincida con los parametros dados</returns>
-        //public int PadresDuplicados(string numeroPartida, int anoPeriodo)
-        //{
-        //    SqlConnection sqlConnection = conexion.conexionPEP();
-        //    SqlCommand sqlCommand = new SqlCommand("select id_partida from Partida where numero_partida=@numero_partida_ AND ano_periodo=@ano_periodo_ AND disponible=1;", sqlConnection);
-        //    sqlCommand.Parameters.AddWithValue("@numero_partida_", numeroPartida);
-        //    sqlCommand.Parameters.AddWithValue("@ano_periodo_", anoPeriodo);
-
-        //    int idPartida = 0;
-        //    SqlDataReader reader;
-        //    sqlConnection.Open();
-        //    reader = sqlCommand.ExecuteReader();
-
-        //    if (reader.Read())
-        //    {
-        //        idPartida = Convert.ToInt32(reader["id_partida"].ToString());
-        //    }
-
-        //    sqlConnection.Close();
-
-        //    return idPartida;
-        //}
+       
 
         /// <summary>
         /// Obtiene una partida basado en su identificador
@@ -222,62 +196,7 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_p
             return partida;
         }
 
-        ///// <summary>
-        ///// Transfiere las partidas seleccionadas de un periodo a otro
-        ///// </summary>
-        ///// <param name="partidasId">Lista de identificadores de las partidas que se desean transferir al nuevo periodo</param>
-        ///// <param name="anoPeriodo">Nuevo periodo a los que las partidas serán transferidas</param>
-        ///// <returns>Retorna si las partidas y los periodos fueron guardados</returns>
-        //public bool Guardar(LinkedList<int> partidasId, int anoPeriodo)
-        //{
-        //    //transferir padre tambien cuando transfiero las hijas
-
-        //    SqlConnection sqlConnection = conexion.conexionPEP();
-        //    bool guardado = false;
-        //    int nuevoId = 0;
-        //    int nuevoIdPadre = 0;
-
-        //    foreach (int idPartida in partidasId)
-        //    {
-        //        Partida partida = ObtenerPorId(idPartida);
-
-        //        /*
-        //         * Verifica si el periodo de las partidas que se desean guardar es igual al periodo indicado,
-        //         * esto para evitar partidas duplicadas en el mismo periodo
-        //         * De lo contrario asigna el nuevo periodo a la partida para duplicar su información cambiando el periodo al que pertenece
-        //         */
-        //        if (partida.periodo.anoPeriodo != anoPeriodo)
-        //        {
-        //            //Duplicar tambien los padres
-        //            Partida partidaPadre = ObtenerPorId(partida.partidaPadre.idPartida);
-        //            partidaPadre.periodo.anoPeriodo = anoPeriodo;
-
-        //            nuevoIdPadre = PadresDuplicados(partidaPadre.numeroPartida, anoPeriodo);
-
-        //            if (nuevoIdPadre == 0)
-        //            {
-        //                nuevoIdPadre = Insertar(partidaPadre);
-        //            }
-
-        //            partidaPadre.idPartida = nuevoIdPadre;
-
-        //            partida.periodo.anoPeriodo = anoPeriodo;
-        //            partida.partidaPadre = partidaPadre;
-        //            nuevoId = Insertar(partida);
-
-        //            if (nuevoId > 0)
-        //            {
-        //                guardado = true;
-        //            }
-        //            else
-        //            {
-        //                guardado = false;
-        //            }
-        //        }
-        //    }
-
-        //    return guardado;
-        //}
+      
 
 
         /// <summary>
