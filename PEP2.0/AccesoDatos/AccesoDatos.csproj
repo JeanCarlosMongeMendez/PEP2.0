@@ -59,6 +59,7 @@
     <Compile Include="PresupuestoDatos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProyectoDatos.cs" />
+    <Compile Include="TipoTramitesDatos.cs" />
     <Compile Include="UnidadDatos.cs" />
   </ItemGroup>
   <ItemGroup>

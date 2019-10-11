@@ -31,15 +31,6 @@ namespace PEP.Catalogos.Periodos {
         protected global::System.Web.UI.UpdatePanel pnlUpdate;
         
         /// <summary>
-        /// Control PeriodosDDL.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList PeriodosDDL;
-        
-        /// <summary>
         /// Control btnNuevoPeriodo.
         /// </summary>
         /// <remarks>
@@ -193,13 +184,13 @@ namespace PEP.Catalogos.Periodos {
         protected global::System.Web.UI.WebControls.Button btnEliminarModal;
         
         /// <summary>
-        /// Control divPaginacionProyectos.
+        /// Control divProyectosPeriodos.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divPaginacionProyectos;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divProyectosPeriodos;
         
         /// <summary>
         /// Control btnNuevoProyecto.
@@ -227,15 +218,6 @@ namespace PEP.Catalogos.Periodos {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label AnoActual;
-        
-        /// <summary>
-        /// Control divProyectosPeriodos.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divProyectosPeriodos;
         
         /// <summary>
         /// Control rpProyectos.
@@ -463,13 +445,13 @@ namespace PEP.Catalogos.Periodos {
         protected global::System.Web.UI.WebControls.Label lblPeriodoProyecto;
         
         /// <summary>
-        /// Control PeriodosDDL2.
+        /// Control lbPeriodoDDLNuevo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList PeriodosDDL2;
+        protected global::System.Web.UI.WebControls.Label lbPeriodoDDLNuevo;
         
         /// <summary>
         /// Control lblNombreProyecto.
@@ -724,15 +706,6 @@ namespace PEP.Catalogos.Periodos {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divUnidades;
         
         /// <summary>
-        /// Control btnNuevaUnidad.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnNuevaUnidad;
-        
-        /// <summary>
         /// Control proyectoActual.
         /// </summary>
         /// <remarks>
@@ -740,6 +713,15 @@ namespace PEP.Catalogos.Periodos {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label proyectoActual;
+        
+        /// <summary>
+        /// Control btnNuevaUnidad.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnNuevaUnidad;
         
         /// <summary>
         /// Control rpUnidProyecto.
@@ -823,13 +805,13 @@ namespace PEP.Catalogos.Periodos {
         protected global::System.Web.UI.WebControls.Label lblProyectoUnidad;
         
         /// <summary>
-        /// Control ProyectosDDL.
+        /// Control lbNuevaUnidadProy.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ProyectosDDL;
+        protected global::System.Web.UI.WebControls.Label lbNuevaUnidadProy;
         
         /// <summary>
         /// Control lblNombreUnidad.
@@ -877,13 +859,13 @@ namespace PEP.Catalogos.Periodos {
         protected global::System.Web.UI.WebControls.Button btnGuardar;
         
         /// <summary>
-        /// Control UpdatePanel9.
+        /// Control UpdatePanel6.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel9;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel6;
         
         /// <summary>
         /// Control lbUnidadElim.
