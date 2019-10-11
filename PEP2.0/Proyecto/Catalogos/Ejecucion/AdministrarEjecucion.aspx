@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMaster.Master" AutoEventWireup="true" CodeBehind="AdministrarEjecucion.aspx.cs" Inherits="Proyecto.Catalogos.Ejecucion.AdministrarEjecucion" MaintainScrollPositionOnPostback="true"%>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMaster.Master" AutoEventWireup="true" CodeBehind="AdministrarEjecucion.aspx.cs" Inherits="Proyecto.Catalogos.Ejecucion.AdministrarEjecucion" MaintainScrollPositionOnPostback="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -16,8 +16,7 @@
                 
                 <p class="mt-1">Seleccione un proyecto</p>
                 <asp:DropDownList AutoPostBack="true" ID="ProyectosDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="Proyectos_OnChanged"></asp:DropDownList>
-                
-                            </div>
+                </div>
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                     <asp:Label ID="Unidades" runat="server" Text="Unidades" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                     <asp:Button ID="ButtonAsociar" runat="server" Text="Asociar" CssClass="btn btn-primary" OnClick="ButtonAsociar_Click" />
@@ -25,8 +24,8 @@
                 <div class="col-md-12 col-xs-12 col-sm-12 mt-2">
                     <hr />
                 </div>
-           
-             <%-- tabla--%>
+
+                <%-- tabla--%>
                 <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
                     <table id="tblUnidad" class="table table-bordered">
                         <thead style="text-align: center">
@@ -65,9 +64,9 @@
                         </asp:Repeater>
                     </table>
                 </div>
-            
-               <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
-                <center>
+
+                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                    <center>
                     <table class="table" style="max-width:664px;">
                         <tr style="padding:1px !important">
                             <td style="padding:1px !important">
@@ -99,15 +98,15 @@
                         </tr>
                     </table>
                         </center>
-            </div>
+                </div>
 
-                
-                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+
+                <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                     <asp:Label ID="Label2" runat="server" Text="Partidas" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                     <asp:Button ID="ButtonAsociarPartida" runat="server" Text="Asociar" CssClass="btn btn-primary" OnClick="ButtonAsociarPartidas_Click" />
                 </div>
 
-            <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
                     <table id="tblPartida" class="table table-bordered">
                         <thead style="text-align: center">
                             <tr style="text-align: center" class="btn-primary">
@@ -125,16 +124,16 @@
                             <ItemTemplate>
                                 <tr style="text-align: center">
                                     <td>
-                                       <asp:LinkButton ID="btnEliminarPartida" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("numeroPartida") %>' OnClick="EliminarPartidaSeleccionada_OnChanged"><span class="btn glyphicon glyphicon-remove"></span></asp:LinkButton>
+                                        <asp:LinkButton ID="btnEliminarPartida" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("numeroPartida") %>' OnClick="EliminarPartidaSeleccionada_OnChanged"><span class="btn glyphicon glyphicon-remove"></span></asp:LinkButton>
 
                                     </td>
                                     <td>
                                         <%# Eval("numeroPartida") %>
                                     
                                     </td>
-                                   
+
                                     <td>
-                                       <%# Eval("descripcionPartida") %>
+                                        <%# Eval("descripcionPartida") %>
                                     </td>
                                 </tr>
 
@@ -145,9 +144,9 @@
                         </asp:Repeater>
                     </table>
                 </div>
-                
+
                 <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
-                <center>
+                    <center>
                     <table class="table" style="max-width:664px;">
                         <tr style="padding:1px !important">
                             <td style="padding:1px !important">
@@ -179,31 +178,79 @@
                         </tr>
                     </table>
                         </center>
-            </div>
+                </div>
 
                 <br />
-                  
-               
-                 
-                    <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+                <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+                    <asp:Label ID="Label3" runat="server" Text="Tipo de tramite" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                    <asp:DropDownList AutoPostBack="true" ID="DDLTipoTramite" runat="server" CssClass="form-control" OnSelectedIndexChanged="TipoTramites_OnChanged"></asp:DropDownList>
+
+                </div>
+                <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                     <asp:Label ID="Label6" runat="server" Text="Número de referencia" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
-                    <asp:TextBox class="form-control" ID="txtNumeroReferencia" runat="server" Enabled="true"></asp:TextBox>
-                                   
-                  </div>
+                    <asp:TextBox class="form-control" ID="TextBox1" runat="server" Enabled="true"></asp:TextBox>
+
+                </div>
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                     <asp:Label ID="Label5" runat="server" Text="Monto" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
-                   ₡ <asp:TextBox class="form-control" ID="txtMontoIngresar" runat="server" Enabled="true"></asp:TextBox>
-                                   
-                  </div>
-            
-             <p class="mt-1">Tipo de trámite: </p>
-                 <asp:DropDownList AutoPostBack="True" ID="DDLTipoTramite" runat="server" CssClass="form-control" OnSelectedIndexChanged="TipoTramites_OnChanged"></asp:DropDownList>
-                 
+                    ₡
+                    <asp:TextBox class="form-control" ID="txtMontoIngresar" runat="server" Enabled="true"></asp:TextBox>
+
                 </div>
+                <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+<%--                    <asp:Label ID="Label7" runat="server" Text="Partidas" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>--%>
+                    <asp:Button ID="ButtonRepartir" runat="server" Text="Reapartir Gastos" CssClass="btn btn-primary" OnClick="ButtonAsociarPartidas_Click" />
+                </div>
+                <asp:UpdatePanel ID="UpdatePanel10" runat="server">
+                    <ContentTemplate>
+                        <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                            <table id="tblRepartirGastos" class="table table-bordered">
+                                <thead style="text-align: center">
+                                    <tr style="text-align: center" class="btn-primary">
+                                        <th></th>
+                                        <th>Unidad</th>
+                                        <th>Número Partida</th>
+                                        <th>monto</th>
+                                    </tr>
+                                </thead>
+
+                                <asp:Repeater ID="Repeater5" runat="server">
+                                    <HeaderTemplate>
+                                    </HeaderTemplate>
+
+                                    <ItemTemplate>
+                                        <tr style="text-align: center">
+                                            <td>
+                                                <%--                                       <asp:LinkButton ID="btnEliminarPartida" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("numeroPartida") %>' OnClick="EliminarPartidaSeleccionada_OnChanged"><span class="btn glyphicon glyphicon-remove"></span></asp:LinkButton>--%>
+
+                                            </td>
+                                            <td>
+                                                <%--                                        <%# Eval("numeroPartida") %>--%>
+                                    
+                                            </td>
+
+                                            <td>
+                                                <%--                                       <%# Eval("descripcionPartida") %>--%>
+                                            </td>
+                                        </tr>
+
+                                    </ItemTemplate>
+
+                                    <FooterTemplate>
+                                    </FooterTemplate>
+                                </asp:Repeater>
+                            </table>
+                        </div>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+            </div>
+
         </ContentTemplate>
     </asp:UpdatePanel>
 
-        <!-- Modal elegir partida -->
+
+
+    <!-- Modal elegir partida -->
     <asp:UpdatePanel ID="UpdatePanel9" runat="server">
         <ContentTemplate>
             <div id="modalElegirPartidas" class="modal fade" role="alertdialog">
@@ -248,22 +295,22 @@
                                             </HeaderTemplate>
 
                                             <ItemTemplate>
-                                                <tr style="text-align: center" >
-                                                                                                        
+                                                <tr style="text-align: center">
+
                                                     <td>
-                                                       <asp:LinkButton ID="btnAnadirNuevaPartida" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("numeroPartida") %>' OnClick="btnAnadirNuevaPartida_Click"><span class="btn  glyphicon glyphicon-ok-sign"></span></asp:LinkButton>
-                                        
+                                                        <asp:LinkButton ID="btnAnadirNuevaPartida" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("numeroPartida") %>' OnClick="btnAnadirNuevaPartida_Click"><span class="btn  glyphicon glyphicon-ok-sign"></span></asp:LinkButton>
+
                                                     </td>
                                                     <td>
                                                         <%# Eval("numeroPartida") %>
                                     
                                                     </td>
                                                     <td>
-                                                           <%# Eval("descripcionPartida") %>
+                                                        <%# Eval("descripcionPartida") %>
 
                                                     </td>
-                                                  
-                                                                                                    
+
+
                                                 </tr>
 
                                             </ItemTemplate>
@@ -274,7 +321,7 @@
                                     </table>
 
                                 </div>
-                              
+
                                 <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
                                     <center>
                     <table class="table" style="max-width:664px;">
@@ -309,8 +356,8 @@
                     </table>
                         </center>
                                 </div>
-                            
-                            
+
+
                             </div>
                             <div class="modal-footer" style="text-align: center">
 
@@ -320,13 +367,13 @@
 
                     </div>
                 </div>
-              </div>
+            </div>
         </ContentTemplate>
     </asp:UpdatePanel>
-    
-    
+
+
     <!-- Modal Elegir unidad -->
-  <!-- Modal Elegir unidad -->
+    <!-- Modal Elegir unidad -->
     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
         <ContentTemplate>
             <div id="modalElegirUnidad" class="modal fade" role="alertdialog">
@@ -339,7 +386,7 @@
                             <h4 class="modal-title">Elegir Unidad</h4>
                         </div>
                         <div class="modal-body">
-                           
+
                             <div class="col-md-12 col-xs-12 col-sm-12">
                                 <br />
                             </div>
@@ -370,7 +417,7 @@
                                             <tr style="text-align: center">
                                                 <td>
                                                     <asp:LinkButton ID="btnAnadirPartida" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("idUnidad") %>' OnClick="btnUnidadSeleccionada_Click"><span class="btn  glyphicon glyphicon-ok"></span></asp:LinkButton>
-                                                    
+
                                                 </td>
                                                 <td>
                                                     <%# Eval("idUnidad") %>
@@ -403,16 +450,16 @@
         </ContentTemplate>
     </asp:UpdatePanel>
     <!-- Fin modal elegir unidad -->
-   
+
 
     <script type="text/javascript">
         function activarModalElegirUnidad() {
             $('#modalElegirUnidad').modal('show');
         };
-       function activarModalElegirPartidas() {
+        function activarModalElegirPartidas() {
             $('#modalElegirPartidas').modal('show');
         };
-        
+
 
     </script>
 </asp:Content>

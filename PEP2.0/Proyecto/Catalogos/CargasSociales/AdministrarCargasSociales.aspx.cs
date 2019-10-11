@@ -773,7 +773,7 @@ namespace Proyecto.Catalogos.CargasSociales
             txtPorcentajeModalNuevo.Text = "";
             lblPeriodoModalNuevo.Text= Convert.ToInt32(ddlPeriodo.SelectedValue).ToString();
 
-            LinkedList<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(Convert.ToInt32(ddlPeriodo.SelectedValue));
+            List<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(Convert.ToInt32(ddlPeriodo.SelectedValue));
 
             ddlPartidasModalNuevo.DataSource = listaPartidas;
             ddlPartidasModalNuevo.DataTextField = "numeroPartida";
@@ -880,7 +880,7 @@ namespace Proyecto.Catalogos.CargasSociales
 
             lblPeriodoModalEditar.Text = cargaSocialEditar.periodo.anoPeriodo.ToString();
 
-            LinkedList<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(Convert.ToInt32(cargaSocialEditar.periodo.anoPeriodo));
+            List<Partida> listaPartidas = partidaServicios.ObtenerPorPeriodo(Convert.ToInt32(cargaSocialEditar.periodo.anoPeriodo));
 
             ddlPartidasModalEditar.DataSource = listaPartidas;
             ddlPartidasModalEditar.DataTextField = "numeroPartida";
