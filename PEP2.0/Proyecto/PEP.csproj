@@ -116,8 +116,8 @@
     <Content Include="Catalogos\Periodos\AdministrarPeriodo.aspx" />
     <Content Include="Catalogos\Periodos\EliminarPeriodo.aspx" />
     <Content Include="Catalogos\Periodos\NuevoPeriodo.aspx" />
+    <Content Include="Catalogos\Presupuesto\AdministrarPresupuestoEgresos.aspx" />
     <Content Include="Catalogos\Presupuesto\AdministrarPresupuestoIngreso.aspx" />
-    <Content Include="Catalogos\Presupuesto\PresupuestoEgreso.aspx" />
     <Content Include="Catalogos\Proyecto\EditarProyecto.aspx" />
     <Content Include="Catalogos\Proyecto\EliminarProyecto.aspx" />
     <Content Include="Catalogos\Proyecto\NuevoProyecto.aspx" />
@@ -266,19 +266,19 @@
     <Compile Include="Catalogos\Periodos\NuevoPeriodo.aspx.designer.cs">
       <DependentUpon>NuevoPeriodo.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Catalogos\Presupuesto\AdministrarPresupuestoEgresos.aspx.cs">
+      <DependentUpon>AdministrarPresupuestoEgresos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Catalogos\Presupuesto\AdministrarPresupuestoEgresos.aspx.designer.cs">
+      <DependentUpon>AdministrarPresupuestoEgresos.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Catalogos\Presupuesto\AdministrarPresupuestoIngreso.aspx.cs">
       <DependentUpon>AdministrarPresupuestoIngreso.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Catalogos\Presupuesto\AdministrarPresupuestoIngreso.aspx.designer.cs">
       <DependentUpon>AdministrarPresupuestoIngreso.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Catalogos\Presupuesto\PresupuestoEgreso.aspx.cs">
-      <DependentUpon>PresupuestoEgreso.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Catalogos\Presupuesto\PresupuestoEgreso.aspx.designer.cs">
-      <DependentUpon>PresupuestoEgreso.aspx</DependentUpon>
     </Compile>
     <Compile Include="Catalogos\Proyecto\EditarProyecto.aspx.cs">
       <DependentUpon>EditarProyecto.aspx</DependentUpon>

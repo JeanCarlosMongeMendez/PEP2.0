@@ -120,7 +120,7 @@
                                             <li><a href='<%=Page.ResolveUrl("~/Catalogos/Periodos/AdministrarPeriodo.aspx") %>'>Apertura de Periodo</a></li>
                                             <li><a href='<%=Page.ResolveUrl("~/Catalogos/Partidas/AdministrarPartida.aspx") %>'>Administrar Partidas</a></li>
                                              <li><a href='<%=Page.ResolveUrl("~/Catalogos/Presupuesto/AdministrarPresupuestoIngreso.aspx") %>'>Presupuesto de Ingreso</a></li>
-                                            <li><a href='<%=Page.ResolveUrl("~/Catalogos/Presupuesto/PresupuestoEgreso.aspx") %>'>Presupuesto de Egreso</a></li>
+                                            <li><a href='<%=Page.ResolveUrl("~/Catalogos/Presupuesto/AdministrarPresupuestoEgresos.aspx") %>'>Presupuesto de Egreso</a></li>
                                         </ul>
                                     </li>
                                     <li class="dropdown">

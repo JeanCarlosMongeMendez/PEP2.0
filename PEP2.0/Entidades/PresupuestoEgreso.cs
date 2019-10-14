@@ -9,12 +9,8 @@ namespace Entidades
     public class PresupuestoEgreso
     {
         public int idPresupuestoEgreso { get; set; }
-        public int idUnidad { get; set; }
-        public string planEstrategicoOperacional { get; set; }
-        public bool estado { get; set; }
-        public string descripcionEstado { get; set; }
-        public double montoTotal { get; set; }
-        public string descripcion { get; set; }
-        public LinkedList<PresupuestoEgresoPartida> presupuestoEgresoPartidas { get; set; }
+        public Unidad unidad { get; set; }
+        public String planEstrategicoOperacional { get; set; }
+        public Double montoTotal { get; set; }
     }
 }

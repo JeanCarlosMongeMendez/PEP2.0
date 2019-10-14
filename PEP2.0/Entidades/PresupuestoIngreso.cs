@@ -9,9 +9,8 @@ namespace Entidades
     public class PresupuestoIngreso
     {
         public int idPresupuestoIngreso { get; set; }
-        //public bool estado { get; set; }
-        public double monto { get; set; }
-        public bool esInicial { get; set; }
+        public Double monto { get; set; }
+        public Boolean esInicial { get; set; }
         public Proyectos proyecto { get; set; }
         public EstadoPresupIngreso estadoPresupIngreso { get; set; }
 

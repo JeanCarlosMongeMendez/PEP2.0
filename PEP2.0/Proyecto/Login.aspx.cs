@@ -65,56 +65,56 @@ namespace PEP
         #region eventos
         protected void btIngresar_Click(object sender, EventArgs e)
         {
-            //string dominName = string.Empty;
-            //string adPath = string.Empty;
-            //string nombreCompleto = string.Empty;
-            //string userName = txtUsuario.Text.Trim().ToUpper();
-            //string strError = string.Empty;
+            string dominName = string.Empty;
+            string adPath = string.Empty;
+            string nombreCompleto = string.Empty;
+            string userName = txtUsuario.Text.Trim().ToUpper();
+            string strError = string.Empty;
 
             //estos son los datos que deben de llenar para realizar el login, el rol 2 es de administrador
-            string nombreCompleto = "nombre usuario";
-            string userName = "nusuario";
-            rol = 2;
+            //string nombreCompleto = "nombre usuario";
+            //string userName = "nusuario";
+            //rol = 2;
 
-            //foreach (string key in System.Configuration.ConfigurationManager.AppSettings.Keys)
-            //{
+            foreach (string key in System.Configuration.ConfigurationManager.AppSettings.Keys)
+            {
 
-            //dominName = key.Contains("DirectoryDomain") ? System.Configuration.ConfigurationManager.AppSettings[key] : dominName;
-            //adPath = key.Contains("DirectoryPath") ? System.Configuration.ConfigurationManager.AppSettings[key] : adPath;
-            //if (!String.IsNullOrEmpty(dominName) && !String.IsNullOrEmpty(adPath))
-            //{
-            //    if (true == AuthenticateUser(dominName, userName, txtPassword.Text, adPath, out strError))
-            //    {
+                dominName = key.Contains("DirectoryDomain") ? System.Configuration.ConfigurationManager.AppSettings[key] : dominName;
+                adPath = key.Contains("DirectoryPath") ? System.Configuration.ConfigurationManager.AppSettings[key] : adPath;
+                if (!String.IsNullOrEmpty(dominName) && !String.IsNullOrEmpty(adPath))
+                {
+                    if (true == AuthenticateUser(dominName, userName, txtPassword.Text, adPath, out strError))
+                    {
 
-            Session["login"] = userName;
+                        // Session["login"] = userName;
 
-                        //object[] datos = conexionServicios.loguearse(userName);
-                        //if (datos[0] != null)
-                        //{
-                        //    rol = Convert.ToInt32(datos[0].ToString());
-                        //    nombreCompleto = datos[1].ToString();
+                        object[] datos = conexionServicios.loguearse(userName);
+                        if (datos[0] != null)
+                        {
+                            rol = Convert.ToInt32(datos[0].ToString());
+                            nombreCompleto = datos[1].ToString();
 
                             Session["rol"] = rol;
                             Session["nombreCompleto"] = nombreCompleto;
                             String url = Page.ResolveUrl("~/Default.aspx");
                             Response.Redirect(url);
-            //            }
-            //            else
-            //            {
-            //                lblNoUsuario.Visible = true;
-            //                lblError.Visible = false;
-            //            }
-            //        }
-            //        dominName = string.Empty;
-            //        adPath = string.Empty;
-            //        if (String.IsNullOrEmpty(strError)) break;
-            //    }
-            //}
-            //if (!string.IsNullOrEmpty(strError))
-            //{
-            //    lblError.Visible = true;
-            //    lblNoUsuario.Visible = false;
-            //}
+                        }
+                        else
+                        {
+                            lblNoUsuario.Visible = true;
+                            lblError.Visible = false;
+                        }
+                    }
+                    dominName = string.Empty;
+                    adPath = string.Empty;
+                    if (String.IsNullOrEmpty(strError)) break;
+                }
+            }
+            if (!string.IsNullOrEmpty(strError))
+            {
+                lblError.Visible = true;
+                lblNoUsuario.Visible = false;
+            }
         }
 
         protected void btCancelar_Click(object sender, EventArgs e)

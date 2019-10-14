@@ -17,7 +17,7 @@ namespace Proyecto.Catalogos.Presupuesto
         #region variables globales
         PeriodoServicios periodoServicios = new PeriodoServicios();
         ProyectoServicios proyectoServicios = new ProyectoServicios();
-        PresupuestoServicios presupuestoServicios = new PresupuestoServicios();
+        PresupuestoIngresoServicios presupuestoIngresoServicios = new PresupuestoIngresoServicios();
         EstadoPresupIngresoServicios estadoPresupIngresoServicios = new EstadoPresupIngresoServicios();
         static Proyectos proyectoSeleccionado = new Proyectos();
         static Entidades.PresupuestoIngreso presupuestoIngresoSeleccionado = new Entidades.PresupuestoIngreso();
@@ -593,7 +593,7 @@ namespace Proyecto.Catalogos.Presupuesto
                 }
             }
 
-            List<Entidades.PresupuestoIngreso> listaPresupuestosIngresos = presupuestoServicios.getPresupuestosIngresosPorProyecto(proyectoSeleccionado);
+            List<Entidades.PresupuestoIngreso> listaPresupuestosIngresos = presupuestoIngresoServicios.getPresupuestosIngresosPorProyecto(proyectoSeleccionado);
             Session["listaPresupuestosIngresos"] = listaPresupuestosIngresos;
 
             cargarDatosTblIngresos();
@@ -670,12 +670,12 @@ namespace Proyecto.Catalogos.Presupuesto
             EstadoPresupIngreso estadoPresupIngreso = estadoPresupIngresoServicios.getEstadoPresupIngresoPorNombre("Guardar");
             presupuestoIngreso.estadoPresupIngreso = estadoPresupIngreso;
 
-            presupuestoServicios.InsertarPresupuestoIngreso(presupuestoIngreso);
+            presupuestoIngresoServicios.InsertarPresupuestoIngreso(presupuestoIngreso);
 
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevoIngreso", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevoIngreso').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se ingreso correctamente el presupuesto" + "');", true);
 
-            listaPresupuestosIngresos = presupuestoServicios.getPresupuestosIngresosPorProyecto(proyectoSeleccionado);
+            listaPresupuestosIngresos = presupuestoIngresoServicios.getPresupuestosIngresosPorProyecto(proyectoSeleccionado);
             Session["listaPresupuestosIngresos"] = listaPresupuestosIngresos;
 
             cargarDatosTblIngresos();
@@ -737,12 +737,12 @@ namespace Proyecto.Catalogos.Presupuesto
 
             presupuestoIngreso.monto = monto;
 
-            presupuestoServicios.actualizarPresupuestoIngreso(presupuestoIngreso);
+            presupuestoIngresoServicios.actualizarPresupuestoIngreso(presupuestoIngreso);
 
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEditarIngreso", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEditarIngreso').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se actualizo correctamente el presupuesto" + "');", true);
 
-            List<Entidades.PresupuestoIngreso> listaPresupuestosIngresos = presupuestoServicios.getPresupuestosIngresosPorProyecto(proyectoSeleccionado);
+            List<Entidades.PresupuestoIngreso> listaPresupuestosIngresos = presupuestoIngresoServicios.getPresupuestosIngresosPorProyecto(proyectoSeleccionado);
             Session["listaPresupuestosIngresos"] = listaPresupuestosIngresos;
 
             cargarDatosTblIngresos();
@@ -793,11 +793,11 @@ namespace Proyecto.Catalogos.Presupuesto
         /// <param name="e"></param>
         protected void btnEliminarIngresoModalEliminar_Click(object sender, EventArgs e)
         {
-            presupuestoServicios.EliminarPresupuestoIngreso(presupuestoIngresoSeleccionado.idPresupuestoIngreso);
+            presupuestoIngresoServicios.EliminarPresupuestoIngreso(presupuestoIngresoSeleccionado.idPresupuestoIngreso);
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEliminarIngreso", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEliminarIngreso').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se elimino correctamente el presupuesto" + "');", true);
 
-            List<Entidades.PresupuestoIngreso> listaPresupuestosIngresos = presupuestoServicios.getPresupuestosIngresosPorProyecto(proyectoSeleccionado);
+            List<Entidades.PresupuestoIngreso> listaPresupuestosIngresos = presupuestoIngresoServicios.getPresupuestosIngresosPorProyecto(proyectoSeleccionado);
             Session["listaPresupuestosIngresos"] = listaPresupuestosIngresos;
 
             cargarDatosTblIngresos();
@@ -841,11 +841,11 @@ namespace Proyecto.Catalogos.Presupuesto
             EstadoPresupIngreso estadoPresupIngreso = estadoPresupIngresoServicios.getEstadoPresupIngresoPorNombre("Registrar");
             presupuestoIngresoSeleccionado.estadoPresupIngreso = estadoPresupIngreso;
 
-            presupuestoServicios.actualizarEstadoPresupuestoIngreso(presupuestoIngresoSeleccionado);
+            presupuestoIngresoServicios.actualizarEstadoPresupuestoIngreso(presupuestoIngresoSeleccionado);
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalAprobarIngreso", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalAprobarIngreso').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se aprobo correctamente el presupuesto" + "');", true);
 
-            List<Entidades.PresupuestoIngreso> listaPresupuestosIngresos = presupuestoServicios.getPresupuestosIngresosPorProyecto(proyectoSeleccionado);
+            List<Entidades.PresupuestoIngreso> listaPresupuestosIngresos = presupuestoIngresoServicios.getPresupuestosIngresosPorProyecto(proyectoSeleccionado);
             Session["listaPresupuestosIngresos"] = listaPresupuestosIngresos;
 
             cargarDatosTblIngresos();
