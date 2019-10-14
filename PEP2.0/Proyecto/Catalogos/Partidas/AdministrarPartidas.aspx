@@ -437,7 +437,7 @@
                                  </div>
 
                                  <div class="col-md-6 col-xs-6 col-sm-6">
-                                     <asp:DropDownList ID="ddlPeriodoModalPasaPartidas" class="btn btn-default dropdown-toggle" runat="server" AutoPostBack="true"></asp:DropDownList>
+                                     <asp:DropDownList ID="ddlPeriodoModalPasaPartidas" class="btn btn-default dropdown-toggle" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlPeriodoModalPasaPartidas_SelectedIndexChanged"></asp:DropDownList>
                                  </div>
 
                              </div>
@@ -462,7 +462,7 @@
                                          </thead>
                                          <tr>
                                              <td>
-                                                 <asp:LinkButton ID="btnFiltrarPartidasAPasar" runat="server" CssClass="btn btn-primary"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton></td>
+                                                 <asp:LinkButton ID="btnFiltrarPartidasAPasar" runat="server" CssClass="btn btn-primary" OnClick="btnFiltrarPartidasAPasar_Click"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton></td>
                                              <td>
                                                  <asp:TextBox ID="txtBuscarDescPartidasAPasar" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción"></asp:TextBox>
                                              </td>
@@ -476,7 +476,7 @@
                                              <ItemTemplate>
                                                  <tr style="text-align: center">
                                                      <td>
-                                                         <asp:LinkButton ID="btnSeleccionarCargaSocial" runat="server" ToolTip="Copiar carga social" CommandArgument='<%# Eval("idPartida") %>'><span class="glyphicon glyphicon-share-alt"></span></asp:LinkButton>
+                                                         <asp:LinkButton ID="btnSeleccionarPasarPartida" runat="server" ToolTip="Copiar partida" CommandArgument='<%# Eval("idPartida") %>' OnClick="btnSeleccionarPasarPartida_Click"><span class="glyphicon glyphicon-share-alt"></span></asp:LinkButton>
                                                      </td>
                                                      <td>
                                                          <%# Eval("descripcionPartida") %>
@@ -508,7 +508,7 @@
                                          </thead>
                                          <tr>
                                              <td>
-                                                 <asp:LinkButton ID="btnFiltrarPartidasAgregadas" runat="server" CssClass="btn btn-primary"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton></td>
+                                                 <asp:LinkButton ID="btnFiltrarPartidasAgregadas" runat="server" CssClass="btn btn-primary" OnClick="btnFiltrarPartidasAgregadas_Click"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton></td>
                                              <td>
                                                  <asp:TextBox ID="txtBuscarDescPartidasAgregadas" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción"></asp:TextBox>
                                              </td>
@@ -556,7 +556,8 @@
                             </td>
                             <td style="padding:1px !important">
                                 <asp:DataList ID="rptPaginacion2" runat="server"
-                                    RepeatDirection="Horizontal">
+                                    OnItemCommand="rptPaginacion2_ItemCommand"
+                                    OnItemDataBound="rptPaginacion2_ItemDataBound" RepeatDirection="Horizontal">
                                     <ItemTemplate>
                                         <asp:LinkButton ID="lbPaginacion2" runat="server" CssClass="btn btn-default"
                                             CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
@@ -592,8 +593,8 @@
                             </td>
                             <td style="padding:1px !important">
                                 <asp:DataList ID="rptPaginacion3" runat="server"
-                                   
-                                    RepeatDirection="Horizontal">
+                                    OnItemCommand="rptPaginacion3_ItemCommand"
+                                    OnItemDataBound="rptPaginacion3_ItemDataBound" RepeatDirection="Horizontal">
                                     <ItemTemplate>
                                         <asp:LinkButton ID="lbPaginacion3" runat="server" CssClass="btn btn-default"
                                             CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
@@ -602,10 +603,10 @@
                                 </asp:DataList>
                             </td>
                             <td style="padding:1px !important">
-                                <asp:LinkButton ID="lbSiguiente3" CssClass="btn btn-default" runat="server" ><span class="glyphicon glyphicon-forward"></asp:LinkButton>
+                                <asp:LinkButton ID="lbSiguiente3" CssClass="btn btn-default" runat="server" OnClick="lbSiguiente3_Click"><span class="glyphicon glyphicon-forward"></asp:LinkButton>
                                 </td>
                             <td style="padding:1px !important">
-                                <asp:LinkButton ID="lbUltimo3" CssClass="btn btn-primary" runat="server" ><span class="glyphicon glyphicon-fast-forward"></asp:LinkButton>
+                                <asp:LinkButton ID="lbUltimo3" CssClass="btn btn-primary" runat="server" OnClick="lbUltimo3_Click"><span class="glyphicon glyphicon-fast-forward"></asp:LinkButton>
                                 </td>
                             <td style="padding:1px !important">
                                 <asp:Label ID="lblpagina3" runat="server" Text=""></asp:Label>
