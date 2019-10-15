@@ -211,6 +211,33 @@ namespace Proyecto.Catalogos.Ejecucion {
         protected global::System.Web.UI.WebControls.Label lblpagina3;
         
         /// <summary>
+        /// Control Label3.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label3;
+        
+        /// <summary>
+        /// Control DDLTipoTramite.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DDLTipoTramite;
+        
+        /// <summary>
+        /// Control descripcionOtroTipoTramite.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox descripcionOtroTipoTramite;
+        
+        /// <summary>
         /// Control Label6.
         /// </summary>
         /// <remarks>
@@ -220,13 +247,13 @@ namespace Proyecto.Catalogos.Ejecucion {
         protected global::System.Web.UI.WebControls.Label Label6;
         
         /// <summary>
-        /// Control txtNumeroReferencia.
+        /// Control numeroReferencia.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNumeroReferencia;
+        protected global::System.Web.UI.WebControls.TextBox numeroReferencia;
         
         /// <summary>
         /// Control Label5.
@@ -245,15 +272,6 @@ namespace Proyecto.Catalogos.Ejecucion {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtMontoIngresar;
-        
-        /// <summary>
-        /// Control DDLTipoTramite.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DDLTipoTramite;
         
         /// <summary>
         /// Control ButtonRepartir.
@@ -364,6 +382,42 @@ namespace Proyecto.Catalogos.Ejecucion {
         protected global::System.Web.UI.WebControls.Label lblpagina4;
         
         /// <summary>
+        /// Control UpdatePane34.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePane34;
+        
+        /// <summary>
+        /// Control Label7.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label7;
+        
+        /// <summary>
+        /// Control montoRepartir.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label montoRepartir;
+        
+        /// <summary>
+        /// Control rpUnidadPartida.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpUnidadPartida;
+        
+        /// <summary>
         /// Control UpdatePanel2.
         /// </summary>
         /// <remarks>
@@ -389,5 +443,59 @@ namespace Proyecto.Catalogos.Ejecucion {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater Repeater1;
+        
+        /// <summary>
+        /// Control lbPrimero1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbPrimero1;
+        
+        /// <summary>
+        /// Control lbAnterior1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbAnterior1;
+        
+        /// <summary>
+        /// Control rptPaginacion1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DataList rptPaginacion1;
+        
+        /// <summary>
+        /// Control lbSiguiente1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbSiguiente1;
+        
+        /// <summary>
+        /// Control lbUltimo1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbUltimo1;
+        
+        /// <summary>
+        /// Control lblpagina1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblpagina1;
     }
 }

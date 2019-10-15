@@ -231,7 +231,7 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.numero_partid
                     partida.idPartida = Convert.ToInt32(reader["id_partida"].ToString());
                     partida.numeroPartida = reader["numero_partida"].ToString();
                     partida.descripcionPartida = reader["descripcion_partida"].ToString();
-
+                    partida.idUnidad = idUnidad;
                     partidas.Add(partida);
                 }
 
