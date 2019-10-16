@@ -43,7 +43,7 @@ namespace AccesoDatos
             SqlConnection sqlConnection = conexionLogin();
             SqlCommand sqlCommand = new SqlCommand("select R.id_rol, U.nombre_completo from " +
                 "Rol R, Usuario U, Aplicacion A, Usuario_Rol_Aplicacion URA " +
-                "where A.nombre_aplicacion='Control de Trabajos de Laboratorio' and U.usuario=@usuario and URA.id_aplicacion=A.id_aplicacion and " +
+                "where A.nombre_aplicacion='PEP' and U.usuario=@usuario and URA.id_aplicacion=A.id_aplicacion and " +
                 "URA.id_usuario = u.id_usuario and R.id_rol = URA.id_rol ;", sqlConnection);
             sqlCommand.Parameters.AddWithValue("@usuario", usuario.ToLower());
             SqlDataReader reader;

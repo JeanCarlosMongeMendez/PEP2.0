@@ -8,8 +8,6 @@ namespace Entidades
 {
     public class EstadoPresupuesto
     {
-       
-       
         public string descripcionEstado  { get; set; }
         public int idEstadoPresupuesto { get; set; }
     }

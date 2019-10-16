@@ -1288,7 +1288,12 @@
                                 <div class="col-md-12 col-xs-12 col-sm-12">
                                     <br />
                                 </div>
-                            </div>
+                            </div><div class="col-xs-12">
+                                            <br />
+                                            <div class="col-xs-12">
+                                                <h6 style="text-align: left">Los campos marcados con <span style='color: red'>*</span> son requeridos.</h6>
+                                            </div>
+                                        </div>
                         </div>
                         <div class="modal-footer" style="text-align: center">
                             <asp:Button ID="btnConfPeriodo" runat="server" Text="Confirmar" CssClass="btn btn-primary boton-eliminar" OnClick="btnEliminarModal_Click" />

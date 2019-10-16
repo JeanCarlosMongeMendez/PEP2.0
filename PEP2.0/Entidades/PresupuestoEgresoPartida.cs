@@ -9,8 +9,10 @@ namespace Entidades
     public class PresupuestoEgresoPartida
     {
         public int idPresupuestoEgreso { get; set; }
-        public int idPartida { get; set; }
-        public double monto { get; set; }
-        public string descripcion { get; set; }
+        public Partida partida { get; set; }
+        public Double monto { get; set; }
+        public String descripcion { get; set; }
+        public EstadoPresupuesto estadoPresupuesto { get; set; }
+        public int idLinea { get; set; }
     }
 }

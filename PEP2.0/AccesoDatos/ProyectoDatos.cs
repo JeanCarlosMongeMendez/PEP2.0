@@ -83,12 +83,31 @@ namespace AccesoDatos
             return proyecto;
         }
 
+
         /// <summary>
         /// Inserta la entidad Proyecto en la base de datos
         /// </summary>
         /// <param name="proyecto">Elemento de tipo <code>Proyecto</code> que va a ser insertado</param>
         /// <returns>Retorna un valor <code>int</code> con el identificador del proyecto insertado</returns>
         public int Insertar(Proyectos proyecto)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+            String consulta = @"Insert Proyecto(nombre_proyecto, codigo, es_UCR, ano_periodo, disponible) values(@nombre_proyecto, @codigo, @es_UCR, @ano_periodo, @disponible); select scope_identity()";
+
+            SqlCommand command = new SqlCommand(consulta, sqlConnection);
+            command.Parameters.AddWithValue("@nombre_proyecto", proyecto.nombreProyecto);
+            command.Parameters.AddWithValue("@codigo", proyecto.codigo);
+            command.Parameters.AddWithValue("@es_UCR", proyecto.esUCR);
+            command.Parameters.AddWithValue("@ano_periodo", proyecto.periodo.anoPeriodo);
+            command.Parameters.AddWithValue("@disponible", 1);
+
+            sqlConnection.Open();
+            int idProyecto = Convert.ToInt32(command.ExecuteScalar());
+            return idProyecto;
+        }
+
+
+        public int InsertarProyecto(Proyectos proyecto)
         {
             SqlConnection sqlConnection = conexion.conexionPEP();
             int respuesta = 0;
@@ -101,7 +120,7 @@ namespace AccesoDatos
             sqlConnection.Open();
 
             reader = sqlConsultaDuplicados.ExecuteReader();
-            
+
             if (!reader.Read())
             {
                 sqlConnection.Close();
@@ -134,10 +153,11 @@ namespace AccesoDatos
                 //Si retorna -1 significa que ya existe un proyecto con el mismo codigo en el mismo periodo
                 respuesta = -1;
             }
-            
+
             sqlConnection.Close();
 
             return respuesta;
+
         }
 
         /// <summary>

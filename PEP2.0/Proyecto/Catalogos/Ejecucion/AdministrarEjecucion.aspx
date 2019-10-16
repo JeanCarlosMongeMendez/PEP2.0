@@ -184,11 +184,14 @@
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                     <asp:Label ID="Label3" runat="server" Text="Tipo de tramite" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                     <asp:DropDownList AutoPostBack="true" ID="DDLTipoTramite" runat="server" CssClass="form-control" OnSelectedIndexChanged="TipoTramites_OnChanged"></asp:DropDownList>
+                    <br />
+                    <br />
+                    <asp:TextBox class="form-control" ID="descripcionOtroTipoTramite" runat="server"  ></asp:TextBox>
 
                 </div>
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                     <asp:Label ID="Label6" runat="server" Text="Número de referencia" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
-                    <asp:TextBox class="form-control" ID="TextBox1" runat="server" Enabled="true"></asp:TextBox>
+                    <asp:TextBox class="form-control" ID="numeroReferencia" runat="server" Enabled="true"></asp:TextBox>
 
                 </div>
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
@@ -198,8 +201,7 @@
 
                 </div>
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
-<%--                    <asp:Label ID="Label7" runat="server" Text="Partidas" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>--%>
-                    <asp:Button ID="ButtonRepartir" runat="server" Text="Reapartir Gastos" CssClass="btn btn-primary" OnClick="ButtonAsociarPartidas_Click" />
+                    <asp:Button ID="ButtonRepartir" runat="server" Text="Repartir Gastos" CssClass="btn btn-primary" OnClick="ButtonRepartirPartidas_Click" />
                 </div>
                 <asp:UpdatePanel ID="UpdatePanel10" runat="server">
                     <ContentTemplate>
@@ -371,8 +373,88 @@
         </ContentTemplate>
     </asp:UpdatePanel>
 
+        <!-- Modal repartir partida -->
+    <asp:UpdatePanel ID="UpdatePane34" runat="server">
+        <ContentTemplate>
+            <div id="modalRepartirPartidas" class="modal fade" role="alertdialog">
+                <div class="modal-dialog modal-lg">
 
-    <!-- Modal Elegir unidad -->
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            
+                             <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+                    <asp:Label ID="Label7" runat="server" Text="Monto pendiente de repartir" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                   ₡  <asp:Label ID="montoRepartir" runat="server" Text="" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    
+                </div>
+                        </div>
+                        <div class="modal-body">
+                            <%-- campos a llenar --%>
+                            <div class="row">
+                                  <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                                    <table id="tblPartidaUnidad" class="table table-bordered">
+                                        <thead style="text-align: center">
+                                            <tr style="text-align: center" class="btn-primary">
+                                                <th></th>
+                                                <th>Unidad</th>
+                                                <th>Número de partida </th>
+                                                <th>Monto </th>
+                                            </tr>
+                                        </thead>
+
+                                        <asp:Repeater ID="rpUnidadPartida" runat="server">
+                                            <HeaderTemplate>
+                                            </HeaderTemplate>
+
+                                            <ItemTemplate>
+                                                <tr style="text-align: center">
+
+                                                    <td>
+                                                       <asp:LinkButton ID="btnAlmacenarUnidadPartida" runat="server" ToolTip="Almacenar" CommandArgument='<%# Eval("numeroPartida") %>'  OnClick="btnAlmacenarUnidadPartida_Click"><span class="btn  glyphicon glyphicon-ok-sign"></span></asp:LinkButton>
+
+                                                    </td>
+                                                    <td>
+                                                      
+                                                        <%# Eval("idUnidad") %>
+                                    
+                                                    </td>
+                                    
+                                                   
+                                                    <td>
+                                                    
+                                                        <%# Eval("numeroPartida") %>
+                                    
+                                                    </td>
+                                                    <td>
+                                                         ₡<asp:TextBox ID="montoAsignado" runat="server"  Text=""></asp:TextBox>
+                                   
+                                                     </td>
+
+                                                </tr>
+
+                                            </ItemTemplate>
+
+                                            <FooterTemplate>
+                                            </FooterTemplate>
+                                        </asp:Repeater>
+                                    </table>
+
+                                </div>
+                            <div class="modal-footer" style="text-align: center">
+
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                            </div>
+
+                    </div>
+                </div>
+             </div>
+            </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+
     <!-- Modal Elegir unidad -->
     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
         <ContentTemplate>
@@ -439,6 +521,42 @@
 
                             </div>
                         </div>
+                        <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                                    <center>
+                    <table class="table" style="max-width:664px;">
+                        <tr style="padding:1px !important">
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbPrimero1" runat="server" CssClass="btn btn-primary" OnClick="lbPrimero4_Click"><span class="glyphicon glyphicon-fast-backward"></span></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbAnterior1" runat="server" CssClass="btn btn-default" OnClick="lbAnterior4_Click"><span class="glyphicon glyphicon-backward"></asp:LinkButton>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:DataList ID="rptPaginacion1" runat="server"
+                                    OnItemCommand="rptPaginacion1_ItemCommand"
+                                    OnItemDataBound="rptPaginacion1_ItemDataBound" RepeatDirection="Horizontal">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lbPaginacion1" runat="server" CssClass="btn btn-default"
+                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
+                                            Text='<%# Eval("PaginaText") %>' ></asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:DataList>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbSiguiente1" CssClass="btn btn-default" runat="server" OnClick="lbSiguiente4_Click"><span class="glyphicon glyphicon-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbUltimo1" CssClass="btn btn-primary" runat="server" OnClick="lbUltimo4_Click"><span class="glyphicon glyphicon-fast-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:Label ID="lblpagina1" runat="server" Text=""></asp:Label>
+                            </td>
+                        </tr>
+                    </table>
+                        </center>
+                                </div>
+
+
                         <div class="modal-footer" style="text-align: center">
 
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
@@ -458,6 +576,10 @@
         };
         function activarModalElegirPartidas() {
             $('#modalElegirPartidas').modal('show');
+        };
+
+         function activarModalRepartirPartidas() {
+            $('#modalRepartirPartidas').modal('show');
         };
 
 

@@ -113,7 +113,7 @@ namespace PEP.Catalogos.Periodos
         protected void Page_Load(object sender, EventArgs e)
         {
             bool visible = false;
-            
+
             //controla los menus q se muestran y las pantallas que se muestras segun el rol que tiene el usuario
             //si no tiene permiso de ver la pagina se redirecciona a login
             int[] rolesPermitidos = { 2 };
@@ -128,9 +128,9 @@ namespace PEP.Catalogos.Periodos
                 Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());
                 CargarPeriodos();
             }
-            
-            
-           
+
+
+
             MostrarPeriodos();
         }
         #endregion
@@ -528,7 +528,7 @@ namespace PEP.Catalogos.Periodos
             lnkPagina.BackColor = Color.FromName("#005da4");
             lnkPagina.ForeColor = Color.FromName("#FFFFFF");
         }
-     
+
 
         /// <summary>
         /// Mariela Calvo
@@ -911,7 +911,7 @@ namespace PEP.Catalogos.Periodos
         /// </summary>
         protected void Periodos_OnChanged(object sender, EventArgs e)
         {
-           // divPaginacionProyectos.Visible = false;
+            // divPaginacionProyectos.Visible = false;
             divUnidades.Visible = false;
             Periodo periodo = new Periodo();
             //periodo.anoPeriodo = Convert.ToInt32(PeriodosDDL.SelectedValue);
@@ -939,7 +939,7 @@ namespace PEP.Catalogos.Periodos
             pgsourcePeriodos.AllowPaging = false;
 
             ViewState["TotalPaginas"] = pgsourcePeriodos.PageCount;
-            
+
 
             rpPeriodos.DataSource = pgsourcePeriodos;
             rpPeriodos.DataBind();
@@ -1000,6 +1000,7 @@ namespace PEP.Catalogos.Periodos
         protected void btnSelccionar_Click(object sender, EventArgs e)
         {
             divProyectosPeriodos.Visible = true;
+            divUnidades.Visible = false;
             int anoPeriodo = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
 
             LinkedList<Periodo> listaPeriodos = (LinkedList<Periodo>)Session["listaPeriodos"];
@@ -1021,7 +1022,7 @@ namespace PEP.Catalogos.Periodos
             btnTransferir.Visible = botones;
             btnNuevoProyecto.Visible = botones;
 
-            Toastr("success", "Periodo "+anoPeriodo+ " seleccionado con éxito!");
+            Toastr("success", "Periodo " + anoPeriodo + " seleccionado con éxito!");
             MostrarTablaProyectos();
         }
 
@@ -1094,15 +1095,15 @@ namespace PEP.Catalogos.Periodos
             {
                 Periodo periodo = new Periodo();
                 periodo.anoPeriodo = Convert.ToInt32(txtNuevoP.Text);
-                respuesta=periodoServicios.Insertar(periodo);
+                respuesta = periodoServicios.Insertar(periodo);
                 txtNuevoP.Text = "";
-                if (respuesta==periodo.anoPeriodo)
+                if (respuesta == periodo.anoPeriodo)
                 {
                     Toastr("success", "Período registrado con éxito!");
                 }
                 else
                 {
-                    Toastr("error", "Error, el período "+periodo.anoPeriodo+" ya se encuentra registrado");
+                    Toastr("error", "Error, el período " + periodo.anoPeriodo + " ya se encuentra registrado");
                 }
                 LinkedList<Periodo> listaPeriodos = periodoServicios.ObtenerTodos();
                 Session["listaPeriodos"] = listaPeriodos;
@@ -1198,6 +1199,7 @@ namespace PEP.Catalogos.Periodos
         /// 
         protected void btnEliminarModal_Click(object sender, EventArgs e)
         {
+            
             Periodo periodo = periodoSelccionado;
 
             periodoServicios.EliminarPeriodo(periodo.anoPeriodo);
@@ -1374,7 +1376,7 @@ namespace PEP.Catalogos.Periodos
 
             LinkedList<Proyectos> proyectos = (LinkedList<Proyectos>)Session["listaProyectos"];
 
-          
+
             if (proyectoSelccionado.esUCR)
             {
                 txtTipoElim.Text = "UCR";
@@ -1418,6 +1420,7 @@ namespace PEP.Catalogos.Periodos
         /// 
         protected void btnEliminarProyectoModal_Click(object sende, EventArgs e)
         {
+           
             int codigoP = proyectoSelccionado.idProyecto;
             Proyectos proyectoEliminar = proyectoServicios.ObtenerPorId(codigoP);
             proyectoServicios.EliminarProyecto(codigoP);
@@ -1487,7 +1490,7 @@ namespace PEP.Catalogos.Periodos
 
                 if (respuesta > 0)
                 {
-                    Toastr("success", "Se registró el proyecto "+proyecto.nombreProyecto+" al período "+periodoSelccionado.anoPeriodo+" con éxito!");
+                    Toastr("success", "Se registró el proyecto " + proyecto.nombreProyecto + " al período " + periodoSelccionado.anoPeriodo + " con éxito!");
                     LinkedList<Proyectos> listaProyectos = proyectoServicios.ObtenerPorPeriodo(proyecto.periodo.anoPeriodo);
                     Session["listaProyectos"] = listaProyectos;
                     MostrarTablaProyectos();
@@ -1495,11 +1498,16 @@ namespace PEP.Catalogos.Periodos
                 }
                 else if (respuesta == -1)
                 {
-                    Toastr("error", "Error, el proyecto con código "+proyecto.codigo+" ya fue registrado para el período "+periodoSelccionado.anoPeriodo);
+                    Toastr("error", "Error, el proyecto con código " + proyecto.codigo + " ya fue registrado para el período " + periodoSelccionado.anoPeriodo);
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevoProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevoProyecto').hide();", true);
-                
-              }
 
+                }
+
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevoProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevoProyecto').hide();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoProyecto();", true);
             }
 
         }
@@ -1549,7 +1557,7 @@ namespace PEP.Catalogos.Periodos
         }
 
         /// <summary>
-        /// Mariela Calvotransferir proyectos
+        /// Mariela Calvo
         /// Requiere: Presionar Tranferir proyectos
         /// Modifica: Tabla Proyectos
         /// Devuelve: -
@@ -1559,7 +1567,7 @@ namespace PEP.Catalogos.Periodos
         {
             Periodo periodo = new Periodo();
             periodo.anoPeriodo = periodoActualSelec;
-           
+
             lblPeriodoSeleccionado.Text = periodoActualSelec.ToString();
 
             LinkedList<Periodo> periodos = new LinkedList<Periodo>();
@@ -1597,11 +1605,10 @@ namespace PEP.Catalogos.Periodos
             LinkedList<Proyectos> proyTransferir = proyectoServicios.ObtenerPorPeriodo(periodoSelccionado.anoPeriodo);
             LinkedList<Proyectos> proyTransferidos = proyectoServicios.ObtenerPorPeriodo(Convert.ToInt32(ddlPeriodoTranferir.SelectedValue));
 
-            List<Proyectos>pr2= proyTransferir.Except(proyTransferidos).ToList();
-            LinkedList<Proyectos> list = new LinkedList<Proyectos>(pr2);
 
-            Session["listaProyectoTransferir"] = list;
-            Session["listaProyectosTranferirFiltrado"] = list;
+
+            Session["listaProyectoTransferir"] = proyTransferir;
+
 
 
             cargarTablaProyectosAtransferir();
@@ -1633,17 +1640,16 @@ namespace PEP.Catalogos.Periodos
 
             LinkedList<Proyectos> listaProyectosAgregados = proyectoServicios.ObtenerPorPeriodo(periodoAgregado.anoPeriodo);
 
-            LinkedList<Proyectos> proyTransferir = proyectoServicios.ObtenerPorPeriodo(periodoSelccionado.anoPeriodo);
+            LinkedList<Proyectos> proyTransferir = proyectoServicios.ObtenerPorPeriodo(periodoActualSelec);
 
-           
-            List<Proyectos>pr2= proyTransferir.Except(listaProyectosAgregados).ToList();
-            LinkedList<Proyectos> list = new LinkedList<Proyectos>(pr2);
 
-            Session["listaProyectoTransferir"] = list;
-            Session["listaProyectosTranferirFiltrado"] = list;
+
+
+            Session["listaProyectoTransferir"] = proyTransferir;
+            Session["listaProyectosTranferirFiltrado"] = proyTransferir;
 
             cargarTablaProyectosAtransferir();
-            
+
             Session["listaProyectoTransferidos"] = listaProyectosAgregados;
             Session["listaProyectosTransferidosFiltrado"] = listaProyectosAgregados;
 
@@ -1740,45 +1746,45 @@ namespace PEP.Catalogos.Periodos
         ///
         public void btnSeleccionarProyectoT_Click(object sender, EventArgs e)
         {
-            
-            string idProyecto = ((LinkButton)(sender)).CommandArgument.ToString();
-            
+            int idProyecto = Convert.ToInt32(((LinkButton)(sender)).CommandArgument.ToString());
             int anioPeriodo = periodoActualSelec;
             int periodoTransferido = 0;
-            Proyectos proyectoInsertar=new Proyectos();
+            int proyectoTransferido = 0;
 
+            Proyectos proyectoInsertar = new Proyectos();
             LinkedList<Proyectos> listaProyectos = proyectoServicios.ObtenerPorPeriodo(anioPeriodo);
-          
+            LinkedList<Unidad> listaUnidades = new LinkedList<Unidad>();
+
             foreach (Proyectos proyecto in listaProyectos)
             {
 
-                if (proyecto.idProyecto.ToString().Equals(idProyecto))
+                if (proyecto.idProyecto == idProyecto)
                 {
-
                     proyectoInsertar = proyecto;
                     Periodo periodoInsertar = new Periodo();
                     periodoInsertar.anoPeriodo = Convert.ToInt32(ddlPeriodoTranferir.SelectedValue);
                     proyectoInsertar.periodo = periodoInsertar;
                     periodoTransferido = proyectoInsertar.periodo.anoPeriodo;
-                    proyectoServicios.Insertar(proyectoInsertar);
-                    proyectoServicios.EliminarProyecto(proyectoInsertar.idProyecto);
-
-
+                    proyectoTransferido = proyectoServicios.Insertar(proyectoInsertar);
                 }
+
             }
-           
+
+            listaUnidades = unidadServicios.ObtenerPorProyecto(idProyecto);
+            foreach (Unidad unidad in listaUnidades)
+            {
+                Proyectos proyectoUnidad = new Proyectos();
+                proyectoUnidad.idProyecto = proyectoTransferido;
+                unidad.proyecto = proyectoUnidad;
+                unidadServicios.Insertar(unidad);
+            }
+
             MostrarTablaProyectos();
 
             LinkedList<Proyectos> proyTransferir = proyectoServicios.ObtenerPorPeriodo(periodoSelccionado.anoPeriodo);
             LinkedList<Proyectos> proyTransferidos = proyectoServicios.ObtenerPorPeriodo(Convert.ToInt32(ddlPeriodoTranferir.SelectedValue));
 
-            List<Proyectos> pr2 = proyTransferir.Except(proyTransferidos).ToList();
-            LinkedList<Proyectos> list = new LinkedList<Proyectos>(pr2);
-
-            Session["listaProyectoTransferir"] = list;
-            Session["listaProyectosTranferirFiltrado"] = list;
-
-           
+            Session["listaProyectoTransferir"] = proyTransferir;
             cargarTablaProyectosAtransferir();
 
             listaProyectos = proyectoServicios.ObtenerPorPeriodo(periodoTransferido);
@@ -1792,15 +1798,32 @@ namespace PEP.Catalogos.Periodos
 
             p.anoPeriodo = periodoTransferido;
             proyectoAgregado.periodo = p;
+
             LinkedList<Proyectos> listaProyectosAgregados = proyectoServicios.ObtenerPorPeriodo(proyectoAgregado.periodo.anoPeriodo);
+
             Session["listaProyectoTransferidos"] = listaProyectosAgregados;
             Session["listaProyectosTranferidosFiltrado"] = listaProyectosAgregados;
+
+
+
             cargarTablaProyectosTransferidos();
+
+
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalTransferirProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalTransferirProyecto').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalTransferirProyecto();", true);
+
+            if (proyectoTransferido != 0)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "El proyecto " + proyectoInsertar.nombreProyecto + " fue transferido con éxito!');", true);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Error, el proyecto  no fue transferido, intente nuevamente');", true);
+            }
+
         }
 
-     
+
 
         /// <summary>
         /// Mariela Calvo
@@ -1820,6 +1843,16 @@ namespace PEP.Catalogos.Periodos
             proyectoActualSelec = proyectoSelccionadoUnidades.idProyecto;
             proyectoActual.Text = "Proyecto Seleccionado: " + proyectoSelccionadoUnidades.nombreProyecto + "";
 
+            if (proyectoSelccionadoUnidades.idProyecto != 0)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "El proyecto " + proyectoSelccionadoUnidades.nombreProyecto + " fue seleccionado con éxito!');", true);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "El proyecto no fue seleccionado, intente nuevamente');", true);
+            }
+
+
             if (proyectoSelccionadoUnidades.esUCR)
             {
                 btnNuevaUnidad.Visible = true;
@@ -1828,6 +1861,8 @@ namespace PEP.Catalogos.Periodos
             {
                 btnNuevaUnidad.Visible = false;
             }
+
+
             LinkedList<Unidad> listaUnidades = new LinkedList<Unidad>();
             listaUnidades = unidadServicios.ObtenerPorProyecto(proyectoSelccionadoUnidades.idProyecto);
             Session["listaUnidades"] = listaUnidades;
@@ -1880,11 +1915,12 @@ namespace PEP.Catalogos.Periodos
         /// Devuelve: -
         /// </summary>
         ///
-        public void cargarProyectosUnidades() { 
+        public void cargarProyectosUnidades()
+        {
             int anioP = proyectoSelccionadoUnidades.periodo.anoPeriodo;
-        
+
             if (anioP != 0)
-                //ProyectosDDL.Items.Clear();
+            //ProyectosDDL.Items.Clear();
             {
                 LinkedList<Proyectos> proyectos = new LinkedList<Proyectos>();
                 proyectos = this.proyectoServicios.ObtenerPorPeriodo(anioP);
@@ -1903,7 +1939,7 @@ namespace PEP.Catalogos.Periodos
                     if (anioP != 0)
                     {
                         string proyectoHabilitado = proyectoSelccionadoUnidades.nombreProyecto;
-                        
+
                     }
                 }
             }
@@ -1926,7 +1962,7 @@ namespace PEP.Catalogos.Periodos
             txtCoordinadorUnidad.Text = "";
             lbNuevaUnidadProy.Text = proyectoSelccionadoUnidades.nombreProyecto;
             cargarProyectosUnidades();
-            
+
             //PeriodosDDL.SelectedIndex = 0;
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevaUnidad();", true);
         }
@@ -1951,14 +1987,14 @@ namespace PEP.Catalogos.Periodos
                 unidad.proyecto = new Proyectos();
                 unidad.proyecto.idProyecto = Convert.ToInt32(proyectoSelccionadoUnidades.idProyecto);
 
-                int respuesta=unidadServicios.Insertar(unidad);
+                int respuesta = unidadServicios.Insertar(unidad);
                 if (respuesta != 0)
                 {
-                    Toastr("sucess", "La unidad " + unidad.nombreUnidad + " fue registrada con éxito en el proyecto "+proyectoSelccionadoUnidades.nombreProyecto);
+                    Toastr("sucess", "La unidad " + unidad.nombreUnidad + " fue registrada con éxito en el proyecto " + proyectoSelccionadoUnidades.nombreProyecto);
                 }
                 else
                 {
-                    Toastr("error", "Error, la unidad " + unidad.nombreUnidad + " ya se encuentra registrada en el proyecto "+proyectoSelccionadoUnidades.nombreProyecto);
+                    Toastr("error", "Error, la unidad " + unidad.nombreUnidad + " ya se encuentra registrada en el proyecto " + proyectoSelccionadoUnidades.nombreProyecto);
                 }
                 LinkedList<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(proyectoActualSelec);
                 Session["listaUnidades"] = listaUnidades;
@@ -2014,8 +2050,8 @@ namespace PEP.Catalogos.Periodos
         /// 
         public void btnEliminarUnidad_Click(Object sender, EventArgs e)
         {
-            int idUnidad= Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString()); ;
-            LinkedList<Unidad>listaUnidades=(LinkedList<Unidad>)Session["listaUnidades"];
+            int idUnidad = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString()); ;
+            LinkedList<Unidad> listaUnidades = (LinkedList<Unidad>)Session["listaUnidades"];
             unidadSeleccionada = unidadServicios.ObtenerPorId(idUnidad);
             txtNombreUnidadEliminar.Text = unidadSeleccionada.nombreUnidad;
             txtCoordinadorEliminar.Text = unidadSeleccionada.coordinador;
@@ -2035,7 +2071,7 @@ namespace PEP.Catalogos.Periodos
         /// </summary>
         public void btnConfirmarEliminarUnidad_Click(Object sender, EventArgs e)
         {
-            
+
             lbConfUnidadEliminar.Text = unidadSeleccionada.nombreUnidad;
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalConfirmar", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalConfirmar').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalConfirmar()", true);
@@ -2057,7 +2093,7 @@ namespace PEP.Catalogos.Periodos
             LinkedList<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(proyectoSelccionadoUnidades.idProyecto);
             if (listaUnidades.Contains(unidadEliminar))
             {
-                Toastr("error", "Error, la unidad "+unidadEliminar.nombreUnidad+ " no pudo ser eliminada.");
+                Toastr("error", "Error, la unidad " + unidadEliminar.nombreUnidad + " no pudo ser eliminada.");
             }
             else
             {
@@ -2084,15 +2120,15 @@ namespace PEP.Catalogos.Periodos
         public void btnEditarUnidad_Click(object sender, EventArgs e)
         {
             int idUnidad = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
-            
+
             string nombreProyecto = proyectoSelccionadoUnidades.nombreProyecto;
             LinkedList<Unidad> listaUnidades = (LinkedList<Unidad>)Session["listaUnidades"];
 
-            
+
 
             foreach (Unidad unidad in listaUnidades)
             {
-                if (unidad.idUnidad==idUnidad)
+                if (unidad.idUnidad == idUnidad)
                 {
                     unidadSeleccionada = unidad;
                     break;
@@ -2101,7 +2137,7 @@ namespace PEP.Catalogos.Periodos
             }
             txtNombreUnidadEditar.CssClass = "form-control";
             txtCoordinadorEditar.CssClass = "form-control";
-            
+
             lbProyectoUnidad.Text = nombreProyecto;
             txtNombreUnidadEditar.Text = unidadSeleccionada.nombreUnidad;
             txtCoordinadorEditar.Text = unidadSeleccionada.coordinador;
@@ -2121,17 +2157,17 @@ namespace PEP.Catalogos.Periodos
         {
             if (validarUnidadAEditar())
             {
-               Unidad unidadEditar = unidadServicios.ObtenerPorId(unidadSeleccionada.idUnidad);
-               unidadEditar.nombreUnidad = txtNombreUnidadEditar.Text;
-               unidadEditar.coordinador = txtCoordinadorEditar.Text;
-               unidadServicios.ActualizarUnidad(unidadEditar);
-               txtNombreUnidadEditar.Text = "";
-               txtCoordinadorEditar.Text = "";
+                Unidad unidadEditar = unidadServicios.ObtenerPorId(unidadSeleccionada.idUnidad);
+                unidadEditar.nombreUnidad = txtNombreUnidadEditar.Text;
+                unidadEditar.coordinador = txtCoordinadorEditar.Text;
+                unidadServicios.ActualizarUnidad(unidadEditar);
+                txtNombreUnidadEditar.Text = "";
+                txtCoordinadorEditar.Text = "";
 
                 LinkedList<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(proyectoSelccionadoUnidades.idProyecto);
 
                 Session["listaUnidades"] = listaUnidades;
-                Toastr("success", "La Unidad fue modificada con éxito!");
+                Toastr("success", "La unidad fue modificada con éxito!");
                 mostrarTablaUnidades();
 
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEditarUnidad", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEditarUnidad').hide();", true);
@@ -2147,7 +2183,7 @@ namespace PEP.Catalogos.Periodos
         /// Mariela Calvo
         /// Septiembre/2019
         /// Efecto: Encargado de validar que todos los campos de la unidad a editar estén llenos
-        /// Requiere: Presionar boton guardar del modal nueva unidad
+        /// Requiere: Presionar boton guardar del modal editar unidad
         /// Modifica: Tabla Unidad
         /// Devuelve: -
         /// </summary>
@@ -2169,9 +2205,9 @@ namespace PEP.Catalogos.Periodos
             }
             return valido;
         }
-       
 
-    
+
+
 
         #region otros
 

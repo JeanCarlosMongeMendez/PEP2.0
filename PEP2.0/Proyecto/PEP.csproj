@@ -109,16 +109,14 @@
     <Content Include="Catalogos\CargasSociales\AdministrarCargasSociales.aspx" />
     <Content Include="Catalogos\Ejecucion\AdministrarEjecucion.aspx" />
     <Content Include="Catalogos\Jornadas\AdministrarJornadas.aspx" />
-    <Content Include="Catalogos\Partidas\AdministrarPartida.aspx" />
+    <Content Include="Catalogos\Partidas\AdministrarPartida - Copia.aspx" />
     <Content Include="Catalogos\Partidas\AdministrarPartidas.aspx" />
-    <Content Include="Catalogos\Partidas\EditarPartida.aspx" />
-    <Content Include="Catalogos\Partidas\EliminarPartida.aspx" />
-    <Content Include="Catalogos\Partidas\NuevaPartida.aspx" />
+    <Content Include="Catalogos\Partidas\EditarPartida - Copia.aspx" />
     <Content Include="Catalogos\Periodos\AdministrarPeriodo.aspx" />
     <Content Include="Catalogos\Periodos\EliminarPeriodo.aspx" />
     <Content Include="Catalogos\Periodos\NuevoPeriodo.aspx" />
+    <Content Include="Catalogos\Presupuesto\AdministrarPresupuestoEgresos.aspx" />
     <Content Include="Catalogos\Presupuesto\AdministrarPresupuestoIngreso.aspx" />
-    <Content Include="Catalogos\Presupuesto\PresupuestoEgreso.aspx" />
     <Content Include="Catalogos\Proyecto\EditarProyecto.aspx" />
     <Content Include="Catalogos\Proyecto\EliminarProyecto.aspx" />
     <Content Include="Catalogos\Proyecto\NuevoProyecto.aspx" />
@@ -218,12 +216,12 @@
     <Compile Include="Catalogos\Jornadas\AdministrarJornadas.aspx.designer.cs">
       <DependentUpon>AdministrarJornadas.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Catalogos\Partidas\AdministrarPartida.aspx.cs">
-      <DependentUpon>AdministrarPartida.aspx</DependentUpon>
+    <Compile Include="Catalogos\Partidas\AdministrarPartida - Copia.aspx.cs">
+      <DependentUpon>AdministrarPartida - Copia.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Catalogos\Partidas\AdministrarPartida.aspx.designer.cs">
-      <DependentUpon>AdministrarPartida.aspx</DependentUpon>
+    <Compile Include="Catalogos\Partidas\AdministrarPartida - Copia.aspx.designer.cs">
+      <DependentUpon>AdministrarPartida - Copia.aspx</DependentUpon>
     </Compile>
     <Compile Include="Catalogos\Partidas\AdministrarPartidas.aspx.cs">
       <DependentUpon>AdministrarPartidas.aspx</DependentUpon>
@@ -232,26 +230,12 @@
     <Compile Include="Catalogos\Partidas\AdministrarPartidas.aspx.designer.cs">
       <DependentUpon>AdministrarPartidas.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Catalogos\Partidas\EditarPartida.aspx.cs">
-      <DependentUpon>EditarPartida.aspx</DependentUpon>
+    <Compile Include="Catalogos\Partidas\EditarPartida - Copia.aspx.cs">
+      <DependentUpon>EditarPartida - Copia.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Catalogos\Partidas\EditarPartida.aspx.designer.cs">
-      <DependentUpon>EditarPartida.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Catalogos\Partidas\EliminarPartida.aspx.cs">
-      <DependentUpon>EliminarPartida.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Catalogos\Partidas\EliminarPartida.aspx.designer.cs">
-      <DependentUpon>EliminarPartida.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Catalogos\Partidas\NuevaPartida.aspx.cs">
-      <DependentUpon>NuevaPartida.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Catalogos\Partidas\NuevaPartida.aspx.designer.cs">
-      <DependentUpon>NuevaPartida.aspx</DependentUpon>
+    <Compile Include="Catalogos\Partidas\EditarPartida - Copia.aspx.designer.cs">
+      <DependentUpon>EditarPartida - Copia.aspx</DependentUpon>
     </Compile>
     <Compile Include="Catalogos\Periodos\AdministrarPeriodo.aspx.cs">
       <DependentUpon>AdministrarPeriodo.aspx</DependentUpon>
@@ -274,19 +258,19 @@
     <Compile Include="Catalogos\Periodos\NuevoPeriodo.aspx.designer.cs">
       <DependentUpon>NuevoPeriodo.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Catalogos\Presupuesto\AdministrarPresupuestoEgresos.aspx.cs">
+      <DependentUpon>AdministrarPresupuestoEgresos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Catalogos\Presupuesto\AdministrarPresupuestoEgresos.aspx.designer.cs">
+      <DependentUpon>AdministrarPresupuestoEgresos.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Catalogos\Presupuesto\AdministrarPresupuestoIngreso.aspx.cs">
       <DependentUpon>AdministrarPresupuestoIngreso.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Catalogos\Presupuesto\AdministrarPresupuestoIngreso.aspx.designer.cs">
       <DependentUpon>AdministrarPresupuestoIngreso.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Catalogos\Presupuesto\PresupuestoEgreso.aspx.cs">
-      <DependentUpon>PresupuestoEgreso.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Catalogos\Presupuesto\PresupuestoEgreso.aspx.designer.cs">
-      <DependentUpon>PresupuestoEgreso.aspx</DependentUpon>
     </Compile>
     <Compile Include="Catalogos\Proyecto\EditarProyecto.aspx.cs">
       <DependentUpon>EditarProyecto.aspx</DependentUpon>

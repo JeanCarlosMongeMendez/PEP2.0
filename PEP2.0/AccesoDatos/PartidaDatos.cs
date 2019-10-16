@@ -28,9 +28,9 @@ namespace AccesoDatos
 
             String consulta = @"select ph.id_partida, ph.numero_partida, ph.descripcion_partida, ph.id_partida_padre, ph.ano_periodo, pp.numero_partida AS numero_partida_padre, pp.descripcion_partida AS descripcion_padre from Partida ph left join Partida pp ON ph.id_partida_padre = pp.id_partida 
 
-where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_partida;";
+where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.numero_partida;";
 
-            SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
+           SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
             sqlCommand.Parameters.AddWithValue("@ano_periodo_", anoPeriodo);
 
             SqlDataReader reader;
@@ -120,7 +120,6 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_p
 
                 SqlDataReader readerPadre;
                 sqlConnection.Open();
-
                 readerPadre = sqlConsultaDuplicadosPadre.ExecuteReader();
 
                 if (!readerPadre.Read())
@@ -138,6 +137,12 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_p
                     sqlConnection.Open();
                     resultado = (int)sqlCommandPadre.ExecuteScalar();
                 }
+                else
+                {
+                    sqlConnection.Close();
+                    sqlConnection.Open();
+                    resultado = (int) sqlConsultaDuplicadosPadre.ExecuteScalar();
+                }
 
                 sqlConnection.Close();
             }
@@ -145,33 +150,7 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_p
             return resultado;
         }
 
-        ///// <summary>
-        ///// Recibe un numero de partida y un ano de periodo, si devuelve un ID significa que ya la partida padre existe y no se debe insertar de nuevo
-        ///// </summary>
-        ///// <param name="numeroPartida">Valor de tipo <code>int</code> que corresponde al numero de la partida</param>
-        ///// <param name="anoPeriodo">Valor de tipo <code>int</code> que corresponde al ano del periodo</param>
-        ///// <returns>Retorna el elemento de tipo <code>int</code> que coincida con los parametros dados</returns>
-        //public int PadresDuplicados(string numeroPartida, int anoPeriodo)
-        //{
-        //    SqlConnection sqlConnection = conexion.conexionPEP();
-        //    SqlCommand sqlCommand = new SqlCommand("select id_partida from Partida where numero_partida=@numero_partida_ AND ano_periodo=@ano_periodo_ AND disponible=1;", sqlConnection);
-        //    sqlCommand.Parameters.AddWithValue("@numero_partida_", numeroPartida);
-        //    sqlCommand.Parameters.AddWithValue("@ano_periodo_", anoPeriodo);
-
-        //    int idPartida = 0;
-        //    SqlDataReader reader;
-        //    sqlConnection.Open();
-        //    reader = sqlCommand.ExecuteReader();
-
-        //    if (reader.Read())
-        //    {
-        //        idPartida = Convert.ToInt32(reader["id_partida"].ToString());
-        //    }
-
-        //    sqlConnection.Close();
-
-        //    return idPartida;
-        //}
+       
 
         /// <summary>
         /// Obtiene una partida basado en su identificador
@@ -217,62 +196,7 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_p
             return partida;
         }
 
-        ///// <summary>
-        ///// Transfiere las partidas seleccionadas de un periodo a otro
-        ///// </summary>
-        ///// <param name="partidasId">Lista de identificadores de las partidas que se desean transferir al nuevo periodo</param>
-        ///// <param name="anoPeriodo">Nuevo periodo a los que las partidas serán transferidas</param>
-        ///// <returns>Retorna si las partidas y los periodos fueron guardados</returns>
-        //public bool Guardar(LinkedList<int> partidasId, int anoPeriodo)
-        //{
-        //    //transferir padre tambien cuando transfiero las hijas
-
-        //    SqlConnection sqlConnection = conexion.conexionPEP();
-        //    bool guardado = false;
-        //    int nuevoId = 0;
-        //    int nuevoIdPadre = 0;
-
-        //    foreach (int idPartida in partidasId)
-        //    {
-        //        Partida partida = ObtenerPorId(idPartida);
-
-        //        /*
-        //         * Verifica si el periodo de las partidas que se desean guardar es igual al periodo indicado,
-        //         * esto para evitar partidas duplicadas en el mismo periodo
-        //         * De lo contrario asigna el nuevo periodo a la partida para duplicar su información cambiando el periodo al que pertenece
-        //         */
-        //        if (partida.periodo.anoPeriodo != anoPeriodo)
-        //        {
-        //            //Duplicar tambien los padres
-        //            Partida partidaPadre = ObtenerPorId(partida.partidaPadre.idPartida);
-        //            partidaPadre.periodo.anoPeriodo = anoPeriodo;
-
-        //            nuevoIdPadre = PadresDuplicados(partidaPadre.numeroPartida, anoPeriodo);
-
-        //            if (nuevoIdPadre == 0)
-        //            {
-        //                nuevoIdPadre = Insertar(partidaPadre);
-        //            }
-
-        //            partidaPadre.idPartida = nuevoIdPadre;
-
-        //            partida.periodo.anoPeriodo = anoPeriodo;
-        //            partida.partidaPadre = partidaPadre;
-        //            nuevoId = Insertar(partida);
-
-        //            if (nuevoId > 0)
-        //            {
-        //                guardado = true;
-        //            }
-        //            else
-        //            {
-        //                guardado = false;
-        //            }
-        //        }
-        //    }
-
-        //    return guardado;
-        //}
+      
 
 
         /// <summary>
@@ -307,7 +231,7 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_p
                     partida.idPartida = Convert.ToInt32(reader["id_partida"].ToString());
                     partida.numeroPartida = reader["numero_partida"].ToString();
                     partida.descripcionPartida = reader["descripcion_partida"].ToString();
-
+                    partida.idUnidad = idUnidad;
                     partidas.Add(partida);
                 }
 
@@ -325,14 +249,18 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_p
         // Requiere: Partida
         // Modifica: -
         // Devuelve: -
+        // Editado por: Jesus Torres
+        // 11/oct/2019
+        // Se cambia la consulta a BD, de manera que realice el eliminado logico, de partidas con el ID del padre y todas sus hijas
         // </summary>
         // <param name="idPartida"></param>
-        public void EliminarPartida(int idPartida)
+        public void EliminarPartida(int idPartida, int periodo)
         {
             SqlConnection sqlConnection = conexion.conexionPEP();
 
-            SqlCommand sqlCommand = new SqlCommand("update Partida set disponible=0 where id_partida=@id_partida_;", sqlConnection);
+            SqlCommand sqlCommand = new SqlCommand("update Partida set disponible=0 where (id_partida = @id_partida_ OR id_partida_padre = @id_partida_) AND ano_periodo = @periodo_;", sqlConnection);
             sqlCommand.Parameters.AddWithValue("@id_partida_", idPartida);
+            sqlCommand.Parameters.AddWithValue("@periodo_", periodo);
 
             sqlConnection.Open();
 
@@ -435,7 +363,7 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.descripcion_p
             SqlConnection sqlConnection = conexion.conexionPEP();
             List<Partida> partidas = new List<Partida>();
 
-            String consulta = @"select id_partida, numero_partida, descripcion_partida, id_partida_padre, ano_periodo from Partida where id_partida_padre=@id_partida_padre AND ano_periodo=@ano_periodo AND disponible=1 order by descripcion_partida;";
+            String consulta = @"select id_partida, numero_partida, descripcion_partida, id_partida_padre, ano_periodo from Partida where id_partida_padre=@id_partida_padre AND ano_periodo=@ano_periodo AND disponible=1 order by numero_partida;";
 
             SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
             sqlCommand.Parameters.AddWithValue("@id_partida_padre", idPartidaPadre);
