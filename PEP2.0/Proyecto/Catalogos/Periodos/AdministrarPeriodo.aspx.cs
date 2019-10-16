@@ -1199,6 +1199,7 @@ namespace PEP.Catalogos.Periodos
         /// 
         protected void btnEliminarModal_Click(object sender, EventArgs e)
         {
+            
             Periodo periodo = periodoSelccionado;
 
             periodoServicios.EliminarPeriodo(periodo.anoPeriodo);
@@ -1419,6 +1420,7 @@ namespace PEP.Catalogos.Periodos
         /// 
         protected void btnEliminarProyectoModal_Click(object sende, EventArgs e)
         {
+           
             int codigoP = proyectoSelccionado.idProyecto;
             Proyectos proyectoEliminar = proyectoServicios.ObtenerPorId(codigoP);
             proyectoServicios.EliminarProyecto(codigoP);
@@ -1501,6 +1503,11 @@ namespace PEP.Catalogos.Periodos
 
                 }
 
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevoProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevoProyecto').hide();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoProyecto();", true);
             }
 
         }
@@ -2160,7 +2167,7 @@ namespace PEP.Catalogos.Periodos
                 LinkedList<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(proyectoSelccionadoUnidades.idProyecto);
 
                 Session["listaUnidades"] = listaUnidades;
-                Toastr("success", "La Unidad fue modificada con éxito!");
+                Toastr("success", "La unidad fue modificada con éxito!");
                 mostrarTablaUnidades();
 
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEditarUnidad", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEditarUnidad').hide();", true);

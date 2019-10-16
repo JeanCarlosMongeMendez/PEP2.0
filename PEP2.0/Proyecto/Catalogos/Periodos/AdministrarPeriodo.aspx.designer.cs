@@ -688,6 +688,15 @@ namespace PEP.Catalogos.Periodos {
         protected global::System.Web.UI.WebControls.Label lblpagina3;
         
         /// <summary>
+        /// Control GuardarProyectosBtn.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button GuardarProyectosBtn;
+        
+        /// <summary>
         /// Control divUnidades.
         /// </summary>
         /// <remarks>
