@@ -30,6 +30,7 @@ namespace PEP.Catalogos.Periodos
         readonly PagedDataSource pgsource = new PagedDataSource();
         int primerIndex, ultimoIndex, primerIndex2, ultimoIndex2, primerIndex3, ultimoIndex3, primerIndex4, ultimoIndex4, primerIndex5, ultimoIndex5;
         private int elmentosMostrar = 10;
+
         private int paginaActual
         {
             get
@@ -77,6 +78,7 @@ namespace PEP.Catalogos.Periodos
                 ViewState["paginaActual3"] = value;
             }
         }
+
         private int paginaActual4
         {
             get
@@ -92,6 +94,7 @@ namespace PEP.Catalogos.Periodos
                 ViewState["paginaActual3"] = value;
             }
         }
+
         private int paginaActual5
         {
             get
@@ -147,8 +150,6 @@ namespace PEP.Catalogos.Periodos
         /// </summary>
         private void CargarPeriodos()
         {
-            //PeriodosDDL.Items.Clear();
-            //PeriodosDDL2.Items.Clear();
             LinkedList<Periodo> periodos = new LinkedList<Periodo>();
             periodos = this.periodoServicios.ObtenerTodos();
             int anoHabilitado = 0;
@@ -168,11 +169,7 @@ namespace PEP.Catalogos.Periodos
                     {
                         nombre = periodo.anoPeriodo.ToString();
                     }
-
                     ListItem itemPeriodo = new ListItem(nombre, periodo.anoPeriodo.ToString());
-                    //PeriodosDDL.Items.Add(itemPeriodo);
-                    //PeriodosDDL2.Items.Add(itemPeriodo);
-
                 }
 
                 if (anoHabilitado != 0)
@@ -595,6 +592,7 @@ namespace PEP.Catalogos.Periodos
             paginaActual3 += 1;
             cargarTablaProyectosTransferidos();
         }
+
         /// <summary>
         /// Mariela Calvo
         /// Septiembre/2019
@@ -652,6 +650,7 @@ namespace PEP.Catalogos.Periodos
             rptPaginacion4.DataSource = dt;
             rptPaginacion4.DataBind();
         }
+
         /// <summary>
         /// Mariela Calvo
         /// Septiembre/2019
@@ -946,7 +945,6 @@ namespace PEP.Catalogos.Periodos
 
         }
 
-
         /// <summary>
         /// Mariela Calvo
         /// Septiembre/2019
@@ -986,9 +984,6 @@ namespace PEP.Catalogos.Periodos
 
         }
 
-
-
-
         /// <summary>
         /// Mariela Calvo
         /// Septiembre/2019
@@ -1025,7 +1020,6 @@ namespace PEP.Catalogos.Periodos
             Toastr("success", "Periodo " + anoPeriodo + " seleccionado con éxito!");
             MostrarTablaProyectos();
         }
-
 
         /// <summary>
         /// Mariela Calvo
@@ -1084,7 +1078,7 @@ namespace PEP.Catalogos.Periodos
         /// Mariela Calvo
         /// Septiembre/2019
         /// Efecto: Guardar un nuevo periodo
-        /// Requiere: SIntroducir datos del nuevo periodo
+        /// Requiere: Introducir datos del nuevo periodo, presionar boton guardar del modal nuevo periodo
         /// Modifica: Tabla Periodos
         /// Devuelve: -
         /// </summary>
@@ -1141,7 +1135,6 @@ namespace PEP.Catalogos.Periodos
             return valido;
         }
 
-
         /// <summary>
         /// Mariela Calvo
         /// Septiembre/2019
@@ -1187,7 +1180,6 @@ namespace PEP.Catalogos.Periodos
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalConfirmarPeriodo()", true);
         }
 
-
         /// <summary>
         /// Mariela Calvo
         /// Septiembre/2019
@@ -1225,7 +1217,7 @@ namespace PEP.Catalogos.Periodos
         /// <summary>
         /// Mariela Calvo
         /// Septiembre/2019
-        /// Efecto: Mostrar modal de editar proyect
+        /// Efecto: Mostrar modal de editar proyecto
         /// Requiere: Presionar boton con icono editar en tabla proyectos del proyecto deseado
         /// Modifica: Tabla Proyectos
         /// Devuelve: -
@@ -1396,7 +1388,7 @@ namespace PEP.Catalogos.Periodos
         /// <summary>
         /// Mariela Calvo
         /// Septiembre/2019
-        /// Efecto: Mensaje de confirmacion para la eliminacion de un proyectos
+        /// Efecto: Mensaje de confirmacion para la eliminacion de un proyecto
         /// Requiere: Presionar boton eliminar del modal eliminar proyecto
         /// Modifica: Tabla Periodos
         /// Devuelve: -
@@ -1420,7 +1412,6 @@ namespace PEP.Catalogos.Periodos
         /// 
         protected void btnEliminarProyectoModal_Click(object sende, EventArgs e)
         {
-           
             int codigoP = proyectoSelccionado.idProyecto;
             Proyectos proyectoEliminar = proyectoServicios.ObtenerPorId(codigoP);
             proyectoServicios.EliminarProyecto(codigoP);
@@ -1445,8 +1436,8 @@ namespace PEP.Catalogos.Periodos
         /// <summary>
         /// Mariela Calvo
         /// Septiembre/2019
-        /// Efecto: Modal de agrgar proyecto
-        /// Requiere: Presionar boton Nuevo Proyecto d
+        /// Efecto: Modal de agregar proyecto
+        /// Requiere: Presionar boton Nuevo Proyecto 
         /// Modifica: Tabla Proyectos
         /// Devuelve: -
         /// </summary>
@@ -1469,7 +1460,7 @@ namespace PEP.Catalogos.Periodos
         /// <summary>
         /// Mariela Calvo
         /// Septiembre/2019
-        /// Efecto: Encargado de insertar un nuevo proyecto en un periodo especifico en la BD
+        /// Efecto: Encargado de insertar un nuevo proyecto en un periodo especifico 
         /// Requiere: Presionar boton guardar del modal nuevo proyecto
         /// Modifica: Tabla Proyectos
         /// Devuelve: -
@@ -1515,7 +1506,7 @@ namespace PEP.Catalogos.Periodos
         /// <summary>
         /// Mariela Calvo
         /// Septiembre/2019
-        /// Efecto: Encargado de validar que todos los campos del nuevo modelo estén llenos
+        /// Efecto: Encargado de validar que todos los campos del nuevo proyecto estén llenos
         /// Requiere: Presionar boton guardar del modal nuevo proyecto
         /// Modifica: Tabla Proyectos
         /// Devuelve: -
@@ -1558,6 +1549,8 @@ namespace PEP.Catalogos.Periodos
 
         /// <summary>
         /// Mariela Calvo
+        /// Septiembre/2019
+        /// Efecto: Encargado de mostrar el modal para transferir proyecto de un periodo a otro
         /// Requiere: Presionar Tranferir proyectos
         /// Modifica: Tabla Proyectos
         /// Devuelve: -
@@ -1628,7 +1621,7 @@ namespace PEP.Catalogos.Periodos
         /// Mariela Calvo
         /// Septiembre/2019
         /// Efecto: Encargado de mostrar la tabla del periodo al cual se van a transferir proyectos
-        /// Requiere: Presionar boton Nuevo Proyecto d
+        /// Requiere: Presionar boton con icono de flecha del pryecto que se desea transferir 
         /// Modifica: DropDownList y Tabla Proyectos Tranferidos
         /// Devuelve: -
         /// </summary>
@@ -1641,9 +1634,6 @@ namespace PEP.Catalogos.Periodos
             LinkedList<Proyectos> listaProyectosAgregados = proyectoServicios.ObtenerPorPeriodo(periodoAgregado.anoPeriodo);
 
             LinkedList<Proyectos> proyTransferir = proyectoServicios.ObtenerPorPeriodo(periodoActualSelec);
-
-
-
 
             Session["listaProyectoTransferir"] = proyTransferir;
             Session["listaProyectosTranferirFiltrado"] = proyTransferir;
@@ -2111,7 +2101,7 @@ namespace PEP.Catalogos.Periodos
         /// <summary>
         /// Mariela Calvo
         /// Septiembre/2019
-        /// Efecto: Modal de agrgar proyecto
+        /// Efecto: Modal de editar una unidad
         /// Requiere: Presionar con el icono editar de una de las unidades en la tabla de unidades
         /// Modifica: Tabla Unidades
         /// Devuelve: -
@@ -2179,6 +2169,7 @@ namespace PEP.Catalogos.Periodos
             }
 
         }
+
         /// <summary>
         /// Mariela Calvo
         /// Septiembre/2019
@@ -2205,9 +2196,6 @@ namespace PEP.Catalogos.Periodos
             }
             return valido;
         }
-
-
-
 
         #region otros
 

@@ -849,7 +849,7 @@
                         </div>
 
                         <div class="modal-footer" style="text-align: center">
-                            <asp:Button Text="Guardar cambios" ID="GuardarProyectosBtn" runat="server" class="btn btn-primary" />
+                            
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         </div>
 
