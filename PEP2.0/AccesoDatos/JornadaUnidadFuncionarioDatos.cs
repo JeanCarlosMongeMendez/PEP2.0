@@ -28,15 +28,16 @@ namespace AccesoDatos
         /// <param name="idFuncionario"></param>
         /// <param name="idUnidad"></param>
         /// <returns></returns>
-        public List<JornadaUnidadFuncionario> getJornadaUnidadFuncionario(int idFuncionario, int idUnidad)
+        public List<JornadaUnidadFuncionario> getJornadaUnidadFuncionario(int idFuncionario, int idProyecto)
         {
             SqlConnection sqlConnection = conexion.conexionPEP();
             List<JornadaUnidadFuncionario> listaJornadaUnidadFuncionarios = new List<JornadaUnidadFuncionario>();
             String consulta = @"select * from JornadaUnidadFuncionario ju JOIN Jornada j ON ju.id_jornada = j.id_jornada 
-            WHERE id_funcionario = @idFuncionario AND id_unidad = @idUnidad";
+            JOIN Unidad u ON ju.id_unidad = u.id_unidad 
+            WHERE id_funcionario = @idFuncionario AND u.id_proyecto = @idProyecto";
             SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
             sqlCommand.Parameters.AddWithValue("@idFuncionario", idFuncionario);
-            sqlCommand.Parameters.AddWithValue("@idUnidad", idFuncionario);
+            sqlCommand.Parameters.AddWithValue("@idProyecto", idProyecto);
             SqlDataReader reader;
             sqlConnection.Open();
             reader = sqlCommand.ExecuteReader();
@@ -44,7 +45,7 @@ namespace AccesoDatos
             {
                 JornadaUnidadFuncionario jornadaUnidadFuncionario = new JornadaUnidadFuncionario();
                 jornadaUnidadFuncionario.idFuncionario = Convert.ToInt32(reader["id_Funcionario"].ToString());
-                jornadaUnidadFuncionario.descUnidad = reader["desc_jornada"].ToString();
+                jornadaUnidadFuncionario.descUnidad = reader["nombre_unidad"].ToString();
                 jornadaUnidadFuncionario.idUnidad = Convert.ToInt32(reader["id_unidad"].ToString());
                 jornadaUnidadFuncionario.idJornada = Convert.ToInt32(reader["id_jornada"].ToString());
                 jornadaUnidadFuncionario.jornadaAsignada = Convert.ToDouble(reader["porcentaje_jornada"].ToString());

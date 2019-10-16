@@ -356,7 +356,7 @@
                 <%--footer--%>
                 <div class="modal-footer" style="text-align: center">
                     <asp:LinkButton ID="btnAsignarJornada" class="btn btn-default" OnClick="btnAsignarJornada_Click" runat="server">Asignar</asp:LinkButton>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <asp:LinkButton class="btn btn-default" OnClick="btnCerrarModalAsignarJornada_Click" runat="server">Cerrar</asp:LinkButton>
                 </div>
             </div>
         </div>
@@ -378,6 +378,10 @@
                 focus: true
             });
             $('#modalAsignarJornada').modal('show');
+        };
+
+        function cerrarModalAsignarJornada() {
+            $('#modalAsignarJornada').modal('hide');
         };
 
         function agregarDistribucion(josnListaUnidades) {

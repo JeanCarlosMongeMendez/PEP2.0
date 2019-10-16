@@ -25,11 +25,12 @@ namespace Servicios
         /// Modifica: -
         /// Devuelve: lista de jornadaUnidadFuncionario
         /// </summary>
-        /// <param name="funcionario"></param>
+        /// <param name="idFuncionario"></param>
+        /// <param name="idProyecto"></param>
         /// <returns></returns>
-        public List<JornadaUnidadFuncionario> getJornadaUnidadFuncionario(int idFuncionario, int idUnidad)
+        public List<JornadaUnidadFuncionario> getJornadaUnidadFuncionario(int idFuncionario, int idProyecto)
         {
-            return jornadaDatos.getJornadaUnidadFuncionario(idFuncionario, idUnidad);
+            return jornadaDatos.getJornadaUnidadFuncionario(idFuncionario, idProyecto);
         }
 
         /// <summary>

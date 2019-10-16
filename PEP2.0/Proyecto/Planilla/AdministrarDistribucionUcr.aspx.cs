@@ -504,7 +504,7 @@ namespace Proyecto.Planilla
             lblFuncionario.Text = funcionarioVer.nombreFuncionario;
             Session["idFuncionarioSeleccionado"] = funcionarioVer.idFuncionario;
             mostrarTablaUnidades();
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalDistribuirJornada();", true);
+            llenarProgressBar();
         }
 
         /// <summary>
@@ -521,6 +521,11 @@ namespace Proyecto.Planilla
         {
             String url = Page.ResolveUrl("~/Default.aspx");
             Response.Redirect(url);
+        }
+
+        protected void btnCerrarModalAsignarJornada_Click(object sender, EventArgs e)
+        {
+            llenarProgressBar();
         }
 
         /// <summary>
@@ -553,10 +558,21 @@ namespace Proyecto.Planilla
             ddlAsignarJornada.DataTextField = "porcentajeJornada";
             ddlAsignarJornada.DataValueField = "idJornada";
             ddlAsignarJornada.DataBind();
-            int idFuncionario = Convert.ToInt32(Session["idFuncionarioSeleccionado"]);
-            Session["listaUnidadesConJornadaAsignada"] = jornadaUnidadFuncionarioServicios.getJornadaUnidadFuncionario(idFuncionario, unidadSeleccionada.idUnidad);
             mostrarTablaUnidades();
+            //llenarProgressBar();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalAsignarJornada();", true);
+        }
+
+        private void llenarProgressBar()
+        {
+            int idProyecto = Convert.ToInt32(ddlProyecto.SelectedValue);
+            int idFuncionario = Convert.ToInt32(Session["idFuncionarioSeleccionado"]);
+            System.Web.Script.Serialization.JavaScriptSerializer oSerializer =
+            new System.Web.Script.Serialization.JavaScriptSerializer();
+            List<JornadaUnidadFuncionario> unidadesFuncionario = jornadaUnidadFuncionarioServicios.getJornadaUnidadFuncionario(idFuncionario, idProyecto);
+            Session["listaUnidadesConJornadaAsignada"] = unidadesFuncionario;
+            string sJSON = oSerializer.Serialize(unidadesFuncionario);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "agregarDistribucion('" + sJSON + "');", true);
         }
 
         /// <summary>
