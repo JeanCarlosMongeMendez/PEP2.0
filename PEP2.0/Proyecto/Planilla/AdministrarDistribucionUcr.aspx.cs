@@ -502,6 +502,7 @@ namespace Proyecto.Planilla
             lblJornada.Text = funcionarioVer.JornadaLaboral.descJornada + " , " + funcionarioVer.JornadaLaboral.porcentajeJornada+"%";
             lblFuncionario.Text = funcionarioVer.nombreFuncionario;
             Session["idFuncionarioSeleccionado"] = funcionarioVer.idFuncionario;
+            Session["listaUnidadesConJornadaAsignada"] = new List<UnidadFuncionario>();
             mostrarTablaUnidades();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalDistribuirJornada();", true);
         }
@@ -575,9 +576,41 @@ namespace Proyecto.Planilla
             unidadAsignada.idUnidad = idUnidad;
             unidadAsignada.jornadaAsignada = porcentaje;
             unidadAsignada.idFuncionario = Convert.ToInt32(Session["idFuncionarioSeleccionado"]);
+            unidadAsignada.descUnidad = unidad;
             List<UnidadFuncionario> unidadesFuncionario = (List<UnidadFuncionario>)Session["listaUnidadesConJornadaAsignada"];
+            if (unidadesFuncionario.Any(x => x.idUnidad == unidadAsignada.idUnidad))
+            {
+                unidadesFuncionario.RemoveAll( x=> x.idUnidad == unidadAsignada.idUnidad);
+            }
             unidadesFuncionario.Add(unidadAsignada);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "agregarDistribucion();", true);
+            System.Web.Script.Serialization.JavaScriptSerializer oSerializer =
+            new System.Web.Script.Serialization.JavaScriptSerializer();
+            string sJSON = oSerializer.Serialize(unidadesFuncionario);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "agregarDistribucion('"+sJSON+"');", true);
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 11/10/2019
+        /// Efecto : Remueve una jornada de unidad del funcionario
+        /// Requiere : Clickear el boton "Eliminar jornada" del formulario
+        /// Modifica : Lista de jornadas de un funcionario
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnEliminarUnidad_Click(object sender, EventArgs e)
+        {
+            int idUnidad = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+            List<UnidadFuncionario> unidadesFuncionario = (List<UnidadFuncionario>)Session["listaUnidadesConJornadaAsignada"];
+            if (unidadesFuncionario.Any(x => x.idUnidad == idUnidad))
+            {
+                unidadesFuncionario.RemoveAll(x => x.idUnidad == idUnidad);
+            }
+            System.Web.Script.Serialization.JavaScriptSerializer oSerializer =
+            new System.Web.Script.Serialization.JavaScriptSerializer();
+            string sJSON = oSerializer.Serialize(unidadesFuncionario);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "agregarDistribucion('" + sJSON + "');", true);
         }
 
         /// <summary>

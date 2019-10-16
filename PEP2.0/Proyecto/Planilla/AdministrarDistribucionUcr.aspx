@@ -243,10 +243,8 @@
                                                 <%# Eval("coordinador") %>
                                             </td>
                                             <td>
-                                                <%--<%# Eval("jornadaEnUnidad") %>--%>
-                                            </td>
-                                            <td>
-                                                <asp:LinkButton ID="btnSelccionarUnidad" OnClick="btnSelccionarUnidad_Click" runat="server" CommandArgument='<%# Eval("idUnidad") %>'>Asignar Jornada</asp:LinkButton>
+                                                <asp:LinkButton ID="btnSelccionarUnidad" OnClick="btnSelccionarUnidad_Click" runat="server" ToolTip="Seleccionar"  CommandArgument='<%# Eval("idUnidad") %>'><span class="glyphicon glyphicon-ok"></span></asp:LinkButton>
+                                                <asp:LinkButton ID="btnEliminarUnidad" OnClick="btnEliminarUnidad_Click" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("idUnidad") %>'><span class="btn glyphicon glyphicon-trash"></span></asp:LinkButton>
                                             </td>
                                         </tr>
                                     </ItemTemplate>
@@ -382,32 +380,24 @@
             $('#modalAsignarJornada').modal('show');
         };
 
-        function agregarDistribucion() {
-
-            var listaUnidadesConJornadaAsignada = '<%= Session["listaUnidadesConJornadaAsignada"] %>';
-            console.log(listaUnidadesConJornadaAsignada);
-
-            var porcentajeDistribucion = porcentaje;
-            var div = document.createElement('div');
-            var divCheckpoint = document.createElement('div');
-            div.id = 'progress' + unidad;
-            div.className = 'progress-bar';
-            div.role = "progressbar";
-            div.innerText = unidad;
-            divCheckpoint.className = 'progress-checkpoint';
-            divCheckpoint.style = 'left: ' + porcentaje + '%';
-            var progreso = 0;
-            var interval = setInterval(function () {
-                progreso += 5;
-                div.style.width = progreso + '%';
-                if (progreso >= porcentajeDistribucion) {
-                    clearInterval(interval);
-                }
-            }, 200);
-            document.getElementById('progressBar').appendChild(div);
-            document.getElementById('progress' + unidad).appendChild(divCheckpoint);
+        function agregarDistribucion(josnListaUnidades) {
+            var listaUnidadesAsignadas = JSON.parse(josnListaUnidades);
+            console.log(listaUnidadesAsignadas);
+            for (var unidad in listaUnidadesAsignadas) {
+                var porcentajeDistribucion = listaUnidadesAsignadas['' + unidad + ''].jornadaAsignada;
+                var div = document.createElement('div');
+                div.id = 'progress' + unidad;
+                div.className = 'progress-bar';
+                div.role = "progressbar";
+                div.innerText = listaUnidadesAsignadas['' + unidad + ''].descUnidad + " | " + porcentajeDistribucion + "%";
+                div.style.width = porcentajeDistribucion + '%';
+                div.style.borderRight = 'solid 5px #FFF';
+                document.getElementById('progressBar').appendChild(div);
+            }
             $('#modalDistribuirJornada').modal('show');
         }
+
+
     </script>
 
 </asp:Content>
