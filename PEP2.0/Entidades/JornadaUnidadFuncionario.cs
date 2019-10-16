@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    public class UnidadFuncionario
+    public class JornadaUnidadFuncionario
     {
         public int idUnidad { get; set; }
+        public int idJornada { get; set; }
         public string descUnidad { get; set; }
         public int idFuncionario { get; set; }
-        public string nombreFuncionario { get; set; }
         public double jornadaAsignada { get; set; }
     }
 }

@@ -62,7 +62,7 @@
     <Compile Include="Proyectos.cs" />
     <Compile Include="TipoTramite.cs" />
     <Compile Include="Unidad.cs" />
-    <Compile Include="UnidadFuncionario.cs" />
+    <Compile Include="JornadaUnidadFuncionario.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

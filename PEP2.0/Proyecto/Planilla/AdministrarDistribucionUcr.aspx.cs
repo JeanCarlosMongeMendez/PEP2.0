@@ -21,6 +21,7 @@ namespace Proyecto.Planilla
         private ProyectoServicios proyectoServicios = new ProyectoServicios();
         private UnidadServicios unidadServicios = new UnidadServicios();
         private JornadaServicios jornadaServicios = new JornadaServicios();
+        private JornadaUnidadFuncionarioServicios jornadaUnidadFuncionarioServicios = new JornadaUnidadFuncionarioServicios();
         #endregion
 
         #region variables globales paginacion Funcionarios
@@ -90,7 +91,7 @@ namespace Proyecto.Planilla
                 ddlProyecto.SelectedValue = proyectos.First.Value.idProyecto.ToString();
                 ddlProyecto.DataBind();
                 Session["listaUnidades"] = unidadServicios.ObtenerPorProyecto(Convert.ToInt32(ddlProyecto.SelectedValue));
-                Session["listaUnidadesConJornadaAsignada"] = new List<UnidadFuncionario>();
+                Session["listaUnidadesConJornadaAsignada"] = new List<JornadaUnidadFuncionario>();
                 mostrarTablaUnidades();
             }
         }
@@ -502,7 +503,6 @@ namespace Proyecto.Planilla
             lblJornada.Text = funcionarioVer.JornadaLaboral.descJornada + " , " + funcionarioVer.JornadaLaboral.porcentajeJornada+"%";
             lblFuncionario.Text = funcionarioVer.nombreFuncionario;
             Session["idFuncionarioSeleccionado"] = funcionarioVer.idFuncionario;
-            Session["listaUnidadesConJornadaAsignada"] = new List<UnidadFuncionario>();
             mostrarTablaUnidades();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalDistribuirJornada();", true);
         }
@@ -551,8 +551,10 @@ namespace Proyecto.Planilla
             List<Jornada> jornadas = jornadaServicios.getJornadasActivas();
             ddlAsignarJornada.DataSource = jornadas;
             ddlAsignarJornada.DataTextField = "porcentajeJornada";
-            ddlAsignarJornada.DataValueField = "porcentajeJornada";
+            ddlAsignarJornada.DataValueField = "idJornada";
             ddlAsignarJornada.DataBind();
+            int idFuncionario = Convert.ToInt32(Session["idFuncionarioSeleccionado"]);
+            Session["listaUnidadesConJornadaAsignada"] = jornadaUnidadFuncionarioServicios.getJornadaUnidadFuncionario(idFuncionario, unidadSeleccionada.idUnidad);
             mostrarTablaUnidades();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalAsignarJornada();", true);
         }
@@ -571,18 +573,34 @@ namespace Proyecto.Planilla
         {
             int idUnidad = Convert.ToInt32(IdUnidadSeleccionada.Value);
             string unidad = lblUnidad.Text;
-            double porcentaje = Convert.ToDouble(ddlAsignarJornada.SelectedValue);
-            UnidadFuncionario unidadAsignada = new UnidadFuncionario();
+            double porcentaje = Convert.ToDouble(ddlAsignarJornada.SelectedItem.Text);
+            JornadaUnidadFuncionario unidadAsignada = new JornadaUnidadFuncionario();
             unidadAsignada.idUnidad = idUnidad;
+            unidadAsignada.idJornada = Convert.ToInt32(ddlAsignarJornada.SelectedValue);
             unidadAsignada.jornadaAsignada = porcentaje;
             unidadAsignada.idFuncionario = Convert.ToInt32(Session["idFuncionarioSeleccionado"]);
             unidadAsignada.descUnidad = unidad;
-            List<UnidadFuncionario> unidadesFuncionario = (List<UnidadFuncionario>)Session["listaUnidadesConJornadaAsignada"];
+            List<JornadaUnidadFuncionario> unidadesFuncionario = (List<JornadaUnidadFuncionario>)Session["listaUnidadesConJornadaAsignada"];
             if (unidadesFuncionario.Any(x => x.idUnidad == unidadAsignada.idUnidad))
             {
                 unidadesFuncionario.RemoveAll( x=> x.idUnidad == unidadAsignada.idUnidad);
+                jornadaUnidadFuncionarioServicios.eliminarJornadaUnidadFuncionario(unidadAsignada);
             }
-            unidadesFuncionario.Add(unidadAsignada);
+            double tiempoAsignado = 0;
+            foreach(JornadaUnidadFuncionario unidadFuncionario in unidadesFuncionario)
+            {
+                tiempoAsignado += unidadFuncionario.jornadaAsignada;
+            }
+            if((tiempoAsignado+unidadAsignada.jornadaAsignada) <= 100)
+            {
+                unidadesFuncionario.Add(unidadAsignada);
+                jornadaUnidadFuncionarioServicios.insertarJornadaUnidadFuncionario(unidadAsignada);
+                Toastr("success", "Jornada en "+ unidadAsignada.descUnidad +" agregada con éxito!");
+            }
+            else
+            {
+                Toastr("error", "Se sobrepasa el tiempo disponible");
+            }
             System.Web.Script.Serialization.JavaScriptSerializer oSerializer =
             new System.Web.Script.Serialization.JavaScriptSerializer();
             string sJSON = oSerializer.Serialize(unidadesFuncionario);
@@ -602,10 +620,20 @@ namespace Proyecto.Planilla
         protected void btnEliminarUnidad_Click(object sender, EventArgs e)
         {
             int idUnidad = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
-            List<UnidadFuncionario> unidadesFuncionario = (List<UnidadFuncionario>)Session["listaUnidadesConJornadaAsignada"];
+            int idFuncionario = Convert.ToInt32(Session["idFuncionarioSeleccionado"]);
+            List<JornadaUnidadFuncionario> unidadesFuncionario = (List<JornadaUnidadFuncionario>)Session["listaUnidadesConJornadaAsignada"];
             if (unidadesFuncionario.Any(x => x.idUnidad == idUnidad))
             {
                 unidadesFuncionario.RemoveAll(x => x.idUnidad == idUnidad);
+                JornadaUnidadFuncionario jornadaEliminar = new JornadaUnidadFuncionario();
+                jornadaEliminar.idFuncionario = idFuncionario;
+                jornadaEliminar.idUnidad = idUnidad;
+                jornadaUnidadFuncionarioServicios.eliminarJornadaUnidadFuncionario(jornadaEliminar);
+                Toastr("success", "Se eliminó la jornada con éxito!");
+            }
+            else
+            {
+                Toastr("error", "La jornada no se ha asignado");
             }
             System.Web.Script.Serialization.JavaScriptSerializer oSerializer =
             new System.Web.Script.Serialization.JavaScriptSerializer();
@@ -647,6 +675,19 @@ namespace Proyecto.Planilla
             mostrarDatosTabla();
         }
 
+        #endregion
+
+        #region otros
+
+        private void Toastr(string tipo, string mensaje)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr." + tipo + "('" + mensaje + "');", true);
+        }
+
+        protected void Page_PreRender(object sender, EventArgs e)
+        {
+            ViewState["CheckRefresh"] = Session["CheckRefresh"];
+        }
         #endregion
     }
 }
