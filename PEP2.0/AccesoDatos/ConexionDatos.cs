@@ -27,7 +27,7 @@ namespace AccesoDatos
          */
         public SqlConnection conexionPEP()
         {
-            return new SqlConnection(System.Web.Configuration.WebConfigurationManager.ConnectionStrings["CTLconnectionString"].ConnectionString);
+            return new SqlConnection(System.Web.Configuration.WebConfigurationManager.ConnectionStrings["PEPconnectionString"].ConnectionString);
         }
         
         /*
