@@ -429,10 +429,11 @@
                                     
                                                     </td>
                                                      <td>
-                                                    
-                                                        <%# Eval("Monto") %>
+
+                                                         <%# Eval("MontoDisponible") %>
                                     
-                                                    </td>
+                                                     </td>
+                                                   
                                                     <td>
                                                          ₡ <asp:TextBox class="form-control" ID="txtMonto" runat="server" ReadOnly="True"></asp:TextBox>
                                    

@@ -256,7 +256,7 @@ namespace AccesoDatos
 
             String consulta = @"select id_presupuesto_egreso,id_partida,monto, descripcion,es.id_estado_presupuesto,id_linea  from Presupuesto_Egreso_Partida Pre ,Estado_presupuestos es
 
-                                 where id_partida=@id_partida_  and pre.id_estado_presupuesto=es.id_estado_presupuesto;";
+                                 where id_partida=@id_partida_  and pre.id_estado_presupuesto=es.id_estado_presupuesto and pre.id_estado_presupuesto=2;";
 
             SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
             sqlCommand.Parameters.AddWithValue("@id_partida_", idPartida);

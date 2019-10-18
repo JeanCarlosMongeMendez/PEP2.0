@@ -13,5 +13,6 @@ namespace Entidades
         public int IdUnidad { get; set; }
         public string NumeroPartida { get; set; }
         public double Monto { get; set; }
+        public double MontoDisponible { get; set; }
     }
 }
