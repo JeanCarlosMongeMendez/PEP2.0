@@ -26,6 +26,9 @@ namespace PEP
             Session["rol"] = null;
             Session["nombreCompleto"] = null;
 
+            this.txtPassword.Attributes.Add("onkeypress", "button_click(this,'" + this.btIngresar.ClientID + "')");
+            this.txtUsuario.Attributes.Add("onkeypress", "button_click(this,'" + this.btIngresar.ClientID + "')");
+
         }
         #endregion
 
