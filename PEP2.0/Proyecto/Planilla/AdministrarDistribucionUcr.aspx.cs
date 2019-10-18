@@ -45,7 +45,7 @@ namespace Proyecto.Planilla
         }
         #endregion
 
-        #region variables globales unidades
+        #region variables globales paginacion unidades
         readonly PagedDataSource pgsourceUnidad = new PagedDataSource();
         int primerIndexUnidad, ultimoIndexUnidad;
         private int paginaActualUnidad
@@ -187,11 +187,59 @@ namespace Proyecto.Planilla
             rptPaginacion.DataSource = dt;
             rptPaginacion.DataBind();
         }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 18/10/2019
+        /// Efecto : Llena el progress bar del modal Distribuir jornada
+        /// Requiere : -
+        /// Modifica : Progress bar del modal Distribuir Jornada
+        /// Devuelve : -
+        /// </summary>
+        private void llenarProgressBar()
+        {
+            int idProyecto = Convert.ToInt32(ddlProyecto.SelectedValue);
+            int idFuncionario = Convert.ToInt32(Session["idFuncionarioSeleccionado"]);
+            System.Web.Script.Serialization.JavaScriptSerializer oSerializer =
+            new System.Web.Script.Serialization.JavaScriptSerializer();
+            List<JornadaUnidadFuncionario> unidadesFuncionario = jornadaUnidadFuncionarioServicios.getJornadaUnidadFuncionario(idFuncionario, idProyecto);
+            Session["listaUnidadesConJornadaAsignada"] = unidadesFuncionario;
+            string sJSON = oSerializer.Serialize(unidadesFuncionario);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "agregarDistribucion('" + sJSON + "');", true);
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 18/10/2019
+        /// Efecto : elimina una jornada laboral de un funcionario en una unidad
+        /// Requiere : id de la unidad que se desea eliminar
+        /// Modifica : Lista de jornadas de un funcionario
+        /// Devuelve : true si se eliminó correctamente, false si no existe en la lista de jornadas asignadas
+        /// </summary>
+        /// <param name="idUnidad"></param>
+        /// <returns></returns>
+        private bool eliminarJornadaUnidadFuncionario(int idUnidad)
+        {
+            bool result = false;
+            int idFuncionario = Convert.ToInt32(Session["idFuncionarioSeleccionado"]);
+            List<JornadaUnidadFuncionario> unidadesFuncionario = (List<JornadaUnidadFuncionario>)Session["listaUnidadesConJornadaAsignada"];
+            if (unidadesFuncionario.Any(x => x.idUnidad == idUnidad))
+            {
+                unidadesFuncionario.RemoveAll(x => x.idUnidad == idUnidad);
+                JornadaUnidadFuncionario jornadaEliminar = new JornadaUnidadFuncionario();
+                jornadaEliminar.idFuncionario = idFuncionario;
+                jornadaEliminar.idUnidad = idUnidad;
+                jornadaUnidadFuncionarioServicios.eliminarJornadaUnidadFuncionario(jornadaEliminar);
+                result = true;
+            }
+            return result;
+        }
+
         #endregion
 
         #region eventos
 
-        #region paginacion
+        #region paginacion tabla funcionarios
         /// <summary>
         /// Leonardo Carrion
         /// 14/jun/2019
@@ -485,7 +533,7 @@ namespace Proyecto.Planilla
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void btnSelccionar_Click(object sender, EventArgs e)
+        protected void btnSelccionarFuncionario_Click(object sender, EventArgs e)
         {
             int id = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
             Funcionario funcionarioVer = null;
@@ -523,6 +571,16 @@ namespace Proyecto.Planilla
             Response.Redirect(url);
         }
 
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 18/10/2019
+        /// Efecto : Al cerrar el modal de asgnar jornada, recupera el estado del modal Distribuir jornada
+        /// Requiere : Clickear el botón "Cerrar" del modal Asignar jornada
+        /// Modifica : -
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnCerrarModalAsignarJornada_Click(object sender, EventArgs e)
         {
             llenarProgressBar();
@@ -559,20 +617,7 @@ namespace Proyecto.Planilla
             ddlAsignarJornada.DataValueField = "idJornada";
             ddlAsignarJornada.DataBind();
             mostrarTablaUnidades();
-            //llenarProgressBar();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalAsignarJornada();", true);
-        }
-
-        private void llenarProgressBar()
-        {
-            int idProyecto = Convert.ToInt32(ddlProyecto.SelectedValue);
-            int idFuncionario = Convert.ToInt32(Session["idFuncionarioSeleccionado"]);
-            System.Web.Script.Serialization.JavaScriptSerializer oSerializer =
-            new System.Web.Script.Serialization.JavaScriptSerializer();
-            List<JornadaUnidadFuncionario> unidadesFuncionario = jornadaUnidadFuncionarioServicios.getJornadaUnidadFuncionario(idFuncionario, idProyecto);
-            Session["listaUnidadesConJornadaAsignada"] = unidadesFuncionario;
-            string sJSON = oSerializer.Serialize(unidadesFuncionario);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "agregarDistribucion('" + sJSON + "');", true);
         }
 
         /// <summary>
@@ -596,12 +641,8 @@ namespace Proyecto.Planilla
             unidadAsignada.jornadaAsignada = porcentaje;
             unidadAsignada.idFuncionario = Convert.ToInt32(Session["idFuncionarioSeleccionado"]);
             unidadAsignada.descUnidad = unidad;
+            eliminarJornadaUnidadFuncionario(idUnidad);
             List<JornadaUnidadFuncionario> unidadesFuncionario = (List<JornadaUnidadFuncionario>)Session["listaUnidadesConJornadaAsignada"];
-            if (unidadesFuncionario.Any(x => x.idUnidad == unidadAsignada.idUnidad))
-            {
-                unidadesFuncionario.RemoveAll( x=> x.idUnidad == unidadAsignada.idUnidad);
-                jornadaUnidadFuncionarioServicios.eliminarJornadaUnidadFuncionario(unidadAsignada);
-            }
             double tiempoAsignado = 0;
             foreach(JornadaUnidadFuncionario unidadFuncionario in unidadesFuncionario)
             {
@@ -617,10 +658,7 @@ namespace Proyecto.Planilla
             {
                 Toastr("error", "Se sobrepasa el tiempo disponible");
             }
-            System.Web.Script.Serialization.JavaScriptSerializer oSerializer =
-            new System.Web.Script.Serialization.JavaScriptSerializer();
-            string sJSON = oSerializer.Serialize(unidadesFuncionario);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "agregarDistribucion('"+sJSON+"');", true);
+            llenarProgressBar();
         }
 
         /// <summary>
@@ -636,25 +674,14 @@ namespace Proyecto.Planilla
         protected void btnEliminarUnidad_Click(object sender, EventArgs e)
         {
             int idUnidad = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
-            int idFuncionario = Convert.ToInt32(Session["idFuncionarioSeleccionado"]);
-            List<JornadaUnidadFuncionario> unidadesFuncionario = (List<JornadaUnidadFuncionario>)Session["listaUnidadesConJornadaAsignada"];
-            if (unidadesFuncionario.Any(x => x.idUnidad == idUnidad))
-            {
-                unidadesFuncionario.RemoveAll(x => x.idUnidad == idUnidad);
-                JornadaUnidadFuncionario jornadaEliminar = new JornadaUnidadFuncionario();
-                jornadaEliminar.idFuncionario = idFuncionario;
-                jornadaEliminar.idUnidad = idUnidad;
-                jornadaUnidadFuncionarioServicios.eliminarJornadaUnidadFuncionario(jornadaEliminar);
+            if (eliminarJornadaUnidadFuncionario(idUnidad)) { 
                 Toastr("success", "Se eliminó la jornada con éxito!");
             }
             else
             {
                 Toastr("error", "La jornada no se ha asignado");
             }
-            System.Web.Script.Serialization.JavaScriptSerializer oSerializer =
-            new System.Web.Script.Serialization.JavaScriptSerializer();
-            string sJSON = oSerializer.Serialize(unidadesFuncionario);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "agregarDistribucion('" + sJSON + "');", true);
+            llenarProgressBar();
         }
 
         /// <summary>
@@ -693,7 +720,7 @@ namespace Proyecto.Planilla
 
         #endregion
 
-        #region otros
+        #region mensaje toast
 
         private void Toastr(string tipo, string mensaje)
         {
