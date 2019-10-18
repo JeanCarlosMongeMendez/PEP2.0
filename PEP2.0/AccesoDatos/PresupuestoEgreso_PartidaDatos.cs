@@ -249,5 +249,40 @@ namespace AccesoDatos
             command.ExecuteReader();
             sqlConnection.Close();
         }
+        public List<PresupuestoEgresoPartida> ObtenerPorPartida(string idPartida)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+            List<PresupuestoEgresoPartida> listaPresupuestoEgresoPartida = new List<PresupuestoEgresoPartida>();
+
+            String consulta = @"select id_presupuesto_egreso,id_partida,monto, descripcion,es.id_estado_presupuesto,id_linea  from Presupuesto_Egreso_Partida Pre ,Estado_presupuestos es
+
+                                 where id_partida=@id_partida_  and pre.id_estado_presupuesto=es.id_estado_presupuesto;";
+
+            SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@id_partida_", idPartida);
+
+            SqlDataReader reader;
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                PresupuestoEgresoPartida presupuestoEgresoPartida = new PresupuestoEgresoPartida();
+                EstadoPresupuesto estadoPresupuesto = new EstadoPresupuesto();
+                estadoPresupuesto.idEstadoPresupuesto = Convert.ToInt32(reader["id_estado_presupuesto"].ToString());
+                presupuestoEgresoPartida.estadoPresupuesto = estadoPresupuesto;
+                presupuestoEgresoPartida.idPresupuestoEgreso = Convert.ToInt32(reader["id_presupuesto_egreso"].ToString());
+                presupuestoEgresoPartida.monto = Convert.ToDouble(reader["monto"].ToString());
+                presupuestoEgresoPartida.descripcion = reader["descripcion"].ToString();
+                presupuestoEgresoPartida.idLinea = Convert.ToInt32(reader["id_linea"].ToString());
+
+                listaPresupuestoEgresoPartida.Add(presupuestoEgresoPartida);
+
+            }
+
+            sqlConnection.Close();
+
+            return listaPresupuestoEgresoPartida;
+        }
     }
 }

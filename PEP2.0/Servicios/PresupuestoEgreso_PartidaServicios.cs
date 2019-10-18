@@ -102,5 +102,11 @@ namespace Servicios
         {
             presupuestoEgreso_PartidaDatos.actualizarEstadoPresupuestoEgreso_Partida(presupuestoEgresoPartida);
         }
+
+
+        public List<PresupuestoEgresoPartida> obtenerEgreso_Partida_porIdPartida(string idPartida)
+        {
+           return presupuestoEgreso_PartidaDatos.ObtenerPorPartida(idPartida);
+        }
     }
 }
