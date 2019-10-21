@@ -60,6 +60,7 @@
     <Compile Include="PresupuestoIngresoServicios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProyectoServicios.cs" />
+    <Compile Include="Reporte_EgresosServicios.cs" />
     <Compile Include="TipoTramiteServicios.cs" />
     <Compile Include="UnidadServicios.cs" />
   </ItemGroup>
