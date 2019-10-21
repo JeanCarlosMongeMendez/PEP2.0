@@ -76,7 +76,7 @@
                         <ItemTemplate>
                             <tr style="text-align: center">
                                 <td>
-                                    <asp:LinkButton ID="btnSelccionar" OnClick="btnSelccionar_Click" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("idFuncionario") %>'><span class="glyphicon glyphicon-ok"></span></asp:LinkButton>
+                                    <asp:LinkButton ID="btnSelccionar" OnClick="btnSelccionarFuncionario_Click" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("idFuncionario") %>'><span class="glyphicon glyphicon-ok"></span></asp:LinkButton>
                                 </td>
                                 <td>
                                     <%# Eval("nombreFuncionario") %>
