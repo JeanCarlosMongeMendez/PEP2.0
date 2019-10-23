@@ -26,7 +26,7 @@
 
                  <div class="col-md-6 col-xs-6 col-sm-6">
                     <h4>Pasar Partidas</h4>
-                    <asp:Button ID="btnPasarPartidas" runat="server" Text="Pasar Partidas" CssClass="btn btn-primary boton-nuevo" OnClick="btnPasarPartidas_Click" />
+                    <asp:Button ID="btnPasarPartidas" runat="server" Text="Pasar Partidas" CssClass="btn btn-primary boton-otro" OnClick="btnPasarPartidas_Click" />
                 </div>
                 
                 <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
@@ -430,7 +430,7 @@
                             </div>
                         </div>
                         <div class="modal-footer" style="text-align: center">
-                            <asp:Button ID="btnEliminarPartidaModal" runat="server" Text="Eliminar" CssClass="btn btn-primary" OnClick="btnEliminarPartidaModal_Click"/>
+                            <asp:Button ID="btnEliminarPartidaModal" runat="server" Text="Eliminar" CssClass="btn btn-primary" OnClick="btnConfirmarEliminarPartida"/>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         </div>
                     </div>
@@ -694,6 +694,51 @@
              </div>
          </div>
 
+             <!-- Modal Confirmar Eliminar Unidad -->
+    <asp:UpdatePanel ID="UPEliminar" runat="server">
+        <ContentTemplate>
+            <div id="modalConfirmarPartida" class="modal fade" role="alertdialog">
+                <div class="modal-dialog modal-lg">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Confirmar Eliminar Partida</h4>
+                        </div>
+                        <div class="modal-body">
+                            <%-- campos a llenar --%>
+                            <div class="row">
+
+                                <%-- fin campos a llenar --%>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <br />
+                                </div>
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <center>
+                                             <asp:Label runat="server" Text="" Font-Size="Large" ForeColor="Black"></asp:Label>
+                                             <p>¿Está seguro que desea eliminar la Partida?</p> 
+                                                         
+                                            </center>
+                                </div>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="text-align: center">
+                            <asp:Button ID="btnConfirmar" runat="server" Text="Confirmar" CssClass="btn btn-primary boton-eliminar" OnClick="btnEliminarPartidaModal_Click" />
+                            <button type="button" class="btn btn-default boton-otro" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+    <!-- FIN Modal Confirmar Eliminar Unidad -->
 
 
 
@@ -723,6 +768,9 @@
          function activarModalPasarPartida() {
             $('#modalPasarPartida').modal('show');
         };
+        function activarModalConfirmarPartida() {
+             $('#modalConfirmarPartida').modal('show');
+        }
     </script>
     <!-- Script fin -->
 

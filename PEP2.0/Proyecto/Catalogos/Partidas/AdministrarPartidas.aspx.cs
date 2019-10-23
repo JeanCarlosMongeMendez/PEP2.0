@@ -503,7 +503,24 @@ namespace Proyecto.Catalogos.Partidas
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Todos los espacios son requeridos" + "');", true);
             }
         }
-
+        /// <summary>
+        /// Mariela Calvo
+        /// 21/octubre/2019
+        /// Efecto: Pide confirmar eliminar la partid seleccionada
+        /// Requiere: 
+        /// Modifica: datos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// 
+        protected void btnConfirmarEliminarPartida(Object sender, EventArgs e)
+        {
+            
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalConfirmarPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalConfirmarPartida').hide();", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalConfirmarPartida()", true);
+        }
+       
         /// <summary>
         /// Jesús Torres
         /// 26/sept/2019
@@ -1121,7 +1138,7 @@ namespace Proyecto.Catalogos.Partidas
             ddl.Items.Add(new ListItem("Partida Padre", "null"));
 
             ddlPartidasUCR.Items.Clear();
-            ddlPartidasUCR.Items.Add(new ListItem("Tipo Partida", "null"));
+           
             ddlPartidasUCR.Items.Add(new ListItem("UCR", "true"));
             ddlPartidasUCR.Items.Add(new ListItem("Fundevi", "false"));
 
