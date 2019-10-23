@@ -1142,6 +1142,7 @@ namespace Proyecto.Catalogos.Ejecucion
 
                 rpUnidadPartida.DataSource = pgsource;
                 rpUnidadPartida.DataBind();
+                contador++;
             }
             else
             {
@@ -1359,6 +1360,7 @@ namespace Proyecto.Catalogos.Ejecucion
             listaUnidad.RemoveAll(item => item.idUnidad > 0);
             MostrarDatosTablaUnidad(listaUnidad);
             count = 0;
+            contador = 0;
             MostrarTablaRepartirGastos();
         }
 
