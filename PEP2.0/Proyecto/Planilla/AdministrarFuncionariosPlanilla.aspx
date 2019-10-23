@@ -214,7 +214,7 @@
                                 </div>
 
                                 <div class="col-md-9 col-xs-12 col-sm-12" style="text-align: left">
-                                    <asp:DropDownList ID="ddlJornadaLaboral" class="btn btn-default dropdown-toggle" runat="server" AutoPostBack="true"></asp:DropDownList>
+                                    <asp:DropDownList ID="ddlJornadaLaboral" class="btn btn-default dropdown-toggle" runat="server"></asp:DropDownList>
                                 </div>
 
                             </div>

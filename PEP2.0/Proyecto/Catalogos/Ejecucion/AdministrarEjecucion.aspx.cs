@@ -21,6 +21,8 @@ namespace Proyecto.Catalogos.Ejecucion
         TipoTramiteServicios tipoTramiteServicios;
         UnidadServicios unidadServicios;
         PartidaServicios partidaServicios;
+        PresupuestoEgreso_PartidaServicios presupuestoEgreso_PartidaServicios;
+        PartidaUnidad partidaUnidad;
         private int elmentosMostrar = 10;
         //se utiliza en el metodo  MostrarDatosTablaUnidad();se utiliza para pasar unidades seleccionadas de la tabla que aparece en el  #modalElegirUnidad
         static List<Unidad> listaUnidad = new List<Unidad>();
@@ -105,6 +107,8 @@ namespace Proyecto.Catalogos.Ejecucion
             this.unidadServicios = new UnidadServicios();
             this.partidaServicios = new PartidaServicios();
             this.tipoTramiteServicios = new TipoTramiteServicios();
+            this.presupuestoEgreso_PartidaServicios = new PresupuestoEgreso_PartidaServicios();
+            this.partidaUnidad = new PartidaUnidad();
             if (!IsPostBack)
             {
                 Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());
@@ -941,22 +945,35 @@ namespace Proyecto.Catalogos.Ejecucion
             else
             {
                 string idPartida = ((LinkButton)(sender)).CommandArgument.ToString();
+                List<PresupuestoEgresoPartida> listaPartidasEgreso = new List<PresupuestoEgresoPartida>();
+                listaPartidasEgreso = presupuestoEgreso_PartidaServicios.obtenerEgreso_Partida_porIdPartida(idPartida);
                 double monto = Convert.ToDouble(txtMontoIngresar.Text);
-                List<Partida> partidasElegidas = (List<Partida>)Session["partidasAsignadas"];
-                List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
+                List<PartidaUnidad> partidasElegidas = (List<PartidaUnidad>)Session["partidasAsignadas"];
+                List<PartidaUnidad> partidasElegidasConMonto = new List<PartidaUnidad>();
                 PartidaUnidad partidaUnidad = new PartidaUnidad();
-                foreach (Partida p in partidasElegidas)
+                Double montoDisponible = (Double)listaPartidasEgreso.Sum(presupuesto => presupuesto.monto);
+                if (monto <= montoDisponible)
                 {
-                    if (p.numeroPartida.Equals(idPartida))
+                    foreach (PartidaUnidad p in partidasElegidas)
                     {
-                        partidaUnidad.IdUnidad = p.idUnidad;
-                        partidaUnidad.NumeroPartida = idPartida;
-                        partidaUnidad.Monto = monto;
-                        partidasElegidasConMonto.Add(partidaUnidad);
-                    }
-                }
+                        if (p.IdPartida == Convert.ToInt32(idPartida))
+                        {
+                            partidaUnidad.IdPartida = p.IdPartida;
+                            partidaUnidad.IdUnidad = p.IdUnidad;
+                            partidaUnidad.NumeroPartida =p.NumeroPartida;
+                            double saldo = montoDisponible - monto;
+                            partidaUnidad.MontoDisponible = saldo;
+                            partidasElegidas.RemoveAll(item => item.IdPartida == p.IdPartida);
+                            //partidaUnidad.Monto = monto;
 
-                Session["partidasAsignadasConMonto"] = partidasAsignadas;
+                            partidasElegidasConMonto.Add(partidaUnidad);
+                            partidasElegidas.Add(partidaUnidad);
+                        }
+                    }
+
+                    Session["partidasAsignadasConMonto"] = partidasAsignadas;
+                    Session["partidasAsignadas"] = partidasElegidas;
+                }
             }
         }
 
@@ -1014,12 +1031,18 @@ namespace Proyecto.Catalogos.Ejecucion
             List<Partida> partidasElegidas = new List<Partida>();
             partidasElegidas = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
             List<PartidaUnidad> partidaUnidad = new List<PartidaUnidad>();
-
+            List<PresupuestoEgresoPartida> listaPartidasEgreso = new List<PresupuestoEgresoPartida>();
             foreach (Partida p in partidasElegidas)
             {
                 PartidaUnidad partidaU = new PartidaUnidad();
+                partidaU.IdPartida = p.idPartida;
                 partidaU.IdUnidad = p.idUnidad;
                 partidaU.NumeroPartida = p.numeroPartida;
+               
+                listaPartidasEgreso = presupuestoEgreso_PartidaServicios.obtenerEgreso_Partida_porIdPartida(Convert.ToString(p.idPartida));
+                Double montoDisponible = (Double)listaPartidasEgreso.Sum(presupuesto => presupuesto.monto);
+
+                partidaU.MontoDisponible = montoDisponible;
                 partidaUnidad.Add(partidaU);
 
             }

@@ -60,8 +60,10 @@
     <Compile Include="PresupuestoIngreso.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proyectos.cs" />
+    <Compile Include="Reporte_Egresos.cs" />
     <Compile Include="TipoTramite.cs" />
     <Compile Include="Unidad.cs" />
+    <Compile Include="JornadaUnidadFuncionario.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

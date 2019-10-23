@@ -400,6 +400,7 @@
                                                 <th></th>
                                                 <th>Unidad</th>
                                                 <th>Número de partida </th>
+                                                <th>Saldo </th>
                                                 <th>Monto </th>
                                             </tr>
                                         </thead>
@@ -412,7 +413,7 @@
                                                 <tr style="text-align: center">
 
                                                     <td>
-                                                       <asp:LinkButton ID="btnAlmacenarUnidadPartida" runat="server" ToolTip="Almacenar" CommandArgument='<%# Eval("numeroPartida") %>'  OnClick="btnAlmacenarUnidadPartida_Click"><span class="btn  glyphicon glyphicon-ok-sign"></span></asp:LinkButton>
+                                                       <asp:LinkButton ID="btnAlmacenarUnidadPartida" runat="server" ToolTip="Almacenar" CommandArgument='<%# Eval("idPartida") %>'  OnClick="btnAlmacenarUnidadPartida_Click"><span class="btn  glyphicon glyphicon-ok-sign"></span></asp:LinkButton>
 
                                                     </td>
                                                     <td>
@@ -427,8 +428,14 @@
                                                         <%# Eval("numeroPartida") %>
                                     
                                                     </td>
+                                                     <td>
+
+                                                         <%# Eval("MontoDisponible") %>
+                                    
+                                                     </td>
+                                                   
                                                     <td>
-                                                         ₡<asp:TextBox ID="montoAsignado" runat="server"  Text=""></asp:TextBox>
+                                                         ₡ <asp:TextBox class="form-control" ID="txtMonto" runat="server" ReadOnly="True"></asp:TextBox>
                                    
                                                      </td>
 

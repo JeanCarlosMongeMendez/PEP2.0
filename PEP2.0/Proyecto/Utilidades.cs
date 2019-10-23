@@ -11,10 +11,8 @@ namespace PEP
     internal static class Utilidades
     {
         public static List<System.Web.UI.WebControls.HyperLink> aplicaciones { get; set; }
-        //public static string logs_path = "\\\\issac\\AppFiles\\CCNP\\CAFL\\logs";
-        public static string logs_path = "C:\\Proyecto\\";
-        //public static string path = "\\\\issac\\AppFiles\\";
-        public static string path = "C:\\Proyecto\\";
+        public static string path = "\\\\gaia\\AppFiles\\PEP\\";
+        public static string logs_path = path + "logs";
 
 
         public static void MensajeBox(string mensaje, string tipo, ClientScriptManager ClientScript, System.Web.UI.Page pag)

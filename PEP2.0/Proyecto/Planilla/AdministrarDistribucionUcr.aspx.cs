@@ -19,9 +19,12 @@ namespace Proyecto.Planilla
         private FuncionarioServicios funcionarioServicios = new FuncionarioServicios();
         private PeriodoServicios periodoServicios = new PeriodoServicios();
         private ProyectoServicios proyectoServicios = new ProyectoServicios();
+        private UnidadServicios unidadServicios = new UnidadServicios();
+        private JornadaServicios jornadaServicios = new JornadaServicios();
+        private JornadaUnidadFuncionarioServicios jornadaUnidadFuncionarioServicios = new JornadaUnidadFuncionarioServicios();
         #endregion
 
-        #region variables globales paginacion
+        #region variables globales paginacion Funcionarios
         readonly PagedDataSource pgsource = new PagedDataSource();
         int primerIndex, ultimoIndex;
         private int elmentosMostrar = 10;
@@ -42,6 +45,26 @@ namespace Proyecto.Planilla
         }
         #endregion
 
+        #region variables globales paginacion unidades
+        readonly PagedDataSource pgsourceUnidad = new PagedDataSource();
+        int primerIndexUnidad, ultimoIndexUnidad;
+        private int paginaActualUnidad
+        {
+            get
+            {
+                if (ViewState["paginaActualUnidad"] == null)
+                {
+                    return 0;
+                }
+                return ((int)ViewState["paginaActualUnidad"]);
+            }
+            set
+            {
+                ViewState["paginaActualUnidad"] = value;
+            }
+        }
+        #endregion
+
         #region page load
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -52,25 +75,24 @@ namespace Proyecto.Planilla
             if (!IsPostBack)
             {
                 List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios();
-
                 Session["listaFuncionarios"] = listaFuncionarios;
                 Session["listaFuncionariosFiltrada"] = listaFuncionarios;
-
                 mostrarDatosTabla();
-
                 //llenar drop down list
                 LinkedList<Periodo> periodos = (LinkedList<Periodo>)periodoServicios.ObtenerTodos();
                 ddlPeriodo.DataSource = periodos;
                 ddlPeriodo.DataTextField = "anoPeriodo";
                 ddlPeriodo.DataValueField = "anoPeriodo";
                 ddlPeriodo.DataBind();
-
-
                 LinkedList<Proyectos> proyectos = proyectoServicios.ObtenerPorPeriodo(periodos.First().anoPeriodo);
                 ddlProyecto.DataSource = proyectos;
                 ddlProyecto.DataTextField = "nombreProyecto";
                 ddlProyecto.DataValueField = "idProyecto";
+                ddlProyecto.SelectedValue = proyectos.First.Value.idProyecto.ToString();
                 ddlProyecto.DataBind();
+                Session["listaUnidades"] = unidadServicios.ObtenerPorProyecto(Convert.ToInt32(ddlProyecto.SelectedValue));
+                Session["listaUnidadesConJornadaAsignada"] = new List<JornadaUnidadFuncionario>();
+                mostrarTablaUnidades();
             }
         }
         #endregion
@@ -165,11 +187,59 @@ namespace Proyecto.Planilla
             rptPaginacion.DataSource = dt;
             rptPaginacion.DataBind();
         }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 18/10/2019
+        /// Efecto : Llena el progress bar del modal Distribuir jornada
+        /// Requiere : -
+        /// Modifica : Progress bar del modal Distribuir Jornada
+        /// Devuelve : -
+        /// </summary>
+        private void llenarProgressBar()
+        {
+            int idProyecto = Convert.ToInt32(ddlProyecto.SelectedValue);
+            int idFuncionario = Convert.ToInt32(Session["idFuncionarioSeleccionado"]);
+            System.Web.Script.Serialization.JavaScriptSerializer oSerializer =
+            new System.Web.Script.Serialization.JavaScriptSerializer();
+            List<JornadaUnidadFuncionario> unidadesFuncionario = jornadaUnidadFuncionarioServicios.getJornadaUnidadFuncionario(idFuncionario, idProyecto);
+            Session["listaUnidadesConJornadaAsignada"] = unidadesFuncionario;
+            string sJSON = oSerializer.Serialize(unidadesFuncionario);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "agregarDistribucion('" + sJSON + "');", true);
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 18/10/2019
+        /// Efecto : elimina una jornada laboral de un funcionario en una unidad
+        /// Requiere : id de la unidad que se desea eliminar
+        /// Modifica : Lista de jornadas de un funcionario
+        /// Devuelve : true si se eliminó correctamente, false si no existe en la lista de jornadas asignadas
+        /// </summary>
+        /// <param name="idUnidad"></param>
+        /// <returns></returns>
+        private bool eliminarJornadaUnidadFuncionario(int idUnidad)
+        {
+            bool result = false;
+            int idFuncionario = Convert.ToInt32(Session["idFuncionarioSeleccionado"]);
+            List<JornadaUnidadFuncionario> unidadesFuncionario = (List<JornadaUnidadFuncionario>)Session["listaUnidadesConJornadaAsignada"];
+            if (unidadesFuncionario.Any(x => x.idUnidad == idUnidad))
+            {
+                unidadesFuncionario.RemoveAll(x => x.idUnidad == idUnidad);
+                JornadaUnidadFuncionario jornadaEliminar = new JornadaUnidadFuncionario();
+                jornadaEliminar.idFuncionario = idFuncionario;
+                jornadaEliminar.idUnidad = idUnidad;
+                jornadaUnidadFuncionarioServicios.eliminarJornadaUnidadFuncionario(jornadaEliminar);
+                result = true;
+            }
+            return result;
+        }
+
         #endregion
 
         #region eventos
 
-        #region paginacion
+        #region paginacion tabla funcionarios
         /// <summary>
         /// Leonardo Carrion
         /// 14/jun/2019
@@ -271,6 +341,188 @@ namespace Proyecto.Planilla
         }
         #endregion
 
+        #region paginacion tabla unidades
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 07/10/2019
+        /// Efecto : Llena la tabla con las unidades de un proyecto
+        /// Requiere : -
+        /// Modifica : Tabla de unidades
+        /// Devuelve : -
+        /// </summary>
+        public void mostrarTablaUnidades()
+        {
+            LinkedList<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(Convert.ToInt32(ddlProyecto.SelectedValue));
+            /*FILTRO*/
+
+            var dt = listaUnidades;
+            pgsourceUnidad.DataSource = dt;
+            pgsourceUnidad.AllowPaging = true;
+            //numero de items que se muestran en el Repeater
+            pgsourceUnidad.PageSize = elmentosMostrar;
+            pgsourceUnidad.CurrentPageIndex = paginaActualUnidad;
+            //mantiene el total de paginas en View State
+            ViewState["TotalPaginasUnidad"] = pgsourceUnidad.PageCount;
+            //Ejemplo: "Página 1 al 10"
+            lblpaginaUnidad.Text = "Página " + (paginaActualUnidad + 1) + " de " + pgsourceUnidad.PageCount + " (" + dt.Count + " - elementos)";
+            //Habilitar los botones primero, último, anterior y siguiente
+            lbAnteriorUnidad.Enabled = !pgsourceUnidad.IsFirstPage;
+            lbSiguienteUnidad.Enabled = !pgsourceUnidad.IsLastPage;
+            lbPrimeroUnidad.Enabled = !pgsourceUnidad.IsFirstPage;
+            lbUltimoUnidad.Enabled = !pgsourceUnidad.IsLastPage;
+
+            rpUnidProyecto.DataSource = pgsourceUnidad;
+            rpUnidProyecto.DataBind();
+            
+            //metodo que realiza la paginacion
+            PaginacionUnidad();
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 07/10/2019
+        /// Efecto : Realiza la paginacion en la tabla de unidades
+        /// Requiere : -
+        /// Modifica : Tabla de unidades
+        /// Devuelve : -
+        /// </summary>
+        private void PaginacionUnidad()
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("IndexPagina"); //Inicia en 0
+            dt.Columns.Add("PaginaText"); //Inicia en 1
+
+            primerIndexUnidad = paginaActualUnidad - 2;
+            if (paginaActualUnidad > 2)
+                ultimoIndexUnidad = paginaActualUnidad + 2;
+            else
+                ultimoIndexUnidad = 4;
+
+            //se revisa que la ultima pagina sea menor que el total de paginas a mostrar, sino se resta para que muestre bien la paginacion
+            if (ultimoIndexUnidad > Convert.ToInt32(ViewState["TotalPaginasUnidad"]))
+            {
+                ultimoIndexUnidad = Convert.ToInt32(ViewState["TotalPaginasUnidad"]);
+                primerIndexUnidad = ultimoIndexUnidad - 4;
+            }
+
+            if (primerIndexUnidad < 0)
+                primerIndexUnidad = 0;
+
+            //se crea el numero de paginas basado en la primera y ultima pagina
+            for (var i = primerIndexUnidad; i < ultimoIndexUnidad; i++)
+            {
+                var dr = dt.NewRow();
+                dr[0] = i;
+                dr[1] = i + 1;
+                dt.Rows.Add(dr);
+            }
+
+            rptPaginacionUnidad.DataSource = dt;
+            rptPaginacionUnidad.DataBind();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: se devuelve a la primera pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Primer pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbPrimeroUnidad_Click(object sender, EventArgs e)
+        {
+            paginaActualUnidad = 0;
+            mostrarTablaUnidades();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: se devuelve a la pagina anterior y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Anterior pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbAnteriorUnidad_Click(object sender, EventArgs e)
+        {
+            paginaActualUnidad -= 1;
+            mostrarTablaUnidades();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: actualiza la la pagina actual y muestra los datos de la misma
+        /// Requiere: -
+        /// Modifica: elementos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacionUnidad_ItemCommand(object source, DataListCommandEventArgs e)
+        {
+            if (!e.CommandName.Equals("nuevaPagina")) return;
+            paginaActualUnidad = Convert.ToInt32(e.CommandArgument.ToString());
+            mostrarTablaUnidades();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: marca el boton de la pagina seleccionada
+        /// Requiere: dar clic al boton de paginacion
+        /// Modifica: color del boton seleccionado
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacionUnidad_ItemDataBound(object sender, DataListItemEventArgs e)
+        {
+            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacionUnidad");
+            if (lnkPagina.CommandArgument != paginaActualUnidad.ToString()) return;
+            lnkPagina.Enabled = false;
+            lnkPagina.BackColor = Color.FromName("#00Unidadda4");
+            lnkPagina.ForeColor = Color.FromName("#000000");
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 14/jun/2019
+        /// Efecto: se devuelve a la pagina siguiente y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Siguiente pagina"
+        /// Modifica: elementos mostrados en la tabla 
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbSiguienteUnidad_Click(object sender, EventArgs e)
+        {
+            paginaActualUnidad += 1;
+            mostrarTablaUnidades();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: se devuelve a la ultima pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Ultima pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -lbPrimero
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbUltimoUnidad_Click(object sender, EventArgs e)
+        {
+            paginaActualUnidad = (Convert.ToInt32(ViewState["TotalPaginasUnidad"]) - 1);
+            mostrarTablaUnidades();
+        }
+        #endregion FIN paginacion tabla unidades
+
         /// <summary>
         /// Jean Carlos Monge Mendez
         /// 20/09/2019
@@ -281,7 +533,7 @@ namespace Proyecto.Planilla
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void btnSelccionar_Click(object sender, EventArgs e)
+        protected void btnSelccionarFuncionario_Click(object sender, EventArgs e)
         {
             int id = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
             Funcionario funcionarioVer = null;
@@ -294,8 +546,13 @@ namespace Proyecto.Planilla
                     break;
                 }
             }
-
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalDistribuirJornada();", true);
+            lblPeriodo.Text = ddlPeriodo.SelectedValue;
+            lblProyecto.Text = ddlProyecto.SelectedItem.Text;
+            lblJornada.Text = funcionarioVer.JornadaLaboral.descJornada + " , " + funcionarioVer.JornadaLaboral.porcentajeJornada+"%";
+            lblFuncionario.Text = funcionarioVer.nombreFuncionario;
+            Session["idFuncionarioSeleccionado"] = funcionarioVer.idFuncionario;
+            mostrarTablaUnidades();
+            llenarProgressBar();
         }
 
         /// <summary>
@@ -312,6 +569,119 @@ namespace Proyecto.Planilla
         {
             String url = Page.ResolveUrl("~/Default.aspx");
             Response.Redirect(url);
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 18/10/2019
+        /// Efecto : Al cerrar el modal de asgnar jornada, recupera el estado del modal Distribuir jornada
+        /// Requiere : Clickear el botón "Cerrar" del modal Asignar jornada
+        /// Modifica : -
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnCerrarModalAsignarJornada_Click(object sender, EventArgs e)
+        {
+            llenarProgressBar();
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 07/10/2019
+        /// Efecto : Completa el formulario para asinar una jornada laboral a una unidad
+        /// Requiere : Seleccionar una unidad
+        /// Modifica : Formulario de asignar jornada 
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnSelccionarUnidad_Click(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+            Unidad unidadSeleccionada = null;
+            LinkedList<Unidad> unidades = unidadServicios.ObtenerPorProyecto(Convert.ToInt32(ddlProyecto.SelectedValue));
+            foreach (Unidad unidad in unidades)
+            {
+                if (unidad.idUnidad == id)
+                {
+                    unidadSeleccionada = unidad;
+                    break;
+                }
+            }
+            IdUnidadSeleccionada.Value = unidadSeleccionada.idUnidad.ToString();
+            lblUnidad.Text = unidadSeleccionada.nombreUnidad;
+            List<Jornada> jornadas = jornadaServicios.getJornadasActivas();
+            ddlAsignarJornada.DataSource = jornadas;
+            ddlAsignarJornada.DataTextField = "porcentajeJornada";
+            ddlAsignarJornada.DataValueField = "idJornada";
+            ddlAsignarJornada.DataBind();
+            mostrarTablaUnidades();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalAsignarJornada();", true);
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 07/10/2019
+        /// Efecto : Asigna una jornada laboral a la unidad seleccionada 
+        /// Requiere : Seleccionar la jornada laboral y clickear el boton "Asignar" del formulario
+        /// Modifica : Jornada laboral del funcionario
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnAsignarJornada_Click(object sender, EventArgs e)
+        {
+            int idUnidad = Convert.ToInt32(IdUnidadSeleccionada.Value);
+            string unidad = lblUnidad.Text;
+            double porcentaje = Convert.ToDouble(ddlAsignarJornada.SelectedItem.Text);
+            JornadaUnidadFuncionario unidadAsignada = new JornadaUnidadFuncionario();
+            unidadAsignada.idUnidad = idUnidad;
+            unidadAsignada.idJornada = Convert.ToInt32(ddlAsignarJornada.SelectedValue);
+            unidadAsignada.jornadaAsignada = porcentaje;
+            unidadAsignada.idFuncionario = Convert.ToInt32(Session["idFuncionarioSeleccionado"]);
+            unidadAsignada.descUnidad = unidad;
+            eliminarJornadaUnidadFuncionario(idUnidad);
+            List<JornadaUnidadFuncionario> unidadesFuncionario = (List<JornadaUnidadFuncionario>)Session["listaUnidadesConJornadaAsignada"];
+            double tiempoAsignado = 0;
+            foreach(JornadaUnidadFuncionario unidadFuncionario in unidadesFuncionario)
+            {
+                tiempoAsignado += unidadFuncionario.jornadaAsignada;
+            }
+            if((tiempoAsignado+unidadAsignada.jornadaAsignada) <= 100)
+            {
+                unidadesFuncionario.Add(unidadAsignada);
+                jornadaUnidadFuncionarioServicios.insertarJornadaUnidadFuncionario(unidadAsignada);
+                Toastr("success", "Jornada en "+ unidadAsignada.descUnidad +" agregada con éxito!");
+            }
+            else
+            {
+                Toastr("error", "Se sobrepasa el tiempo disponible");
+            }
+            llenarProgressBar();
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 11/10/2019
+        /// Efecto : Remueve una jornada de unidad del funcionario
+        /// Requiere : Clickear el boton "Eliminar jornada" del formulario
+        /// Modifica : Lista de jornadas de un funcionario
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnEliminarUnidad_Click(object sender, EventArgs e)
+        {
+            int idUnidad = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+            if (eliminarJornadaUnidadFuncionario(idUnidad)) { 
+                Toastr("success", "Se eliminó la jornada con éxito!");
+            }
+            else
+            {
+                Toastr("error", "La jornada no se ha asignado");
+            }
+            llenarProgressBar();
         }
 
         /// <summary>
@@ -348,6 +718,19 @@ namespace Proyecto.Planilla
             mostrarDatosTabla();
         }
 
+        #endregion
+
+        #region mensaje toast
+
+        private void Toastr(string tipo, string mensaje)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr." + tipo + "('" + mensaje + "');", true);
+        }
+
+        protected void Page_PreRender(object sender, EventArgs e)
+        {
+            ViewState["CheckRefresh"] = Session["CheckRefresh"];
+        }
         #endregion
     }
 }

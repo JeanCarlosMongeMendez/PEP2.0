@@ -50,6 +50,7 @@
     <Compile Include="FuncionarioServicios.cs" />
     <Compile Include="FuncionariosFundeviServicios.cs" />
     <Compile Include="JornadaServicios.cs" />
+    <Compile Include="JornadaUnidadFuncionarioServicios.cs" />
     <Compile Include="PartidaServicios.cs" />
     <Compile Include="PeriodoServicios.cs" />
     <Compile Include="PlanillaFundeviServicios.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="PresupuestoIngresoServicios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProyectoServicios.cs" />
+    <Compile Include="Reporte_EgresosServicios.cs" />
     <Compile Include="TipoTramiteServicios.cs" />
     <Compile Include="UnidadServicios.cs" />
   </ItemGroup>
