@@ -17,8 +17,8 @@ namespace Proyecto.Planilla
 
         #region variables globales
         private FuncionarioServicios funcionarioServicios = new FuncionarioServicios();
-        private PeriodoServicios periodoServicios = new PeriodoServicios();
         private ProyectoServicios proyectoServicios = new ProyectoServicios();
+        private PlanillaServicios planillaServicios = new PlanillaServicios();
         private UnidadServicios unidadServicios = new UnidadServicios();
         private JornadaServicios jornadaServicios = new JornadaServicios();
         private JornadaUnidadFuncionarioServicios jornadaUnidadFuncionarioServicios = new JornadaUnidadFuncionarioServicios();
@@ -74,17 +74,14 @@ namespace Proyecto.Planilla
             Utilidades.escogerMenu(Page, rolesPermitidos);
             if (!IsPostBack)
             {
-                List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios();
-                Session["listaFuncionarios"] = listaFuncionarios;
-                Session["listaFuncionariosFiltrada"] = listaFuncionarios;
-                mostrarDatosTabla();
                 //llenar drop down list
-                LinkedList<Periodo> periodos = (LinkedList<Periodo>)periodoServicios.ObtenerTodos();
-                ddlPeriodo.DataSource = periodos;
-                ddlPeriodo.DataTextField = "anoPeriodo";
-                ddlPeriodo.DataValueField = "anoPeriodo";
+                List<Entidades.Planilla> periodos = planillaServicios.getPlanillas();
+                ddlPeriodo.DataValueField = "idPlanilla";
+                ddlPeriodo.DataTextField = "periodo";
+                ddlPeriodo.DataSource = from a in periodos select new { a.idPlanilla, periodo = a.periodo.anoPeriodo };
+                ddlPeriodo.SelectedValue = periodos.First().idPlanilla.ToString();
                 ddlPeriodo.DataBind();
-                LinkedList<Proyectos> proyectos = proyectoServicios.ObtenerPorPeriodo(periodos.First().anoPeriodo);
+                LinkedList<Proyectos> proyectos = proyectoServicios.ObtenerPorPeriodo(periodos.First().periodo.anoPeriodo);
                 ddlProyecto.DataSource = proyectos;
                 ddlProyecto.DataTextField = "nombreProyecto";
                 ddlProyecto.DataValueField = "idProyecto";
@@ -93,6 +90,10 @@ namespace Proyecto.Planilla
                 Session["listaUnidades"] = unidadServicios.ObtenerPorProyecto(Convert.ToInt32(ddlProyecto.SelectedValue));
                 Session["listaUnidadesConJornadaAsignada"] = new List<JornadaUnidadFuncionario>();
                 mostrarTablaUnidades();
+                List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios(periodos.First().idPlanilla);
+                Session["listaFuncionarios"] = listaFuncionarios;
+                Session["listaFuncionariosFiltrada"] = listaFuncionarios;
+                mostrarDatosTabla();
             }
         }
         #endregion
@@ -696,10 +697,14 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void ddlPeriodo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int id = Convert.ToInt32(ddlPeriodo.SelectedValue);
+            int id = Convert.ToInt32(ddlPeriodo.SelectedItem.Text);
             LinkedList<Proyectos> proyectos = proyectoServicios.ObtenerPorPeriodo(id);
             ddlProyecto.DataSource = proyectos;
             ddlProyecto.DataBind();
+            List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios(Convert.ToInt32(ddlPeriodo.SelectedValue));
+            Session["listaFuncionarios"] = listaFuncionarios;
+            Session["listaFuncionariosFiltrada"] = listaFuncionarios;
+            mostrarDatosTabla();
         }
 
         /// <summary>

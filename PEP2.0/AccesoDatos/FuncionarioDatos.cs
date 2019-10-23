@@ -97,6 +97,87 @@ namespace AccesoDatos
         }
 
         /// <summary>
+        /// Leonardo Carrion
+        /// 12/jun/2019
+        /// Efecto: obtiene todas los funcionarios de un periodo de la base de datos
+        /// Requiere: -
+        /// Modifica: -
+        /// Devuelve: lista de funcionarios
+        /// </summary>
+        /// <returns></returns>
+        public List<Funcionario> getFuncionarios(int idPlanilla)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+            List<Funcionario> funcionarios = new List<Funcionario>();
+
+            String consulta = @"select f.*, es.id_escala_salarial, es.desc_escala_salarial, 
+                es.salario_base_1 AS escala_salario_base_1, es.salario_base_2 AS escala_salario_base_2, 
+                jl.*
+                FROM Funcionario f 
+                JOIN EscalaSalarial es ON f.id_escala_salarial = es.id_escala_salarial
+                JOIN Jornada jl ON jl.id_jornada = f.id_jornada_laboral 
+                WHERE id_planilla = @planilla
+                ORDER BY nombre_funcionario;";
+
+            SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@planilla", idPlanilla);
+
+            SqlDataReader reader;
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Planilla planilla = new Planilla();
+                planilla.idPlanilla = Convert.ToInt32(reader["id_planilla"].ToString());
+
+                EscalaSalarial escalaSalarial = new EscalaSalarial();
+                escalaSalarial.idEscalaSalarial = Convert.ToInt32(reader["id_escala_salarial"].ToString());
+                escalaSalarial.descEscalaSalarial = reader["desc_escala_salarial"].ToString();
+                escalaSalarial.salarioBase1 = Convert.ToDouble(reader["escala_salario_base_1"].ToString());
+                escalaSalarial.salarioBase2 = Convert.ToDouble(reader["escala_salario_base_2"].ToString());
+
+                Jornada jornada = new Jornada();
+                jornada.idJornada = Convert.ToInt32(reader["id_jornada"].ToString());
+                jornada.porcentajeJornada = Convert.ToDouble(reader["porcentaje_jornada"].ToString());
+                jornada.descJornada = reader["desc_jornada"].ToString();
+
+                Funcionario funcionario = new Funcionario();
+                funcionario.planilla = planilla;
+                funcionario.escalaSalarial = escalaSalarial;
+                funcionario.JornadaLaboral = jornada;
+                funcionario.fechaIngreso = Convert.ToDateTime(reader["fecha_ingreso"].ToString());
+                funcionario.salarioBase1 = Convert.ToDouble(reader["salario_base_1"].ToString());
+                funcionario.noEscalafones1 = Convert.ToInt32(reader["no_escalafones_1"].ToString());
+                funcionario.montoEscalafones1 = Convert.ToDouble(reader["monto_escalafones_1"].ToString());
+                funcionario.porcentajeAnualidad1 = Convert.ToDouble(reader["porcentaje_anualidad_1"].ToString());
+                funcionario.montoAnualidad1 = Convert.ToDouble(reader["monto_anualidad_1"].ToString());
+                funcionario.salarioContratacion1 = Convert.ToDouble(reader["salario_contratacion_1"].ToString());
+                funcionario.salarioEnero = Convert.ToDouble(reader["salario_enero"].ToString());
+                funcionario.conceptoPagoLey = Convert.ToDouble(reader["concepto_pago_ley"].ToString());
+                funcionario.salarioBase2 = Convert.ToDouble(reader["salario_base_2"].ToString());
+                funcionario.noEscalafones2 = Convert.ToInt32(reader["no_escalafones_2"].ToString());
+                funcionario.montoEscalafones2 = Convert.ToDouble(reader["monto_escalafones_2"].ToString());
+                funcionario.porcentajeAnualidad2 = Convert.ToDouble(reader["porcentaje_anualidad_2"].ToString());
+                funcionario.montoAnualidad2 = Convert.ToDouble(reader["monto_anualidad_2"].ToString());
+                funcionario.salarioContratacion2 = Convert.ToDouble(reader["salario_contratacion_2"].ToString());
+                funcionario.salarioJunio = Convert.ToDouble(reader["salario_junio"].ToString());
+                funcionario.salarioPromedio = Convert.ToDouble(reader["salario_promedio"].ToString());
+                funcionario.salarioPropuesto = Convert.ToDouble(reader["salario_propuesto"].ToString());
+                funcionario.observaciones = reader["observaciones"].ToString();
+                funcionario.nombreFuncionario = reader["nombre_funcionario"].ToString();
+                funcionario.porcentajeSumaSalario = Convert.ToDouble(reader["porcentaje_suma_salario"].ToString());
+                funcionario.idFuncionario = Convert.ToInt32(reader["id_funionario"].ToString());
+
+                funcionarios.Add(funcionario);
+            }
+
+            sqlConnection.Close();
+
+            return funcionarios;
+        }
+
+        /// <summary>
         /// Jean Carlos Monge Mendez
         /// 18/09/2019
         /// Efecto : Guarda en la base de datos un funcionario

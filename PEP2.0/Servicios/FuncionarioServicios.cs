@@ -26,9 +26,23 @@ namespace Servicios
         /// Devuelve: lista de funcionarios
         /// </summary>
         /// <returns></returns>
-        public List<Funcionario> getFuncionarios()
+        //public List<Funcionario> getFuncionarios()
+        //{
+        //    return funcionarioDatos.getFuncionarios();
+        //}
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 12/jun/2019
+        /// Efecto: obtiene todas los funcionarios de un periodo de la base de datos
+        /// Requiere: -
+        /// Modifica: -
+        /// Devuelve: lista de funcionarios
+        /// </summary>
+        /// <returns></returns>
+        public List<Funcionario> getFuncionarios(int planilla)
         {
-            return funcionarioDatos.getFuncionarios();
+            return funcionarioDatos.getFuncionarios(planilla);
         }
 
         /// <summary>

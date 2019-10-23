@@ -57,7 +57,7 @@ namespace Proyecto.Planilla
                 lblAnualidad1.Text = planilla.anualidad1 + " %";
                 lblAnualidad2.Text = planilla.anualidad2 + " %";
 
-                List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios();
+                List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios(planilla.idPlanilla);
 
                 Session["listaFuncionarios"] = listaFuncionarios;
                 Session["listaFuncionariosFiltrada"] = listaFuncionarios;
@@ -918,7 +918,8 @@ namespace Proyecto.Planilla
             Int32.TryParse(hdIdEliminarFuncionario.Value, out idFuncionarioEliminar);
             funcionario.idFuncionario = idFuncionarioEliminar;
             bool result = funcionarioServicios.eliminar(funcionario);
-            List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios();
+            Entidades.Planilla planilla = (Entidades.Planilla)Session["planillaSeleccionada"];
+            List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios(planilla.idPlanilla);
             Session["listaFuncionarios"] = listaFuncionarios;
             Session["listaFuncionariosFiltrada"] = listaFuncionarios;
             mostrarDatosTabla();
@@ -979,7 +980,8 @@ namespace Proyecto.Planilla
             {
                 result = funcionarioServicios.guardar(funcionario);
             }
-            List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios();
+            Entidades.Planilla planilla = (Entidades.Planilla)Session["planillaSeleccionada"];
+            List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios(planilla.idPlanilla);
             Session["listaFuncionarios"] = listaFuncionarios;
             Session["listaFuncionariosFiltrada"] = listaFuncionarios;
             mostrarDatosTabla();
