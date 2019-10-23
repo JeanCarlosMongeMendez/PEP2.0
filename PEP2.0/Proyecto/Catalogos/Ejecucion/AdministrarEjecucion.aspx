@@ -198,7 +198,7 @@
                     <asp:Label ID="Label5" runat="server" Text="Monto" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                     ₡
                     <asp:TextBox class="form-control" ID="txtMontoIngresar" runat="server" Enabled="true"></asp:TextBox>
-
+                    
                 </div>
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                     <asp:Button ID="ButtonRepartir" runat="server" Text="Repartir Gastos" CssClass="btn btn-primary" OnClick="ButtonRepartirPartidas_Click" />
@@ -213,6 +213,7 @@
                                         <th>Unidad</th>
                                         <th>Número Partida</th>
                                         <th>monto</th>
+                                        <th>Monto Disponible</th>
                                     </tr>
                                 </thead>
 
@@ -227,12 +228,19 @@
 
                                             </td>
                                             <td>
-                                                <%--                                        <%# Eval("numeroPartida") %>--%>
+                                                 <%# Eval("idUnidad") %>
                                     
                                             </td>
 
                                             <td>
-                                                <%--                                       <%# Eval("descripcionPartida") %>--%>
+                                                <%# Eval("numeroPartida") %>
+
+                                            </td>
+                                             <td>
+                                                <%# Eval("Monto") %>
+                                            </td>
+                                             <td>
+                                                <%# Eval("MontoDisponible") %>
                                             </td>
                                         </tr>
 
@@ -387,7 +395,7 @@
                              <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                     <asp:Label ID="Label7" runat="server" Text="Monto pendiente de repartir" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                    ₡  <asp:Label ID="montoRepartir" runat="server" Text="" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
-                                    
+                                
                 </div>
                         </div>
                         <div class="modal-body">
@@ -435,8 +443,8 @@
                                                      </td>
                                                    
                                                     <td>
-                                                         ₡ <asp:TextBox class="form-control" ID="txtMonto" runat="server" ReadOnly="True"></asp:TextBox>
-                                   
+                                                               <asp:HiddenField ID="hdIdPartida" Value='<%# Eval("idPartida") %>' runat="server" />
+                                                            ₡  <asp:TextBox class="form-control" ID="TextBox1"  runat="server" Text='<%# Eval("monto") %>' ></asp:TextBox>
                                                      </td>
 
                                                 </tr>
