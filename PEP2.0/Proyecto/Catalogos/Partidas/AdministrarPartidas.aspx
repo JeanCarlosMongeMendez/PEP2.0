@@ -26,7 +26,7 @@
 
                  <div class="col-md-6 col-xs-6 col-sm-6">
                     <h4>Pasar Partidas</h4>
-                    <asp:Button ID="btnPasarPartidas" runat="server" Text="Pasar Partidas" CssClass="btn btn-primary boton-nuevo" OnClick="btnPasarPartidas_Click" />
+                    <asp:Button ID="btnPasarPartidas" runat="server" Text="Pasar Partidas" CssClass="btn btn-primary boton-otro" OnClick="btnPasarPartidas_Click" />
                 </div>
                 
                 <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
@@ -43,6 +43,7 @@
                                 <th></th>
                                 <th>Descripción de Partida</th>
                                 <th>Número de Partida</th>
+                                <th>Tipo de Partida</th>
                             </tr>
                         </thead>
                         <tr>
@@ -52,7 +53,15 @@
                                 <asp:TextBox ID="txtBuscarDesc" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción" AutoPostBack="true" OnTextChanged="txtBuscarDesc_TextChanged"></asp:TextBox>
                             </td>
                             <td></td>
-                           
+                            <td>
+                              <div class="col-md-3 col-xs-4 col-sm-4">
+                                </div>
+                                <div class="col-md-5 col-xs-4 col-sm-4">
+                                    <asp:DropDownList ID="ddlBuscarTipo" class="btn btn-default dropdown-toggle" runat="server" OnSelectedIndexChanged="ddlBuscar_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>                          
+                                </div>
+
+                               
+                            </td>
                         </tr>
                         <asp:Repeater ID="rpPartidas" runat="server">
                             <HeaderTemplate>
@@ -70,7 +79,9 @@
                                     <td> 
                                         <%# Eval("numeroPartida") %>
                                     </td>
-                                   
+                                    <td>
+                                        <%# (Eval("esUCR").ToString() == "True")? "UCR" : "Fundevi" %>     
+                                    </td>
                                 </tr>
 
                             </ItemTemplate>
@@ -164,19 +175,29 @@
 
                                 <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
                                     <div class="col-md-4 col-xs-4 col-sm-4">
-                                        <asp:Label ID="Label1" runat="server" Text="Tipo o Padre" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                        <asp:Label ID="Label1" runat="server" Text="Partida Padre" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                                     </div>
 
                                     <div class="col-md-4 col-xs-4 col-sm-4">
                                         <asp:DropDownList ID="ddlPartidasPadre" class="btn btn-default dropdown-toggle" runat="server" ></asp:DropDownList>
                                     </div>
                                 </div>
-
-                                
                                 <div class="col-md-12 col-xs-12 col-sm-12">
                                     <br />
                                 </div>
+                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                    <div class="col-md-4 col-xs-4 col-sm-4">
+                                        <asp:Label ID="Label9" runat="server" Text="Tipo Partida" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    </div>
 
+                                    <div class="col-md-4 col-xs-4 col-sm-4">
+                                        <asp:DropDownList ID="ddlPartidasUCR" class="btn btn-default dropdown-toggle" runat="server">
+                                        </asp:DropDownList>
+                                    </div>
+                                </div>
+                                 <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <br />
+                                </div>
                                 <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
                                     <div class="col-md-4 col-xs-4 col-sm-4">
                                         <asp:Label ID="Label3" runat="server" Text="Número de Partida" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
@@ -257,15 +278,25 @@
 
                                 <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
                                     <div class="col-md-4 col-xs-4 col-sm-4">
-                                        <asp:Label ID="Label5" runat="server" Text="Tipo o Padre" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                        <asp:Label ID="Label5" runat="server" Text="Partida Padre" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                                     </div>
 
                                     <div class="col-md-4 col-xs-4 col-sm-4">
                                         <asp:Label ID="lbPartidaPadreModalModificar" runat="server" Text="Partida Padre" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                                     </div>
                                 </div>
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <br />
+                                </div>
+                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                    <div class="col-md-4 col-xs-4 col-sm-4">
+                                        <asp:Label ID="lbTipoP" runat="server" Text="Tipo Partida" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    </div>
 
-                                
+                                    <div class="col-md-4 col-xs-4 col-sm-4">
+                                        <asp:Label ID="lbPartidaTipoMod" runat="server" Text="" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    </div>
+                                </div>
                                 <div class="col-md-12 col-xs-12 col-sm-12">
                                     <br />
                                 </div>
@@ -344,7 +375,7 @@
 
                                 <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
                                     <div class="col-md-4 col-xs-4 col-sm-4">
-                                        <asp:Label ID="Label10" runat="server" Text="Tipo o Padre" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                        <asp:Label ID="Label10" runat="server" Text="Partida Padre" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                                     </div>
 
                                     <div class="col-md-4 col-xs-4 col-sm-4">
@@ -352,6 +383,19 @@
                                     </div>
                                 </div>
 
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <br />
+                                </div>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                    <div class="col-md-4 col-xs-4 col-sm-4">
+                                        <asp:Label ID="Label11" runat="server" Text="Tipo Partida" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    </div>
+
+                                    <div class="col-md-4 col-xs-4 col-sm-4">
+                                        <asp:Label ID="lbTipoPartidaElm" runat="server" Text="" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    </div>
+                                </div>
                                 
                                 <div class="col-md-12 col-xs-12 col-sm-12">
                                     <br />
@@ -386,7 +430,7 @@
                             </div>
                         </div>
                         <div class="modal-footer" style="text-align: center">
-                            <asp:Button ID="btnEliminarPartidaModal" runat="server" Text="Eliminar" CssClass="btn btn-primary" OnClick="btnEliminarPartidaModal_Click"/>
+                            <asp:Button ID="btnEliminarPartidaModal" runat="server" Text="Eliminar" CssClass="btn btn-primary" OnClick="btnConfirmarEliminarPartida"/>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         </div>
                     </div>
@@ -457,6 +501,7 @@
                                                  <th></th>
                                                  <th>Descripción Partida</th>
                                                  <th>Número de Partida</th>
+                                                 <th>Tipo de Partida</th>
 
                                              </tr>
                                          </thead>
@@ -467,6 +512,13 @@
                                                  <asp:TextBox ID="txtBuscarDescPartidasAPasar" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción"></asp:TextBox>
                                              </td>
                                              <td></td>
+                                       
+                                             <td>
+                                              
+                                                 <div class="col-md-5 col-xs-4 col-sm-4">
+                                                     <asp:DropDownList ID="ddlBuscarApasar" class="btn btn-default dropdown-toggle" runat="server" OnSelectedIndexChanged="ddlBuscarApasar_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                                                 </div>
+                                             </td>
                                          </tr>
 
                                          <asp:Repeater ID="rpPartidasAPasar" runat="server">
@@ -483,6 +535,9 @@
                                                      </td>
                                                      <td>
                                                          <%# Eval("numeroPartida") %>
+                                                     </td>
+                                                     <td>
+                                                        <%# (Eval("esUCR").ToString() == "True")? "UCR" : "Fundevi" %> 
                                                      </td>
                                                  </tr>
                                              </ItemTemplate>
@@ -504,6 +559,7 @@
                                                  <th></th>
                                                  <th>Descripción Partida</th>
                                                  <th>Número de Partida</th>
+                                                 <th>Tipo de Partida</th>
                                              </tr>
                                          </thead>
                                          <tr>
@@ -513,6 +569,12 @@
                                                  <asp:TextBox ID="txtBuscarDescPartidasAgregadas" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción"></asp:TextBox>
                                              </td>
                                              <td></td>
+                                             <td>
+                                              
+                                                 <div class="col-md-5 col-xs-4 col-sm-4">
+                                                     <asp:DropDownList ID="ddlBuscarAgregadas" class="btn btn-default dropdown-toggle" runat="server" OnSelectedIndexChanged="ddlBuscarAgregadas_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                                                 </div>
+                                             </td>
                                          </tr>
                                          <asp:Repeater ID="rpPartidasAgregadas" runat="server">
                                              <HeaderTemplate>
@@ -527,6 +589,10 @@
                                                      <td>
                                                          <%# Eval("numeroPartida") %>
                                                      </td>
+                                                    <td>
+                                                        <%# (Eval("esUCR").ToString() == "True")? "UCR" : "Fundevi" %> 
+                                                     </td>
+                                                     
                                                  </tr>
 
                                              </ItemTemplate>
@@ -628,6 +694,51 @@
              </div>
          </div>
 
+             <!-- Modal Confirmar Eliminar Unidad -->
+    <asp:UpdatePanel ID="UPEliminar" runat="server">
+        <ContentTemplate>
+            <div id="modalConfirmarPartida" class="modal fade" role="alertdialog">
+                <div class="modal-dialog modal-lg">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Confirmar Eliminar Partida</h4>
+                        </div>
+                        <div class="modal-body">
+                            <%-- campos a llenar --%>
+                            <div class="row">
+
+                                <%-- fin campos a llenar --%>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <br />
+                                </div>
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <center>
+                                             <asp:Label runat="server" Text="" Font-Size="Large" ForeColor="Black"></asp:Label>
+                                             <p>¿Está seguro que desea eliminar la Partida?</p> 
+                                                         
+                                            </center>
+                                </div>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <br />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="text-align: center">
+                            <asp:Button ID="btnConfirmar" runat="server" Text="Confirmar" CssClass="btn btn-primary boton-eliminar" OnClick="btnEliminarPartidaModal_Click" />
+                            <button type="button" class="btn btn-default boton-otro" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+    <!-- FIN Modal Confirmar Eliminar Unidad -->
 
 
 
@@ -657,6 +768,9 @@
          function activarModalPasarPartida() {
             $('#modalPasarPartida').modal('show');
         };
+        function activarModalConfirmarPartida() {
+             $('#modalConfirmarPartida').modal('show');
+        }
     </script>
     <!-- Script fin -->
 

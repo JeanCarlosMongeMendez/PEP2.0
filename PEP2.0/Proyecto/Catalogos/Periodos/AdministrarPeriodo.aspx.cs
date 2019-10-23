@@ -934,13 +934,13 @@ namespace PEP.Catalogos.Periodos
             Session["listaPeriodos"] = periodoLista;
             Session["listaPeriodosFiltrada"] = periodoLista;
             var dt = periodoLista;
-            pgsourcePeriodos.DataSource = dt;
-            pgsourcePeriodos.AllowPaging = false;
+            pgsource.DataSource = dt;
+            pgsource.AllowPaging = false;
 
-            ViewState["TotalPaginas"] = pgsourcePeriodos.PageCount;
+            ViewState["TotalPaginas"] = pgsource.PageCount;
 
 
-            rpPeriodos.DataSource = pgsourcePeriodos;
+            rpPeriodos.DataSource = pgsource;
             rpPeriodos.DataBind();
 
         }
@@ -1036,13 +1036,13 @@ namespace PEP.Catalogos.Periodos
             Session["listaProyectos"] = listaProyectos;
 
             var dt = listaProyectos;
-            pgsourceProyectos.DataSource = dt;
-            pgsourceProyectos.AllowPaging = false;
+            pgsource.DataSource = dt;
+            pgsource.AllowPaging = false;
 
             pgsource.PageSize = elmentosMostrar;
             pgsource.CurrentPageIndex = paginaActual4;
             //mantiene el total de paginas en View State
-            ViewState["TotalPaginas4"] = pgsourceProyectos.PageCount;
+            ViewState["TotalPaginas4"] = pgsource.PageCount;
             //Ejemplo: "Página 1 al 10"
             lblpagina4.Text = "Página " + (paginaActual4 + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
             //Habilitar los botones primero, último, anterior y siguiente
@@ -1051,7 +1051,7 @@ namespace PEP.Catalogos.Periodos
             lbPrimero4.Enabled = !pgsource.IsFirstPage;
             lbUltimo4.Enabled = !pgsource.IsLastPage;
 
-            rpProyectos.DataSource = pgsourceProyectos;
+            rpProyectos.DataSource = pgsource;
             rpProyectos.DataBind();
 
             //metodo que realiza la paginacion

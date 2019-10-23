@@ -51,8 +51,9 @@ namespace Proyecto.Catalogos.Partidas
                 Session["listaPartidas"] = listaPartidas;
                 Session["listaPartidasFiltrada"] = listaPartidas;
 
+                llenarTipoBuscar();
                 mostrarDatosTabla();
-
+                llenarTipoPartidasAgregados();
             }
         }
         #endregion
@@ -135,6 +136,112 @@ namespace Proyecto.Catalogos.Partidas
             paginaActual = 0;
             mostrarDatosTabla();
         }
+        /// <summary>
+        /// Jesús Torres
+        /// 19/sept/2019
+        /// Efecto: filtra la tabla segun los datos ingresados en los filtros
+        /// Requiere: accede al evento con enter cuando se quiere buscar algo especifico de la tabla
+        /// Modifica: datos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void ddlBuscar_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtBuscarDesc.Text = "";
+            paginaActual = 0;
+            int anioPeriodo = Convert.ToInt32(ddlPeriodo.SelectedValue.ToString());
+            List<Partida> listaPartidas = new List<Partida>();
+
+            if (!ddlBuscarTipo.SelectedValue.ToString().Equals("null"))
+            {
+                Boolean tipoPartida = Convert.ToBoolean(ddlBuscarTipo.SelectedValue.ToString());
+                listaPartidas = partidaServicios.obtenerPorTipoPartidaYPeriodo(tipoPartida,anioPeriodo);
+                Session["listaPartidas"] = listaPartidas;
+                Session["listaPartidasFiltrada"] = listaPartidas;
+                mostrarDatosTabla();
+
+            }
+            else
+            {
+                listaPartidas = partidaServicios.ObtenerPorPeriodo(anioPeriodo);
+                Session["listaPartidas"] = listaPartidas;
+                Session["listaPartidasFiltrada"] = listaPartidas;
+                mostrarDatosTabla();
+            }
+           
+
+        }
+
+        /// Mariela Calvo
+        /// octubre/2019
+        /// Efecto: filtra la tabla segun los datos seleccionados de la tabla partidas a pasar
+        /// Requiere: accede al evento seleccionado un tipo de partida en el dropdown
+        /// Modifica: datos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void ddlBuscarApasar_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtBuscarDescPartidasAPasar.Text = "";
+            paginaActual = 0;
+            int anioPeriodo = Convert.ToInt32(ddlPeriodo.SelectedValue.ToString());
+            List<Partida> listaPartidas = new List<Partida>();
+            if (!ddlBuscarApasar.SelectedValue.ToString().Equals("null"))
+            {
+                Boolean tipoPartida = Convert.ToBoolean(ddlBuscarApasar.SelectedValue.ToString());
+                listaPartidas = partidaServicios.obtenerPorTipoPartidaYPeriodo(tipoPartida, anioPeriodo);
+                Session["listaPartidasAPasar"] = listaPartidas;
+                Session["listaPartidasAPasarFiltrada"] = listaPartidas;
+                cargarDatosTblPartidasAPasar();
+
+            }
+            else
+            {
+                listaPartidas = partidaServicios.ObtenerPorPeriodo(anioPeriodo);
+                Session["listaPartidas"] = listaPartidas;
+                Session["listaPartidasFiltrada"] = listaPartidas;
+                cargarDatosTblPartidasAPasar();
+            }
+
+
+        }
+        /// Mariela Calvo
+        /// octubre/2019
+        /// Efecto: filtrar la tabla segun los datos seleccionados de la tabla de partidas agregadas
+        /// Requiere: accede al evento seleccionado un tipo de partida en el dropdown
+        /// Modifica: datos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void ddlBuscarAgregadas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtBuscarDescPartidasAgregadas.Text = "";
+            paginaActual = 0;
+            List<Partida> listaPartidas = new List<Partida>(); 
+           int anioPeriodo = Convert.ToInt32(ddlPeriodoModalPasaPartidas.SelectedValue.ToString());
+
+            if (!ddlBuscarAgregadas.SelectedValue.ToString().Equals("null"))
+            {
+                Boolean tipoPartida = Convert.ToBoolean(ddlBuscarAgregadas.SelectedValue.ToString());
+                listaPartidas = partidaServicios.obtenerPorTipoPartidaYPeriodo(tipoPartida, anioPeriodo);
+                Session["listaPartidasAgregadas"] = listaPartidas;
+                Session["listaPartidasAgregadasFiltrada"] = listaPartidas;
+                cargarDatosTblPartidasAgregadas();
+
+            }
+            else
+            {
+                listaPartidas = partidaServicios.ObtenerPorPeriodo(anioPeriodo);
+                Session["listaPartidasAgregadas"] = listaPartidas;
+                Session["listaPartidasAgregadasFiltrada"] = listaPartidas;
+                cargarDatosTblPartidasAgregadas();
+            }
+
+
+        }
 
         /// <summary>
         /// Jesús Torres
@@ -174,6 +281,18 @@ namespace Proyecto.Catalogos.Partidas
             txtNumeroPartidasModalModificar.CssClass = "form-control";
             txtDescripcionPartidaModalModificar.Text = partidaEditar.descripcionPartida;
             txtDescripcionPartidaModalModificar.CssClass = "form-control";
+            
+
+            if (partidaEditar.esUCR)
+            {
+                lbPartidaTipoMod.Text = "UCR";
+
+            }
+            else
+            {
+                lbPartidaTipoMod.Text = "Fundevi";
+            }
+
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalModificarPartida();", true);
         }
 
@@ -213,6 +332,15 @@ namespace Proyecto.Catalogos.Partidas
             lbPeriodoModalEliminar.Text = partidaEditar.periodo.anoPeriodo.ToString();
             txtNumeroPartidasModalElimina.Text = partidaEditar.numeroPartida;
             txtDescripcionPartidaModalEliminar.Text = partidaEditar.descripcionPartida;
+
+            if (partidaEditar.esUCR)
+            {
+                lbTipoPartidaElm.Text = "UCR";
+            }
+            else
+            {
+                lbTipoPartidaElm.Text = "Fundevi";
+            }
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalEliminarPartida();", true);
         }
 
@@ -268,6 +396,7 @@ namespace Proyecto.Catalogos.Partidas
                 partida.descripcionPartida = txtDescripcionPartida.Text;
                 partida.periodo = new Periodo();
                 partida.periodo.anoPeriodo = Convert.ToInt32(ddlPeriodoModal.SelectedValue);
+                partida.esUCR= Convert.ToBoolean(ddlPartidasUCR.SelectedValue);
 
                 if (ddlPartidasPadre.SelectedValue == "null")
                 {
@@ -374,7 +503,24 @@ namespace Proyecto.Catalogos.Partidas
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Todos los espacios son requeridos" + "');", true);
             }
         }
-
+        /// <summary>
+        /// Mariela Calvo
+        /// 21/octubre/2019
+        /// Efecto: Pide confirmar eliminar la partid seleccionada
+        /// Requiere: 
+        /// Modifica: datos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// 
+        protected void btnConfirmarEliminarPartida(Object sender, EventArgs e)
+        {
+            
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalConfirmarPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalConfirmarPartida').hide();", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalConfirmarPartida()", true);
+        }
+       
         /// <summary>
         /// Jesús Torres
         /// 26/sept/2019
@@ -679,6 +825,7 @@ namespace Proyecto.Catalogos.Partidas
         /// <param name="e"></param>
         protected void ddlPeriodoModalPasaPartidas_SelectedIndexChanged(object sender, EventArgs e)
         {
+            llenarTipoPartidasAgregados();
             txtBuscarDescPartidasAgregadas.Text = "";
             Periodo periodoAgregados = new Periodo();
             periodoAgregados.anoPeriodo = Convert.ToInt32(ddlPeriodoModalPasaPartidas.SelectedValue);
@@ -944,11 +1091,13 @@ namespace Proyecto.Catalogos.Partidas
             List<Partida> listaPartidas = (List<Partida>)Session["listaPartidas"];
 
             String desc = "";
-
+            
             if (!String.IsNullOrEmpty(txtBuscarDesc.Text))
             {
                 desc = txtBuscarDesc.Text;
+              
             }
+            
 
             List<Partida> listaPartidasFiltrada = (List<Partida>)listaPartidas.Where(partida => partida.descripcionPartida.ToUpper().Contains(desc.ToUpper())).ToList();
 
@@ -988,6 +1137,11 @@ namespace Proyecto.Catalogos.Partidas
             ddl.Items.Clear();
             ddl.Items.Add(new ListItem("Partida Padre", "null"));
 
+            ddlPartidasUCR.Items.Clear();
+           
+            ddlPartidasUCR.Items.Add(new ListItem("UCR", "true"));
+            ddlPartidasUCR.Items.Add(new ListItem("Fundevi", "false"));
+
             List<Partida> partidas = new List<Partida>();
             partidas = (List<Partida>)Session["listaPartidasPorPeriodo"];
             foreach (Partida partida in partidas)
@@ -999,7 +1153,43 @@ namespace Proyecto.Catalogos.Partidas
                 }
             }
         }
+        /// <summary>
+        /// Jesús Torres
+        /// 20/sept/2019
+        /// Efecto: carga los tipos de partidas en los DropDownList correspondiente 
+        /// Requiere: -
+        /// Modifica: los datos mostrados en DropDownList son los tipos de partidas
+        /// Devuelve: -
+        /// </summary>
+        protected void llenarTipoBuscar()
+        {
+            ddlBuscarTipo.Items.Clear();
+            ddlBuscarTipo.Items.Add(new ListItem("Tipo Partida", "null"));
+            ddlBuscarTipo.Items.Add(new ListItem("UCR", "true"));
+            ddlBuscarTipo.Items.Add(new ListItem("Fundevi", "false"));
 
+            ddlBuscarApasar.Items.Clear();
+            ddlBuscarApasar.Items.Add(new ListItem("Tipo Partida", "null"));
+            ddlBuscarApasar.Items.Add(new ListItem("UCR", "true"));
+            ddlBuscarApasar.Items.Add(new ListItem("Fundevi", "false"));
+        }
+        /// <summary>
+        /// Jesús Torres
+        /// 20/sept/2019
+        /// Efecto: carga los de padres de las partidas a el DropDownList correspondiente de la tabla partidas agregadas 
+        /// Requiere: -
+        /// Modifica: los datos mostrados en DropDownList de padres de partidas agregadas
+        /// Devuelve: -
+        /// </summary>
+        public void llenarTipoPartidasAgregados()
+        {
+            ddlBuscarAgregadas.Items.Clear();
+            ddlBuscarAgregadas.Items.Add(new ListItem("Tipo Partida", "null"));
+            ddlBuscarAgregadas.Items.Add(new ListItem("UCR", "true"));
+            ddlBuscarAgregadas.Items.Add(new ListItem("Fundevi", "false"));
+
+        }
+       
         /// <summary>
         /// Jesús Torres
         /// 20/sept/2019
