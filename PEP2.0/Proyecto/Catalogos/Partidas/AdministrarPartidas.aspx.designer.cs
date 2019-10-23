@@ -76,6 +76,15 @@ namespace Proyecto.Catalogos.Partidas {
         protected global::System.Web.UI.WebControls.TextBox txtBuscarDesc;
         
         /// <summary>
+        /// Control ddlBuscarTipo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlBuscarTipo;
+        
+        /// <summary>
         /// Control rpPartidas.
         /// </summary>
         /// <remarks>
@@ -184,6 +193,24 @@ namespace Proyecto.Catalogos.Partidas {
         protected global::System.Web.UI.WebControls.DropDownList ddlPartidasPadre;
         
         /// <summary>
+        /// Control Label9.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label9;
+        
+        /// <summary>
+        /// Control ddlPartidasUCR.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlPartidasUCR;
+        
+        /// <summary>
         /// Control Label3.
         /// </summary>
         /// <remarks>
@@ -265,6 +292,24 @@ namespace Proyecto.Catalogos.Partidas {
         protected global::System.Web.UI.WebControls.Label lbPartidaPadreModalModificar;
         
         /// <summary>
+        /// Control lbTipoP.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbTipoP;
+        
+        /// <summary>
+        /// Control lbPartidaTipoMod.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbPartidaTipoMod;
+        
+        /// <summary>
         /// Control Label6.
         /// </summary>
         /// <remarks>
@@ -344,6 +389,24 @@ namespace Proyecto.Catalogos.Partidas {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lbPartidaPadreModalEliminar;
+        
+        /// <summary>
+        /// Control Label11.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label11;
+        
+        /// <summary>
+        /// Control lbTipoPartidaElm.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbTipoPartidaElm;
         
         /// <summary>
         /// Control Label12.
@@ -445,6 +508,15 @@ namespace Proyecto.Catalogos.Partidas {
         protected global::System.Web.UI.WebControls.TextBox txtBuscarDescPartidasAPasar;
         
         /// <summary>
+        /// Control ddlBuscarApasar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlBuscarApasar;
+        
+        /// <summary>
         /// Control rpPartidasAPasar.
         /// </summary>
         /// <remarks>
@@ -470,6 +542,15 @@ namespace Proyecto.Catalogos.Partidas {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtBuscarDescPartidasAgregadas;
+        
+        /// <summary>
+        /// Control ddlBuscarAgregadas.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlBuscarAgregadas;
         
         /// <summary>
         /// Control rpPartidasAgregadas.

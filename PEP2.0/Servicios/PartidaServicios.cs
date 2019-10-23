@@ -96,5 +96,21 @@ namespace Servicios
             return partidaDatos.obtenerPorIdPartidaPadre(partida, periodo);
         }
 
+
+        // <summary>
+        /// Mariela Calvo
+        /// 18/oct/2019
+        /// Efecto: devuelve la lista de partidas con mismo padre
+        /// Requiere: partida y periodo
+        /// Modifica: -
+        /// Devuelve: lista de partidas
+        /// </summary>
+        /// <param name="partida"></param>
+        /// <param name="periodo"></param>
+        /// <returns></returns>
+        public List<Partida> obtenerPorTipoPartidaYPeriodo(Boolean tipoPartida, int anioPeriodo)
+        {
+            return partidaDatos.obtenerPorTipoPartidaYPeriodo(tipoPartida,anioPeriodo);
+        }
     }
 }
