@@ -509,7 +509,7 @@
                                                                     <asp:HiddenField ID="hdIdLinea" Value='<%# Eval("idLinea") %>' runat="server" />
                                                                     <div class="input-group">
                                                                         <span class="input-group-addon">₡</span>
-                                                                        <asp:TextBox class="form-control" ID="txtMonto" runat="server" Text='<%# Eval("montoo") %>' ReadOnly='<%# Convert.ToString(Eval("estadoPresupuesto.descripcionEstado")).Equals("Aprobar")? true: false %>'></asp:TextBox>
+                                                                        <asp:TextBox class="form-control" ID="txtMonto" runat="server" Text='<%# Eval("monto") %>' ReadOnly='<%# Convert.ToString(Eval("estadoPresupuesto.descripcionEstado")).Equals("Aprobar")? true: false %>'></asp:TextBox>
                                                                     </div>
                                                                 </td>
                                                                 <td>

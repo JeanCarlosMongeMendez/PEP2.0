@@ -274,6 +274,10 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.numero_partid
                     partida.descripcionPartida = reader["descripcion_partida"].ToString();
                     partida.esUCR = Convert.ToBoolean(reader["esUCR"].ToString());
                     partida.idUnidad = idUnidad;
+
+                    List<Partida> listaTemp = partidas.Where(partidaBD => partidaBD.idPartida == partida.idPartida).ToList();
+
+                    if(listaTemp.Count==0)
                     partidas.Add(partida);
                 }
 

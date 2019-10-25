@@ -142,6 +142,7 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         protected void ButtonAsociarPartidas_Click(object sender, EventArgs e)
         {
+         
             obtenerPartidasPorProyectoUnidadPeriodo();
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalElegirPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalElegirPartidas').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalElegirPartidas();", true);
@@ -198,7 +199,7 @@ namespace Proyecto.Catalogos.Ejecucion
         private void obtenerPartidasPorProyectoUnidadPeriodo()
         {
             List<Partida> partidas = (List<Partida>)Session["partidasPorUnidadesProyectoPeriodo"];
-            if (partidas == null)
+            if (partidas == null || partidas.Count==0)
             {
                 int proyectoElegido = Int32.Parse(ProyectosDDL.SelectedValue);
                 int periodoElegido = Int32.Parse(PeriodosDDL.SelectedValue);
@@ -952,7 +953,12 @@ namespace Proyecto.Catalogos.Ejecucion
             Unidad añadirUnidadEliminada = unidadServicios.ObtenerPorId(idUnidad);
             listUnidad.Add(añadirUnidadEliminada);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La unidad fue borrada con exito" + "');", true);
+            List<Partida> partidas = (List<Partida>)Session["partidasPorUnidadesProyectoPeriodo"];
+            partidas.RemoveAll(item => item.idUnidad == idUnidad);
+            List<Partida> partidasElegidas = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
+            partidasElegidas.RemoveAll(item => item.idUnidad == idUnidad);
             obtenerPartidasPorProyectoUnidadPeriodo();
+            obtenerPartidasSeleccionadas();
         }
         /// <summary>
         /// Josseline M
