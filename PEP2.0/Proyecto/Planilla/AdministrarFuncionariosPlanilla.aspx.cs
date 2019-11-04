@@ -212,7 +212,7 @@ namespace Proyecto.Planilla
                 nombre = txtBuscarNombre.Text;
             }
 
-            List<Funcionario> listaFuncionarioFiltrada = (List<Funcionario>)listaFuncionarios.Where(funcionario => funcionario.nombreFuncionario.ToString().Contains(nombre)).ToList();
+            List<Funcionario> listaFuncionarioFiltrada = (List<Funcionario>)listaFuncionarios.Where(funcionario => funcionario.nombreFuncionario.ToUpper().Contains(nombre.ToUpper())).ToList();
 
             Session["listaFuncionariosFiltrada"] = listaFuncionarioFiltrada;
 
@@ -536,6 +536,11 @@ namespace Proyecto.Planilla
                 Double.TryParse(escalaSeleccionada.salarioBase1.ToString(), out salarioBase);
                 int.TryParse(txtEscalafonesI.Text, out cantidadEscalafones);
                 txtEscalafonesI.Text = cantidadEscalafones.ToString();
+                if (escalaSeleccionada.topeEscalafones < cantidadEscalafones)
+                {
+                    cantidadEscalafones = escalaSeleccionada.topeEscalafones;
+                    txtEscalafonesI.Text = cantidadEscalafones.ToString();
+                }
                 txtMontoEscalafonesI.Text = calcularMontoEscalafon(salarioBase, cantidadEscalafones).ToString();
             }
             else if (btnEscalafones.ID.Equals("btnCalcularEscalafonesII"))
@@ -679,7 +684,10 @@ namespace Proyecto.Planilla
             DateTime fechaDivisionSemestres = Convert.ToDateTime("1/06/" + fechaIngreso.Year);
             if (cantidadEscalafonesIsemestre < escalaSeleccionada.topeEscalafones && DateTime.Compare(fechaDivisionSemestres, fechaIngreso) < 0)
             {
-                txtEscalafonesII.Text = (cantidadEscalafonesIsemestre + 1).ToString();
+                if (escalaSeleccionada.topeEscalafones < (cantidadEscalafonesIsemestre + 1))
+                    txtEscalafonesII.Text = (cantidadEscalafonesIsemestre).ToString();
+                else
+                    txtEscalafonesII.Text = (cantidadEscalafonesIsemestre + 1).ToString();
             }
             else
             {
@@ -972,6 +980,7 @@ namespace Proyecto.Planilla
             int idFuncionario = 0;
             Int32.TryParse(hdIdFuncionario.Value, out idFuncionario);
             funcionario.idFuncionario = idFuncionario;
+            
             if (idFuncionario > 0)
             {
                 result = funcionarioServicios.modificar(funcionario);

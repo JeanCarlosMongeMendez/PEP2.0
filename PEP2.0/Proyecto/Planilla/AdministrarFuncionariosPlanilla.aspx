@@ -62,7 +62,7 @@
                             <td>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                    <asp:TextBox ID="txtBuscarNombre" runat="server" CssClass="form-control chat-input" placeholder="filtro nombre"></asp:TextBox>
+                                    <asp:TextBox ID="txtBuscarNombre" runat="server" CssClass="form-control chat-input" placeholder="filtro nombre" AutoPostBack="true" OnTextChanged="btnFiltrar_Click"></asp:TextBox>
                                 </div>
                             </td>
                         </tr>

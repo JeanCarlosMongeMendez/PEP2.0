@@ -17,6 +17,9 @@ namespace Proyecto.Planilla
         #region variables globales
         private FuncionarioServicios funcionarioServicios = new FuncionarioServicios();
         private PlanillaServicios planillaServicios = new PlanillaServicios();
+        MesServicios mesServicios = new MesServicios();
+        CargaSocialServicios cargaSocialServicios = new CargaSocialServicios();
+        private static Funcionario funcionarioSeleccionado;
         #endregion
 
         #region variables globales paginacion Funcionarios
@@ -49,12 +52,12 @@ namespace Proyecto.Planilla
             Utilidades.escogerMenu(Page, rolesPermitidos);
             if (!IsPostBack)
             {
-                
+
                 //llenar drop down list
                 List<Entidades.Planilla> periodos = planillaServicios.getPlanillas();
                 ddlPeriodo.DataValueField = "idPlanilla";
                 ddlPeriodo.DataTextField = "periodo";
-                ddlPeriodo.DataSource = from a in periodos select new { a.idPlanilla, periodo = a.periodo.anoPeriodo};
+                ddlPeriodo.DataSource = from a in periodos select new { a.idPlanilla, periodo = a.periodo.anoPeriodo };
                 ddlPeriodo.SelectedValue = periodos.First().idPlanilla.ToString();
                 ddlPeriodo.DataBind();
 
@@ -87,7 +90,7 @@ namespace Proyecto.Planilla
                 nombre = txtBuscarNombre.Text;
             }
 
-            List<Funcionario> listaFuncionarioFiltrada = (List<Funcionario>)listaFuncionarios.Where(funcionario => funcionario.nombreFuncionario.ToString().Contains(nombre)).ToList();
+            List<Funcionario> listaFuncionarioFiltrada = (List<Funcionario>)listaFuncionarios.Where(funcionario => funcionario.nombreFuncionario.ToUpper().Contains(nombre.ToUpper())).ToList();
 
             Session["listaFuncionariosFiltrada"] = listaFuncionarioFiltrada;
 
@@ -298,30 +301,6 @@ namespace Proyecto.Planilla
             Response.Redirect(url);
         }
 
-        /// <summary>
-        /// Jean Carlos Monge Mendez
-        /// 18/10/2019
-        /// Efecto : Calcula la proyeccion de todos los funcionarios
-        /// Requiere : Clickear el boton "Calcular Proyeccion" del formulario
-        /// Modifica : -
-        /// Devuelve : -
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnCalcularProyeccion_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void btnGuardar_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void btnAprobar_Click(object sender, EventArgs e)
-        {
-
-        }
 
         /// <summary>
         /// Jean Carlos Monge Mendez
@@ -367,6 +346,68 @@ namespace Proyecto.Planilla
             txtNombreCompleto.Text = funcionarioDistribucion.nombreFuncionario;
             txtPeriodo.Text = ddlPeriodo.SelectedItem.Text;
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalVerDistribucionDeFuncionario();", true);
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 18/10/2019
+        /// Efecto : Calcula la proyeccion de todos los funcionarios
+        /// Requiere : Clickear el boton "Calcular Proyeccion" del formulario
+        /// Modifica : -
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnCalcularProyeccion_Click(object sender, EventArgs e)
+        {
+            List<Mes> listaMeses = mesServicios.getMeses();
+            List<Funcionario> listaFuncionarios = (List<Funcionario>)Session["listaFuncionarios"];
+            Periodo periodo = new Periodo();
+            periodo.anoPeriodo = Convert.ToInt32(ddlPeriodo.SelectedValue);
+            List<CargaSocial> listaCargasSociales = cargaSocialServicios.getCargasSocialesActivasPorPeriodo(periodo);
+
+            foreach (Funcionario funcionario in listaFuncionarios)
+            {
+                
+                foreach (Mes mes in listaMeses)
+                {
+                    foreach(CargaSocial cargaSocial in listaCargasSociales)
+                    {
+                        Double salarioBase = (funcionario.salarioBase1 * (funcionario.JornadaLaboral.porcentajeJornada / 100));
+                        int numeroEscalafonesI = funcionario.noEscalafones1;
+                        int numeroEscalafonesII = funcionario.noEscalafones2;
+                        int mesIngreso = funcionario.fechaIngreso.Month;
+
+                        if (mesIngreso < 7)
+                        {
+                            if (mesIngreso > mes.numero)
+                            {
+                                numeroEscalafonesI = numeroEscalafonesI - 1;
+                            }
+                        }
+
+                        if (mesIngreso > 6)
+                        {
+                            if (mesIngreso > mes.numero)
+                            {
+                                numeroEscalafonesII = numeroEscalafonesII - 1;
+                            }
+                        }
+
+                        Double montoEscalafon =0;
+                        if (mes.numero < 7)
+                        {
+                            montoEscalafon = (salarioBase * numeroEscalafonesI) * (funcionario.escalaSalarial.porentajeEscalafones / 100);
+                        }
+
+                        if (mes.numero > 7)
+                        {
+                            montoEscalafon = (salarioBase * numeroEscalafonesII) * (funcionario.escalaSalarial.porentajeEscalafones / 100);
+                        }
+
+                    }
+                }
+            }
         }
         #endregion
 
