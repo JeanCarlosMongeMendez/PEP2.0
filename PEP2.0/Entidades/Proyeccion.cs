@@ -16,8 +16,8 @@ namespace Entidades
         public int idProyeccion { get; set; }
         public Funcionario funcionario { get; set; }
         public Mes mes { get; set; }
-        public Periodo periodo { get; set; }
         public Double montoSalario { get; set; }
         public Double montoCargasTotal { get; set; }
+        public Periodo periodo { get; set; }
     }
 }

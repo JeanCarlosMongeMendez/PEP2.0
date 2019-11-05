@@ -6,10 +6,10 @@
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnableCdn="true"></asp:ScriptManager>
 
     <%-- titulo pantalla --%>
-    <div class="row" style="text-align: center;">
+    <asp:UpdatePanel ID="pnlUpdate" runat="server">
+        <ContentTemplate>
 
-        <asp:UpdatePanel ID="UpdatePanel2" runat="server">
-            <ContentTemplate>
+            <div class="row" style="text-align: center;">
 
                 <div class="col-md-12 col-xs-12 col-sm-12">
                     <asp:Label ID="label" runat="server" Text="Proyección Salarial" Font-Size="Large" ForeColor="Black"></asp:Label>
@@ -132,53 +132,46 @@
                     </ContentTemplate>
                 </asp:UpdatePanel>
 
-            </ContentTemplate>
-        </asp:UpdatePanel>
+            </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
 
-    </div>
+
 
     <%--modal ver distribucion funcionario--%>
+    <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+        <ContentTemplate>
+            <div id="modalVerProyeccionDeFuncionario" class="modal fade" role="alertdialog">
+                <div class="modal-dialog modal-lg" style="min-width: 95%; margin: 2%">
 
-    <div id="modalVerProyeccionDeFuncionario" class="modal fade" role="alertdialog">
-        <div class="modal-dialog modal-lg" style="min-width: 95%; margin: 2%">
+                    <!-- Modal content-->
+                    <div class="modal-content">
 
-            <!-- Modal content-->
-            <div class="modal-content">
+                        <%--header--%>
+                        <div class="modal-header" style="background-color: #005da4; color: white">
+                            <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
+                            <h4 class="modal-title">Proyección del Funcionario</h4>
+                        </div>
 
-                <%--header--%>
-                <div class="modal-header" style="background-color: #005da4; color: white">
-                    <button type="button" class="close" data-dismiss="modal" style="color: white">&times;</button>
-                    <h4 class="modal-title">Proyección del Funcionario</h4>
-                </div>
+                        <%--body--%>
+                        <div class="modal-body">
 
-                <%--body--%>
-                <div class="modal-body">
-
-                    <%-- datos --%>
-                    <div class="row">
-
-                        <%-- Datos generales --%>
-                        <asp:Panel ID="panelDatosGenerales" runat="server" CssClass="col-md-12 col-xs-12 col-sm-12">
-
-                            <%--nombre--%>
-                            <div class="row" style="text-align: center">
+                            <%-- datos --%>
+                            <div class="row">
 
                                 <div class="col-md-3 col-xs-12 col-sm-3">
                                     <asp:Label runat="server" Text="Nombre Completo" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                                 </div>
 
-                                <div class="col-md-6 col-xs-12 col-sm-12">
-                                    <asp:TextBox CssClass="form-control" ID="txtNombreCompleto" runat="server" TextMode="MultiLine" ReadOnly="true"></asp:TextBox>
+                                <div class="col-md-3 col-xs-12 col-sm-12">
+                                    <asp:TextBox CssClass="form-control" ID="txtNombreCompleto" runat="server" ReadOnly="true"></asp:TextBox>
                                 </div>
 
                                 <div class="col-md-12 col-xs-12 col-sm-12">
                                     <br />
                                 </div>
 
-                            </div>
-
-                            <%--periodo--%>
-                            <div class="row" style="text-align: center">
+                                <%--periodo--%>
 
                                 <div class="col-md-3 col-xs-12 col-sm-12">
                                     <asp:Label runat="server" Text="Periodo" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
@@ -191,47 +184,77 @@
                                 <div class="col-md-12 col-xs-12 col-sm-12">
                                     <br />
                                 </div>
+                                <%-- Proyeccion --%>
+
+                                <%--tabla Funcionarios--%>
+                                <asp:UpdatePanel ID="UpdatePanel4" runat="server">
+                                    <ContentTemplate>
+                                        <%-- tabla--%>
+
+                                        <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                                            <table class="table table-bordered">
+                                                <thead style="text-align: center">
+                                                    <tr style="text-align: center" class="btn-primary">
+                                                        <th>Mes</th>
+                                                        <th>Monto Salario</th>
+                                                        <th>Monto Cargas Sociales</th>
+                                                    </tr>
+                                                </thead>
+                                                <asp:Repeater ID="rpProyeccion" runat="server">
+                                                    <HeaderTemplate>
+                                                    </HeaderTemplate>
+
+                                                    <ItemTemplate>
+                                                        <tr style="text-align: center">
+                                                            <td>
+                                                                <%# Eval("mes.nombreMes") %>
+                                                            </td>
+                                                            <td>
+                                                                ₡ <%# Eval("montoSalario") %>
+                                                            </td>
+                                                            <td>
+                                                                ₡ <%# Eval("montoCargasTotal") %>
+                                                            </td>
+                                                        </tr>
+
+                                                    </ItemTemplate>
+
+                                                    <FooterTemplate>
+                                                    </FooterTemplate>
+                                                </asp:Repeater>
+                                            </table>
+                                        </div>
+
+                                        <div class="col-md-12 col-xs-12 col-sm-12">
+                                            <br />
+                                        </div>
+                                    </ContentTemplate>
+                                </asp:UpdatePanel>
+
                             </div>
 
-                            <%-- Division --%>
-                            <div class="col-md-12 col-xs-12 col-sm-12">
-                                <br />
-                                <hr />
-                                <br />
-                            </div>
+                            <%-- Fin campos a llenar --%>
+                        </div>
 
-                        </asp:Panel>
+                        <%--footer--%>
+                        <div class="modal-footer" style="text-align: center">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
 
-
-                        <%-- Proyeccion --%>
-                        <asp:Panel ID="panelProyeccion" runat="server" CssClass="col-md-12 col-xs-12 col-sm-12" Style="text-align: center">
-
-                            <%--tabla--%>
-
-
-
-                            <%-- Division --%>
-                            <div class="col-md-12 col-xs-12 col-sm-12">
-                                <br />
-                                <hr />
-                                <br />
-                            </div>
-
-                        </asp:Panel>
                     </div>
-
-                    <%-- Fin campos a llenar --%>
                 </div>
-
-                <%--footer--%>
-                <div class="modal-footer" style="text-align: center">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                </div>
-
             </div>
-        </div>
-    </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
 
+     <!-- update progress-->
+    <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="pnlUpdate">
+        <ProgressTemplate>
+            <div class="alert alert-info" role="alert">
+                <h6> <p style="text-align:center"> <b>Procesando Datos, Espere por favor... <br /></b> </p> </h6>
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
 
     <script type="text/javascript">
         function activarModalVerDistribucionDeFuncionario() {

@@ -74,7 +74,7 @@ namespace AccesoDatos
             SqlConnection sqlConnection = conexion.conexionPEP();
 
             String consulta = @"Insert Anualidad(porcentaje,ano_periodo)
-                                            values(@porcentaje,@anoPeriodo)";
+                                            values(@porcentaje,@anoPeriodo);SELECT SCOPE_IDENTITY();";
 
             SqlCommand command = new SqlCommand(consulta, sqlConnection);
 
@@ -138,6 +138,46 @@ namespace AccesoDatos
             sqlConnection.Open();
             command.ExecuteReader();
             sqlConnection.Close();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 04/nov/2019
+        /// Efecto: devuelve la anualidad segun el periodo consultado
+        /// Requiere: periodo a consultar
+        /// Modifica: -
+        /// Devuelve: anualidad
+        /// </summary>
+        /// <param name="periodoConsulta"></param>
+        /// <returns></returns>
+        public Anualidad getAnualidadPorPeriodo(Periodo periodoConsulta)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+            Anualidad anualidad = new Anualidad();
+
+            String consulta = @"select A.*
+                                            from Anualidad A where A.ano_periodo = @anoPeriodo;";
+
+            SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@anoPeriodo", periodoConsulta.anoPeriodo);
+
+            SqlDataReader reader;
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            if (reader.Read())
+            {
+                Periodo periodo = new Periodo();
+
+                periodo.anoPeriodo = Convert.ToInt32(reader["ano_periodo"].ToString());
+                anualidad.periodo = periodo;
+                anualidad.idAnualidad = Convert.ToInt32(reader["id_anualidad"].ToString());
+                anualidad.porcentaje = Convert.ToDouble(reader["porcentaje"].ToString());
+            }
+
+            sqlConnection.Close();
+
+            return anualidad;
         }
     }
 }

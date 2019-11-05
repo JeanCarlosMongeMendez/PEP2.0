@@ -73,5 +73,20 @@ namespace Servicios
         {
             anualidadDatos.eliminarAnualidad(anualidad);
         }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 04/nov/2019
+        /// Efecto: devuelve la anualidad segun el periodo consultado
+        /// Requiere: periodo a consultar
+        /// Modifica: -
+        /// Devuelve: anualidad
+        /// </summary>
+        /// <param name="periodoConsulta"></param>
+        /// <returns></returns>
+        public Anualidad getAnualidadPorPeriodo(Periodo periodoConsulta)
+        {
+            return anualidadDatos.getAnualidadPorPeriodo(periodoConsulta);
+        }
     }
 }

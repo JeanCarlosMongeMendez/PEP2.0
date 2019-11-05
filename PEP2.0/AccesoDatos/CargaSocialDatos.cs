@@ -84,7 +84,7 @@ namespace AccesoDatos
             SqlConnection sqlConnection = conexion.conexionPEP();
 
             String consulta = @"Insert CargaSocial(desc_carga_social,activo,porcentaje_carga_social,id_partida,ano_periodo)
-                                            values(@descCargaSocial,@activo,@porcentajeCargaSocial,@idPartida,@anoPeriodo)";
+                                            values(@descCargaSocial,@activo,@porcentajeCargaSocial,@idPartida,@anoPeriodo);SELECT SCOPE_IDENTITY();";
 
             SqlCommand command = new SqlCommand(consulta, sqlConnection);
 

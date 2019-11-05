@@ -64,6 +64,8 @@
     <Compile Include="PresupuestoEgreso_PartidaDatos.cs" />
     <Compile Include="PresupuestoIngresoDatos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProyeccionDatos.cs" />
+    <Compile Include="Proyeccion_CargaSocialDatos.cs" />
     <Compile Include="ProyectoDatos.cs" />
     <Compile Include="Reporte_EgresosDatos.cs" />
     <Compile Include="TipoTramitesDatos.cs" />

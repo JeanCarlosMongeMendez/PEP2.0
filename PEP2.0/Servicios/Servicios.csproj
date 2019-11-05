@@ -61,6 +61,8 @@
     <Compile Include="PresupuestoEgresosServicios.cs" />
     <Compile Include="PresupuestoIngresoServicios.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProyeccionServicios.cs" />
+    <Compile Include="Proyeccion_CargaSocialServicios.cs" />
     <Compile Include="ProyectoServicios.cs" />
     <Compile Include="Reporte_EgresosServicios.cs" />
     <Compile Include="TipoTramiteServicios.cs" />
