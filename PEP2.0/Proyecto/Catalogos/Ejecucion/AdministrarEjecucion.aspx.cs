@@ -1165,15 +1165,16 @@ namespace Proyecto.Catalogos.Ejecucion
                     partidaUnidad.Add(partidaU);
 
                 }
-                //Session["partidasAsignadas"] = partidaUnidad;
+                Session["partidasAsignadas"] = partidaUnidad;
             if (contador != 0)
             {
                 List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
                List<PartidaUnidad> partida = partidaUnidad.Where(a => !partidasElegidasConMonto.Any(a1 => a1.NumeroPartida == a.NumeroPartida))
             .Union(partidasElegidasConMonto.Where(a => !partidaUnidad.Any(a1 => a1.NumeroPartida == a.NumeroPartida))).ToList();
-               
+                Session["partidasAsignadas"] = partida;
             }
-            Session["partidasAsignadas"] = partidaUnidad;
+            partidaUnidad=(List<PartidaUnidad>)Session["partidasAsignadas"];
+            
             var dt = partidaUnidad;
                 pgsource.DataSource = dt;
                 pgsource.AllowPaging = true;
