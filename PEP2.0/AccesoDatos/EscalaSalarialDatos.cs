@@ -122,7 +122,7 @@ namespace AccesoDatos
             SqlConnection sqlConnection = conexion.conexionPEP();
 
             String consulta = @"Insert EscalaSalarial(desc_escala_salarial,salario_base_1,salario_base_2,tope_escalafones,porcentaje_escalafones,ano_periodo)
-                                            values(@descEscalaSalarial,@salarioBase1,@salarioBase2,@topeEscalafones,@porcentajeEscalafones,@anoPeriodo)";
+                                            values(@descEscalaSalarial,@salarioBase1,@salarioBase2,@topeEscalafones,@porcentajeEscalafones,@anoPeriodo);SELECT SCOPE_IDENTITY();";
 
             SqlCommand command = new SqlCommand(consulta, sqlConnection);
 

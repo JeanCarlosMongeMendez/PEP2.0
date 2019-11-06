@@ -17,6 +17,12 @@ namespace Proyecto.Planilla
         #region variables globales
         private FuncionarioServicios funcionarioServicios = new FuncionarioServicios();
         private PlanillaServicios planillaServicios = new PlanillaServicios();
+        MesServicios mesServicios = new MesServicios();
+        CargaSocialServicios cargaSocialServicios = new CargaSocialServicios();
+        AnualidadServicios anualidadServicios = new AnualidadServicios();
+        ProyeccionServicios proyeccionServicios = new ProyeccionServicios();
+        Proyeccion_CargaSocialServicios proyeccion_CargaSocialServicios = new Proyeccion_CargaSocialServicios();
+        private static Funcionario funcionarioSeleccionado;
         #endregion
 
         #region variables globales paginacion Funcionarios
@@ -38,6 +44,7 @@ namespace Proyecto.Planilla
                 ViewState["paginaActual"] = value;
             }
         }
+        
         #endregion
 
         #region page load
@@ -49,12 +56,12 @@ namespace Proyecto.Planilla
             Utilidades.escogerMenu(Page, rolesPermitidos);
             if (!IsPostBack)
             {
-                
+
                 //llenar drop down list
                 List<Entidades.Planilla> periodos = planillaServicios.getPlanillas();
                 ddlPeriodo.DataValueField = "idPlanilla";
                 ddlPeriodo.DataTextField = "periodo";
-                ddlPeriodo.DataSource = from a in periodos select new { a.idPlanilla, periodo = a.periodo.anoPeriodo};
+                ddlPeriodo.DataSource = from a in periodos select new { a.idPlanilla, periodo = a.periodo.anoPeriodo };
                 ddlPeriodo.SelectedValue = periodos.First().idPlanilla.ToString();
                 ddlPeriodo.DataBind();
 
@@ -70,7 +77,7 @@ namespace Proyecto.Planilla
 
         /// <summary>
         /// Leonardo Carrion
-        /// 14/jun/2019
+        /// 04/nov/2019
         /// Efecto: carga los datos filtrados en la tabla y realiza la paginacion correspondiente
         /// Requiere: -
         /// Modifica: los datos mostrados en pantalla
@@ -87,7 +94,7 @@ namespace Proyecto.Planilla
                 nombre = txtBuscarNombre.Text;
             }
 
-            List<Funcionario> listaFuncionarioFiltrada = (List<Funcionario>)listaFuncionarios.Where(funcionario => funcionario.nombreFuncionario.ToString().Contains(nombre)).ToList();
+            List<Funcionario> listaFuncionarioFiltrada = (List<Funcionario>)listaFuncionarios.Where(funcionario => funcionario.nombreFuncionario.ToUpper().Contains(nombre.ToUpper())).ToList();
 
             Session["listaFuncionariosFiltrada"] = listaFuncionarioFiltrada;
 
@@ -113,14 +120,14 @@ namespace Proyecto.Planilla
             //metodo que realiza la paginacion
             Paginacion();
         }
-
+        
         #endregion
 
         #region paginacion
 
         /// <summary>
         /// Leonardo Carrion
-        /// 18/sep/2019
+        /// 05/nov/2019
         /// Efecto: realiza la paginacion
         /// Requiere: -
         /// Modifica: paginacion mostrada en pantalla
@@ -163,7 +170,7 @@ namespace Proyecto.Planilla
 
         /// <summary>
         /// Leonardo Carrion
-        /// 14/jun/2019
+        /// 05/nov/2019
         /// Efecto: se devuelve a la primera pagina y muestra los datos de la misma
         /// Requiere: dar clic al boton de "Primer pagina"
         /// Modifica: elementos mostrados en la tabla de contactos
@@ -179,7 +186,7 @@ namespace Proyecto.Planilla
 
         /// <summary>
         /// Leonardo Carrion
-        /// 14/jun/2019
+        /// 05/nov/2019
         /// Efecto: se devuelve a la ultima pagina y muestra los datos de la misma
         /// Requiere: dar clic al boton de "Ultima pagina"
         /// Modifica: elementos mostrados en la tabla de contactos
@@ -195,7 +202,7 @@ namespace Proyecto.Planilla
 
         /// <summary>
         /// Leonardo Carrion
-        /// 14/jun/2019
+        /// 05/nov/2019
         /// Efecto: se devuelve a la pagina anterior y muestra los datos de la misma
         /// Requiere: dar clic al boton de "Anterior pagina"
         /// Modifica: elementos mostrados en la tabla de contactos
@@ -211,10 +218,10 @@ namespace Proyecto.Planilla
 
         /// <summary>
         /// Leonardo Carrion
-        /// 14/jun/2019
+        /// 05/nov/2019
         /// Efecto: se devuelve a la pagina siguiente y muestra los datos de la misma
         /// Requiere: dar clic al boton de "Siguiente pagina"
-        /// Modifica: elementos mostrados en la tabla de contactos
+        /// Modifica: elementos mostrados en la tabla
         /// Devuelve: -
         /// </summary>
         /// <param name="sender"></param>
@@ -227,7 +234,7 @@ namespace Proyecto.Planilla
 
         /// <summary>
         /// Leonardo Carrion
-        /// 14/jun/2019
+        /// 05/nov/2019
         /// Efecto: actualiza la la pagina actual y muestra los datos de la misma
         /// Requiere: -
         /// Modifica: elementos de la tabla
@@ -244,7 +251,7 @@ namespace Proyecto.Planilla
 
         /// <summary>
         /// Leonardo Carrion
-        /// 14/jun/2019
+        /// 05/nov/2019
         /// Efecto: marca el boton de la pagina seleccionada
         /// Requiere: dar clic al boton de paginacion
         /// Modifica: color del boton seleccionado
@@ -261,14 +268,13 @@ namespace Proyecto.Planilla
             lnkPagina.ForeColor = Color.FromName("#FFFFFF");
         }
 
-
         #endregion
 
         #region eventos
 
         /// <summary>
         /// Leonardo Carrion
-        /// 18/sep/2019
+        /// 05/nov/2019
         /// Efecto: filtra la tabla segun los datos ingresados en los filtros
         /// Requiere: dar clic en el boton de flitrar e ingresar datos en los filtros
         /// Modifica: datos de la tabla
@@ -280,47 +286,6 @@ namespace Proyecto.Planilla
         {
             paginaActual = 0;
             mostrarDatosTabla();
-        }
-
-        /// <summary>
-        /// Leonardo Carrion
-        /// 16/jul/2019
-        /// Efecto: devuelve a la pantalla de administrar planillas
-        /// Requiere: dar clic al boton de "regresar"
-        /// Modifica: -
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnRegresar_Click(object sender, EventArgs e)
-        {
-            String url = Page.ResolveUrl("~/Default.aspx");
-            Response.Redirect(url);
-        }
-
-        /// <summary>
-        /// Jean Carlos Monge Mendez
-        /// 18/10/2019
-        /// Efecto : Calcula la proyeccion de todos los funcionarios
-        /// Requiere : Clickear el boton "Calcular Proyeccion" del formulario
-        /// Modifica : -
-        /// Devuelve : -
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnCalcularProyeccion_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void btnGuardar_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void btnAprobar_Click(object sender, EventArgs e)
-        {
-
         }
 
         /// <summary>
@@ -340,6 +305,141 @@ namespace Proyecto.Planilla
             Session["listaFuncionariosFiltrada"] = listaFuncionarios;
             mostrarDatosTabla();
         }
+        
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 18/10/2019
+        /// Efecto : Calcula la proyeccion de todos los funcionarios
+        /// Requiere : Clickear el boton "Calcular Proyeccion" del formulario
+        /// Modifica : -
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnCalcularProyeccion_Click(object sender, EventArgs e)
+        {
+            List<Mes> listaMeses = mesServicios.getMeses();
+            List<Funcionario> listaFuncionarios = (List<Funcionario>)Session["listaFuncionarios"];
+            Periodo periodo = new Periodo();
+            periodo.anoPeriodo = Convert.ToInt32(ddlPeriodo.SelectedItem.Text);
+            List<CargaSocial> listaCargasSociales = cargaSocialServicios.getCargasSocialesActivasPorPeriodo(periodo);
+
+            if (anualidadServicios.getAnualidadPorPeriodo(periodo).idAnualidad==0)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Se debe ingresar el porcentaje de anualidad para el período seleccionado" + "');", true);
+            }
+            else
+            {
+                
+                foreach (Funcionario funcionario in listaFuncionarios)
+                {
+                    //se elimina primero las proyecciones que se encuentren en la base de datos para no replicar la informacion asi como tambien la asociacion entre proyeccion y cargas sociales
+                    List<Proyeccion> listaProyeccionesEliminar = proyeccionServicios.getProyeccionesPorPeriodoYFuncionario(periodo, funcionario);
+                    foreach (Proyeccion proyeccionTemp in listaProyeccionesEliminar)
+                    {
+                        proyeccion_CargaSocialServicios.eliminarProyeccionCargaSocialPorProyeccion(proyeccionTemp);
+                        proyeccionServicios.eliminarProyeccion(proyeccionTemp);
+                    }
+                    foreach (Mes mes in listaMeses)
+                    {
+
+                        //salario base
+                        Double salarioBase = 0;
+
+                        if (mes.numero < 7)
+                        {
+                            salarioBase = (funcionario.salarioBase1 * (funcionario.JornadaLaboral.porcentajeJornada / 100));
+                        }
+                        else
+                        {
+                            salarioBase = (funcionario.salarioBase2 * (funcionario.JornadaLaboral.porcentajeJornada / 100));
+                        }
+
+                        int numeroEscalafonesI = funcionario.noEscalafones1;
+                        int numeroEscalafonesII = funcionario.noEscalafones2;
+                        int mesIngreso = funcionario.fechaIngreso.Month;
+                        Double porcentajeAnualidad = 0;
+
+                        //numero de escalafones
+                        if ((DateTime.Now.Year - funcionario.fechaIngreso.Year) < funcionario.escalaSalarial.topeEscalafones)
+                        {
+
+                            if (mesIngreso < 7)
+                            {
+                                if (mesIngreso > mes.numero)
+                                {
+                                    numeroEscalafonesI = numeroEscalafonesI - 1;
+                                }
+                            }
+
+                            if (mesIngreso > 6)
+                            {
+                                if (mesIngreso > mes.numero)
+                                {
+                                    numeroEscalafonesII = numeroEscalafonesII - 1;
+                                }
+                            }
+                        }
+
+                        //monto escalafones
+                        Double montoEscalafones = 0;
+                        if (mes.numero < 7)
+                        {
+                            montoEscalafones = (salarioBase * numeroEscalafonesI) * (funcionario.escalaSalarial.porentajeEscalafones / 100);
+                        }
+
+                        if (mes.numero > 7)
+                        {
+                            montoEscalafones = (salarioBase * numeroEscalafonesII) * (funcionario.escalaSalarial.porentajeEscalafones / 100);
+                        }
+
+                        //porcentaje de anualidad
+                        if (mes.numero < mesIngreso)
+                        {
+                            porcentajeAnualidad = (funcionario.porcentajeAnualidad2 - ((anualidadServicios.getAnualidadPorPeriodo(periodo).porcentaje) / 2));
+                        }
+                        else
+                        {
+                            porcentajeAnualidad = funcionario.porcentajeAnualidad2;
+                        }
+
+                        //monto anualidad
+                        Double montoAnualidad = 0;
+                        montoAnualidad = (salarioBase + montoEscalafones) * (porcentajeAnualidad / 100);
+
+                        //salario contratacion
+                        Double salarioContratacion = salarioBase + montoEscalafones + montoAnualidad + funcionario.conceptoPagoLey;
+
+                        Proyeccion proyeccion = new Proyeccion();
+                        proyeccion.periodo = periodo;
+                        proyeccion.funcionario = funcionario;
+                        proyeccion.mes = mes;
+                        proyeccion.montoSalario = salarioContratacion;
+                        Double montoCargasTotal =0;
+
+                        
+                        proyeccion.idProyeccion = proyeccionServicios.insertarProyeccion(proyeccion);
+                        //se calculan las cargas sociales
+                        foreach (CargaSocial cargaSocial in listaCargasSociales)
+                        {
+                            Double montoCargaSocial = 0;
+                            montoCargaSocial = salarioContratacion * (cargaSocial.porcentajeCargaSocial / 100);
+                            montoCargasTotal += montoCargaSocial;
+
+                            Proyeccion_CargaSocial proyeccion_CargaSocial = new Proyeccion_CargaSocial();
+                            proyeccion_CargaSocial.proyeccion = proyeccion;
+                            proyeccion_CargaSocial.cargaSocial = cargaSocial;
+                            proyeccion_CargaSocial.monto = montoCargaSocial;
+                            proyeccion_CargaSocialServicios.insertarProyeccionCargaSocial(proyeccion_CargaSocial);
+                        }//fin for escalas sociales
+                        proyeccion.montoCargasTotal=montoCargasTotal;
+                        proyeccionServicios.actualizarProyeccion(proyeccion);
+                    }
+                }
+
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se realizo correctamente la proyección" + "');", true);
+            }
+        }
 
         /// <summary>
         /// Jean Carlos Monge Mendez
@@ -354,19 +454,27 @@ namespace Proyecto.Planilla
         protected void btnSelccionarFuncionario_Click(object sender, EventArgs e)
         {
             int id = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
-            Funcionario funcionarioDistribucion = null;
+
             List<Funcionario> funcionarios = (List<Funcionario>)Session["listaFuncionariosFiltrada"];
             foreach (Funcionario funcionario in funcionarios)
             {
                 if (funcionario.idFuncionario == id)
                 {
-                    funcionarioDistribucion = funcionario;
+                    funcionarioSeleccionado = funcionario;
                     break;
                 }
             }
-            txtNombreCompleto.Text = funcionarioDistribucion.nombreFuncionario;
+
+            txtNombreCompleto.Text = funcionarioSeleccionado.nombreFuncionario;
             txtPeriodo.Text = ddlPeriodo.SelectedItem.Text;
+
+            Periodo periodo = new Periodo();
+            periodo.anoPeriodo = Convert.ToInt32(ddlPeriodo.SelectedItem.Text);
+            List<Proyeccion> listaProyeccion = proyeccionServicios.getProyeccionesPorPeriodoYFuncionario(periodo,funcionarioSeleccionado);
+            rpProyeccion.DataSource = listaProyeccion;
+            rpProyeccion.DataBind();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalVerDistribucionDeFuncionario();", true);
+
         }
         #endregion
 

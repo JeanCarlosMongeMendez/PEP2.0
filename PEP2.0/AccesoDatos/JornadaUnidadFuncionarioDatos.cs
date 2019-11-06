@@ -69,7 +69,7 @@ namespace AccesoDatos
         {
             SqlConnection sqlConnection = conexion.conexionPEP();
             String consulta = @"Insert JornadaUnidadFuncionario(id_unidad, id_funcionario, id_jornada)
-                                            values(@unidad ,@funcionario ,@jornada)";
+                                            values(@unidad ,@funcionario ,@jornada);SELECT SCOPE_IDENTITY();";
             SqlCommand command = new SqlCommand(consulta, sqlConnection);
             command.Parameters.AddWithValue("@unidad", jornadaUnidadFuncionario.idUnidad);
             command.Parameters.AddWithValue("@funcionario", jornadaUnidadFuncionario.idFuncionario);
