@@ -272,6 +272,8 @@ namespace Proyecto.Catalogos.Ejecucion
 
                 //metodo que realiza la paginacion
                 Paginacion4();
+                MostrarTablaRepartirGastos();
+
 
 
             }
@@ -967,7 +969,10 @@ namespace Proyecto.Catalogos.Ejecucion
             listUnidad.Add(añadirUnidadEliminada);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La unidad fue borrada con exito" + "');", true);
             List<Partida> partidas = (List<Partida>)Session["partidasPorUnidadesProyectoPeriodo"];
-            partidas.RemoveAll(item => item.idUnidad == idUnidad);
+            if (partidas != null)
+            {
+                partidas.RemoveAll(item => item.idUnidad == idUnidad);
+            }
             List<Partida> partidasElegidas = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
             if (partidasElegidas!=null)
             {
@@ -985,7 +990,9 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         protected void btnAlmacenarUnidadPartida_Click(object sender, EventArgs e)
         {
+
             List<PartidaUnidad> partidasAsignadas = (List<PartidaUnidad>)Session["partidasAsignadas"];
+           
             List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
             montoRepartir.Text = txtMontoIngresar.Text;
             if (partidasAsignadas == null)
@@ -1009,8 +1016,8 @@ namespace Proyecto.Catalogos.Ejecucion
               
                 PartidaUnidad partidaUnidad = new PartidaUnidad();
                 Double montoDisponible = (Double)listaPartidasEgreso.Sum(presupuesto => presupuesto.monto);
-                if (monto <= montoDisponible)
-                {
+                //if (monto <= montoDisponible)
+                //{
                     foreach (PartidaUnidad p in partidasElegidas)
                     {
                         if (p.IdPartida == Convert.ToInt32(idPartida))
@@ -1054,7 +1061,7 @@ namespace Proyecto.Catalogos.Ejecucion
                     Session["partidasAsignadas"] = partidasElegidas;
                     obtenerUnidadesPartidasAsignarMonto();
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", " activarModalRepartirPartidas();", true);
-                }
+                //}
             }
            
         }
@@ -1142,8 +1149,8 @@ namespace Proyecto.Catalogos.Ejecucion
             partidasElegidas = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
             List<PartidaUnidad> partidaUnidad = new List<PartidaUnidad>();
             List<PresupuestoEgresoPartida> listaPartidasEgreso = new List<PresupuestoEgresoPartida>();
-            if (contador == 0)
-            {
+            //if (contador == 0 )
+            //{
                 foreach (Partida p in partidasElegidas)
                 {
                     PartidaUnidad partidaU = new PartidaUnidad();
@@ -1158,8 +1165,16 @@ namespace Proyecto.Catalogos.Ejecucion
                     partidaUnidad.Add(partidaU);
 
                 }
-                Session["partidasAsignadas"] = partidaUnidad;
-                var dt = partidaUnidad;
+                //Session["partidasAsignadas"] = partidaUnidad;
+            if (contador != 0)
+            {
+                List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
+               List<PartidaUnidad> partida = partidaUnidad.Where(a => !partidasElegidasConMonto.Any(a1 => a1.NumeroPartida == a.NumeroPartida))
+            .Union(partidasElegidasConMonto.Where(a => !partidaUnidad.Any(a1 => a1.NumeroPartida == a.NumeroPartida))).ToList();
+               
+            }
+            Session["partidasAsignadas"] = partidaUnidad;
+            var dt = partidaUnidad;
                 pgsource.DataSource = dt;
                 pgsource.AllowPaging = true;
                 //numero de items que se muestran en el Repeater
@@ -1178,29 +1193,29 @@ namespace Proyecto.Catalogos.Ejecucion
                 rpUnidadPartida.DataSource = pgsource;
                 rpUnidadPartida.DataBind();
                 contador++;
-            }
-            else
-            {
-                partidaUnidad= (List<PartidaUnidad>)Session["partidasAsignadas"];
-                var dt = partidaUnidad;
-                pgsource.DataSource = dt;
-                pgsource.AllowPaging = true;
-                //numero de items que se muestran en el Repeater
-                //pgsource.PageSize = elmentosMostrar;
-                //pgsource.CurrentPageIndex = paginaActual;
-                //mantiene el total de paginas en View State
-                //ViewState["TotalPaginas"] = pgsource.PageCount;
-                //Ejemplo: "Página 1 al 10"
-                //  lblpagina1.Text = "Página " + (paginaActual + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
-                //Habilitar los botones primero, último, anterior y siguiente
-                //lbAnterior1.Enabled = !pgsource.IsFirstPage;
-                //lbSiguiente1.Enabled = !pgsource.IsLastPage;
-                //lbPrimero1.Enabled = !pgsource.IsFirstPage;
-                //lbUltimo1.Enabled = !pgsource.IsLastPage;
+            //}
+            //else
+            //{
+            //    partidaUnidad= (List<PartidaUnidad>)Session["partidasAsignadas"];
+            //    var dt = partidaUnidad;
+            //    pgsource.DataSource = dt;
+            //    pgsource.AllowPaging = true;
+            //    //numero de items que se muestran en el Repeater
+            //    //pgsource.PageSize = elmentosMostrar;
+            //    //pgsource.CurrentPageIndex = paginaActual;
+            //    //mantiene el total de paginas en View State
+            //    //ViewState["TotalPaginas"] = pgsource.PageCount;
+            //    //Ejemplo: "Página 1 al 10"
+            //    //  lblpagina1.Text = "Página " + (paginaActual + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
+            //    //Habilitar los botones primero, último, anterior y siguiente
+            //    //lbAnterior1.Enabled = !pgsource.IsFirstPage;
+            //    //lbSiguiente1.Enabled = !pgsource.IsLastPage;
+            //    //lbPrimero1.Enabled = !pgsource.IsFirstPage;
+            //    //lbUltimo1.Enabled = !pgsource.IsLastPage;
 
-                rpUnidadPartida.DataSource = pgsource;
-                rpUnidadPartida.DataBind();
-            }
+            //    rpUnidadPartida.DataSource = pgsource;
+            //    rpUnidadPartida.DataBind();
+            //}
            
 
         }
@@ -1399,21 +1414,23 @@ namespace Proyecto.Catalogos.Ejecucion
             MostrarTablaRepartirGastos();
         }
 
-        protected void txtMontoIngresar_TextChanged(object sender, EventArgs e)
-        {
-            if (txtMontoIngresar.Text != "")
-            {
-                ButtonRepartir.Enabled = false;
-            }
-            else
-            {
-                ButtonRepartir.Enabled = true;
-            }
-        }
+        //protected void txtMontoIngresar_TextChanged(object sender, EventArgs e)
+        //{
+        //    if (txtMontoIngresar.Text != "")
+        //    {
+        //        ButtonRepartir.Visible=false;
+        //    }
+        //    else
+        //    {
+        //        ButtonRepartir.Visible=true;
+        //    }
+        //}
 
         private void MostrarTablaRepartirGastos()
         {
-            if (listaUnidad.Count >= 2)
+            List<Partida> partidasElegidas = new List<Partida>();
+            partidasElegidas = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
+            if (listaUnidad.Count >= 2  && partidasElegidas!=null)
             {
                 UpdatePanel10.Visible = true;
                 ButtonRepartir.Visible = true;
@@ -1527,6 +1544,14 @@ namespace Proyecto.Catalogos.Ejecucion
             lnkPagina.BackColor = Color.FromName("#005da4");
             lnkPagina.ForeColor = Color.FromName("#FFFFFF");
         }
+
+
+        //protected void textBox_TextChanged(object sender, EventArgs e)
+        //{
+        //    var bl = !string.IsNullOrEmpty(txtMontoIngresar.Text);
+
+        //    ButtonRepartir.Visible = bl;
+        //}
 
     }
 }
