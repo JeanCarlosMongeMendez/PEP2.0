@@ -1522,7 +1522,7 @@ namespace Proyecto.Planilla
                 {
                     limpiarFormulario();
                     
-                    dividir salario
+                  //  dividir salario
                 }
             }
         }
