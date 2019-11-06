@@ -34,9 +34,12 @@
             <hr />
         </div>
 
-        <div class="col-md-12 col-xs-12 col-sm-12">
-            <div class="col-md-4 col-xs-4 col-sm-4">
+        <div class="row">
+            <div class="col-md-2 col-xs-12 col-sm-12" style="text-align:center;">
                 <asp:Button ID="btnNuevoFuncionario" runat="server" Text="Nuevo funcionario" CssClass="btn btn-primary boton-nuevo" OnClick="btnNuevoFuncionario_Click" />
+            </div>
+            <div class="col-md-2 col-xs-12 col-sm-12" style="text-align:center;">
+                <asp:Button ID="btnPasarFuncionarios" runat="server" Text="Pasar Funcionarios" CssClass="btn btn-primary boton-nuevo" OnClick="btnPasarFuncionarios_Click"/>
             </div>
         </div>
 
@@ -62,7 +65,7 @@
                             <td>
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                    <asp:TextBox ID="txtBuscarNombre" runat="server" CssClass="form-control chat-input" placeholder="filtro nombre"></asp:TextBox>
+                                    <asp:TextBox ID="txtBuscarNombre" runat="server" CssClass="form-control chat-input" placeholder="filtro nombre" onkeypress="enter_click()"></asp:TextBox>
                                 </div>
                             </td>
                         </tr>
@@ -214,7 +217,7 @@
                                 </div>
 
                                 <div class="col-md-9 col-xs-12 col-sm-12" style="text-align: left">
-                                    <asp:DropDownList ID="ddlJornadaLaboral" class="btn btn-default dropdown-toggle" runat="server"></asp:DropDownList>
+                                    <asp:DropDownList ID="ddlJornadaLaboral" class="btn btn-default dropdown-toggle" runat="server" OnSelectedIndexChanged="ddlJornadaLaboral_SelectedIndexChanged"></asp:DropDownList>
                                 </div>
 
                             </div>
@@ -650,21 +653,6 @@
 
                             <div class="col-md-12 col-xs-12 col-sm-12">
                                 <br />
-                            </div>
-
-                            <div class="row" style="text-align: center">
-
-                                <div class="col-md-3 col-xs-12 col-sm-12">
-                                    <asp:Label runat="server" Text="Salario propuesto" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
-                                </div>
-
-                                <div class="col-md-6 col-xs-12 col-sm-12">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">₡</span>
-                                        <asp:TextBox ID="txtSalarioPropuesto" runat="server" class="form-control" TextMode="Number"></asp:TextBox>
-                                    </div>
-                                </div>
-
                             </div>
 
                             <div class="col-md-12 col-xs-12 col-sm-12">
@@ -1238,6 +1226,221 @@
     </asp:UpdatePanel>--%>
     <!-- Fin modal nuevo funcionario -->
 
+    <%--Modal pasar Funcionario--%>
+    <asp:UpdatePanel ID="UpdatePanel5" runat="server">
+        <ContentTemplate>
+            <div id="modalPasarFuncionarios" class="modal fade" role="alertdialog">
+                <div class="modal-dialog modal-lg" style="width: 98% !important">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Pasar funcionarios</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <br />
+                                </div>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                    <div class="col-md-6 col-xs-6 col-sm-6">
+                                        <asp:Label ID="lblPeriodoDe" runat="server" Text="Período seleccionado" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    </div>
+
+                                    <div class="col-md-6 col-xs-6 col-sm-6">
+                                        <asp:Label ID="lblPeriodoA" runat="server" Text="Período a pasar" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <br />
+                                </div>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                    <div class="col-md-6 col-xs-6 col-sm-6">
+                                        <asp:Label ID="lblPeriodoSeleccionado" runat="server" Text="" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                    </div>
+
+                                    <div class="col-md-6 col-xs-6 col-sm-6">
+                                        <asp:DropDownList ID="ddlPlanillaModalPasarFuncionarios" class="btn btn-default dropdown-toggle" runat="server" AutoPostBack="true"></asp:DropDownList>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12">
+                                    <hr />
+                                </div>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                    <!-- ------------------------ tabla funcionarios De --------------------------- -->
+                                    <div class=" table-responsive col-md-6 col-xs-6 col-sm-6" style="text-align: center; overflow-y: auto;">
+
+                                        <table id="tblFuncionariosDe" class="table table-bordered">
+                                            <thead>
+                                                <tr style="text-align: center" class="btn-primary">
+                                                    <th></th>
+                                                    <th>Nombre</th>
+                                                </tr>
+                                            </thead>
+                                            <tr>
+                                                <td>
+                                                    <asp:LinkButton ID="btnFiltrarFuncionariosDe" runat="server" CssClass="btn btn-primary" OnClick="btnFiltrarFuncionariosDe_Click"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton></td>
+                                                <td>
+                                                    <asp:TextBox ID="txtBuscarFuncionariosDe" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción" onkeypress="enter2_click()"></asp:TextBox>
+                                                </td>
+                                            </tr>
+
+                                            <asp:Repeater ID="rpFuncionariosDe" runat="server">
+                                                <HeaderTemplate>
+                                                </HeaderTemplate>
+
+                                                <ItemTemplate>
+                                                    <tr style="text-align: center">
+                                                        <td>
+                                                            <asp:LinkButton ID="btnSeleccionarFuncionariosDe" runat="server" ToolTip="Copiar funcionario" CommandArgument='<%# Eval("idFuncionario") %>' OnClick="btnSeleccionarFuncionariosDe_Click"><span class="glyphicon glyphicon-share-alt"></span></asp:LinkButton>
+                                                        </td>
+                                                        <td>
+                                                            <%# Eval("nombreFuncionario") %>
+                                                        </td>
+                                                    </tr>
+                                                </ItemTemplate>
+                                                <FooterTemplate>
+                                                </FooterTemplate>
+                                            </asp:Repeater>
+                                        </table>
+                                    </div>
+                                    <!-- ---------------------- FIN tabla funcionarios De ------------------------- -->
+
+                                    <!-- ------------------------ tabla Funcionarios A --------------------------- -->
+                                    <div class=" table-responsive col-md-6 col-xs-6 col-sm-6" style="text-align: center; overflow-y: auto;">
+
+                                        <table id="tblFuncionariosA" class="table table-bordered">
+                                            <thead>
+                                                <tr style="text-align: center" class="btn-primary">
+                                                    <th></th>
+                                                    <th>Nombre</th>
+                                                </tr>
+                                            </thead>
+                                            <tr>
+                                                <td>
+                                                    <asp:LinkButton ID="btnFiltrarFuncionariosA" runat="server" CssClass="btn btn-primary" OnClick="btnFiltrarFuncionariosA_Click"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton></td>
+                                                <td>
+                                                    <asp:TextBox ID="txtBuscarFuncionariosA" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción" onkeypress="enter3_click()"></asp:TextBox>
+                                                </td>
+                                            </tr>
+                                            <asp:Repeater ID="rpFuncionariosA" runat="server">
+                                                <HeaderTemplate>
+                                                </HeaderTemplate>
+
+                                                <ItemTemplate>
+                                                    <tr style="text-align: center">
+                                                        <td></td>
+                                                        <td>
+                                                            <%# Eval("nombreFuncionario") %>
+                                                        </td>
+                                                    </tr>
+
+                                                </ItemTemplate>
+
+                                                <FooterTemplate>
+                                                </FooterTemplate>
+                                            </asp:Repeater>
+                                        </table>
+                                    </div>
+                                    <!-- ---------------------- FIN tabla funcionarios A ------------------------- -->
+                                </div>
+
+                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                    <!-- ---------------------- tabla paginacion funcionarios De ------------------------- -->
+                                    <div class="col-md-6 col-xs-6 col-sm-6" style="text-align: center; overflow-y: auto;">
+                                        <center>
+                    <table class="table" style="max-width:664px;">
+                        <tr style="padding:1px !important">
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbPrimeroFuncionariosDe" runat="server" CssClass="btn btn-primary" OnClick="lbPrimeroFuncionariosDe_Click"><span class="glyphicon glyphicon-fast-backward"></span></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbAnteriorFuncionariosDe" runat="server" CssClass="btn btn-default" OnClick="lbAnteriorFuncionariosDe_Click"><span class="glyphicon glyphicon-backward"></asp:LinkButton>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:DataList ID="rptPaginacionFuncionariosDe" runat="server"
+                                    OnItemCommand="rptPaginacionFuncionariosDe_ItemCommand"
+                                    OnItemDataBound="rptPaginacionFuncionariosDe_ItemDataBound" RepeatDirection="Horizontal">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lbPaginacionFuncionariosDe" runat="server" CssClass="btn btn-default"
+                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
+                                            Text='<%# Eval("PaginaText") %>' ></asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:DataList>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbSiguienteFuncionariosDe" CssClass="btn btn-default" runat="server" OnClick="lbSiguienteFuncionariosDe_Click"><span class="glyphicon glyphicon-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbUltimoFuncionariosDe" CssClass="btn btn-primary" runat="server" OnClick="lbUltimoFuncionariosDe_Click"><span class="glyphicon glyphicon-fast-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:Label ID="lblpaginaFuncionariosDe" runat="server" Text=""></asp:Label>
+                            </td>
+                        </tr>
+                    </table>
+                        </center>
+                                    </div>
+                                    <!-- ---------------------- FIN tabla paginacion escalas salariales a pasar ------------------------- -->
+
+                                    <!-- ---------------------- tabla paginacion escalas agregadas ------------------------- -->
+                                    <div class="col-md-6 col-xs-6 col-sm-6" style="text-align: center; overflow-y: auto;">
+                                        <center>
+                    <table class="table" style="max-width:664px;">
+                        <tr style="padding:1px !important">
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbPrimeroFuncionariosA" runat="server" CssClass="btn btn-primary" OnClick="lbPrimeroFuncionariosA_Click"><span class="glyphicon glyphicon-fast-backward"></span></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbAnteriorFuncionariosA" runat="server" CssClass="btn btn-default" OnClick="lbAnteriorFuncionariosA_Click"><span class="glyphicon glyphicon-backward"></asp:LinkButton>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:DataList ID="rptPaginacionFuncionariosA" runat="server"
+                                    OnItemCommand="rptPaginacionFuncionariosA_ItemCommand"
+                                    OnItemDataBound="rptPaginacionFuncionariosA_ItemDataBound" RepeatDirection="Horizontal">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lbPaginacionFuncionariosA" runat="server" CssClass="btn btn-default"
+                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
+                                            Text='<%# Eval("PaginaText") %>' ></asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:DataList>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbSiguienteFuncionariosA" CssClass="btn btn-default" runat="server" OnClick="lbSiguienteFuncionariosA_Click"><span class="glyphicon glyphicon-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbUltimoFuncionariosA" CssClass="btn btn-primary" runat="server" OnClick="lbUltimoFuncionariosA_Click"><span class="glyphicon glyphicon-fast-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:Label ID="lblpaginaFuncionariosA" runat="server" Text=""></asp:Label>
+                            </td>
+                        </tr>
+                    </table>
+                        </center>
+                                    </div>
+                                    <!-- ---------------------- FIN tabla paginacion escalas agregadas ------------------------- -->
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="text-align: center">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+
     <script src="../Scripts/moment.js"></script>
     <script src="../Scripts/transition.js"></script>
     <script src="../Scripts/collapse.js"></script>
@@ -1252,6 +1455,31 @@
         function activarModalVerFuncionario() {
             $('#modalVerFuncionario').modal('show');
         };
+
+        function activarModalPasarFuncionarios() {
+            $('#modalPasarFuncionarios').modal('show');
+        };
+
+        function enter_click() {
+            if (window.event.keyCode == 13) {
+                document.getElementById('<%=btnFiltrar.ClientID%>').focus();
+                document.getElementById('<%=btnFiltrar.ClientID%>').click();
+            }
+        }
+
+        function enter2_click() {
+            if (window.event.keyCode == 13) {
+                document.getElementById('<%=btnFiltrarFuncionariosDe.ClientID%>').focus();
+                document.getElementById('<%=btnFiltrarFuncionariosDe.ClientID%>').click();
+            }
+        }
+
+        function enter3_click() {
+            if (window.event.keyCode == 13) {
+                document.getElementById('<%=btnFiltrarFuncionariosA.ClientID%>').focus();
+                document.getElementById('<%=btnFiltrarFuncionariosA.ClientID%>').click();
+            }
+        }
 
         $(function () {
             // Fechas

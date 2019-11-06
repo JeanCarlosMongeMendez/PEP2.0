@@ -71,7 +71,7 @@ namespace AccesoDatos
             SqlConnection sqlConnection = conexion.conexionPEP();
 
             String consulta = @"Insert Jornada(desc_jornada,activo,porcentaje_jornada)
-                                            values(@descJornada,@activo,@porcentajeJornada)";
+                                            values(@descJornada,@activo,@porcentajeJornada);SELECT SCOPE_IDENTITY();";
 
             SqlCommand command = new SqlCommand(consulta, sqlConnection);
 

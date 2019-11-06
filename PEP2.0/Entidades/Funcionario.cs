@@ -33,7 +33,6 @@ namespace Entidades
         public Double salarioContratacion2 { get; set; }
         public Double salarioJunio { get; set; }
         public Double salarioPromedio { get; set; }
-        public Double salarioPropuesto { get; set; }
         public String observaciones { get; set; }
         public String nombreFuncionario { get; set; }
         public double porcentajeSumaSalario { get; set; }

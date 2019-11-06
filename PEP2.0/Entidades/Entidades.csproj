@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Anualidad.cs" />
     <Compile Include="CargaSocial.cs" />
     <Compile Include="Contacto.cs" />
     <Compile Include="Ejecucion.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="Funcionario.cs" />
     <Compile Include="FuncionarioFundevi.cs" />
     <Compile Include="Jornada.cs" />
+    <Compile Include="Mes.cs" />
     <Compile Include="Partida.cs" />
     <Compile Include="PartidaUnidad.cs" />
     <Compile Include="Periodo.cs" />
@@ -59,6 +61,8 @@
     <Compile Include="PresupuestoEgresoPartida.cs" />
     <Compile Include="PresupuestoIngreso.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Proyeccion.cs" />
+    <Compile Include="Proyeccion_CargaSocial.cs" />
     <Compile Include="Proyectos.cs" />
     <Compile Include="Reporte_Egresos.cs" />
     <Compile Include="TipoTramite.cs" />

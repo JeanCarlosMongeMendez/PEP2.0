@@ -75,7 +75,7 @@ namespace AccesoDatos
             SqlConnection sqlConnection = conexion.conexionPEP();
 
             String consulta = @"Insert Planilla(anualidad_1,anualidad_2,ano_periodo)
-                                            values(@anualidad1,@anualidad2,@anoPeriodo)";
+                                            values(@anualidad1,@anualidad2,@anoPeriodo);SELECT SCOPE_IDENTITY();";
 
             SqlCommand command = new SqlCommand(consulta, sqlConnection);
 

@@ -137,6 +137,7 @@
     <Content Include="Imagenes\logo_LANAMME-140x140.png" />
     <Content Include="Imagenes\UCR informe.png" />
     <Content Include="Login.aspx" />
+    <Content Include="Mantenimiento\Anualidad\AdministrarAnualidades.aspx" />
     <Content Include="Mantenimiento\EscalasSalariales\AdministrarEscalas.aspx" />
     <Content Include="Planilla\AdministrarDistribucionUcr.aspx" />
     <Content Include="Planilla\AdministrarFuncionarioFundevi.aspx" />
@@ -315,6 +316,13 @@
     </Compile>
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Mantenimiento\Anualidad\AdministrarAnualidades.aspx.cs">
+      <DependentUpon>AdministrarAnualidades.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Mantenimiento\Anualidad\AdministrarAnualidades.aspx.designer.cs">
+      <DependentUpon>AdministrarAnualidades.aspx</DependentUpon>
     </Compile>
     <Compile Include="Mantenimiento\EscalasSalariales\AdministrarEscalas.aspx.cs">
       <DependentUpon>AdministrarEscalas.aspx</DependentUpon>

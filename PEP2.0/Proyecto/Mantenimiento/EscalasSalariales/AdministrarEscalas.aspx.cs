@@ -150,7 +150,7 @@ namespace Proyecto.Mantenimiento.EscalasSalariales
                 {
                     //String salarioTxt = ;
                     Double salario = Convert.ToDouble(txtSalarioBase1.Text.Replace(".", ","));
-                    if (salario < 1)
+                    if (salario < 0)
                     {
                         txtSalarioBase1.CssClass = "form-control alert-danger";
                         valido = false;
@@ -177,7 +177,7 @@ namespace Proyecto.Mantenimiento.EscalasSalariales
                 {
                     String salarioTxt = txtSalarioBase2.Text.Replace(".", ",");
                     Double salario = Convert.ToDouble(salarioTxt);
-                    if (salario < 1 )
+                    if (salario < 0 )
                     {
                         txtSalarioBase2.CssClass = "form-control alert-danger";
                         valido = false;
@@ -202,7 +202,7 @@ namespace Proyecto.Mantenimiento.EscalasSalariales
                 try
                 {
                     int topeEscalafones = Convert.ToInt32(txtTopeEscalafones.Text);
-                    if (topeEscalafones < 1 )
+                    if (topeEscalafones < 0 )
                     {
                         txtTopeEscalafones.CssClass = "form-control alert-danger";
                         valido = false;
@@ -228,7 +228,7 @@ namespace Proyecto.Mantenimiento.EscalasSalariales
                 {
                     String porcentajeEscalafonesTxt = txtPorcentajeEscalafones.Text.Replace(".", ",");
                     Double porcentajeEscalafones = Convert.ToDouble(porcentajeEscalafonesTxt);
-                    if (porcentajeEscalafones < 1 )
+                    if (porcentajeEscalafones < 0 )
                     {
                         txtPorcentajeEscalafones.CssClass = "form-control alert-danger";
                         valido = false;

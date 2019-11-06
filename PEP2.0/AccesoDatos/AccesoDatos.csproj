@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnualidadDatos.cs" />
     <Compile Include="CargaSocialDatos.cs" />
     <Compile Include="ConexionDatos.cs" />
     <Compile Include="ContactoDatos.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="FuncionarioFundeviDatos.cs" />
     <Compile Include="JornadaDatos.cs" />
     <Compile Include="JornadaUnidadFuncionarioDatos.cs" />
+    <Compile Include="MesDatos.cs" />
     <Compile Include="PartidaDatos.cs" />
     <Compile Include="PeriodoDatos.cs" />
     <Compile Include="PlanillaDatos.cs" />
@@ -62,6 +64,8 @@
     <Compile Include="PresupuestoEgreso_PartidaDatos.cs" />
     <Compile Include="PresupuestoIngresoDatos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProyeccionDatos.cs" />
+    <Compile Include="Proyeccion_CargaSocialDatos.cs" />
     <Compile Include="ProyectoDatos.cs" />
     <Compile Include="Reporte_EgresosDatos.cs" />
     <Compile Include="TipoTramitesDatos.cs" />
