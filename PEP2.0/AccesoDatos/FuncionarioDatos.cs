@@ -82,7 +82,6 @@ namespace AccesoDatos
                 funcionario.salarioContratacion2 = Convert.ToDouble(reader["salario_contratacion_2"].ToString());
                 funcionario.salarioJunio = Convert.ToDouble(reader["salario_junio"].ToString());
                 funcionario.salarioPromedio = Convert.ToDouble(reader["salario_promedio"].ToString());
-                funcionario.salarioPropuesto = Convert.ToDouble(reader["salario_propuesto"].ToString());
                 funcionario.observaciones = reader["observaciones"].ToString();
                 funcionario.nombreFuncionario = reader["nombre_funcionario"].ToString();
                 funcionario.porcentajeSumaSalario = Convert.ToDouble(reader["porcentaje_suma_salario"].ToString());
@@ -163,7 +162,6 @@ namespace AccesoDatos
                 funcionario.salarioContratacion2 = Convert.ToDouble(reader["salario_contratacion_2"].ToString());
                 funcionario.salarioJunio = Convert.ToDouble(reader["salario_junio"].ToString());
                 funcionario.salarioPromedio = Convert.ToDouble(reader["salario_promedio"].ToString());
-                funcionario.salarioPropuesto = Convert.ToDouble(reader["salario_propuesto"].ToString());
                 funcionario.observaciones = reader["observaciones"].ToString();
                 funcionario.nombreFuncionario = reader["nombre_funcionario"].ToString();
                 funcionario.porcentajeSumaSalario = Convert.ToDouble(reader["porcentaje_suma_salario"].ToString());
@@ -201,14 +199,14 @@ namespace AccesoDatos
                     ",monto_escalafones_1 ,porcentaje_anualidad_1 ,monto_anualidad_1 ,salario_contratacion_1" +
                     ",salario_enero ,concepto_pago_ley ,salario_base_2 ,no_escalafones_2 ,monto_escalafones_2" +
                     ",porcentaje_anualidad_2 ,monto_anualidad_2 ,salario_contratacion_2 ,salario_junio" +
-                    ",salario_promedio ,salario_propuesto ,observaciones ,nombre_funcionario, porcentaje_suma_salario, " +
+                    ",salario_promedio ,observaciones ,nombre_funcionario, porcentaje_suma_salario, " +
                     "id_jornada_laboral)" +
                     "VALUES (@id_planilla, @id_escala_salarial, @fecha_ingreso, @salario_base_1," +
                     "@no_escalafones_1, @monto_escalafones_1, @porcentaje_anualidad_1," +
                     "@monto_anualidad_1, @salario_contratacion_1, @salario_enero," +
                     "@concepto_pago_ley, @salario_base_2, @no_escalafones_2," +
                     "@monto_escalafones_2, @porcentaje_anualidad_2, @monto_anualidad_2," +
-                    "@salario_contratacion_2, @salario_junio, @salario_promedio, @salario_propuesto," +
+                    "@salario_contratacion_2, @salario_junio, @salario_promedio, " +
                     "@observaciones, @nombre_funcionario, @porcentaje_suma_salario, @id_jornada) ", sqlConnection);
 
                 sqlCommandInsertar.Parameters.AddWithValue("@id_planilla", funcionario.planilla.idPlanilla);
@@ -230,7 +228,6 @@ namespace AccesoDatos
                 sqlCommandInsertar.Parameters.AddWithValue("@salario_contratacion_2", funcionario.salarioContratacion2);
                 sqlCommandInsertar.Parameters.AddWithValue("@salario_junio", funcionario.salarioJunio);
                 sqlCommandInsertar.Parameters.AddWithValue("@salario_promedio", funcionario.salarioPromedio);
-                sqlCommandInsertar.Parameters.AddWithValue("@salario_propuesto", funcionario.salarioPropuesto);
                 sqlCommandInsertar.Parameters.AddWithValue("@observaciones", funcionario.observaciones);
                 sqlCommandInsertar.Parameters.AddWithValue("@nombre_funcionario", funcionario.nombreFuncionario);
                 sqlCommandInsertar.Parameters.AddWithValue("@porcentaje_suma_salario", funcionario.porcentajeSumaSalario);
@@ -293,7 +290,6 @@ namespace AccesoDatos
                     "salario_contratacion_2 = @salario_contratacion_2," +
                     "salario_junio = @salario_junio," +
                     "salario_promedio = @salario_promedio," +
-                    "salario_propuesto = @salario_propuesto," +
                     "observaciones = @observaciones," +
                     "nombre_funcionario = @nombre_funcionario," +
                     "id_jornada_laboral = @id_jornada," +
@@ -319,7 +315,6 @@ namespace AccesoDatos
                 sqlCommandInsertar.Parameters.AddWithValue("@salario_contratacion_2", funcionario.salarioContratacion2);
                 sqlCommandInsertar.Parameters.AddWithValue("@salario_junio", funcionario.salarioJunio);
                 sqlCommandInsertar.Parameters.AddWithValue("@salario_promedio", funcionario.salarioPromedio);
-                sqlCommandInsertar.Parameters.AddWithValue("@salario_propuesto", funcionario.salarioPropuesto);
                 sqlCommandInsertar.Parameters.AddWithValue("@observaciones", funcionario.observaciones);
                 sqlCommandInsertar.Parameters.AddWithValue("@nombre_funcionario", funcionario.nombreFuncionario);
                 sqlCommandInsertar.Parameters.AddWithValue("@id_jornada", funcionario.JornadaLaboral.idJornada);

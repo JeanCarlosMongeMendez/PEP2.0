@@ -43,6 +43,44 @@ namespace Proyecto.Planilla
         }
         #endregion
 
+        #region variables globales paginacion funcionariosDe
+        int primerIndexFuncionariosDe, ultimoIndexFuncionariosDe;
+        private int paginaActualFuncionariosDe
+        {
+            get
+            {
+                if (ViewState["paginaActualFuncionariosDe"] == null)
+                {
+                    return 0;
+                }
+                return ((int)ViewState["paginaActualFuncionariosDe"]);
+            }
+            set
+            {
+                ViewState["paginaActualFuncionariosDe"] = value;
+            }
+        }
+        #endregion
+
+        #region variables globales paginacion funcionariosA
+        int primerIndexFuncionariosA, ultimoIndexFuncionariosA;
+        private int paginaActualFuncionariosA
+        {
+            get
+            {
+                if (ViewState["paginaActualFuncionariosA"] == null)
+                {
+                    return 0;
+                }
+                return ((int)ViewState["paginaActualFuncionariosA"]);
+            }
+            set
+            {
+                ViewState["paginaActualFuncionariosA"] = value;
+            }
+        }
+        #endregion
+
         #region page load
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -62,25 +100,89 @@ namespace Proyecto.Planilla
                 Session["listaFuncionarios"] = listaFuncionarios;
                 Session["listaFuncionariosFiltrada"] = listaFuncionarios;
 
+                Session["listaFuncionariosDe"] = listaFuncionarios;
+                Session["listaFuncionariosDeFiltrada"] = listaFuncionarios;
+
+                Session["listaFuncionariosA"] = listaFuncionarios;
+                Session["listaFuncionariosAFiltrada"] = listaFuncionarios;
+
+                llenarDdll();
                 mostrarDatosTabla();
-
-                List<EscalaSalarial> listaEscalas = escalaSalarialServicios.getEscalasSalarialesPorPeriodo(planilla.periodo);
-                Session["listaEscalas"] = listaEscalas;
-                ddlEscalaSalarial.DataSource = listaEscalas;
-                ddlEscalaSalarial.DataTextField = "descEscalaSalarial";
-                ddlEscalaSalarial.DataValueField = "idEscalaSalarial";
-                ddlEscalaSalarial.DataBind();
-
-                List<Jornada> jornadas = jornadaServicios.getJornadasActivas();
-                ddlJornadaLaboral.DataSource = jornadas;
-                ddlJornadaLaboral.DataTextField = "descJornada";
-                ddlJornadaLaboral.DataValueField = "idJornada";
-                ddlJornadaLaboral.DataBind();
             }
         }
         #endregion
 
         #region logica
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 10/jun/2019
+        /// Efecto: llean el DropDownList con los periodos que se encuentran en la base de datos
+        /// Requiere: - 
+        /// Modifica: DropDownList
+        /// Devuelve: -
+        /// </summary>
+        private void llenarDdll()
+        {
+            Entidades.Planilla planilla = (Entidades.Planilla)Session["planillaSeleccionada"];
+
+            List<EscalaSalarial> listaEscalas = escalaSalarialServicios.getEscalasSalarialesPorPeriodo(planilla.periodo);
+            Session["listaEscalas"] = listaEscalas;
+            ddlEscalaSalarial.DataSource = listaEscalas;
+            ddlEscalaSalarial.DataTextField = "descEscalaSalarial";
+            ddlEscalaSalarial.DataValueField = "idEscalaSalarial";
+            ddlEscalaSalarial.DataBind();
+            ddlEscalaSalarial.SelectedValue = listaEscalas.First().idEscalaSalarial.ToString();
+            escalaSeleccionada = listaEscalas.First();
+
+            List<Jornada> jornadas = jornadaServicios.getJornadasActivas();
+            Session["listaJornadas"] = jornadas;
+            ddlJornadaLaboral.DataSource = jornadas;
+            ddlJornadaLaboral.DataTextField = "descJornada";
+            ddlJornadaLaboral.DataValueField = "idJornada";
+            ddlJornadaLaboral.DataBind();
+            foreach(Jornada jornada in jornadas)
+            {
+                if(jornada.descJornada.Equals("Tiempo completo"))
+                {
+                    ddlJornadaLaboral.SelectedValue = jornada.idJornada.ToString();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 01/11/2019
+        /// Efecto : Valida si los datos del formulario tienen el formato correcto
+        /// Requiere : Clickear el boton "Guardar" del formulario
+        /// Modifica : -
+        /// Devuelve : -
+        /// </summary>
+        private bool validarDatos()
+        {
+            bool result = true;
+            if (
+                String.IsNullOrEmpty(txtNombreCompleto.Text) ||
+                String.IsNullOrEmpty(txtFecha.Text) ||
+                String.IsNullOrEmpty(txtSumaTotalSalarioBase1.Text) ||
+                String.IsNullOrEmpty(txtSumaTotalSalarioBaseII.Text) ||
+                String.IsNullOrEmpty(txtMontoEscalafonesI.Text) ||
+                String.IsNullOrEmpty(txtMontoEscalafonesII.Text) ||
+                String.IsNullOrEmpty(txtMontoAnualidadesI.Text) ||
+                String.IsNullOrEmpty(txtMontoAnualidadesII.Text) ||
+                String.IsNullOrEmpty(txtEscalafonesII.Text) ||
+                String.IsNullOrEmpty(txtSalContratacionI.Text) ||
+                String.IsNullOrEmpty(txtSalContratacionII.Text) ||
+                String.IsNullOrEmpty(txtSalarioMensualEneroJunio.Text) ||
+                String.IsNullOrEmpty(txtSalarioMensualJunioDiciembre.Text) ||
+                String.IsNullOrEmpty(txtPromedioSemestres.Text) 
+                )
+            {
+                result = false;
+            }
+            return result;
+        }
+
         /// <summary>
         /// Leonardo Carrion
         /// 17/jul/2019
@@ -240,6 +342,102 @@ namespace Proyecto.Planilla
         }
 
         /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 01/11/2019
+        /// Efecto: carga los datos filtrados en la tabla y realiza la paginacion correspondiente
+        /// Requiere: -
+        /// Modifica: los datos mostrados en pantalla
+        /// Devuelve: -
+        /// </summary>
+        public void mostrarDatosTablaFuncionariosDe()
+        {
+            List<Funcionario> listaFuncionarios = (List<Funcionario>)Session["listaFuncionariosDe"];
+
+            String nombre = "";
+
+            if (!String.IsNullOrEmpty(txtBuscarFuncionariosDe.Text))
+            {
+                nombre = txtBuscarFuncionariosDe.Text;
+            }
+
+            List<Funcionario> listaFuncionarioFiltrada = (List<Funcionario>)listaFuncionarios.Where(funcionario => funcionario.nombreFuncionario.ToString().Contains(nombre)).ToList();
+
+            Session["listaFuncionariosDeFiltrada"] = listaFuncionarioFiltrada;
+
+            var dt = listaFuncionarioFiltrada;
+            pgsource.DataSource = dt;
+            pgsource.AllowPaging = true;
+            //numero de items que se muestran en el Repeater
+            pgsource.PageSize = elmentosMostrar;
+            pgsource.CurrentPageIndex = paginaActualFuncionariosDe;
+            //mantiene el total de paginas en View State
+            ViewState["TotalPaginasFuncionariosDe"] = pgsource.PageCount;
+            //Ejemplo: "Página 1 al 10"
+            lblpaginaFuncionariosDe.Text = "Página " + (paginaActualFuncionariosDe + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
+            //Habilitar los botones primero, último, anterior y siguiente
+            lbAnteriorFuncionariosDe.Enabled = !pgsource.IsFirstPage;
+            lbSiguienteFuncionariosDe.Enabled = !pgsource.IsLastPage;
+            lbPrimeroFuncionariosDe.Enabled = !pgsource.IsFirstPage;
+            lbUltimoFuncionariosDe.Enabled = !pgsource.IsLastPage;
+
+            rpFuncionariosDe.DataSource = pgsource;
+            rpFuncionariosDe.DataBind();
+
+            //metodo que realiza la paginacion
+            PaginacionFuncionariosDe();
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarFuncionarios();", true);
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 01/11/2019
+        /// Efecto: carga los datos filtrados en la tabla y realiza la paginacion correspondiente
+        /// Requiere: -
+        /// Modifica: los datos mostrados en pantalla
+        /// Devuelve: -
+        /// </summary>
+        public void mostrarDatosTablaFuncionariosA()
+        {
+            List<Funcionario> listaFuncionarios = (List<Funcionario>)Session["listaFuncionariosA"];
+
+            String nombre = "";
+
+            if (!String.IsNullOrEmpty(txtBuscarFuncionariosA.Text))
+            {
+                nombre = txtBuscarFuncionariosA.Text;
+            }
+
+            List<Funcionario> listaFuncionarioFiltrada = (List<Funcionario>)listaFuncionarios.Where(funcionario => funcionario.nombreFuncionario.ToString().Contains(nombre)).ToList();
+
+            Session["listaFuncionariosAFiltrada"] = listaFuncionarioFiltrada;
+
+            var dt = listaFuncionarioFiltrada;
+            pgsource.DataSource = dt;
+            pgsource.AllowPaging = true;
+            //numero de items que se muestran en el Repeater
+            pgsource.PageSize = elmentosMostrar;
+            pgsource.CurrentPageIndex = paginaActualFuncionariosA;
+            //mantiene el total de paginas en View State
+            ViewState["TotalPaginasFuncionariosA"] = pgsource.PageCount;
+            //Ejemplo: "Página 1 al 10"
+            lblpaginaFuncionariosA.Text = "Página " + (paginaActualFuncionariosA + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
+            //Habilitar los botones primero, último, anterior y siguiente
+            lbAnteriorFuncionariosA.Enabled = !pgsource.IsFirstPage;
+            lbSiguienteFuncionariosA.Enabled = !pgsource.IsLastPage;
+            lbPrimeroFuncionariosA.Enabled = !pgsource.IsFirstPage;
+            lbUltimoFuncionariosA.Enabled = !pgsource.IsLastPage;
+
+            rpFuncionariosA.DataSource = pgsource;
+            rpFuncionariosA.DataBind();
+
+            //metodo que realiza la paginacion
+            PaginacionFuncionariosA();
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarFuncionarios();", true);
+        }
+
+        /// <summary>
         /// Leonardo Carrion
         /// 14/jun/2019
         /// Efecto: realiza la paginacion
@@ -283,6 +481,92 @@ namespace Proyecto.Planilla
         }
 
         /// <summary>
+        /// Leonardo Carrion
+        /// 14/jun/2019
+        /// Efecto: realiza la paginacion
+        /// Requiere: -
+        /// Modifica: paginacion mostrada en pantalla
+        /// Devuelve: -
+        /// </summary>
+        private void PaginacionFuncionariosDe()
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("IndexPagina"); //Inicia en 0
+            dt.Columns.Add("PaginaText"); //Inicia en 1
+
+            primerIndexFuncionariosDe = paginaActualFuncionariosDe - 2;
+            if (paginaActualFuncionariosDe > 2)
+                ultimoIndexFuncionariosDe = paginaActualFuncionariosDe + 2;
+            else
+                ultimoIndexFuncionariosDe = 4;
+
+            //se revisa que la ultima pagina sea menor que el total de paginas a mostrar, sino se resta para que muestre bien la paginacion
+            if (ultimoIndexFuncionariosDe > Convert.ToInt32(ViewState["TotalPaginasFuncionariosDe"]))
+            {
+                ultimoIndexFuncionariosDe = Convert.ToInt32(ViewState["TotalPaginasFuncionariosDe"]);
+                primerIndexFuncionariosDe = ultimoIndexFuncionariosDe - 4;
+            }
+
+            if (primerIndexFuncionariosDe < 0)
+                primerIndexFuncionariosDe = 0;
+
+            //se crea el numero de paginas basado en la primera y ultima pagina
+            for (var i = primerIndexFuncionariosDe; i < ultimoIndexFuncionariosDe; i++)
+            {
+                var dr = dt.NewRow();
+                dr[0] = i;
+                dr[1] = i + 1;
+                dt.Rows.Add(dr);
+            }
+
+            rptPaginacionFuncionariosDe.DataSource = dt;
+            rptPaginacionFuncionariosDe.DataBind();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 30/abr/2019
+        /// Efecto: realiza la paginacion
+        /// Requiere: -
+        /// Modifica: paginacion mostrada en pantalla
+        /// Devuelve: -
+        /// </summary>
+        private void PaginacionFuncionariosA()
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("IndexPagina"); //Inicia en 0
+            dt.Columns.Add("PaginaText"); //Inicia en 1
+
+            primerIndexFuncionariosA = paginaActualFuncionariosA - 2;
+            if (paginaActualFuncionariosA > 2)
+                ultimoIndexFuncionariosA = paginaActualFuncionariosA + 2;
+            else
+                ultimoIndexFuncionariosA = 4;
+
+            //se revisa que la ultima pagina sea menor que el total de paginas a mostrar, sino se resta para que muestre bien la paginacion
+            if (ultimoIndexFuncionariosA > Convert.ToInt32(ViewState["TotalPaginasFuncionariosA"]))
+            {
+                ultimoIndexFuncionariosA = Convert.ToInt32(ViewState["TotalPaginasFuncionariosA"]);
+                primerIndexFuncionariosA = ultimoIndexFuncionariosA - 4;
+            }
+
+            if (primerIndexFuncionariosA < 0)
+                primerIndexFuncionariosA = 0;
+
+            //se crea el numero de paginas basado en la primera y ultima pagina
+            for (var i = primerIndexFuncionariosA; i < ultimoIndexFuncionariosA; i++)
+            {
+                var dr = dt.NewRow();
+                dr[0] = i;
+                dr[1] = i + 1;
+                dt.Rows.Add(dr);
+            }
+
+            rptPaginacionFuncionariosA.DataSource = dt;
+            rptPaginacionFuncionariosA.DataBind();
+        }
+
+        /// <summary>
         /// Jean Carlos Monge Mendez
         /// 25/09/2019
         /// Efecto : Deja todos los campos del formulario en blanco
@@ -301,8 +585,6 @@ namespace Proyecto.Planilla
             txtPorcentajeAnualidadesI.Text = "";
             txtPorcentajeAnualidadesII.Text = "";
             txtPromedioSemestres.Text = "";
-            txtSalarioBase1.Text = "";
-            txtSalarioBase2.Text = "";
             txtSalarioMensualEneroJunio.Text = "";
             txtSalarioMensualJunioDiciembre.Text = "";
             txtSalContratacionI.Text = "";
@@ -312,7 +594,6 @@ namespace Proyecto.Planilla
             txtObservaciones.Text = "";
             txtPagoLey8114.Text = "";
             txtSumaSalarioBase1.Text = "";
-            txtSalarioPropuesto.Text = "";
         }
         #endregion
 
@@ -418,6 +699,211 @@ namespace Proyecto.Planilla
             lnkPagina.BackColor = Color.FromName("#005da4");
             lnkPagina.ForeColor = Color.FromName("#FFFFFF");
         }
+        #endregion
+
+        #region paginacionFuncionariosDe
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: se devuelve a la primera pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Primer pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbPrimeroFuncionariosDe_Click(object sender, EventArgs e)
+        {
+            paginaActualFuncionariosDe = 0;
+            mostrarDatosTablaFuncionariosDe();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: se devuelve a la ultima pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Ultima pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbUltimoFuncionariosDe_Click(object sender, EventArgs e)
+        {
+            paginaActualFuncionariosDe = (Convert.ToInt32(ViewState["TotalPaginasFuncionariosDe"]) - 1);
+            mostrarDatosTablaFuncionariosDe();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: se devuelve a la pagina anterior y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Anterior pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbAnteriorFuncionariosDe_Click(object sender, EventArgs e)
+        {
+            paginaActualFuncionariosDe -= 1;
+            mostrarDatosTablaFuncionariosDe();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: se devuelve a la pagina siguiente y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Siguiente pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbSiguienteFuncionariosDe_Click(object sender, EventArgs e)
+        {
+            paginaActualFuncionariosDe += 1;
+            mostrarDatosTablaFuncionariosDe();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: actualiza la la pagina actual y muestra los datos de la misma
+        /// Requiere: -
+        /// Modifica: elementos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacionFuncionariosDe_ItemCommand(object source, DataListCommandEventArgs e)
+        {
+            if (!e.CommandName.Equals("nuevaPagina")) return;
+            paginaActualFuncionariosDe = Convert.ToInt32(e.CommandArgument.ToString());
+            mostrarDatosTablaFuncionariosDe();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: marca el boton de la pagina seleccionada
+        /// Requiere: dar clic al boton de paginacion
+        /// Modifica: color del boton seleccionado
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacionFuncionariosDe_ItemDataBound(object sender, DataListItemEventArgs e)
+        {
+            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacionFuncionariosDe");
+            if (lnkPagina.CommandArgument != paginaActualFuncionariosDe.ToString()) return;
+            lnkPagina.Enabled = false;
+            lnkPagina.BackColor = Color.FromName("#005da4");
+            lnkPagina.ForeColor = Color.FromName("#FFFFFF");
+        }
+        #endregion
+
+        #region paginacions funcionariosA
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: se devuelve a la primera pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Primer pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbPrimeroFuncionariosA_Click(object sender, EventArgs e)
+        {
+            paginaActualFuncionariosA = 0;
+            mostrarDatosTablaFuncionariosA();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: se devuelve a la ultima pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Ultima pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbUltimoFuncionariosA_Click(object sender, EventArgs e)
+        {
+            paginaActualFuncionariosA = (Convert.ToInt32(ViewState["TotalPaginasFuncionariosA"]) - 1);
+            mostrarDatosTablaFuncionariosA();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: se devuelve a la pagina anterior y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Anterior pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbAnteriorFuncionariosA_Click(object sender, EventArgs e)
+        {
+            paginaActualFuncionariosA -= 1;
+            mostrarDatosTablaFuncionariosA();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: se devuelve a la pagina siguiente y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Siguiente pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbSiguienteFuncionariosA_Click(object sender, EventArgs e)
+        {
+            paginaActualFuncionariosA += 1;
+            mostrarDatosTablaFuncionariosA();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: actualiza la la pagina actual y muestra los datos de la misma
+        /// Requiere: -
+        /// Modifica: elementos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacionFuncionariosA_ItemCommand(object source, DataListCommandEventArgs e)
+        {
+            if (!e.CommandName.Equals("nuevaPagina")) return;
+            paginaActualFuncionariosA = Convert.ToInt32(e.CommandArgument.ToString());
+            mostrarDatosTablaFuncionariosA();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: marca el boton de la pagina seleccionada
+        /// Requiere: dar clic al boton de paginacion
+        /// Modifica: color del boton seleccionado
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacionFuncionariosA_ItemDataBound(object sender, DataListItemEventArgs e)
+        {
+            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacionFuncionariosA");
+            if (lnkPagina.CommandArgument != paginaActualFuncionariosA.ToString()) return;
+            lnkPagina.Enabled = false;
+            lnkPagina.BackColor = Color.FromName("#005da4");
+            lnkPagina.ForeColor = Color.FromName("#FFFFFF");
+        }
+
         #endregion
 
         /// <summary>
@@ -782,7 +1268,6 @@ namespace Proyecto.Planilla
             txtVerSalarioBase2.Text = funcionarioVer.escalaSalarial.salarioBase2.ToString();
             txtVerSalarioMensualEneroJunio.Text = funcionarioVer.salarioEnero.ToString();
             txtVerSalarioMensualJunioDiciembre.Text = funcionarioVer.salarioJunio.ToString();
-            txtVerSalarioPropuesto.Text = funcionarioVer.salarioPropuesto.ToString();
             txtVerSalContratacionI.Text = funcionarioVer.salarioContratacion1.ToString();
             txtVerSalContratacionII.Text = funcionarioVer.salarioContratacion2.ToString();
             txtVerSumaSalarioBase1.Text = funcionarioVer.porcentajeSumaSalario.ToString();
@@ -837,7 +1322,6 @@ namespace Proyecto.Planilla
             txtSalarioBase2.Text = funcionarioEditar.escalaSalarial.salarioBase2.ToString();
             txtSalarioMensualEneroJunio.Text = funcionarioEditar.salarioEnero.ToString();
             txtSalarioMensualJunioDiciembre.Text = funcionarioEditar.salarioJunio.ToString();
-            txtSalarioPropuesto.Text = funcionarioEditar.salarioPropuesto.ToString();
             txtSalContratacionI.Text = funcionarioEditar.salarioContratacion1.ToString();
             txtSalContratacionII.Text = funcionarioEditar.salarioContratacion2.ToString();
             txtSumaSalarioBase1.Text = funcionarioEditar.porcentajeSumaSalario.ToString();
@@ -888,7 +1372,6 @@ namespace Proyecto.Planilla
             txtVerSalarioBase2.Text = funcionarioEliminar.escalaSalarial.salarioBase2.ToString();
             txtVerSalarioMensualEneroJunio.Text = funcionarioEliminar.salarioEnero.ToString();
             txtVerSalarioMensualJunioDiciembre.Text = funcionarioEliminar.salarioJunio.ToString();
-            txtVerSalarioPropuesto.Text = funcionarioEliminar.salarioPropuesto.ToString();
             txtVerSalContratacionI.Text = funcionarioEliminar.salarioContratacion1.ToString();
             txtVerSalContratacionII.Text = funcionarioEliminar.salarioContratacion2.ToString();
             txtVerSumaSalarioBase1.Text = funcionarioEliminar.porcentajeSumaSalario.ToString();
@@ -923,6 +1406,7 @@ namespace Proyecto.Planilla
             Session["listaFuncionarios"] = listaFuncionarios;
             Session["listaFuncionariosFiltrada"] = listaFuncionarios;
             mostrarDatosTabla();
+            Toastr("success", "Se eliminó correctamente el funcionario");
         }
 
         /// <summary>
@@ -937,54 +1421,128 @@ namespace Proyecto.Planilla
         /// <param name="e"></param>
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
-            bool result = false;
-            Funcionario funcionario = new Funcionario();
-            funcionario.conceptoPagoLey = Convert.ToDouble(txtPagoLey8114.Text);
-            EscalaSalarial escalaSalarial = new EscalaSalarial();
-            escalaSalarial.idEscalaSalarial = Convert.ToInt32(ddlEscalaSalarial.SelectedValue);
-            funcionario.escalaSalarial = escalaSalarial;
-            funcionario.fechaIngreso = Convert.ToDateTime(txtFecha.Text);
-            funcionario.montoAnualidad1 = Convert.ToDouble(txtMontoAnualidadesI.Text);
-            funcionario.montoAnualidad2 = Convert.ToDouble(txtMontoAnualidadesII.Text);
-            funcionario.montoEscalafones1 = Convert.ToDouble(txtMontoEscalafonesI.Text);
-            funcionario.montoEscalafones2 = Convert.ToDouble(txtMontoEscalafonesII.Text);
-            funcionario.noEscalafones1 = Convert.ToInt32(txtEscalafonesI.Text);
-            funcionario.noEscalafones2 = Convert.ToInt32(txtEscalafonesII.Text);
-            funcionario.nombreFuncionario = txtNombreCompleto.Text;
-            funcionario.observaciones = txtObservaciones.Text;
-            funcionario.planilla = (Entidades.Planilla)Session["planillaSeleccionada"];
-            funcionario.porcentajeAnualidad1 = Convert.ToDouble(txtPorcentajeAnualidadesI.Text);
-            funcionario.porcentajeAnualidad2 = Convert.ToDouble(txtPorcentajeAnualidadesII.Text);
-            funcionario.salarioBase1 = Convert.ToDouble(txtSumaTotalSalarioBase1.Text);
-            funcionario.salarioBase2 = Convert.ToDouble(txtSumaTotalSalarioBaseII.Text);
-            funcionario.salarioContratacion1 = Convert.ToDouble(txtSalContratacionI.Text);
-            funcionario.salarioContratacion2 = Convert.ToDouble(txtSalContratacionII.Text);
-            funcionario.salarioEnero = Convert.ToDouble(txtSalarioMensualEneroJunio.Text);
-            funcionario.salarioJunio = Convert.ToDouble(txtSalarioMensualJunioDiciembre.Text);
-            funcionario.salarioPromedio = Convert.ToDouble(txtPromedioSemestres.Text);
-            funcionario.porcentajeSumaSalario = Convert.ToDouble(txtSumaSalarioBase1.Text);
-            Jornada jornadaLaboral = new Jornada();
-            jornadaLaboral.idJornada = Convert.ToInt32(ddlJornadaLaboral.SelectedValue);
-            funcionario.JornadaLaboral = jornadaLaboral;
-            double salarioPropuesto = 0;
-            Double.TryParse(txtSalarioPropuesto.Text, out salarioPropuesto);
-            funcionario.salarioPropuesto = salarioPropuesto;
-            int idFuncionario = 0;
-            Int32.TryParse(hdIdFuncionario.Value, out idFuncionario);
-            funcionario.idFuncionario = idFuncionario;
-            if (idFuncionario > 0)
+            if (validarDatos())
             {
-                result = funcionarioServicios.modificar(funcionario);
+                bool result = false;
+                Funcionario funcionario = new Funcionario();
+                double pagoLey = 0;
+                Double.TryParse(txtPagoLey8114.Text, out pagoLey);
+                funcionario.conceptoPagoLey = pagoLey;
+                EscalaSalarial escalaSalarial = new EscalaSalarial();
+                escalaSalarial.idEscalaSalarial = Convert.ToInt32(ddlEscalaSalarial.SelectedValue);
+                funcionario.escalaSalarial = escalaSalarial;
+                funcionario.fechaIngreso = Convert.ToDateTime(txtFecha.Text);
+                funcionario.montoAnualidad1 = Convert.ToDouble(txtMontoAnualidadesI.Text);
+                funcionario.montoAnualidad2 = Convert.ToDouble(txtMontoAnualidadesII.Text);
+                funcionario.montoEscalafones1 = Convert.ToDouble(txtMontoEscalafonesI.Text);
+                funcionario.montoEscalafones2 = Convert.ToDouble(txtMontoEscalafonesII.Text);
+                int cantidadEscalafones1 = 0;
+                int cantidadEscalafones2 = 0;
+                Int32.TryParse(txtEscalafonesI.Text, out cantidadEscalafones1);
+                Int32.TryParse(txtEscalafonesII.Text, out cantidadEscalafones2);
+                funcionario.noEscalafones1 = cantidadEscalafones1;
+                funcionario.noEscalafones2 = cantidadEscalafones2;
+                funcionario.nombreFuncionario = txtNombreCompleto.Text;
+                funcionario.observaciones = txtObservaciones.Text;
+                funcionario.planilla = (Entidades.Planilla)Session["planillaSeleccionada"];
+                double porcentajeAnualidad1 = 0;
+                double porcentajeAnualidad2 = 0;
+                Double.TryParse(txtPorcentajeAnualidadesI.Text, out porcentajeAnualidad1);
+                Double.TryParse(txtPorcentajeAnualidadesII.Text, out porcentajeAnualidad2);
+                funcionario.porcentajeAnualidad1 = porcentajeAnualidad1;
+                funcionario.porcentajeAnualidad2 = porcentajeAnualidad2;
+                funcionario.salarioBase1 = Convert.ToDouble(txtSumaTotalSalarioBase1.Text);
+                funcionario.salarioBase2 = Convert.ToDouble(txtSumaTotalSalarioBaseII.Text);
+                funcionario.salarioContratacion1 = Convert.ToDouble(txtSalContratacionI.Text);
+                funcionario.salarioContratacion2 = Convert.ToDouble(txtSalContratacionII.Text);
+                funcionario.salarioEnero = Convert.ToDouble(txtSalarioMensualEneroJunio.Text);
+                funcionario.salarioJunio = Convert.ToDouble(txtSalarioMensualJunioDiciembre.Text);
+                funcionario.salarioPromedio = Convert.ToDouble(txtPromedioSemestres.Text);
+                double sumaSalarioBase = 0;
+                Double.TryParse(txtSumaSalarioBase1.Text, out sumaSalarioBase);
+                funcionario.porcentajeSumaSalario = sumaSalarioBase;
+                Jornada jornadaLaboral = new Jornada();
+                jornadaLaboral.idJornada = Convert.ToInt32(ddlJornadaLaboral.SelectedValue);
+                funcionario.JornadaLaboral = jornadaLaboral;
+                int idFuncionario = 0;
+                Int32.TryParse(hdIdFuncionario.Value, out idFuncionario);
+                funcionario.idFuncionario = idFuncionario;
+                if (idFuncionario > 0)
+                {
+                    result = funcionarioServicios.modificar(funcionario);
+                }
+                else
+                {
+                    result = funcionarioServicios.guardar(funcionario);
+                }
+                Entidades.Planilla planilla = (Entidades.Planilla)Session["planillaSeleccionada"];
+                List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios(planilla.idPlanilla);
+                Session["listaFuncionarios"] = listaFuncionarios;
+                Session["listaFuncionariosFiltrada"] = listaFuncionarios;
+                mostrarDatosTabla();
+                Toastr("success", "Se guardó correctamente el funcionario");
             }
             else
             {
-                result = funcionarioServicios.guardar(funcionario);
+                Toastr("error", "No se pudo guardar el funcionario");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
             }
-            Entidades.Planilla planilla = (Entidades.Planilla)Session["planillaSeleccionada"];
-            List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios(planilla.idPlanilla);
-            Session["listaFuncionarios"] = listaFuncionarios;
-            Session["listaFuncionariosFiltrada"] = listaFuncionarios;
-            mostrarDatosTabla();
+        }
+
+        protected void ddlPeriodoModalPasarFuncionarios_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnFiltrarFuncionariosDe_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnSeleccionarFuncionariosDe_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnPasarFuncionarios_Click(object sender, EventArgs e)
+        {
+            mostrarDatosTablaFuncionariosA();
+            mostrarDatosTablaFuncionariosDe();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarFuncionarios();", true);
+        }
+
+        protected void ddlJornadaLaboral_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            List<Jornada> jornadas = (List<Jornada>)Session["listaJornadas"];
+            Jornada jornadaSeleccionada = new Jornada();
+            escalaSeleccionada.idEscalaSalarial = Convert.ToInt32(ddlJornadaLaboral.SelectedValue);
+            foreach (Jornada jornada in jornadas)
+            {
+                if(jornada.idJornada == jornadaSeleccionada.idJornada)
+                {
+                    limpiarFormulario();
+                    
+                    dividir salario
+                }
+            }
+        }
+
+        protected void btnFiltrarFuncionariosA_Click(object sender, EventArgs e)
+        {
+
+        }
+        #endregion
+
+        #region mensaje toast
+
+        private void Toastr(string tipo, string mensaje)
+        {
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr." + tipo + "('" + mensaje + "');", true);
+        }
+
+        protected void Page_PreRender(object sender, EventArgs e)
+        {
+            ViewState["CheckRefresh"] = Session["CheckRefresh"];
         }
         #endregion
     }
