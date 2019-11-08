@@ -928,9 +928,14 @@ namespace Proyecto.Catalogos.Ejecucion
             }else
             {
                 List<PartidaUnidad> partidasAsignadasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
-                Double montoDisponible = (Double)partidasAsignadasConMonto.Sum(monto => monto.Monto);
+                if (partidasAsignadasConMonto != null)
+                {
+                    Double montoDisponible = (Double)partidasAsignadasConMonto.Sum(monto => monto.Monto);
+
+                   
+                    montoRepartir.Text = Convert.ToString(Convert.ToDouble(txtMontoIngresar.Text) - Convert.ToDouble(montoDisponible));
+                }
                 obtenerUnidadesPartidasAsignarMonto();
-                montoRepartir.Text = Convert.ToString(Convert.ToDouble(txtMontoIngresar.Text) - Convert.ToDouble(montoDisponible));
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalRepartirPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalRepartirPartidas').hide();", true);
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalRepartirPartidas();", true);
                 contadorBotonRepartir++;
@@ -1119,7 +1124,7 @@ namespace Proyecto.Catalogos.Ejecucion
             bool exists = partidasElegidas.Exists(element => element.numeroPartida.Equals(numeroPartida));
             if (exists == true)
             {
-
+              
                 partidasElegidas.RemoveAll(item => item.numeroPartida.Equals(numeroPartida));
 
                 Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = partidasElegidas;
@@ -1166,11 +1171,14 @@ namespace Proyecto.Catalogos.Ejecucion
 
                 }
                 Session["partidasAsignadas"] = partidaUnidad;
-            if (contador != 0)
+            List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
+            if (partidasElegidasConMonto != null)
             {
-                List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
-               List<PartidaUnidad> partida = partidaUnidad.Where(a => !partidasElegidasConMonto.Any(a1 => a1.NumeroPartida == a.NumeroPartida))
-            .Union(partidasElegidasConMonto.Where(a => !partidaUnidad.Any(a1 => a1.NumeroPartida == a.NumeroPartida))).ToList();
+             
+                List<PartidaUnidad> TempPartida = partidaUnidad.Where(a => !partidasElegidasConMonto.Any(a1 => a1.NumeroPartida == a.NumeroPartida))
+                .Union(partidasElegidasConMonto.Where(a => !partidaUnidad.Any(a1 => a1.NumeroPartida == a.NumeroPartida))).ToList();
+                List<PartidaUnidad> partida= partidasElegidasConMonto.Where(a => !TempPartida.Any(a1 => a1.NumeroPartida != a.NumeroPartida))
+                .Union(TempPartida.Where(a => !partidasElegidasConMonto.Any(a1 => a1.NumeroPartida == a.NumeroPartida))).ToList();
                 Session["partidasAsignadas"] = partida;
             }
             partidaUnidad=(List<PartidaUnidad>)Session["partidasAsignadas"];
@@ -1220,6 +1228,9 @@ namespace Proyecto.Catalogos.Ejecucion
            
 
         }
+
+
+    
 
         /// <summary>
         /// Kevin Picado
