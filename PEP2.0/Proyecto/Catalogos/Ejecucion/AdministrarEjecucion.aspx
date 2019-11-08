@@ -197,7 +197,7 @@
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                     <asp:Label ID="Label5" runat="server" Text="Monto" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                     ₡
-                    <asp:TextBox class="form-control" ID="txtMontoIngresar" runat="server" Enabled="true" OnLoad="txtMontoIngresar_TextChanged"></asp:TextBox>
+                    <asp:TextBox class="form-control" ID="txtMontoIngresar" runat="server" Enabled="true" ></asp:TextBox>
                     
                 </div>
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
@@ -597,8 +597,9 @@
             $('#modalRepartirPartidas').modal('show');
         };
 
-
+        
     </script>
+  
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ScriptContent" runat="server">
 </asp:Content>
