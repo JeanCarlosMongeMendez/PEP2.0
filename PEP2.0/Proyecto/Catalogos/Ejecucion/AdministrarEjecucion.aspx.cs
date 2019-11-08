@@ -1174,12 +1174,16 @@ namespace Proyecto.Catalogos.Ejecucion
             List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
             if (partidasElegidasConMonto != null)
             {
-             
+                
                 List<PartidaUnidad> TempPartida = partidaUnidad.Where(a => !partidasElegidasConMonto.Any(a1 => a1.NumeroPartida == a.NumeroPartida))
                 .Union(partidasElegidasConMonto.Where(a => !partidaUnidad.Any(a1 => a1.NumeroPartida == a.NumeroPartida))).ToList();
-                List<PartidaUnidad> partida= partidasElegidasConMonto.Where(a => !TempPartida.Any(a1 => a1.NumeroPartida != a.NumeroPartida))
-                .Union(TempPartida.Where(a => !partidasElegidasConMonto.Any(a1 => a1.NumeroPartida == a.NumeroPartida))).ToList();
-                Session["partidasAsignadas"] = partida;
+                Session["partidasAsignadas"] =TempPartida;
+                if (TempPartida.Count > 0)
+                {
+                    List<PartidaUnidad> partida = partidasElegidasConMonto.Where(a => !TempPartida.Any(a1 => a1.NumeroPartida != a.NumeroPartida))
+                    .Union(TempPartida.Where(a => !partidasElegidasConMonto.Any(a1 => a1.NumeroPartida == a.NumeroPartida))).ToList();
+                    Session["partidasAsignadas"] = partida;
+                }
             }
             partidaUnidad=(List<PartidaUnidad>)Session["partidasAsignadas"];
             
