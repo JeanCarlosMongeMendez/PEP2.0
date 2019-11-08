@@ -39,13 +39,13 @@ namespace Servicios
         /// Efecto: inserta en la base de datos una jornadaUnidadFuncionario
         /// Requiere: jornadaUnidadFuncionario
         /// Modifica: -
-        /// Devuelve: id de la jornada insertada
+        /// Devuelve: -
         /// </summary>
         /// <param name="jornadaUnidadFuncionario"></param>
         /// <returns></returns>
-        public int insertarJornadaUnidadFuncionario(JornadaUnidadFuncionario jornadaUnidadFuncionario)
+        public void insertarJornadaUnidadFuncionario(JornadaUnidadFuncionario jornadaUnidadFuncionario)
         {
-            return jornadaDatos.insertarJornadaUnidadFuncionario(jornadaUnidadFuncionario);
+            jornadaDatos.insertarJornadaUnidadFuncionario(jornadaUnidadFuncionario);
         }
 
         /// <summary>

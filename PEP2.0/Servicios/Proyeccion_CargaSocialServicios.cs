@@ -45,5 +45,20 @@ namespace Servicios
         {
             proyeccion_CargaSocialDatos.eliminarProyeccionCargaSocialPorProyeccion(proyeccion);
         }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 07/nov/2019
+        /// Efecto: devuelve lista de proyeccion_cargas sociales segun la proyeccion ingresada
+        /// Requiere: proyeccion a consultar
+        /// Modifica: -
+        /// Devuelve: lista proyecion_cargasSociales
+        /// </summary>
+        /// <param name="proyeccionConsulta"></param>
+        /// <returns></returns>
+        public List<Proyeccion_CargaSocial> getProyeccionCargaSocialPorProyeccionPorProyeccion(Proyeccion proyeccionConsulta)
+        {
+            return proyeccion_CargaSocialDatos.getProyeccionCargaSocialPorProyeccionPorProyeccion(proyeccionConsulta);
+        }
     }
 }

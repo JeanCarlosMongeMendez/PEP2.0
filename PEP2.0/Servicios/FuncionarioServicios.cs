@@ -89,6 +89,20 @@ namespace Servicios
         {
             return funcionarioDatos.eliminar(funcionario);
         }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 06/nov/2019
+        /// Efecto: obtiene todas los funcionarios de un periodo de la base de datos con la asignacion de porcentaje de distribucion realizado
+        /// Requiere: -
+        /// Modifica: -
+        /// Devuelve: lista de funcionarios
+        /// </summary>
+        /// <returns></returns>
+        public List<Funcionario> getFuncionariosPorPlanillaYDistribuccion(int idPlanilla)
+        {
+            return funcionarioDatos.getFuncionariosPorPlanillaYDistribuccion(idPlanilla);
+        }
       
     }
 }

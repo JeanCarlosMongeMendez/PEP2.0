@@ -388,7 +388,7 @@ namespace Proyecto.Planilla
                             montoEscalafones = (salarioBase * numeroEscalafonesI) * (funcionario.escalaSalarial.porentajeEscalafones / 100);
                         }
 
-                        if (mes.numero > 7)
+                        if (mes.numero >= 7)
                         {
                             montoEscalafones = (salarioBase * numeroEscalafonesII) * (funcionario.escalaSalarial.porentajeEscalafones / 100);
                         }

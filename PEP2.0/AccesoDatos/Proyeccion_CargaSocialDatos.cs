@@ -70,5 +70,58 @@ namespace AccesoDatos
             sqlConnection.Close();
         }
 
+        /// <summary>
+        /// Leonardo Carrion
+        /// 07/nov/2019
+        /// Efecto: devuelve lista de proyeccion_cargas sociales segun la proyeccion ingresada
+        /// Requiere: proyeccion a consultar
+        /// Modifica: -
+        /// Devuelve: lista proyecion_cargasSociales
+        /// </summary>
+        /// <param name="proyeccionConsulta"></param>
+        /// <returns></returns>
+        public List<Proyeccion_CargaSocial> getProyeccionCargaSocialPorProyeccionPorProyeccion(Proyeccion proyeccionConsulta)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+            List<Proyeccion_CargaSocial> listaProyeccionesCargaSociales = new List<Proyeccion_CargaSocial>();
+
+            String consulta = @"select PC.*,P.ano_periodo,C.id_partida
+                                            from Proyeccion_CargaSocial PC, Proyeccion P, CargaSocial C
+                                            where PC.id_proyeccion = @idProyeccion and P.id_proyeccion = PC.id_proyeccion and C.id_carga_social = PC.id_carga_social;";
+
+            SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@idProyeccion", proyeccionConsulta.idProyeccion);
+
+            SqlDataReader reader;
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Proyeccion_CargaSocial proyeccion_CargaSocial = new Proyeccion_CargaSocial();
+                Proyeccion proyeccion = new Proyeccion();
+                CargaSocial cargaSocial = new CargaSocial();
+                Periodo periodo = new Periodo();
+                Partida partida = new Partida();
+
+                proyeccion.idProyeccion = Convert.ToInt32(reader["id_proyeccion"].ToString());
+                periodo.anoPeriodo = Convert.ToInt32(reader["ano_periodo"].ToString());
+                proyeccion.periodo = periodo;
+                cargaSocial.idCargaSocial = Convert.ToInt32(reader["id_carga_social"].ToString());
+                partida.idPartida = Convert.ToInt32(reader["id_partida"].ToString());
+                cargaSocial.partida = partida;
+
+                proyeccion_CargaSocial.proyeccion = proyeccion;
+                proyeccion_CargaSocial.cargaSocial = cargaSocial;
+                proyeccion_CargaSocial.monto = Convert.ToDouble(reader["monto"].ToString());
+
+                listaProyeccionesCargaSociales.Add(proyeccion_CargaSocial);
+            }
+
+            sqlConnection.Close();
+
+            return listaProyeccionesCargaSociales;
+        }
+
     }
 }
