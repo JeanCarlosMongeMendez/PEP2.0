@@ -106,7 +106,23 @@ namespace Servicios
 
         public List<PresupuestoEgresoPartida> obtenerEgreso_Partida_porIdPartida(string idPartida)
         {
-           return presupuestoEgreso_PartidaDatos.ObtenerPorPartida(idPartida);
+            return presupuestoEgreso_PartidaDatos.ObtenerPorPartida(idPartida);
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 11/nov/2019
+        /// Efecto: devuelve lista de presupuestos de egresos partidas segun el presupuesto de egresos y descripcion
+        /// Requiere: presupuesto de egreso y descripcion
+        /// Modifica: -
+        /// Devuelve: lista presupuestos egresos partida
+        /// </summary>
+        /// <param name="presupuestoEgresoConsulta"></param>
+        /// <param name="desc"></param>
+        /// <returns></returns>
+        public List<PresupuestoEgresoPartida> getPresupuestoEgresoPartidasPorPresupEgresoYDesc(PresupuestoEgreso presupuestoEgresoConsulta, String desc)
+        {
+            return presupuestoEgreso_PartidaDatos.getPresupuestoEgresoPartidasPorPresupEgresoYDesc(presupuestoEgresoConsulta,desc);
         }
     }
 }
