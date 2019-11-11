@@ -17,9 +17,9 @@ namespace Proyecto.Planilla
         #region variables globales 
         private FuncionarioServicios funcionarioServicios = new FuncionarioServicios();
         private EscalaSalarialServicios escalaSalarialServicios = new EscalaSalarialServicios();
-        private static Funcionario funcionarioSeleccionado = new Funcionario();
         private static EscalaSalarial escalaSeleccionada = new EscalaSalarial();
         private JornadaServicios jornadaServicios = new JornadaServicios();
+        private PlanillaServicios planillaServicios = new PlanillaServicios();
         #endregion
 
         #region variables globales paginacion
@@ -141,9 +141,9 @@ namespace Proyecto.Planilla
             ddlJornadaLaboral.DataTextField = "descJornada";
             ddlJornadaLaboral.DataValueField = "idJornada";
             ddlJornadaLaboral.DataBind();
-            foreach(Jornada jornada in jornadas)
+            foreach (Jornada jornada in jornadas)
             {
-                if(jornada.descJornada.Equals("Tiempo completo"))
+                if (jornada.descJornada.Equals("Tiempo completo"))
                 {
                     ddlJornadaLaboral.SelectedValue = jornada.idJornada.ToString();
                 }
@@ -175,7 +175,7 @@ namespace Proyecto.Planilla
                 String.IsNullOrEmpty(txtSalContratacionII.Text) ||
                 String.IsNullOrEmpty(txtSalarioMensualEneroJunio.Text) ||
                 String.IsNullOrEmpty(txtSalarioMensualJunioDiciembre.Text) ||
-                String.IsNullOrEmpty(txtPromedioSemestres.Text) 
+                String.IsNullOrEmpty(txtPromedioSemestres.Text)
                 )
             {
                 result = false;
@@ -974,37 +974,6 @@ namespace Proyecto.Planilla
         /// <summary>
         /// Leonardo Carrion
         /// 17/jul/2019
-        /// Efecto: cambia los salarios bases del modal de nuevo funcionario
-        /// Requiere: cambiar escala salarial
-        /// Modifica: salarios base 1 y 2
-        /// Devuelve: -
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void ddlEscalaSalarial_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            List<EscalaSalarial> listaEscalas = (List<EscalaSalarial>)Session["listaEscalas"];
-
-            EscalaSalarial escalaSeleccionadaModal = new EscalaSalarial();
-            escalaSeleccionadaModal.idEscalaSalarial = Convert.ToInt32(ddlEscalaSalarial.SelectedValue);
-
-            foreach (EscalaSalarial escalaSalarial in listaEscalas)
-            {
-                if (escalaSalarial.idEscalaSalarial == escalaSeleccionadaModal.idEscalaSalarial)
-                {
-                    limpiarFormulario();
-                    escalaSeleccionada = escalaSalarial;
-                    txtSalarioBase1.Text = escalaSalarial.salarioBase1.ToString();
-                    txtSalarioBase2.Text = escalaSalarial.salarioBase2.ToString();
-                }
-            }
-
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
-        }
-
-        /// <summary>
-        /// Leonardo Carrion
-        /// 17/jul/2019
         /// Efecto: calcula el monto de escalafones segun los datos ingresados
         /// Requiere: ingresar numero de escalafones, escoger escala salarial y darle clic al boton de calcular en monto escalafones
         /// Modifica: monto de escalafones
@@ -1019,14 +988,14 @@ namespace Proyecto.Planilla
             int cantidadEscalafones = 0;
             if (btnEscalafones.ID.Equals("btnCalcularEscalafonesI"))
             {
-                Double.TryParse(escalaSeleccionada.salarioBase1.ToString(), out salarioBase);
+                Double.TryParse(txtSalarioBase1.Text, out salarioBase);
                 int.TryParse(txtEscalafonesI.Text, out cantidadEscalafones);
                 txtEscalafonesI.Text = cantidadEscalafones.ToString();
                 txtMontoEscalafonesI.Text = calcularMontoEscalafon(salarioBase, cantidadEscalafones).ToString();
             }
             else if (btnEscalafones.ID.Equals("btnCalcularEscalafonesII"))
             {
-                Double.TryParse(escalaSeleccionada.salarioBase2.ToString(), out salarioBase);
+                Double.TryParse(txtSalarioBase2.Text, out salarioBase);
                 int.TryParse(txtEscalafonesII.Text, out cantidadEscalafones);
                 txtEscalafonesII.Text = cantidadEscalafones.ToString();
                 txtMontoEscalafonesII.Text = calcularMontoEscalafon(salarioBase, cantidadEscalafones).ToString();
@@ -1126,7 +1095,7 @@ namespace Proyecto.Planilla
 
             if (bntMontoAnualidades.ID.Equals("btnCalcularMontoAnualidadesI"))
             {
-                Double.TryParse(escalaSeleccionada.salarioBase1.ToString(), out salarioBase);
+                Double.TryParse(txtSalarioBase1.Text, out salarioBase);
                 Double.TryParse(txtMontoEscalafonesI.Text.Replace(".", ","), out montoEscalafones);
                 Double.TryParse(txtPorcentajeAnualidadesI.Text.Replace(".", ","), out porcentajeAnualidad);
                 txtMontoAnualidadesI.Text = calcularMontoAnualidad(salarioBase, montoEscalafones, porcentajeAnualidad).ToString();
@@ -1135,7 +1104,7 @@ namespace Proyecto.Planilla
             }
             else if (bntMontoAnualidades.ID.Equals("btnCalcularMontoAnualidadesII"))
             {
-                Double.TryParse(escalaSeleccionada.salarioBase2.ToString(), out salarioBase);
+                Double.TryParse(txtSalarioBase2.Text, out salarioBase);
                 Double.TryParse(txtMontoEscalafonesII.Text.Replace(".", ","), out montoEscalafones);
                 Double.TryParse(txtPorcentajeAnualidadesII.Text.Replace(".", ","), out porcentajeAnualidad);
                 txtMontoAnualidadesII.Text = calcularMontoAnualidad(salarioBase, montoEscalafones, porcentajeAnualidad).ToString();
@@ -1214,12 +1183,12 @@ namespace Proyecto.Planilla
             Double.TryParse(txtSumaSalarioBase1.Text.Replace(".", ",").ToString(), out sumaSalarioBase);
             if (btnTotalSalarioBase.ID.Equals("btnCalcularTotalSalarioBaseI"))
             {
-                salarioBase = escalaSeleccionada.salarioBase1;
+                salarioBase = Convert.ToDouble(txtSalarioBase1.Text.Replace(".", ",").ToString());
                 txtSumaTotalSalarioBase1.Text = calcularTotalSalarioBase(salarioBase, sumaSalarioBase).ToString();
             }
             else if (btnTotalSalarioBase.ID.Equals("btnCalcularTotalSalarioBaseII"))
             {
-                salarioBase = escalaSeleccionada.salarioBase2;
+                salarioBase = Convert.ToDouble(txtSalarioBase2.Text.Replace(".", ",").ToString());
                 txtSumaTotalSalarioBaseII.Text = calcularTotalSalarioBase(salarioBase, sumaSalarioBase).ToString();
             }
             txtSumaSalarioBase1.Text = sumaSalarioBase.ToString();
@@ -1274,6 +1243,7 @@ namespace Proyecto.Planilla
             txtVerSumaSalarioBase2.Text = funcionarioVer.porcentajeSumaSalario.ToString();
             txtVerSumaTotalSalarioBase1.Text = funcionarioVer.salarioBase1.ToString();
             txtVerSumaTotalSalarioBaseII.Text = funcionarioVer.salarioBase2.ToString();
+            txtVerJornadaLaboral.Text = funcionarioVer.JornadaLaboral.descJornada;
             btnConfirmarEliminar.Visible = false;
             tituloVerFuncionario.InnerText = "Ver Funcionario";
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalVerFuncionario();", true);
@@ -1327,6 +1297,7 @@ namespace Proyecto.Planilla
             txtSumaSalarioBase1.Text = funcionarioEditar.porcentajeSumaSalario.ToString();
             txtSumaTotalSalarioBase1.Text = funcionarioEditar.salarioBase1.ToString();
             txtSumaTotalSalarioBaseII.Text = funcionarioEditar.salarioBase2.ToString();
+            ddlJornadaLaboral.SelectedValue = funcionarioEditar.JornadaLaboral.idJornada.ToString();
             hdIdFuncionario.Value = funcionarioEditar.idFuncionario.ToString();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
@@ -1378,6 +1349,7 @@ namespace Proyecto.Planilla
             txtVerSumaSalarioBase2.Text = funcionarioEliminar.porcentajeSumaSalario.ToString();
             txtVerSumaTotalSalarioBase1.Text = funcionarioEliminar.salarioBase1.ToString();
             txtVerSumaTotalSalarioBaseII.Text = funcionarioEliminar.salarioBase2.ToString();
+            txtVerJornadaLaboral.Text = funcionarioEliminar.JornadaLaboral.descJornada;
             tituloVerFuncionario.InnerText = "Eliminar Funcionario";
             btnConfirmarEliminar.Visible = true;
             hdIdEliminarFuncionario.Value = funcionarioEliminar.idFuncionario.ToString();
@@ -1489,47 +1461,153 @@ namespace Proyecto.Planilla
             }
         }
 
+
         protected void ddlPeriodoModalPasarFuncionarios_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-        }
-
-        protected void btnFiltrarFuncionariosDe_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void btnSeleccionarFuncionariosDe_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void btnPasarFuncionarios_Click(object sender, EventArgs e)
-        {
+            List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios(Convert.ToInt32(ddlPlanillaModalPasarFuncionarios.SelectedValue));
+            Session["listaFuncionariosA"] = listaFuncionarios;
+            Session["listaFuncionariosAFiltrada"] = listaFuncionarios;
             mostrarDatosTablaFuncionariosA();
-            mostrarDatosTablaFuncionariosDe();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarFuncionarios();", true);
         }
 
-        protected void ddlJornadaLaboral_SelectedIndexChanged(object sender, EventArgs e)
+        /// <summary>
+        /// Leonardo Carrion
+        /// 12/jun/2019
+        /// Efecto: filtra la tabla segun los datos ingresados en los filtros
+        /// Requiere: dar clic en el boton de flitrar e ingresar datos en los filtros
+        /// Modifica: datos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnFiltrarFuncionariosDe_Click(object sender, EventArgs e)
         {
-            List<Jornada> jornadas = (List<Jornada>)Session["listaJornadas"];
-            Jornada jornadaSeleccionada = new Jornada();
-            escalaSeleccionada.idEscalaSalarial = Convert.ToInt32(ddlJornadaLaboral.SelectedValue);
-            foreach (Jornada jornada in jornadas)
-            {
-                if(jornada.idJornada == jornadaSeleccionada.idJornada)
-                {
-                    limpiarFormulario();
-                    
-                  //  dividir salario
-                }
-            }
+            paginaActualFuncionariosDe = 0;
+            mostrarDatosTablaFuncionariosDe();
         }
 
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 08/11/2019
+        /// Efecto : Pasa el funcionario seleccionado de un periodo a otro
+        /// Requiere : Clickear el boton btnSeleccionarFuncionariosDe de la tabla de funcionarios
+        /// Modifica : Funcionarios del periodo seleccionado en ddlPlanillaModalPasarFuncionarios
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnSeleccionarFuncionariosDe_Click(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+            Entidades.Planilla planilla = new Entidades.Planilla();
+            planilla.idPlanilla = Convert.ToInt32(ddlPlanillaModalPasarFuncionarios.SelectedValue);
+            List<Funcionario> funcionariosDe = (List<Funcionario>)Session["listaFuncionariosDeFiltrada"];
+            List<Funcionario> funcionariosA = (List<Funcionario>)Session["listaFuncionariosAFiltrada"];
+            Funcionario funcionarioSeleccionado = new Funcionario();
+            foreach (Funcionario funcionario in funcionariosDe)
+            {
+                if(funcionario.idFuncionario == id)
+                {
+                    funcionarioSeleccionado = funcionario;
+                    funcionarioSeleccionado.planilla = planilla;
+                }
+            }
+            if (funcionariosA.Any(funcionario => funcionario.nombreFuncionario.Equals(funcionarioSeleccionado.nombreFuncionario)))
+            {
+                Toastr("error", "El funcionario ya existe en el periodo seleccionado");
+            }
+            else
+            {
+                if (funcionarioServicios.guardar(funcionarioSeleccionado))
+                {
+                    Toastr("success", "El funcionario se ha copiado en el periodo seleccionado");
+                }else
+                {
+                    Toastr("error", "El funcionario no se pudo copiar, intentelo nuevamente");
+                }
+            }
+            List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios(planilla.idPlanilla);
+            Session["listaFuncionariosAFiltrada"] = listaFuncionarios;
+            Session["listaFuncionariosA"] = listaFuncionarios;
+            mostrarDatosTablaFuncionariosA();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarFuncionarios();", true);
+        }
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 08/11/2019
+        /// Efecto : Muestra un modal para pasar funcionarios de un periodo a otro
+        /// Requiere : Clickear el boton "Pasar Funcionarios"
+        /// Modifica : -
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnPasarFuncionarios_Click(object sender, EventArgs e)
+        {
+            Entidades.Planilla planilla = (Entidades.Planilla)Session["planillaSeleccionada"];
+            mostrarDatosTablaFuncionariosA();
+            mostrarDatosTablaFuncionariosDe();
+            lblPeriodoSeleccionado.Text = planilla.periodo.anoPeriodo.ToString();
+            List<Entidades.Planilla> periodos = planillaServicios.getPlanillas();
+            ddlPlanillaModalPasarFuncionarios.DataValueField = "idPlanilla";
+            ddlPlanillaModalPasarFuncionarios.DataTextField = "periodo";
+            ddlPlanillaModalPasarFuncionarios.DataSource = from a in periodos select new { a.idPlanilla, periodo = a.periodo.anoPeriodo };
+            ddlPlanillaModalPasarFuncionarios.SelectedValue = periodos.First().idPlanilla.ToString();
+            ddlPlanillaModalPasarFuncionarios.DataBind();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarFuncionarios();", true);
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 08/11/2019
+        /// Efecto : Recalcula el salario base de acuerdo a la escala y la jornada seleccionada y lo muestra en el formulario 
+        /// Requiere : cambiar la escala o la jornada seleccionada
+        /// Modifica : Formulario salarios base
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void cambioDatosGenerales(object sender, EventArgs e)
+        {
+            List<EscalaSalarial> listaEscalas = (List<EscalaSalarial>)Session["listaEscalas"];
+            EscalaSalarial escalaSalarialSeleccionada = new EscalaSalarial();
+            List<Jornada> listaJornadas = (List<Jornada>)Session["listaJornadas"];
+            Jornada jornadaSeleccionada = new Jornada();
+            foreach (Jornada jornada in listaJornadas)
+            {
+                if (jornada.idJornada == Convert.ToInt32(ddlJornadaLaboral.SelectedValue))
+                {
+                    jornadaSeleccionada = jornada;
+                }
+            }
+            foreach (EscalaSalarial escalaSalarial in listaEscalas)
+            {
+                if (escalaSalarial.idEscalaSalarial == Convert.ToInt32(ddlEscalaSalarial.SelectedValue))
+                {
+                    escalaSeleccionada = escalaSalarial;
+                }
+            }
+            limpiarFormulario();
+            txtSalarioBase1.Text = (escalaSeleccionada.salarioBase1 * (jornadaSeleccionada.porcentajeJornada / 100)).ToString();
+            txtSalarioBase2.Text = (escalaSeleccionada.salarioBase2 * (jornadaSeleccionada.porcentajeJornada / 100)).ToString();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 12/jun/2019
+        /// Efecto: filtra la tabla segun los datos ingresados en los filtros
+        /// Requiere: dar clic en el boton de flitrar e ingresar datos en los filtros
+        /// Modifica: datos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnFiltrarFuncionariosA_Click(object sender, EventArgs e)
         {
-
+            paginaActualFuncionariosA = 0;
+            mostrarDatosTablaFuncionariosA();
         }
         #endregion
 
