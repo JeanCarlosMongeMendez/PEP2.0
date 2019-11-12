@@ -202,6 +202,15 @@ namespace Proyecto.Planilla {
         protected global::System.Web.UI.WebControls.Label lblJornada;
         
         /// <summary>
+        /// Control UpdatePanel2.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
+        
+        /// <summary>
         /// Control rpUnidProyecto.
         /// </summary>
         /// <remarks>

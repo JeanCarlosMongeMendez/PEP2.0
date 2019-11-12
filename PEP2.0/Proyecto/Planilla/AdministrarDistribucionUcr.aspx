@@ -217,52 +217,54 @@
                     </div>
 
                     <%--unidades--%>
-                    <!-- ------------------------ tabla unidades proyecto --------------------------- -->
-                    <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
-                        <table id="tblUnidadesProyecto" class="table table-bordered">
-                            <thead>
-                                <tr style="text-align: center" class="btn-primary">
-                                    <th>Nombre Unidad</th>
-                                    <th>Coordinador</th>
-                                    <th>Jornada en unidad</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <asp:Repeater ID="rpUnidProyecto" runat="server">
-                                <HeaderTemplate>
-                                </HeaderTemplate>
-                                <ItemTemplate>
-                                    <tr style="text-align: center">
-                                        <td>
-                                            <%# Eval("nombreUnidad") %>
-                                        </td>
-                                        <td>
-                                            <%# Eval("coordinador") %>
-                                        </td>
-                                        <td>
-                                            <asp:LinkButton ID="btnSelccionarUnidad" OnClick="btnSelccionarUnidad_Click" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("idUnidad") %>'><span class="glyphicon glyphicon-ok"></span></asp:LinkButton>
-                                            <asp:LinkButton ID="btnEliminarUnidad" OnClick="btnEliminarUnidad_Click" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("idUnidad") %>'><span class="btn glyphicon glyphicon-trash"></span></asp:LinkButton>
-                                        </td>
-                                    </tr>
-                                </ItemTemplate>
-                                <FooterTemplate>
-                                </FooterTemplate>
-                            </asp:Repeater>
-                        </table>
-                    </div>
-                    <%--paginacion de unidades--%>
-                    <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 mt-2">
-                        <hr />
-                    </div>
-                    <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
-                        <center>
+                    <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                        <ContentTemplate>
+                            <!-- ------------------------ tabla unidades proyecto --------------------------- -->
+                            <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                                <table id="tblUnidadesProyecto" class="table table-bordered">
+                                    <thead>
+                                        <tr style="text-align: center" class="btn-primary">
+                                            <th>Nombre Unidad</th>
+                                            <th>Coordinador</th>
+                                            <th>Jornada en unidad</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <asp:Repeater ID="rpUnidProyecto" runat="server">
+                                        <HeaderTemplate>
+                                        </HeaderTemplate>
+                                        <ItemTemplate>
+                                            <tr style="text-align: center">
+                                                <td>
+                                                    <%# Eval("nombreUnidad") %>
+                                                </td>
+                                                <td>
+                                                    <%# Eval("coordinador") %>
+                                                </td>
+                                                <td>
+                                                    <asp:LinkButton ID="btnSelccionarUnidad" OnClick="btnSelccionarUnidad_Click" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("idUnidad") %>'><span class="glyphicon glyphicon-ok"></span></asp:LinkButton>
+                                                    <asp:LinkButton ID="btnEliminarUnidad" OnClick="btnEliminarUnidad_Click" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("idUnidad") %>'><span class="btn glyphicon glyphicon-trash"></span></asp:LinkButton>
+                                                </td>
+                                            </tr>
+                                        </ItemTemplate>
+                                        <FooterTemplate>
+                                        </FooterTemplate>
+                                    </asp:Repeater>
+                                </table>
+                            </div>
+                            <%--paginacion de unidades--%>
+                            <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12 mt-2">
+                                <hr />
+                            </div>
+                            <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                                <center>
                     <table class="table" style="max-width:664px;">
                         <tr style="padding:1px !important">
                             <td style="padding:1px !important">
                                 <asp:LinkButton ID="lbPrimeroUnidad" runat="server" CssClass="btn btn-primary" OnClick="lbPrimeroUnidad_Click"><span class="glyphicon glyphicon-fast-backward"></span></asp:LinkButton>
                                 </td>
                             <td style="padding:1px !important">
-                                <asp:LinkButton ID="lbAnteriorUnidad" runat="server" CssClass="btn btn-default" OnClick="lbAnteriorUnidad_Click"><span class="glyphicon glyphicon-backward"></asp:LinkButton>
+                                <asp:LinkButton ID="lbAnteriorUnidad" runat="server" CssClass="btn btn-default" OnClick="lbAnteriorUnidad_Click"><span class="glyphicon glyphicon-backward"></span></asp:LinkButton>
                             </td>
                             <td style="padding:1px !important">
                                 <asp:DataList ID="rptPaginacionUnidad" runat="server"
@@ -276,10 +278,10 @@
                                 </asp:DataList>
                             </td>
                             <td style="padding:1px !important">
-                                <asp:LinkButton ID="lbSiguienteUnidad" CssClass="btn btn-default" runat="server" OnClick="lbSiguienteUnidad_Click"><span class="glyphicon glyphicon-forward"></asp:LinkButton>
+                                <asp:LinkButton ID="lbSiguienteUnidad" CssClass="btn btn-default" runat="server" OnClick="lbSiguienteUnidad_Click"><span class="glyphicon glyphicon-forward"></span></asp:LinkButton>
                                 </td>
                             <td style="padding:1px !important">
-                                <asp:LinkButton ID="lbUltimoUnidad" CssClass="btn btn-primary" runat="server" OnClick="lbUltimoUnidad_Click"><span class="glyphicon glyphicon-fast-forward"></asp:LinkButton>
+                                <asp:LinkButton ID="lbUltimoUnidad" CssClass="btn btn-primary" runat="server" OnClick="lbUltimoUnidad_Click"><span class="glyphicon glyphicon-fast-forward"></span></asp:LinkButton>
                                 </td>
                             <td style="padding:1px !important">
                                 <asp:Label ID="lblpaginaUnidad" runat="server" Text=""></asp:Label>
@@ -287,8 +289,10 @@
                         </tr>
                     </table>
                         </center>
-                    </div>
-                    <!-- ---------------------- FIN tabla unidades proyecto  ------------------------- -->
+                            </div>
+                            <!-- ---------------------- FIN tabla unidades proyecto  ------------------------- -->
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
                     <%-- fin unidades--%>
                 </div>
 
@@ -362,7 +366,11 @@
     <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="pnlUpdate">
         <ProgressTemplate>
             <div class="alert alert-info" role="alert">
-                <h6> <p style="text-align:center"> <b>Procesando Datos, Espere por favor... <br /></b> </p> </h6>
+                <h6>
+                    <p style="text-align: center"><b>Procesando Datos, Espere por favor...
+                        <br />
+                    </b></p>
+                </h6>
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
