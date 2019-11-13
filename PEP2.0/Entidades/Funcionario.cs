@@ -37,5 +37,12 @@ namespace Entidades
         public String nombreFuncionario { get; set; }
         public double porcentajeSumaSalario { get; set; }
         public Jornada JornadaLaboral { get; set; }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 06/nov/2019
+        /// para poder mostrar cuales funcionarios les hace falta distribuir en la pantalla de administrar distribuccion
+        /// </summary>
+        public Double porcentajeAsignado { get; set; }
     }
 }

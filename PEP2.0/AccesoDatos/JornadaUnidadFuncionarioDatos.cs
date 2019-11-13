@@ -61,23 +61,22 @@ namespace AccesoDatos
         /// Efecto: inserta en la base de datos una jornadaUnidadFuncionario
         /// Requiere: jornadaUnidadFuncionario
         /// Modifica: -
-        /// Devuelve: id de la jornadaUnidadFuncionario insertada
+        /// Devuelve: -
         /// </summary>
         /// <param name="jornadaUnidadFuncionario"></param>
         /// <returns></returns>
-        public int insertarJornadaUnidadFuncionario(JornadaUnidadFuncionario jornadaUnidadFuncionario)
+        public void insertarJornadaUnidadFuncionario(JornadaUnidadFuncionario jornadaUnidadFuncionario)
         {
             SqlConnection sqlConnection = conexion.conexionPEP();
             String consulta = @"Insert JornadaUnidadFuncionario(id_unidad, id_funcionario, id_jornada)
-                                            values(@unidad ,@funcionario ,@jornada);SELECT SCOPE_IDENTITY();";
+                                            values(@unidad ,@funcionario ,@jornada);";
             SqlCommand command = new SqlCommand(consulta, sqlConnection);
             command.Parameters.AddWithValue("@unidad", jornadaUnidadFuncionario.idUnidad);
             command.Parameters.AddWithValue("@funcionario", jornadaUnidadFuncionario.idFuncionario);
             command.Parameters.AddWithValue("@jornada", jornadaUnidadFuncionario.idJornada);
             sqlConnection.Open();
-            int idjornadaUnidadFuncionario = Convert.ToInt32(command.ExecuteScalar());
+            command.ExecuteReader();
             sqlConnection.Close();
-            return idjornadaUnidadFuncionario;
         }
 
         /// <summary>

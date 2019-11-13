@@ -103,15 +103,6 @@ namespace Proyecto.Planilla {
         protected global::System.Web.UI.UpdatePanel UpdatePanel1;
         
         /// <summary>
-        /// Control btnFiltrar.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnFiltrar;
-        
-        /// <summary>
         /// Control txtBuscarNombre.
         /// </summary>
         /// <remarks>
@@ -202,6 +193,15 @@ namespace Proyecto.Planilla {
         protected global::System.Web.UI.WebControls.HiddenField hdIdFuncionario;
         
         /// <summary>
+        /// Control UpdatePanel3.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel3;
+        
+        /// <summary>
         /// Control tituloModalFuncionario.
         /// </summary>
         /// <remarks>
@@ -272,15 +272,6 @@ namespace Proyecto.Planilla {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSalarioBase1;
-        
-        /// <summary>
-        /// Control UpdatePanel2.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
         
         /// <summary>
         /// Control txtSumaSalarioBase1.
@@ -598,6 +589,15 @@ namespace Proyecto.Planilla {
         protected global::System.Web.UI.WebControls.HiddenField hdIdEliminarFuncionario;
         
         /// <summary>
+        /// Control UpdatePanel5.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel5;
+        
+        /// <summary>
         /// Control tituloVerFuncionario.
         /// </summary>
         /// <remarks>
@@ -641,6 +641,15 @@ namespace Proyecto.Planilla {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtVerFecha;
+        
+        /// <summary>
+        /// Control txtVerJornadaLaboral.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtVerJornadaLaboral;
         
         /// <summary>
         /// Control panel2.
@@ -877,13 +886,13 @@ namespace Proyecto.Planilla {
         protected global::System.Web.UI.WebControls.Button btnConfirmarEliminar;
         
         /// <summary>
-        /// Control UpdatePanel5.
+        /// Control UpdatePanel2.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel5;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
         
         /// <summary>
         /// Control lblPeriodoDe.
@@ -922,15 +931,6 @@ namespace Proyecto.Planilla {
         protected global::System.Web.UI.WebControls.DropDownList ddlPlanillaModalPasarFuncionarios;
         
         /// <summary>
-        /// Control btnFiltrarFuncionariosDe.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnFiltrarFuncionariosDe;
-        
-        /// <summary>
         /// Control txtBuscarFuncionariosDe.
         /// </summary>
         /// <remarks>
@@ -947,15 +947,6 @@ namespace Proyecto.Planilla {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpFuncionariosDe;
-        
-        /// <summary>
-        /// Control btnFiltrarFuncionariosA.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnFiltrarFuncionariosA;
         
         /// <summary>
         /// Control txtBuscarFuncionariosA.

@@ -22,6 +22,13 @@ namespace Proyecto.Planilla
         private UnidadServicios unidadServicios = new UnidadServicios();
         private JornadaServicios jornadaServicios = new JornadaServicios();
         private JornadaUnidadFuncionarioServicios jornadaUnidadFuncionarioServicios = new JornadaUnidadFuncionarioServicios();
+        private ProyeccionServicios proyeccionServicios = new ProyeccionServicios();
+        private Proyeccion_CargaSocialServicios proyeccion_CargaSocialServicios = new Proyeccion_CargaSocialServicios();
+        private EstadoPresupuestoServicios estadoPresupuestoServicios = new EstadoPresupuestoServicios();
+        private PresupuestoIngresoServicios presupuestoIngresoServicios = new PresupuestoIngresoServicios();
+        private PresupuestoEgresosServicios presupuestoEgresosServicios = new PresupuestoEgresosServicios();
+        private PresupuestoEgreso_PartidaServicios presupuestoEgreso_PartidaServicios = new PresupuestoEgreso_PartidaServicios();
+        private PartidaServicios partidaServicios = new PartidaServicios();
         #endregion
 
         #region variables globales paginacion Funcionarios
@@ -82,7 +89,8 @@ namespace Proyecto.Planilla
                 ddlPeriodo.SelectedValue = periodos.First().idPlanilla.ToString();
                 ddlPeriodo.DataBind();
                 LinkedList<Proyectos> proyectos = proyectoServicios.ObtenerPorPeriodo(periodos.First().periodo.anoPeriodo);
-                ddlProyecto.DataSource = proyectos;
+                List<Proyectos> listaProyectos = (List<Proyectos>)proyectos.Where(proy => proy.esUCR == true).ToList();
+                ddlProyecto.DataSource = listaProyectos;
                 ddlProyecto.DataTextField = "nombreProyecto";
                 ddlProyecto.DataValueField = "idProyecto";
                 ddlProyecto.SelectedValue = proyectos.First.Value.idProyecto.ToString();
@@ -90,7 +98,8 @@ namespace Proyecto.Planilla
                 Session["listaUnidades"] = unidadServicios.ObtenerPorProyecto(Convert.ToInt32(ddlProyecto.SelectedValue));
                 Session["listaUnidadesConJornadaAsignada"] = new List<JornadaUnidadFuncionario>();
                 mostrarTablaUnidades();
-                List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios(periodos.First().idPlanilla);
+                //List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios(periodos.First().idPlanilla);
+                List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionariosPorPlanillaYDistribuccion(periodos.First().idPlanilla);
                 Session["listaFuncionarios"] = listaFuncionarios;
                 Session["listaFuncionariosFiltrada"] = listaFuncionarios;
                 mostrarDatosTabla();
@@ -375,7 +384,7 @@ namespace Proyecto.Planilla
 
             rpUnidProyecto.DataSource = pgsourceUnidad;
             rpUnidProyecto.DataBind();
-            
+
             //metodo que realiza la paginacion
             PaginacionUnidad();
         }
@@ -549,7 +558,7 @@ namespace Proyecto.Planilla
             }
             lblPeriodo.Text = ddlPeriodo.SelectedValue;
             lblProyecto.Text = ddlProyecto.SelectedItem.Text;
-            lblJornada.Text = funcionarioVer.JornadaLaboral.descJornada + " , " + funcionarioVer.JornadaLaboral.porcentajeJornada+"%";
+            lblJornada.Text = funcionarioVer.JornadaLaboral.descJornada + " , " + funcionarioVer.JornadaLaboral.porcentajeJornada + "%";
             lblFuncionario.Text = funcionarioVer.nombreFuncionario;
             Session["idFuncionarioSeleccionado"] = funcionarioVer.idFuncionario;
             mostrarTablaUnidades();
@@ -645,15 +654,20 @@ namespace Proyecto.Planilla
             eliminarJornadaUnidadFuncionario(idUnidad);
             List<JornadaUnidadFuncionario> unidadesFuncionario = (List<JornadaUnidadFuncionario>)Session["listaUnidadesConJornadaAsignada"];
             double tiempoAsignado = 0;
-            foreach(JornadaUnidadFuncionario unidadFuncionario in unidadesFuncionario)
+            foreach (JornadaUnidadFuncionario unidadFuncionario in unidadesFuncionario)
             {
                 tiempoAsignado += unidadFuncionario.jornadaAsignada;
             }
-            if((tiempoAsignado+unidadAsignada.jornadaAsignada) <= 100)
+            if ((tiempoAsignado + unidadAsignada.jornadaAsignada) <= 100)
             {
                 unidadesFuncionario.Add(unidadAsignada);
                 jornadaUnidadFuncionarioServicios.insertarJornadaUnidadFuncionario(unidadAsignada);
-                Toastr("success", "Jornada en "+ unidadAsignada.descUnidad +" agregada con éxito!");
+                Toastr("success", "distribución en " + unidadAsignada.descUnidad + " agregada con éxito!");
+
+                List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionariosPorPlanillaYDistribuccion(Convert.ToInt32(ddlPeriodo.SelectedValue));
+                Session["listaFuncionarios"] = listaFuncionarios;
+                Session["listaFuncionariosFiltrada"] = listaFuncionarios;
+                mostrarDatosTabla();
             }
             else
             {
@@ -675,7 +689,8 @@ namespace Proyecto.Planilla
         protected void btnEliminarUnidad_Click(object sender, EventArgs e)
         {
             int idUnidad = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
-            if (eliminarJornadaUnidadFuncionario(idUnidad)) { 
+            if (eliminarJornadaUnidadFuncionario(idUnidad))
+            {
                 Toastr("success", "Se eliminó la jornada con éxito!");
             }
             else
@@ -699,9 +714,10 @@ namespace Proyecto.Planilla
         {
             int id = Convert.ToInt32(ddlPeriodo.SelectedItem.Text);
             LinkedList<Proyectos> proyectos = proyectoServicios.ObtenerPorPeriodo(id);
-            ddlProyecto.DataSource = proyectos;
+            List<Proyectos> listaProyectos = (List<Proyectos>)proyectos.Where(proy => proy.esUCR == true).ToList();
+            ddlProyecto.DataSource = listaProyectos;
             ddlProyecto.DataBind();
-            List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios(Convert.ToInt32(ddlPeriodo.SelectedValue));
+            List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionariosPorPlanillaYDistribuccion(Convert.ToInt32(ddlPeriodo.SelectedValue));
             Session["listaFuncionarios"] = listaFuncionarios;
             Session["listaFuncionariosFiltrada"] = listaFuncionarios;
             mostrarDatosTabla();
@@ -721,6 +737,216 @@ namespace Proyecto.Planilla
         {
             paginaActual = 0;
             mostrarDatosTabla();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 08/nov/2019
+        /// Efecto: ingresa en el presupuesto de egresos los montos en las partidas y unidades correspondientes
+        /// Requiere: dar clic en el boton de "Ingresar datos al presupuesto de egresos" y haber distribuido todos los funcionarios
+        /// Modifica: presupuesto de egresos
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnIngresarPresupuestoEgresos_Click(object sender, EventArgs e)
+        {
+            List<Funcionario> listaFuncionarios = (List<Funcionario>)Session["listaFuncionarios"];
+            List<Funcionario> listaFuncionariosTemp = listaFuncionarios.Where(funcionario => funcionario.porcentajeAsignado < 100).ToList();
+
+            if (listaFuncionariosTemp.Count > 0)
+            {
+                Toastr("error", "Se deben de distribuir todos los funcionarios completamente");
+            }
+            else
+            {
+                int idProyecto = Convert.ToInt32(ddlProyecto.SelectedValue);
+                int id = Convert.ToInt32(ddlPeriodo.SelectedItem.Text);
+                Periodo periodo = new Periodo();
+                periodo.anoPeriodo = id;
+
+                Proyectos proyecto = new Proyectos();
+                proyecto.idProyecto = idProyecto;
+
+                //primero se comprueba que el monto de que se va a sumar a los egresos no sobrepase el monto de ingresos
+                Double montoSumaEgresos = 0;
+                foreach (Funcionario funcionario in listaFuncionarios)
+                {
+                    List<Proyeccion> listaProyeccion = proyeccionServicios.getProyeccionesPorPeriodoYFuncionario(periodo, funcionario);
+
+                    montoSumaEgresos += listaProyeccion.Sum(proyeccion => proyeccion.montoCargasTotal);
+                    montoSumaEgresos += listaProyeccion.Sum(proyeccion => proyeccion.montoSalario);
+                }
+
+                LinkedList<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(idProyecto);
+
+                List<PresupuestoEgresoPartida> listaPresupuestoEgresoPartidasEliminar = new List<PresupuestoEgresoPartida>();//lista de presupuestos partidas ya aprobados, hay q borrar si es el caso
+                List<int> listaIdEgresos = new List<int>();
+
+                foreach (Unidad unidad in listaUnidades)
+                {
+                    List<PresupuestoEgreso> listaPresupuestoEgresos = presupuestoEgresosServicios.getPresupuestosEgresosPorUnidad(unidad);
+                    listaIdEgresos = (List<int>)listaPresupuestoEgresos.Select(pres => pres.idPresupuestoEgreso).ToList();
+                    listaIdEgresos = (List<int>)listaIdEgresos.Distinct().ToList();
+                    foreach (int idEgreso in listaIdEgresos)
+                    {
+                        PresupuestoEgreso presupuestoEgreso = new PresupuestoEgreso();
+                        presupuestoEgreso.idPresupuestoEgreso = idEgreso;
+                        listaPresupuestoEgresoPartidasEliminar.AddRange(presupuestoEgreso_PartidaServicios.getPresupuestoEgresoPartidasPorPresupEgresoYDesc(presupuestoEgreso, "Planilla (generado automáticamente)"));
+                    }
+                    montoSumaEgresos += listaPresupuestoEgresos.Sum(presupuesto => presupuesto.montoTotal);
+                }
+
+                Double montoIngresos = 0;
+                List<Entidades.PresupuestoIngreso> listaPresupuestosIngresos = presupuestoIngresoServicios.getPresupuestosIngresosPorProyecto(proyecto);
+
+                foreach (Entidades.PresupuestoIngreso presupuestoIngreso in listaPresupuestosIngresos)
+                {
+                    if (!presupuestoIngreso.estadoPresupIngreso.descEstado.Equals("Guardar"))
+                    {
+                        montoIngresos += presupuestoIngreso.monto;
+                    }
+                }
+
+                montoSumaEgresos = montoSumaEgresos - (listaPresupuestoEgresoPartidasEliminar.Sum(pres => pres.monto));
+
+                if (montoIngresos < montoSumaEgresos)
+                {
+                    Toastr("error", "El monto de ingresos es menor que el monto que se va a egregar a los egresos. Monto ingresos: " + montoIngresos + " Monto egresos: " + montoSumaEgresos);
+                }
+                else
+                { //si se puede ingresar los montos
+
+                    //se actualiza el monto de los egresos para eliminar la distribucion hecha antes
+                    foreach (int idEgreso in listaIdEgresos)
+                    {
+                        List<PresupuestoEgresoPartida> presupuestoEgresoPartidasTemp = (List < PresupuestoEgresoPartida >)listaPresupuestoEgresoPartidasEliminar.Where(pres => pres.idPresupuestoEgreso==idEgreso).ToList();
+
+                        PresupuestoEgreso presupuestoEgreso = new PresupuestoEgreso();
+                        presupuestoEgreso.idPresupuestoEgreso = idEgreso;
+                        presupuestoEgreso = presupuestoEgresosServicios.getPresupuestosEgresosPorId(presupuestoEgreso);
+                        presupuestoEgreso.montoTotal = presupuestoEgreso.montoTotal - (presupuestoEgresoPartidasTemp.Sum(pres => pres.monto));
+                        presupuestoEgresosServicios.actualizarMontoPresupuestoEgreso(presupuestoEgreso);
+                    }
+
+                    //se elimina el presupuesto de egresos partidas ya ingresados, para que no queden cosas sucias en la base de datos
+                    foreach (PresupuestoEgresoPartida presupuestoEgresoPartidaEliminar in listaPresupuestoEgresoPartidasEliminar)
+                    {
+                        presupuestoEgreso_PartidaServicios.eliminarPresupuestoEgreso_Partida(presupuestoEgresoPartidaEliminar);
+                    }
+
+                    List<PresupuestoEgresoPartida> presupuestoEgresoPartidas = new List<PresupuestoEgresoPartida>();
+                    EstadoPresupuesto estadoPresupuesto = new EstadoPresupuesto();
+                    estadoPresupuesto = estadoPresupuestoServicios.getEstadoPresupuestoPorNombre("Aprobar");
+
+                    foreach (Funcionario funcionario in listaFuncionarios)
+                    {
+                        List<JornadaUnidadFuncionario> unidadesFuncionario = jornadaUnidadFuncionarioServicios.getJornadaUnidadFuncionario(funcionario.idFuncionario, idProyecto);
+                        List<Proyeccion> listaProyeccion = proyeccionServicios.getProyeccionesPorPeriodoYFuncionario(periodo, funcionario);
+
+                        foreach (Proyeccion proyeccion in listaProyeccion)
+                        {
+                            List<Proyeccion_CargaSocial> listaProyeccion_CargaSociales = proyeccion_CargaSocialServicios.getProyeccionCargaSocialPorProyeccionPorProyeccion(proyeccion);
+
+
+                            foreach (JornadaUnidadFuncionario jornadaUnidadFuncionario in unidadesFuncionario)
+                            {
+
+                                Unidad unidad = new Unidad();
+                                unidad.idUnidad = jornadaUnidadFuncionario.idUnidad;
+                                List<PresupuestoEgreso> listaPresupuestoEgresos = presupuestoEgresosServicios.getPresupuestosEgresosPorUnidad(unidad);
+                                PresupuestoEgreso presupuestoEgreso = listaPresupuestoEgresos.First();
+
+                                foreach (Proyeccion_CargaSocial proyeccion_CargaSocial in listaProyeccion_CargaSociales)
+                                {
+                                    Double monto = 0;
+                                    monto = proyeccion_CargaSocial.monto;
+                                    monto = (monto * (jornadaUnidadFuncionario.jornadaAsignada / 100));
+
+                                    PresupuestoEgresoPartida presupuestoEgresoPartida = new PresupuestoEgresoPartida();
+                                    presupuestoEgresoPartida.monto = monto;
+                                    presupuestoEgresoPartida.partida = proyeccion_CargaSocial.cargaSocial.partida;
+
+                                    presupuestoEgresoPartida.idPresupuestoEgreso = presupuestoEgreso.idPresupuestoEgreso;
+
+                                    presupuestoEgresoPartidas.Add(presupuestoEgresoPartida);
+                                }
+                                //salario y concepto de pago
+                                Double montoSalario = 0, montoConceptoPago = 0;
+                                montoConceptoPago = funcionario.conceptoPagoLey;
+                                montoConceptoPago = (montoConceptoPago * (jornadaUnidadFuncionario.jornadaAsignada / 100));
+                                montoSalario = proyeccion.montoSalario - funcionario.conceptoPagoLey;
+                                montoSalario = (montoSalario * (jornadaUnidadFuncionario.jornadaAsignada / 100));
+
+                                PresupuestoEgresoPartida presupuestoEgresoPartidaSalario = new PresupuestoEgresoPartida();
+                                presupuestoEgresoPartidaSalario.monto = montoSalario;
+                                Partida partida = new Partida();
+                                partida.numeroPartida = "0-01-03-01";
+                                partida = partidaServicios.getPartidaPorNumeroYPeriodo(partida, periodo);
+                                presupuestoEgresoPartidaSalario.partida = partida;
+                                presupuestoEgresoPartidaSalario.idPresupuestoEgreso = presupuestoEgreso.idPresupuestoEgreso;
+
+                                presupuestoEgresoPartidas.Add(presupuestoEgresoPartidaSalario);
+
+                                PresupuestoEgresoPartida presupuestoEgresoPartidaConcepto = new PresupuestoEgresoPartida();
+                                presupuestoEgresoPartidaConcepto.monto = montoConceptoPago;
+                                Partida partidaConcepto = new Partida();
+                                partidaConcepto.numeroPartida = "0-01-03-02";
+                                partidaConcepto = partidaServicios.getPartidaPorNumeroYPeriodo(partidaConcepto, periodo);
+                                presupuestoEgresoPartidaConcepto.partida = partidaConcepto;
+                                presupuestoEgresoPartidaConcepto.idPresupuestoEgreso = presupuestoEgreso.idPresupuestoEgreso;
+
+                                presupuestoEgresoPartidas.Add(presupuestoEgresoPartidaConcepto);
+                            }
+                        }
+                    }
+
+                    //se seleccionan los id's de los egresos
+                    List<int> egresos = (List<int>)presupuestoEgresoPartidas.Select(pres => pres.idPresupuestoEgreso).ToList();
+                    egresos = (List<int>)egresos.Distinct().ToList();
+                    List<int> partidas = (List<int>)presupuestoEgresoPartidas.Select(pres => pres.partida.idPartida).ToList();
+                    partidas = (List<int>)partidas.Distinct().ToList();
+
+                    foreach (int idEgreso in egresos)
+                    {
+                        PresupuestoEgreso presupuestoEgreso = new PresupuestoEgreso();
+                        presupuestoEgreso.idPresupuestoEgreso = idEgreso;
+                        presupuestoEgreso = presupuestoEgresosServicios.getPresupuestosEgresosPorId(presupuestoEgreso);
+
+
+                        foreach (int idPartida in partidas)
+                        {
+                            List<PresupuestoEgresoPartida> presupuestoEgresoPartidasTemp = (List<PresupuestoEgresoPartida>)presupuestoEgresoPartidas.Where(pres => pres.idPresupuestoEgreso == idEgreso && pres.partida.idPartida == idPartida).ToList();
+                            Double montoTemp = 0;
+                            montoTemp += presupuestoEgresoPartidasTemp.Sum(pres => pres.monto);
+
+                            if (montoTemp > 0)
+                            {
+                                PresupuestoEgresoPartida presupuestoEgresoPartida = new PresupuestoEgresoPartida();
+                                Partida partida = new Partida();
+
+                                partida.idPartida = idPartida;
+                                presupuestoEgresoPartida.idPresupuestoEgreso = idEgreso;
+                                presupuestoEgresoPartida.partida = partida;
+                                presupuestoEgresoPartida.monto = montoTemp;
+                                presupuestoEgresoPartida.estadoPresupuesto = estadoPresupuesto;
+                                presupuestoEgresoPartida.descripcion = "Planilla (generado automáticamente)";
+
+                                presupuestoEgreso_PartidaServicios.insertarPresupuestoEgreso_Partida(presupuestoEgresoPartida);
+
+                                presupuestoEgreso.montoTotal += montoTemp;
+                            }
+                        }
+
+                        presupuestoEgresosServicios.actualizarMontoPresupuestoEgreso(presupuestoEgreso);
+
+                    }
+
+                    Toastr("success", "Se ingreso correctamente los datos en el presupuesto de egresos");
+
+                }
+
+            }
         }
 
         #endregion

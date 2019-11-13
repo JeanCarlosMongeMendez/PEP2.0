@@ -169,7 +169,7 @@
                             <div class="col-md-5 col-xs-12 col-sm-5">
                                 <div class="input-group">
                                     <span class="input-group-addon">₡</span>
-                                    <asp:TextBox class="form-control" ID="txtAsalario" runat="server" ></asp:TextBox>
+                                    <asp:TextBox class="form-control" ID="txtAsalario" runat="server"></asp:TextBox>
                                 </div>
                             </div>
                         </div>
@@ -287,21 +287,23 @@
 
 
     <!-- modal pasar funcionarios -->
-    <asp:UpdatePanel ID="UpdatePanel3" runat="server">
-        <ContentTemplate>
-            <div class="modal fade" id="modalPasarFuncionario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document" style="width: 98% !important">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5>
-                                <asp:Label ID="Label2" runat="server" Text="Copiar funcionario" Font-Size="Large" ForeColor="Black"></asp:Label>
-                            </h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body" style="align-content: center">
-                            <div class="row">
+
+    <div class="modal fade" id="modalPasarFuncionario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="width: 98% !important">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>
+                        <asp:Label ID="Label2" runat="server" Text="Copiar funcionario" Font-Size="Large" ForeColor="Black"></asp:Label>
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="align-content: center">
+                    <div class="row">
+                        <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+                            <ContentTemplate>
+
                                 <div class="col-md-12 col-xs-12 col-sm-12">
                                     <br />
                                 </div>
@@ -511,123 +513,122 @@
                                     <!-- ---------------------- FIN tabla paginacion funcionarios agregados ------------------------- -->
                                 </div>
 
-                            </div>
-
-                        </div>
-                        <div class="modal-footer" style="align-content: center; text-align: center">
-                            <asp:Button CssClass="btn btn-danger" data-dismiss="modal" runat="server" Text="Cerrar" />
-                        </div>
+                                </div>
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
+                    </div>
+                    <div class="modal-footer" style="align-content: center; text-align: center">
+                        <asp:Button CssClass="btn btn-danger" data-dismiss="modal" runat="server" Text="Cerrar" />
                     </div>
                 </div>
             </div>
-        </ContentTemplate>
-    </asp:UpdatePanel>
-    <!-- fin modal pasar funcionarios-->
+        </div>
 
-    <!-- modal nuevo funcionario -->
-    <asp:UpdatePanel ID="UpdatePanel4" runat="server">
-        <ContentTemplate>
-            <div class="modal fade" id="modalNuevoFuncionario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5>
-                                <asp:Label ID="Label3" runat="server" Text="Nuevo funcionario" Font-Size="Large" ForeColor="Black"></asp:Label>
-                            </h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body" style="align-content: center">
-                            <div class="row">
-                                <div class="col-md-12 col-xs-12 col-sm-12">
-                                    <br />
-                                </div>
+        <!-- fin modal pasar funcionarios-->
 
-                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
-                                    <div class="col-md-3 col-xs-3 col-sm-3">
-                                        <asp:Label ID="Label4" runat="server" Text="Planilla" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+        <!-- modal nuevo funcionario -->
+        <asp:UpdatePanel ID="UpdatePanel4" runat="server">
+            <ContentTemplate>
+                <div class="modal fade" id="modalNuevoFuncionario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5>
+                                    <asp:Label ID="Label3" runat="server" Text="Nuevo funcionario" Font-Size="Large" ForeColor="Black"></asp:Label>
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" style="align-content: center">
+                                <div class="row">
+                                    <div class="col-md-12 col-xs-12 col-sm-12">
+                                        <br />
                                     </div>
 
-                                    <div class="col-md-5 col-xs-5 col-sm-5">
-                                        <asp:Label ID="lblPlanillaModalNuevo" runat="server" Text="" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
-                                    </div>
-                                </div>
+                                    <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                        <div class="col-md-3 col-xs-3 col-sm-3">
+                                            <asp:Label ID="Label4" runat="server" Text="Planilla" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                        </div>
 
-                                <div class="col-md-12 col-xs-12 col-sm-12">
-                                    <br />
-                                </div>
-
-                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
-                                    <div class="col-md-3 col-xs-12 col-sm-3">
-                                        <asp:Label ID="Label5" runat="server" Text="Nombre completo" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
-                                    </div>
-                                    <div class="col-md-5 col-xs-12 col-sm-5">
-                                        <asp:TextBox class="form-control" ID="txtNombreFuncionarioModalNuevo" runat="server"></asp:TextBox>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12 col-xs-12 col-sm-12">
-                                    <br />
-                                </div>
-
-                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
-                                    <div class="col-md-3 col-xs-3 col-sm-3">
-                                        <asp:Label ID="Label7" runat="server" Text="Salario" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
-                                    </div>
-
-                                    <div class="col-md-5 col-xs-12 col-sm-5">
-                                        <div class="input-group">
-                                            <span class="input-group-addon">₡</span>
-                                            <asp:TextBox class="form-control" ID="txtSalarioModalNuevo" runat="server"></asp:TextBox>
+                                        <div class="col-md-5 col-xs-5 col-sm-5">
+                                            <asp:Label ID="lblPlanillaModalNuevo" runat="server" Text="" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                                         </div>
                                     </div>
+
+                                    <div class="col-md-12 col-xs-12 col-sm-12">
+                                        <br />
+                                    </div>
+
+                                    <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                        <div class="col-md-3 col-xs-12 col-sm-3">
+                                            <asp:Label ID="Label5" runat="server" Text="Nombre completo" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                        </div>
+                                        <div class="col-md-5 col-xs-12 col-sm-5">
+                                            <asp:TextBox class="form-control" ID="txtNombreFuncionarioModalNuevo" runat="server"></asp:TextBox>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 col-xs-12 col-sm-12">
+                                        <br />
+                                    </div>
+
+                                    <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                        <div class="col-md-3 col-xs-3 col-sm-3">
+                                            <asp:Label ID="Label7" runat="server" Text="Salario" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                        </div>
+
+                                        <div class="col-md-5 col-xs-12 col-sm-5">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">₡</span>
+                                                <asp:TextBox class="form-control" ID="txtSalarioModalNuevo" runat="server"></asp:TextBox>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
 
                             </div>
+                            <div class="modal-footer">
+                                <asp:UpdatePanel ID="UpdatePanel5" runat="server">
+                                    <ContentTemplate>
+                                        <asp:Button ID="btnNuevoFuncionarioModal" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="btnNuevoFuncionarioModal_Click" />
+                                        <asp:Button CssClass="btn btn-danger" data-dismiss="modal" runat="server" Text="Cerrar" />
+                                    </ContentTemplate>
+                                    <Triggers>
+                                        <asp:PostBackTrigger ControlID="btnNuevoFuncionarioModal" />
+                                    </Triggers>
+                                </asp:UpdatePanel>
 
-                        </div>
-                        <div class="modal-footer">
-                            <asp:UpdatePanel ID="UpdatePanel5" runat="server">
-                                <ContentTemplate>
-                                    <asp:Button ID="btnNuevoFuncionarioModal" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="btnNuevoFuncionarioModal_Click" />
-                                    <asp:Button CssClass="btn btn-danger" data-dismiss="modal" runat="server" Text="Cerrar" />
-                                </ContentTemplate>
-                                <Triggers>
-                                    <asp:PostBackTrigger ControlID="btnNuevoFuncionarioModal" />
-                                </Triggers>
-                            </asp:UpdatePanel>
-
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </ContentTemplate>
-    </asp:UpdatePanel>
-    <!-- fin modal nuevo funcionario-->
+            </ContentTemplate>
+        </asp:UpdatePanel>
+        <!-- fin modal nuevo funcionario-->
 
-    <script type="text/javascript">
-        function activarModal() {
-            $('#modalAjuste').modal('show');
-        };
+        <script type="text/javascript">
+            function activarModal() {
+                $('#modalAjuste').modal('show');
+            };
 
-        function activarModalEliminar() {
-            $('#modalEliminarFuncionario').modal('show');
-        };
+            function activarModalEliminar() {
+                $('#modalEliminarFuncionario').modal('show');
+            };
 
-        function activarModalEditar() {
-            $('#modalEditarFuncionario').modal('show');
-        };
+            function activarModalEditar() {
+                $('#modalEditarFuncionario').modal('show');
+            };
 
-        function activarModalPasarFuncionario() {
-            $('#modalPasarFuncionario').modal('show');
-        };
+            function activarModalPasarFuncionario() {
+                $('#modalPasarFuncionario').modal('show');
+            };
 
-        function activarModalNuevoFuncionario() {
-            $('#modalNuevoFuncionario').modal('show');
-        };
-    </script>
-
+            function activarModalNuevoFuncionario() {
+                $('#modalNuevoFuncionario').modal('show');
+            };
+        </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ScriptContent" runat="server">
 </asp:Content>

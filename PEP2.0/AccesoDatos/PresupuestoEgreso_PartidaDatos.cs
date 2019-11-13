@@ -284,5 +284,63 @@ namespace AccesoDatos
 
             return listaPresupuestoEgresoPartida;
         }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 11/nov/2019
+        /// Efecto: devuelve lista de presupuestos de egresos partidas segun el presupuesto de egresos y descripcion
+        /// Requiere: presupuesto de egreso y descripcion
+        /// Modifica: -
+        /// Devuelve: lista presupuestos egresos partida
+        /// </summary>
+        /// <param name="presupuestoEgresoConsulta"></param>
+        /// <param name="desc"></param>
+        /// <returns></returns>
+        public List<PresupuestoEgresoPartida> getPresupuestoEgresoPartidasPorPresupEgresoYDesc(PresupuestoEgreso presupuestoEgresoConsulta,String desc)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+            List<PresupuestoEgresoPartida> listaPresupuestoEgresoPartida = new List<PresupuestoEgresoPartida>();
+
+            SqlCommand sqlCommand = new SqlCommand(@"select PEP.*, P.descripcion_partida,P.numero_partida,EP.descripcion_estado_presupuesto 
+                                                                                            from Presupuesto_Egreso_Partida PEP, Partida P,Estado_presupuestos EP
+                                                                                            where PEP.id_presupuesto_egreso = @idPresupuestoEgreso and PEP.descripcion =@descripcion  and P.id_partida = PEP.id_partida and P.id_partida_padre is not null
+                                                                                            and P.ano_periodo = (select ano_periodo from Proyecto where id_proyecto = (
+                                                                                            select id_proyecto from Unidad where id_unidad = (select id_unidad from Presupuesto_Egreso where id_presupuesto_egreso = @idPresupuestoEgreso)
+                                                                                            )) and P.disponible = 'True' and EP.id_estado_presupuesto = PEP.id_estado_presupuesto", sqlConnection);
+
+            sqlCommand.Parameters.AddWithValue("@idPresupuestoEgreso", presupuestoEgresoConsulta.idPresupuestoEgreso);
+            sqlCommand.Parameters.AddWithValue("@descripcion", desc);
+
+            SqlDataReader reader;
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                PresupuestoEgresoPartida presupuestoEgresoPartida = new PresupuestoEgresoPartida();
+                Partida partida = new Partida();
+                EstadoPresupuesto estadoPresupuesto = new EstadoPresupuesto();
+
+                partida.idPartida = Convert.ToInt32(reader["id_partida"].ToString());
+                partida.descripcionPartida = reader["descripcion_partida"].ToString();
+                partida.numeroPartida = reader["numero_partida"].ToString();
+
+                estadoPresupuesto.idEstadoPresupuesto = Convert.ToInt32(reader["id_estado_presupuesto"].ToString());
+                estadoPresupuesto.descripcionEstado = reader["descripcion_estado_presupuesto"].ToString();
+
+                presupuestoEgresoPartida.partida = partida;
+                presupuestoEgresoPartida.estadoPresupuesto = estadoPresupuesto;
+                presupuestoEgresoPartida.idPresupuestoEgreso = Convert.ToInt32(reader["id_presupuesto_egreso"].ToString());
+                presupuestoEgresoPartida.monto = Convert.ToDouble(reader["monto"].ToString());
+                presupuestoEgresoPartida.descripcion = reader["descripcion"].ToString();
+                presupuestoEgresoPartida.idLinea = Convert.ToInt32(reader["id_linea"].ToString());
+
+                listaPresupuestoEgresoPartida.Add(presupuestoEgresoPartida);
+            }
+
+            sqlConnection.Close();
+
+            return listaPresupuestoEgresoPartida;
+        }
     }
 }
