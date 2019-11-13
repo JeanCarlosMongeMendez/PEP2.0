@@ -999,11 +999,11 @@ namespace Proyecto.Catalogos.Ejecucion
             List<PartidaUnidad> partidasAsignadas = (List<PartidaUnidad>)Session["partidasAsignadas"];
            
             List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
-            montoRepartir.Text = txtMontoIngresar.Text;
+           
             if (partidasAsignadas == null)
             {
                 partidasAsignadas = new List<PartidaUnidad>();
-               
+                montoRepartir.Text = txtMontoIngresar.Text;
             }
            
             else
@@ -1015,50 +1015,50 @@ namespace Proyecto.Catalogos.Ejecucion
                 string idPartida = ((LinkButton)(sender)).CommandArgument.ToString();
                 List<PresupuestoEgresoPartida> listaPartidasEgreso = new List<PresupuestoEgresoPartida>();
                 listaPartidasEgreso = presupuestoEgreso_PartidaServicios.obtenerEgreso_Partida_porIdPartida(idPartida);
-                 monto = Convert.ToDouble(txtMontoIngresar.Text);
+                // monto = Convert.ToDouble(txtMontoIngresar.Text);
                 //double montoRepartir = Convert.ToDouble(UpdatePane34.TextBox1.Text);
                 List<PartidaUnidad> partidasElegidas = (List<PartidaUnidad>)Session["partidasAsignadas"];
               
                 PartidaUnidad partidaUnidad = new PartidaUnidad();
                 Double montoDisponible = (Double)listaPartidasEgreso.Sum(presupuesto => presupuesto.monto);
-                //if (monto <= montoDisponible)
-                //{
+                if (monto <= montoDisponible)
+                {
                     foreach (PartidaUnidad p in partidasElegidas)
                     {
                         if (p.IdPartida == Convert.ToInt32(idPartida))
                         {
                             partidaUnidad.IdPartida = p.IdPartida;
                             partidaUnidad.IdUnidad = p.IdUnidad;
-                            partidaUnidad.NumeroPartida =p.NumeroPartida;
-                            
-                           // partidasElegidas.RemoveAll(item => item.IdPartida == p.IdPartida);
-                            
+                            partidaUnidad.NumeroPartida = p.NumeroPartida;
+
+                            // partidasElegidas.RemoveAll(item => item.IdPartida == p.IdPartida);
+
                             foreach (RepeaterItem item in rpUnidadPartida.Items)
                             {
                                 HiddenField hdIdPartida = (HiddenField)item.FindControl("hdIdPartida");
                                 int idPartid = Convert.ToInt32(hdIdPartida.Value);
                                 TextBox txtMonto = (TextBox)item.FindControl("TextBox1");
                                 String txtMont = txtMonto.Text.Replace(".", ",");
-                                if (Double.TryParse(txtMont, out Double montoo))
+                                if (Double.TryParse(txtMont, out Double montoo) && idPartid == Convert.ToInt32(idPartida))
                                 {
                                     txtMonto.Text = monto.ToString();
                                     montoRepartir.Text = Convert.ToString(monto);
                                     montoRepartir.Text = (Convert.ToString(Convert.ToInt32(montoRepartir.Text) - Convert.ToInt32(txtMont)));
                                     monto = Convert.ToDouble(montoRepartir.Text);
-                                }
-                                if(idPartid== Convert.ToInt32(idPartida))
-                                {
                                     double saldo = montoDisponible - Convert.ToInt32(txtMont);
                                     partidaUnidad.MontoDisponible = saldo;
-                                    partidaUnidad.Monto = Convert.ToInt32 (txtMont);
+                                    partidaUnidad.Monto = Convert.ToInt32(txtMont);
                                 }
-                              
+                               
+
                             }
-                           
+
                             partidasElegidasConMonto.Add(partidaUnidad);
-                           // partidasElegidas.Add(partidaUnidad);
+                            // partidasElegidas.Add(partidaUnidad);
                         }
+
                     }
+                
                    
                     Session["partidasAsignadasConMonto"] = partidasElegidasConMonto;
                     MostrarUnidadesConMontoRepartido();
@@ -1066,9 +1066,24 @@ namespace Proyecto.Catalogos.Ejecucion
                     Session["partidasAsignadas"] = partidasElegidas;
                     obtenerUnidadesPartidasAsignarMonto();
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", " activarModalRepartirPartidas();", true);
-                //}
+                }else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La Partida no cuenta con el dinero suficiente" + "');", true);
+                }
+               
             }
            
+        }
+        protected void EliminarMontoRepartido_OnChanged(object sender, EventArgs e)
+        {
+
+            string numeroPartida = (((LinkButton)(sender)).CommandArgument).ToString();
+            List<PartidaUnidad> partidasAsignadas = (List<PartidaUnidad>)Session["partidasAsignadas"];
+            List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
+           
+            partidasAsignadas.Add((PartidaUnidad)partidasElegidasConMonto.Where(item => item.NumeroPartida == numeroPartida).ToList().First());
+            partidasElegidasConMonto.RemoveAll(item => item.NumeroPartida == numeroPartida);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La unidad fue borrada con exito" + "');", true);
         }
         private void MostrarUnidadesConMontoRepartido()
         {
