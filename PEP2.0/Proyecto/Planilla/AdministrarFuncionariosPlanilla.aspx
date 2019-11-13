@@ -1176,6 +1176,18 @@
                             </div>
 
                             <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+
+                                <div class="col-md-6 col-xs-6 col-sm-6">
+                                    <asp:Button ID="btnPasarTodosLosFuncionarios" runat="server" Text="Pasar todos los Funcionarios" CssClass="btn btn-primary boton-nuevo" OnClick="btnPasarTodosLosFuncionarios_Click" />
+                                </div>
+
+                            </div>
+                            
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
                                 <!-- ------------------------ tabla funcionarios De --------------------------- -->
                                 <div class=" table-responsive col-md-6 col-xs-6 col-sm-6" style="text-align: center; overflow-y: auto;">
 

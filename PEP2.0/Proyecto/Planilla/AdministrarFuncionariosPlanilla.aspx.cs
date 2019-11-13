@@ -1379,6 +1379,7 @@ namespace Proyecto.Planilla
             Session["listaFuncionariosFiltrada"] = listaFuncionarios;
             mostrarDatosTabla();
             Toastr("success", "Se eliminó correctamente el funcionario");
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalVerFuncionario", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalVerFuncionario').hide();", true);
         }
 
         /// <summary>
@@ -1453,6 +1454,7 @@ namespace Proyecto.Planilla
                 Session["listaFuncionariosFiltrada"] = listaFuncionarios;
                 mostrarDatosTabla();
                 Toastr("success", "Se guardó correctamente el funcionario");
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevoFuncionario", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevoFuncionario').hide();", true);
             }
             else
             {
@@ -1515,16 +1517,17 @@ namespace Proyecto.Planilla
             }
             if (funcionariosA.Any(funcionario => funcionario.nombreFuncionario.Equals(funcionarioSeleccionado.nombreFuncionario)))
             {
-                Toastr("error", "El funcionario ya existe en el periodo seleccionado");
+                Toastr("error", "El funcionario " + funcionarioSeleccionado.nombreFuncionario + " ya existe en el periodo seleccionado");
             }
             else
             {
                 if (funcionarioServicios.guardar(funcionarioSeleccionado))
                 {
-                    Toastr("success", "El funcionario se ha copiado en el periodo seleccionado");
-                }else
+                    Toastr("success", "El funcionario " + funcionarioSeleccionado.nombreFuncionario + " se ha copiado en el periodo seleccionado");
+                }
+                else
                 {
-                    Toastr("error", "El funcionario no se pudo copiar, intentelo nuevamente");
+                    Toastr("error", "El funcionario " + funcionarioSeleccionado.nombreFuncionario + " no se pudo copiar, intentelo nuevamente");
                 }
             }
             List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios(planilla.idPlanilla);
@@ -1546,15 +1549,19 @@ namespace Proyecto.Planilla
         protected void btnPasarFuncionarios_Click(object sender, EventArgs e)
         {
             Entidades.Planilla planilla = (Entidades.Planilla)Session["planillaSeleccionada"];
-            mostrarDatosTablaFuncionariosA();
-            mostrarDatosTablaFuncionariosDe();
             lblPeriodoSeleccionado.Text = planilla.periodo.anoPeriodo.ToString();
             List<Entidades.Planilla> periodos = planillaServicios.getPlanillas();
             ddlPlanillaModalPasarFuncionarios.DataValueField = "idPlanilla";
             ddlPlanillaModalPasarFuncionarios.DataTextField = "periodo";
             ddlPlanillaModalPasarFuncionarios.DataSource = from a in periodos select new { a.idPlanilla, periodo = a.periodo.anoPeriodo };
-            ddlPlanillaModalPasarFuncionarios.SelectedValue = periodos.First().idPlanilla.ToString();
             ddlPlanillaModalPasarFuncionarios.DataBind();
+            ddlPlanillaModalPasarFuncionarios.SelectedValue = periodos.First().idPlanilla.ToString();
+            List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios(Convert.ToInt32(ddlPlanillaModalPasarFuncionarios.SelectedValue));
+            Session["listaFuncionariosAFiltrada"] = listaFuncionarios;
+            Session["listaFuncionariosA"] = listaFuncionarios;
+            mostrarDatosTablaFuncionariosA();
+            mostrarDatosTablaFuncionariosDe();
+
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarFuncionarios();", true);
         }
 
@@ -1592,6 +1599,62 @@ namespace Proyecto.Planilla
             txtSalarioBase1.Text = (escalaSeleccionada.salarioBase1 * (jornadaSeleccionada.porcentajeJornada / 100)).ToString();
             txtSalarioBase2.Text = (escalaSeleccionada.salarioBase2 * (jornadaSeleccionada.porcentajeJornada / 100)).ToString();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
+        }
+
+        /// <summary>
+        /// Jean Carlos Monge Mendez
+        /// 13/11/2019
+        /// Efecto : Copia todos los funcionarios de una planilla a otra
+        /// Requiere : Clickear el botón "Pasar todos los funcionarios" del modal pasar funcionarioss
+        /// Modifica : Funcionarios de una planilla
+        /// Devuelve : -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnPasarTodosLosFuncionarios_Click(object sender, EventArgs e)
+        {
+            bool agregadosCorrectamente = false;
+            bool erroresYaExiste = false;
+            bool erroresNoSeAgrega = false;
+            string success = "Los siguientes Funcionarios se copiarion correctamente : ";
+            string errorYaExiste = "Los siguientes Funcionarios ya existían en la planilla seleccionada : ";
+            string errorNoSePudoAgregar = "Los siguientes Funcionarios no se copiarion correctamente, inténtelo nuevamente : ";
+            Entidades.Planilla planillaA = new Entidades.Planilla();
+            planillaA.idPlanilla = Convert.ToInt32(ddlPlanillaModalPasarFuncionarios.SelectedValue);
+            List<Funcionario> funcionariosDe = (List<Funcionario>)Session["listaFuncionariosDeFiltrada"];
+            List<Funcionario> funcionariosA = (List<Funcionario>)Session["listaFuncionariosAFiltrada"];
+            foreach (Funcionario funcionario in funcionariosDe)
+            {
+                if (funcionariosA.Any(funcionarioA => funcionarioA.nombreFuncionario.Equals(funcionario.nombreFuncionario)))
+                {
+                    errorYaExiste +=  funcionario.nombreFuncionario;
+                    erroresYaExiste = true;
+                }
+                else
+                {
+                    Funcionario funcionarioAgregarA = new Funcionario();
+                    funcionarioAgregarA = funcionario;
+                    funcionarioAgregarA.planilla = planillaA;
+                    if (funcionarioServicios.guardar(funcionarioAgregarA))
+                    {
+                        success +=  funcionario.nombreFuncionario;
+                        agregadosCorrectamente = true;
+                    }
+                    else
+                    {
+                        errorNoSePudoAgregar +=  funcionario.nombreFuncionario;
+                        erroresNoSeAgrega = true;
+                    }
+                }
+            }
+            if (agregadosCorrectamente) Toastr("success", success);
+            if (erroresYaExiste) Toastr("error", errorYaExiste);
+            if (erroresNoSeAgrega) Toastr("error", errorNoSePudoAgregar);
+            List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios(planillaA.idPlanilla);
+            Session["listaFuncionariosAFiltrada"] = listaFuncionarios;
+            Session["listaFuncionariosA"] = listaFuncionarios;
+            mostrarDatosTablaFuncionariosA();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarFuncionarios();", true);
         }
 
         /// <summary>
