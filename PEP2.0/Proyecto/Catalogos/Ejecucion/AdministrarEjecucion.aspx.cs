@@ -1004,6 +1004,7 @@ namespace Proyecto.Catalogos.Ejecucion
             {
                 partidasAsignadas = new List<PartidaUnidad>();
                 montoRepartir.Text = txtMontoIngresar.Text;
+              
             }
            
             else
@@ -1011,6 +1012,7 @@ namespace Proyecto.Catalogos.Ejecucion
                 if (partidasElegidasConMonto == null)
                 {
                     partidasElegidasConMonto = new List<PartidaUnidad>();
+                    monto = Convert.ToDouble(txtMontoIngresar.Text);
                 }
                 string idPartida = ((LinkButton)(sender)).CommandArgument.ToString();
                 List<PresupuestoEgresoPartida> listaPartidasEgreso = new List<PresupuestoEgresoPartida>();
@@ -1021,7 +1023,7 @@ namespace Proyecto.Catalogos.Ejecucion
               
                 PartidaUnidad partidaUnidad = new PartidaUnidad();
                 Double montoDisponible = (Double)listaPartidasEgreso.Sum(presupuesto => presupuesto.monto);
-                if (monto <= montoDisponible)
+                if (monto <= montoDisponible && monto>0)
                 {
                     foreach (PartidaUnidad p in partidasElegidas)
                     {
@@ -1042,18 +1044,28 @@ namespace Proyecto.Catalogos.Ejecucion
                                 if (Double.TryParse(txtMont, out Double montoo) && idPartid == Convert.ToInt32(idPartida))
                                 {
                                     txtMonto.Text = monto.ToString();
-                                    montoRepartir.Text = Convert.ToString(monto);
+                                  
                                     montoRepartir.Text = (Convert.ToString(Convert.ToInt32(montoRepartir.Text) - Convert.ToInt32(txtMont)));
                                     monto = Convert.ToDouble(montoRepartir.Text);
-                                    double saldo = montoDisponible - Convert.ToInt32(txtMont);
-                                    partidaUnidad.MontoDisponible = saldo;
-                                    partidaUnidad.Monto = Convert.ToInt32(txtMont);
+                                    if (monto >= 0)
+                                    {
+                                        double saldo = montoDisponible - Convert.ToInt32(txtMont);
+                                        partidaUnidad.MontoDisponible = saldo;
+                                        partidaUnidad.Monto = Convert.ToInt32(txtMont);
+                                        partidasElegidasConMonto.Add(partidaUnidad);
+                                    }
+                                    else
+                                    {
+                                        montoRepartir.Text = (Convert.ToString(Convert.ToInt32(montoRepartir.Text) + Convert.ToInt32(txtMont)));
+                                        monto = Convert.ToDouble(montoRepartir.Text);
+                                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "El monto a repartir es insuficiente" + "');", true);
+                                    }
                                 }
                                
 
                             }
 
-                            partidasElegidasConMonto.Add(partidaUnidad);
+                         
                             // partidasElegidas.Add(partidaUnidad);
                         }
 
@@ -1065,12 +1077,21 @@ namespace Proyecto.Catalogos.Ejecucion
                     partidasElegidas.RemoveAll(item => item.IdPartida == Convert.ToInt32(idPartida));
                     Session["partidasAsignadas"] = partidasElegidas;
                     obtenerUnidadesPartidasAsignarMonto();
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", " activarModalRepartirPartidas();", true);
+                   
                 }else
                 {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La Partida no cuenta con el dinero suficiente" + "');", true);
+                    if (monto == 0)
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "El monto a repartir es insuficiente" + "');", true);
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La Partida no cuenta con el dinero suficiente" + "');", true);
+                    }
                 }
-               
+
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalRepartirPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalRepartirPartidas').hide();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", " activarModalRepartirPartidas();", true);
             }
            
         }
@@ -1583,6 +1604,13 @@ namespace Proyecto.Catalogos.Ejecucion
 
         //    ButtonRepartir.Visible = bl;
         //}
-
+        protected void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            //
+            // This changes the main window text when you type into the TextBox.
+            //
+            
+            monto= Convert.ToDouble(txtMontoIngresar.Text);
+        }
     }
 }
