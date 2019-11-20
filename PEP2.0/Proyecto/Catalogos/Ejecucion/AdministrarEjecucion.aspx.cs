@@ -916,30 +916,29 @@ namespace Proyecto.Catalogos.Ejecucion
             descripcionOtroTipoTramite.Visible = false;
         }
 
-        protected void ButtonRepartirPartidas_Click(object sender, EventArgs e)
+        private bool IsNumeric(string num)
         {
-            if (contadorBotonRepartir == 0)
+            try
             {
-
-                montoRepartir.Text = txtMontoIngresar.Text;
-                obtenerUnidadesPartidasAsignarMonto();
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalRepartirPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalRepartirPartidas').hide();", true);
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalRepartirPartidas();", true);
-                contadorBotonRepartir++;
+                double x = Convert.ToDouble(num);
+                return true;
             }
-            else
+            catch (Exception)
             {
-                List<PartidaUnidad> partidasAsignadasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
-                Double sumaMontoTotalRepartir = (Double)partidasAsignadasConMonto.Sum(PartidaUnidad => PartidaUnidad.Monto);
-                if (Convert.ToDouble(txtMontoIngresar.Text) >= sumaMontoTotalRepartir || monto == 0)
+                return false;
+            }
+        }
+
+    
+
+    protected void ButtonRepartirPartidas_Click(object sender, EventArgs e)
+        {
+            if (!IsNumeric(txtMontoIngresar.Text))
+            {
+                if (contadorBotonRepartir == 0)
                 {
-                    if (partidasAsignadasConMonto != null)
-                    {
-                        Double montoDisponible = (Double)partidasAsignadasConMonto.Sum(monto => monto.Monto);
 
-
-                        montoRepartir.Text = Convert.ToString(Convert.ToDouble(txtMontoIngresar.Text) - Convert.ToDouble(montoDisponible));
-                    }
+                    montoRepartir.Text = txtMontoIngresar.Text;
                     obtenerUnidadesPartidasAsignarMonto();
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalRepartirPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalRepartirPartidas').hide();", true);
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalRepartirPartidas();", true);
@@ -947,7 +946,26 @@ namespace Proyecto.Catalogos.Ejecucion
                 }
                 else
                 {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El monto asignado es insuficiente" + "');", true);
+                    List<PartidaUnidad> partidasAsignadasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
+                    Double sumaMontoTotalRepartir = (Double)partidasAsignadasConMonto.Sum(PartidaUnidad => PartidaUnidad.Monto);
+                    if (Convert.ToDouble(txtMontoIngresar.Text) >= sumaMontoTotalRepartir || monto == 0)
+                    {
+                        if (partidasAsignadasConMonto != null)
+                        {
+                            Double montoDisponible = (Double)partidasAsignadasConMonto.Sum(monto => monto.Monto);
+
+
+                            montoRepartir.Text = Convert.ToString(Convert.ToDouble(txtMontoIngresar.Text) - Convert.ToDouble(montoDisponible));
+                        }
+                        obtenerUnidadesPartidasAsignarMonto();
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalRepartirPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalRepartirPartidas').hide();", true);
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalRepartirPartidas();", true);
+                        contadorBotonRepartir++;
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El monto asignado es insuficiente" + "');", true);
+                    }
                 }
             }
         }
