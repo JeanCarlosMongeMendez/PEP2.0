@@ -1509,7 +1509,7 @@ namespace Proyecto.Planilla
             Funcionario funcionarioSeleccionado = new Funcionario();
             foreach (Funcionario funcionario in funcionariosDe)
             {
-                if(funcionario.idFuncionario == id)
+                if (funcionario.idFuncionario == id)
                 {
                     funcionarioSeleccionado = funcionario;
                     funcionarioSeleccionado.planilla = planilla;
@@ -1521,13 +1521,26 @@ namespace Proyecto.Planilla
             }
             else
             {
-                if (funcionarioServicios.guardar(funcionarioSeleccionado))
+                Periodo periodo = new Periodo();
+                periodo.anoPeriodo = Convert.ToInt32(ddlPlanillaModalPasarFuncionarios.SelectedItem.Text);
+                List<EscalaSalarial> listaEscalas = escalaSalarialServicios.getEscalasSalarialesPorPeriodo(periodo);
+
+                if (listaEscalas.Any(escala => escala.descEscalaSalarial.Equals(funcionarioSeleccionado.escalaSalarial.descEscalaSalarial)))
                 {
-                    Toastr("success", "El funcionario " + funcionarioSeleccionado.nombreFuncionario + " se ha copiado en el periodo seleccionado");
+                    funcionarioSeleccionado.escalaSalarial = listaEscalas.Where(escala => escala.descEscalaSalarial.Equals(funcionarioSeleccionado.escalaSalarial.descEscalaSalarial)).ToList().First();
+
+                    if (funcionarioServicios.guardar(funcionarioSeleccionado))
+                    {
+                        Toastr("success","El funcionario "+funcionarioSeleccionado.nombreFuncionario+" se ha copiado correctamente. ");
+                    }
+                    else
+                    {
+                        Toastr("error", "El funcionario " + funcionarioSeleccionado.nombreFuncionario + " no se ha copiado correctamente. ");
+                    }
                 }
                 else
                 {
-                    Toastr("error", "El funcionario " + funcionarioSeleccionado.nombreFuncionario + " no se pudo copiar, intentelo nuevamente");
+                    Toastr("error", "La Escala Salarial no existe en el Período seleccionado");
                 }
             }
             List<Funcionario> listaFuncionarios = funcionarioServicios.getFuncionarios(planilla.idPlanilla);
@@ -1627,7 +1640,7 @@ namespace Proyecto.Planilla
             {
                 if (funcionariosA.Any(funcionarioA => funcionarioA.nombreFuncionario.Equals(funcionario.nombreFuncionario)))
                 {
-                    errorYaExiste +=  funcionario.nombreFuncionario;
+                    errorYaExiste += funcionario.nombreFuncionario;
                     erroresYaExiste = true;
                 }
                 else
@@ -1635,16 +1648,30 @@ namespace Proyecto.Planilla
                     Funcionario funcionarioAgregarA = new Funcionario();
                     funcionarioAgregarA = funcionario;
                     funcionarioAgregarA.planilla = planillaA;
-                    if (funcionarioServicios.guardar(funcionarioAgregarA))
+                    Periodo periodo = new Periodo();
+                    periodo.anoPeriodo = Convert.ToInt32(ddlPlanillaModalPasarFuncionarios.SelectedItem.Text);
+                    List<EscalaSalarial> listaEscalas = escalaSalarialServicios.getEscalasSalarialesPorPeriodo(periodo);
+
+                    if (listaEscalas.Any(escala => escala.descEscalaSalarial.Equals(funcionarioAgregarA.escalaSalarial.descEscalaSalarial)))
                     {
-                        success +=  funcionario.nombreFuncionario;
-                        agregadosCorrectamente = true;
+                        funcionarioAgregarA.escalaSalarial = listaEscalas.Where(escala => escala.descEscalaSalarial.Equals(funcionarioAgregarA.escalaSalarial.descEscalaSalarial)).ToList().First();
+
+                        if (funcionarioServicios.guardar(funcionarioAgregarA))
+                        {
+                            success += funcionario.nombreFuncionario;
+                            agregadosCorrectamente = true;
+                        }
+                        else
+                        {
+                            errorNoSePudoAgregar += funcionario.nombreFuncionario;
+                            erroresNoSeAgrega = true;
+                        }
                     }
                     else
                     {
-                        errorNoSePudoAgregar +=  funcionario.nombreFuncionario;
-                        erroresNoSeAgrega = true;
+                        Toastr("error","La Escala Salarial no existe en el Período seleccionado");
                     }
+
                 }
             }
             if (agregadosCorrectamente) Toastr("success", success);
