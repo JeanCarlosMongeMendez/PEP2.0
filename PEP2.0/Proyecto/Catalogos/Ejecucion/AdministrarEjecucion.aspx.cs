@@ -933,7 +933,7 @@ namespace Proyecto.Catalogos.Ejecucion
 
     protected void ButtonRepartirPartidas_Click(object sender, EventArgs e)
         {
-            if (!IsNumeric(txtMontoIngresar.Text))
+            if (IsNumeric(txtMontoIngresar.Text))
             {
                 if (contadorBotonRepartir == 0)
                 {
@@ -967,6 +967,10 @@ namespace Proyecto.Catalogos.Ejecucion
                         ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El monto asignado es insuficiente" + "');", true);
                     }
                 }
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El texto ingresado deben ser números" + "');", true);
             }
         }
         protected void recargarTablaRepartirMontos(List<PartidaUnidad> partidaUnidad)
@@ -1013,7 +1017,33 @@ namespace Proyecto.Catalogos.Ejecucion
                 obtenerPartidasSeleccionadas();
                 //obtenerPartidasPorProyectoUnidadPeriodo();
             }
+            List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
+            if (partidasElegidasConMonto.Exists(element => element.IdUnidad.Equals(idUnidad)))
+            {
+                double montoEliminado = partidasElegidasConMonto.Where(item => item.IdUnidad == idUnidad).ToList().First().Monto;
+                monto = monto + montoEliminado;
+                partidasElegidasConMonto.RemoveAll(item => item.IdUnidad == idUnidad);
+                MostrarUnidadesConMontoRepartido();
+            }
+
+        }
+        private void CargarPartidasPorUnidades()
+        {
+            
+            PeriodosDDL.Items.Clear();
            
+            if (listaUnidad.Count > 0)
+            {
+                foreach (Unidad unidad in listaUnidad)
+                {
+                    
+                    ListItem itemUnidad = new ListItem(unidad.idUnidad.ToString(), unidad.nombreUnidad);
+                    PeriodosDDL.Items.Add(itemUnidad);
+                }
+
+
+            }
+
         }
         /// <summary>
         /// Josseline M
@@ -1079,7 +1109,7 @@ namespace Proyecto.Catalogos.Ejecucion
 
                                     //txtMonto.Text = monto.ToString();
 
-                                    if (monto >= 0)
+                                    if (monto >= 0 && Convert.ToDouble(txtMontoIngresar.Text) > Convert.ToDouble(txtMont))
                                     {
 
                                         monto = Convert.ToDouble(montoRepartir.Text);
@@ -1143,7 +1173,7 @@ namespace Proyecto.Catalogos.Ejecucion
             double montoEliminado = partidasElegidasConMonto.Where(item => item.NumeroPartida == numeroPartida).ToList().First().Monto;
             monto = monto + montoEliminado;
             partidasElegidasConMonto.RemoveAll(item => item.NumeroPartida == numeroPartida);
-            obtenerUnidadesPartidasAsignarMonto();
+            MostrarUnidadesConMontoRepartido();
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La unidad fue borrada con exito" + "');", true);
         }
@@ -1208,6 +1238,13 @@ namespace Proyecto.Catalogos.Ejecucion
                 partidasFiltradas.Add(partida);
                 Session["partidasPorUnidadesProyectoPeriodo"] = partidasFiltradas;
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La partida fue borrada con exito" + "');", true);
+                List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
+                if (partidasElegidasConMonto.Exists(element => element.NumeroPartida.Equals(numeroPartida))) {
+                    double montoEliminado = partidasElegidasConMonto.Where(item => item.NumeroPartida == numeroPartida).ToList().First().Monto;
+                    monto = monto + montoEliminado;
+                    partidasElegidasConMonto.RemoveAll(item => item.NumeroPartida == numeroPartida);
+                    MostrarUnidadesConMontoRepartido();
+                }
             }
             obtenerPartidasSeleccionadas();
         }
@@ -1650,8 +1687,11 @@ namespace Proyecto.Catalogos.Ejecucion
             //
             // This changes the main window text when you type into the TextBox.
             //
-            
-            monto= monto+Convert.ToDouble(txtMontoIngresar.Text);
+            if (IsNumeric(txtMontoIngresar.Text))
+            {
+                monto = monto + Convert.ToDouble(txtMontoIngresar.Text);
+            }
+           
         }
     }
 }
