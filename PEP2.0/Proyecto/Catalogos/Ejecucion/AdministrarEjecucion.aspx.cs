@@ -120,6 +120,7 @@ namespace Proyecto.Catalogos.Ejecucion
                 PeriodosDDL.Items.Clear();
                 ProyectosDDL.Items.Clear();
                 DDLTipoTramite.Items.Clear();
+                ddlPartida.Items.Clear();
                 CargarPeriodos();
                 descripcionOtroTipoTramite.Visible = false;
                 UpdatePanel10.Visible = false;
@@ -933,6 +934,7 @@ namespace Proyecto.Catalogos.Ejecucion
 
     protected void ButtonRepartirPartidas_Click(object sender, EventArgs e)
         {
+            CargarPartidasPorUnidades();
             if (IsNumeric(txtMontoIngresar.Text))
             {
                 if (contadorBotonRepartir == 0)
@@ -972,6 +974,7 @@ namespace Proyecto.Catalogos.Ejecucion
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El texto ingresado deben ser números" + "');", true);
             }
+            
         }
         protected void recargarTablaRepartirMontos(List<PartidaUnidad> partidaUnidad)
         {
@@ -1029,16 +1032,16 @@ namespace Proyecto.Catalogos.Ejecucion
         }
         private void CargarPartidasPorUnidades()
         {
-            
-            PeriodosDDL.Items.Clear();
+
+            ddlPartida.Items.Clear();
            
             if (listaUnidad.Count > 0)
             {
                 foreach (Unidad unidad in listaUnidad)
                 {
                     
-                    ListItem itemUnidad = new ListItem(unidad.idUnidad.ToString(), unidad.nombreUnidad);
-                    PeriodosDDL.Items.Add(itemUnidad);
+                    ListItem itemUnidad = new ListItem(unidad.nombreUnidad,unidad.idUnidad.ToString());
+                    ddlPartida.Items.Add(itemUnidad);
                 }
 
 
@@ -1264,13 +1267,24 @@ namespace Proyecto.Catalogos.Ejecucion
         /// </summary>
         private void obtenerUnidadesPartidasAsignarMonto()
         {
+           
+            int proyectoElegido = Int32.Parse(ProyectosDDL.SelectedValue);
+            int periodoElegido = Int32.Parse(PeriodosDDL.SelectedValue);
+            int idUnidad = Int32.Parse(ddlPartida.SelectedValue);
             List<Partida> partidasElegidas = new List<Partida>();
+            List<Partida> partidaTemp = new List<Partida>();
             partidasElegidas = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
             List<PartidaUnidad> partidaUnidad = new List<PartidaUnidad>();
             List<PresupuestoEgresoPartida> listaPartidasEgreso = new List<PresupuestoEgresoPartida>();
-            //if (contador == 0 )
-            //{
-                foreach (Partida p in partidasElegidas)
+            foreach (Partida p in partidasElegidas)
+            {
+                
+                Partida partidaTemporal=new Partida();
+                partidaTemporal = partidaServicios.ObtienePartidaPorPeriodoUnidadProyectoYNumeroUnidad(proyectoElegido, idUnidad, periodoElegido,p.numeroPartida);
+                partidaTemp.Add(partidaTemporal);
+            }
+
+            foreach (Partida p in partidaTemp)
                 {
                     PartidaUnidad partidaU = new PartidaUnidad();
                     partidaU.IdPartida = p.idPartida;
@@ -1279,8 +1293,8 @@ namespace Proyecto.Catalogos.Ejecucion
 
                     listaPartidasEgreso = presupuestoEgreso_PartidaServicios.obtenerEgreso_Partida_porIdPartida(Convert.ToString(p.idPartida));
                     Double montoDisponible = (Double)listaPartidasEgreso.Sum(presupuesto => presupuesto.monto);
-
-                    partidaU.MontoDisponible = montoDisponible;
+                   // Double montoDisponible = (Double)presupuestoEgresosServicios.getPresupuestosEgresosPorUnidad(unidad).Sum(presupuesto => presupuesto.montoTotal);
+                partidaU.MontoDisponible = montoDisponible;
                     partidaUnidad.Add(partidaU);
 
                 }

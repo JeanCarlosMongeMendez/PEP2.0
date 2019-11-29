@@ -395,10 +395,15 @@
                              <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                     <asp:Label ID="Label7" runat="server" Text="Monto pendiente de repartir" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                    ₡  <asp:Label ID="montoRepartir" runat="server" Text="" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
-                                
-                </div>
+                       
+                                 
+                             </div>
                         </div>
                         <div class="modal-body">
+                             <div class="col-md-3 col-xs-3 col-sm-3">
+                                        <asp:Label ID="label8" runat="server" Text="Partida" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                        <asp:DropDownList ID="ddlPartida" class="btn btn-default dropdown-toggle" runat="server"></asp:DropDownList>
+                        </div>
                             <%-- campos a llenar --%>
                             <div class="row">
                                   <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
@@ -457,12 +462,12 @@
                                     </table>
 
                                 </div>
-                            <div class="modal-footer" style="text-align: center">
+                           
+                            </div>
+                             <div class="modal-footer" style="text-align: center">
 
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         </div>
-                            </div>
-
                     </div>
                 </div>
              </div>
