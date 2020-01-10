@@ -50,7 +50,7 @@ namespace Servicios
 
         public List<Partida> ObtienePartidaPorPeriodoUnidadProyecto(int proyecto, LinkedList<int> unidad, int periodo)
         {
-            return this.partidaDatos.ObtienePartidaPorPeriodoUnidadProyecto( proyecto,  unidad,  periodo);
+            return this.partidaDatos.ObtienePartidaPorPeriodoUnidadProyecto(proyecto, unidad, periodo);
         }
         /// <summary>
         /// Josseline M
@@ -63,20 +63,20 @@ namespace Servicios
             return this.partidaDatos.ObtenerPorNumeroPartida(numeroPartida);
         }
 
-            // <summary>
-            /// Leonardo Carrion
-            /// 25/sep/2019
-            /// Efecto: devuelve la partida que cumple con los datos ingresados de numero de partida y periodo
-            /// Requiere: partida y periodo
-            /// Modifica: -
-            /// Devuelve: partida
-            /// </summary>
-            /// <param name="partida"></param>
-            /// <param name="periodo"></param>
-            /// <returns></returns>
-            public Partida getPartidaPorNumeroYPeriodo(Partida partida, Periodo periodo)
+        // <summary>
+        /// Leonardo Carrion
+        /// 25/sep/2019
+        /// Efecto: devuelve la partida que cumple con los datos ingresados de numero de partida y periodo
+        /// Requiere: partida y periodo
+        /// Modifica: -
+        /// Devuelve: partida
+        /// </summary>
+        /// <param name="partida"></param>
+        /// <param name="periodo"></param>
+        /// <returns></returns>
+        public Partida getPartidaPorNumeroYPeriodo(Partida partida, Periodo periodo)
         {
-            return partidaDatos.getPartidaPorNumeroYPeriodo(partida,periodo);
+            return partidaDatos.getPartidaPorNumeroYPeriodo(partida, periodo);
         }
 
 
@@ -110,7 +110,18 @@ namespace Servicios
         /// <returns></returns>
         public List<Partida> obtenerPorTipoPartidaYPeriodo(Boolean tipoPartida, int anioPeriodo)
         {
-            return partidaDatos.obtenerPorTipoPartidaYPeriodo(tipoPartida,anioPeriodo);
+            return partidaDatos.obtenerPorTipoPartidaYPeriodo(tipoPartida, anioPeriodo);
         }
+        public Partida obtenerPorIdPartidaYNumeroPartida(int partida, string numeroPartida)
+        {
+            return partidaDatos.ObtenerPorIdYNumeroPartida(partida, numeroPartida);
+        }
+        public Partida ObtienePartidaPorPeriodoUnidadProyectoYNumeroUnidad(int proyecto, int idunidad, int periodo, string numeroPartida)
+        {
+            return this.partidaDatos.ObtienePartidaPorPeriodoUnidadProyectoYNumeroUnidad(proyecto, idunidad, periodo,numeroPartida);
+        }
+
+       
+
     }
 }

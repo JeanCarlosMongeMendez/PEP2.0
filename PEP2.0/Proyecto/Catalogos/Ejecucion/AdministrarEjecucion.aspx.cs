@@ -120,6 +120,7 @@ namespace Proyecto.Catalogos.Ejecucion
                 PeriodosDDL.Items.Clear();
                 ProyectosDDL.Items.Clear();
                 DDLTipoTramite.Items.Clear();
+                ddlPartida.Items.Clear();
                 CargarPeriodos();
                 descripcionOtroTipoTramite.Visible = false;
                 UpdatePanel10.Visible = false;
@@ -916,30 +917,64 @@ namespace Proyecto.Catalogos.Ejecucion
             descripcionOtroTipoTramite.Visible = false;
         }
 
-        protected void ButtonRepartirPartidas_Click(object sender, EventArgs e)
+        private bool IsNumeric(string num)
         {
-            if (contadorBotonRepartir == 0)
+            try
             {
-                montoRepartir.Text = txtMontoIngresar.Text;
-                obtenerUnidadesPartidasAsignarMonto();
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalRepartirPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalRepartirPartidas').hide();", true);
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalRepartirPartidas();", true);
-                contadorBotonRepartir ++;
-            }else
-            {
-                List<PartidaUnidad> partidasAsignadasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
-                if (partidasAsignadasConMonto != null)
-                {
-                    Double montoDisponible = (Double)partidasAsignadasConMonto.Sum(monto => monto.Monto);
-
-                   
-                    montoRepartir.Text = Convert.ToString(Convert.ToDouble(txtMontoIngresar.Text) - Convert.ToDouble(montoDisponible));
-                }
-                obtenerUnidadesPartidasAsignarMonto();
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalRepartirPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalRepartirPartidas').hide();", true);
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalRepartirPartidas();", true);
-                contadorBotonRepartir++;
+                double x = Convert.ToDouble(num);
+                return true;
             }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+    
+
+    protected void ButtonRepartirPartidas_Click(object sender, EventArgs e)
+        {
+            CargarPartidasPorUnidades();
+            if (IsNumeric(txtMontoIngresar.Text))
+            {
+                if (contadorBotonRepartir == 0)
+                {
+
+                    montoRepartir.Text = txtMontoIngresar.Text;
+                    obtenerUnidadesPartidasAsignarMonto();
+                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalRepartirPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalRepartirPartidas').hide();", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalRepartirPartidas();", true);
+                    contadorBotonRepartir++;
+                }
+                else
+                {
+                    List<PartidaUnidad> partidasAsignadasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
+                    Double sumaMontoTotalRepartir = (Double)partidasAsignadasConMonto.Sum(PartidaUnidad => PartidaUnidad.Monto);
+                    if (Convert.ToDouble(txtMontoIngresar.Text) >= sumaMontoTotalRepartir || monto == 0)
+                    {
+                        if (partidasAsignadasConMonto != null)
+                        {
+                            Double montoDisponible = (Double)partidasAsignadasConMonto.Sum(monto => monto.Monto);
+
+
+                            montoRepartir.Text = Convert.ToString(Convert.ToDouble(txtMontoIngresar.Text) - Convert.ToDouble(montoDisponible));
+                        }
+                        obtenerUnidadesPartidasAsignarMonto();
+                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalRepartirPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalRepartirPartidas').hide();", true);
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalRepartirPartidas();", true);
+                        contadorBotonRepartir++;
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El monto asignado es insuficiente" + "');", true);
+                    }
+                }
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El texto ingresado deben ser números" + "');", true);
+            }
+            
         }
         protected void recargarTablaRepartirMontos(List<PartidaUnidad> partidaUnidad)
         {
@@ -985,7 +1020,33 @@ namespace Proyecto.Catalogos.Ejecucion
                 obtenerPartidasSeleccionadas();
                 //obtenerPartidasPorProyectoUnidadPeriodo();
             }
+            List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
+            if (partidasElegidasConMonto.Exists(element => element.IdUnidad.Equals(idUnidad)))
+            {
+                double montoEliminado = partidasElegidasConMonto.Where(item => item.IdUnidad == idUnidad).ToList().First().Monto;
+                monto = monto + montoEliminado;
+                partidasElegidasConMonto.RemoveAll(item => item.IdUnidad == idUnidad);
+                MostrarUnidadesConMontoRepartido();
+            }
+
+        }
+        private void CargarPartidasPorUnidades()
+        {
+
+            ddlPartida.Items.Clear();
            
+            if (listaUnidad.Count > 0)
+            {
+                foreach (Unidad unidad in listaUnidad)
+                {
+                    
+                    ListItem itemUnidad = new ListItem(unidad.nombreUnidad,unidad.idUnidad.ToString());
+                    ddlPartida.Items.Add(itemUnidad);
+                }
+
+
+            }
+
         }
         /// <summary>
         /// Josseline M
@@ -997,78 +1058,127 @@ namespace Proyecto.Catalogos.Ejecucion
         {
 
             List<PartidaUnidad> partidasAsignadas = (List<PartidaUnidad>)Session["partidasAsignadas"];
-           
+
             List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
-            montoRepartir.Text = txtMontoIngresar.Text;
+
             if (partidasAsignadas == null)
             {
                 partidasAsignadas = new List<PartidaUnidad>();
-               
+                montoRepartir.Text = txtMontoIngresar.Text;
+
             }
-           
+
             else
             {
                 if (partidasElegidasConMonto == null)
                 {
                     partidasElegidasConMonto = new List<PartidaUnidad>();
+                    monto = Convert.ToDouble(txtMontoIngresar.Text);
                 }
                 string idPartida = ((LinkButton)(sender)).CommandArgument.ToString();
                 List<PresupuestoEgresoPartida> listaPartidasEgreso = new List<PresupuestoEgresoPartida>();
                 listaPartidasEgreso = presupuestoEgreso_PartidaServicios.obtenerEgreso_Partida_porIdPartida(idPartida);
-                 monto = Convert.ToDouble(txtMontoIngresar.Text);
+                // monto = Convert.ToDouble(txtMontoIngresar.Text);
                 //double montoRepartir = Convert.ToDouble(UpdatePane34.TextBox1.Text);
                 List<PartidaUnidad> partidasElegidas = (List<PartidaUnidad>)Session["partidasAsignadas"];
-              
+
                 PartidaUnidad partidaUnidad = new PartidaUnidad();
                 Double montoDisponible = (Double)listaPartidasEgreso.Sum(presupuesto => presupuesto.monto);
-                //if (monto <= montoDisponible)
-                //{
+                Double sumaMontoTotalRepartir = (Double)partidasElegidasConMonto.Sum(PartidaUnidad => PartidaUnidad.Monto);
+                if (Convert.ToDouble(txtMontoIngresar.Text) >= sumaMontoTotalRepartir || monto==0)
+                {
+                    if (monto <= montoDisponible && monto > 0)
+                {
                     foreach (PartidaUnidad p in partidasElegidas)
                     {
                         if (p.IdPartida == Convert.ToInt32(idPartida))
                         {
                             partidaUnidad.IdPartida = p.IdPartida;
                             partidaUnidad.IdUnidad = p.IdUnidad;
-                            partidaUnidad.NumeroPartida =p.NumeroPartida;
-                            
-                           // partidasElegidas.RemoveAll(item => item.IdPartida == p.IdPartida);
-                            
+                            partidaUnidad.NumeroPartida = p.NumeroPartida;
+
+                            // partidasElegidas.RemoveAll(item => item.IdPartida == p.IdPartida);
+
                             foreach (RepeaterItem item in rpUnidadPartida.Items)
                             {
                                 HiddenField hdIdPartida = (HiddenField)item.FindControl("hdIdPartida");
                                 int idPartid = Convert.ToInt32(hdIdPartida.Value);
                                 TextBox txtMonto = (TextBox)item.FindControl("TextBox1");
                                 String txtMont = txtMonto.Text.Replace(".", ",");
-                                if (Double.TryParse(txtMont, out Double montoo))
+                                if (Double.TryParse(txtMont, out Double montoo) && idPartid == Convert.ToInt32(idPartida))
                                 {
-                                    txtMonto.Text = monto.ToString();
-                                    montoRepartir.Text = Convert.ToString(monto);
                                     montoRepartir.Text = (Convert.ToString(Convert.ToInt32(montoRepartir.Text) - Convert.ToInt32(txtMont)));
-                                    monto = Convert.ToDouble(montoRepartir.Text);
+                                    monto = Convert.ToInt32(montoRepartir.Text) + Convert.ToInt32(txtMont);
+
+                                    //txtMonto.Text = monto.ToString();
+
+                                    if (monto >= 0 && Convert.ToDouble(txtMontoIngresar.Text) > Convert.ToDouble(txtMont))
+                                    {
+
+                                        monto = Convert.ToDouble(montoRepartir.Text);
+                                        double saldo = montoDisponible - Convert.ToInt32(txtMont);
+                                        partidaUnidad.MontoDisponible = saldo;
+                                        partidaUnidad.Monto = Convert.ToInt32(txtMont);
+                                        partidasElegidasConMonto.Add(partidaUnidad);
+                                    }
+                                    else
+                                    {
+                                        montoRepartir.Text = (Convert.ToString(Convert.ToInt32(montoRepartir.Text) + Convert.ToInt32(txtMont)));
+                                        monto = Convert.ToDouble(montoRepartir.Text);
+                                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El monto a repartir es insuficiente" + "');", true);
+                                    }
                                 }
-                                if(idPartid== Convert.ToInt32(idPartida))
-                                {
-                                    double saldo = montoDisponible - Convert.ToInt32(txtMont);
-                                    partidaUnidad.MontoDisponible = saldo;
-                                    partidaUnidad.Monto = Convert.ToInt32 (txtMont);
-                                }
-                              
+
+
+
                             }
-                           
-                            partidasElegidasConMonto.Add(partidaUnidad);
-                           // partidasElegidas.Add(partidaUnidad);
+
+
+                            // partidasElegidas.Add(partidaUnidad);
                         }
+
                     }
-                   
+
+
                     Session["partidasAsignadasConMonto"] = partidasElegidasConMonto;
                     MostrarUnidadesConMontoRepartido();
                     partidasElegidas.RemoveAll(item => item.IdPartida == Convert.ToInt32(idPartida));
                     Session["partidasAsignadas"] = partidasElegidas;
                     obtenerUnidadesPartidasAsignarMonto();
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", " activarModalRepartirPartidas();", true);
-                //}
+
+                }
+                else
+                {
+                    if (monto == 0)
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El monto a repartir es insuficiente" + "');", true);
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "La Partida no cuenta con el dinero suficiente" + "');", true);
+                    }
+                }
+
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalRepartirPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalRepartirPartidas').hide();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", " activarModalRepartirPartidas();", true);
             }
+        }
            
+        }
+        protected void EliminarMontoRepartido_OnChanged(object sender, EventArgs e)
+        {
+
+            string numeroPartida = (((LinkButton)(sender)).CommandArgument).ToString();
+            List<PartidaUnidad> partidasAsignadas = (List<PartidaUnidad>)Session["partidasAsignadas"];
+            List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
+           
+            partidasAsignadas.Add((PartidaUnidad)partidasElegidasConMonto.Where(item => item.NumeroPartida == numeroPartida).ToList().First());
+            double montoEliminado = partidasElegidasConMonto.Where(item => item.NumeroPartida == numeroPartida).ToList().First().Monto;
+            monto = monto + montoEliminado;
+            partidasElegidasConMonto.RemoveAll(item => item.NumeroPartida == numeroPartida);
+            MostrarUnidadesConMontoRepartido();
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La unidad fue borrada con exito" + "');", true);
         }
         private void MostrarUnidadesConMontoRepartido()
         {
@@ -1131,6 +1241,13 @@ namespace Proyecto.Catalogos.Ejecucion
                 partidasFiltradas.Add(partida);
                 Session["partidasPorUnidadesProyectoPeriodo"] = partidasFiltradas;
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La partida fue borrada con exito" + "');", true);
+                List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
+                if (partidasElegidasConMonto.Exists(element => element.NumeroPartida.Equals(numeroPartida))) {
+                    double montoEliminado = partidasElegidasConMonto.Where(item => item.NumeroPartida == numeroPartida).ToList().First().Monto;
+                    monto = monto + montoEliminado;
+                    partidasElegidasConMonto.RemoveAll(item => item.NumeroPartida == numeroPartida);
+                    MostrarUnidadesConMontoRepartido();
+                }
             }
             obtenerPartidasSeleccionadas();
         }
@@ -1150,13 +1267,24 @@ namespace Proyecto.Catalogos.Ejecucion
         /// </summary>
         private void obtenerUnidadesPartidasAsignarMonto()
         {
+           
+            int proyectoElegido = Int32.Parse(ProyectosDDL.SelectedValue);
+            int periodoElegido = Int32.Parse(PeriodosDDL.SelectedValue);
+            int idUnidad = Int32.Parse(ddlPartida.SelectedValue);
             List<Partida> partidasElegidas = new List<Partida>();
+            List<Partida> partidaTemp = new List<Partida>();
             partidasElegidas = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
             List<PartidaUnidad> partidaUnidad = new List<PartidaUnidad>();
             List<PresupuestoEgresoPartida> listaPartidasEgreso = new List<PresupuestoEgresoPartida>();
-            //if (contador == 0 )
-            //{
-                foreach (Partida p in partidasElegidas)
+            foreach (Partida p in partidasElegidas)
+            {
+                
+                Partida partidaTemporal=new Partida();
+                partidaTemporal = partidaServicios.ObtienePartidaPorPeriodoUnidadProyectoYNumeroUnidad(proyectoElegido, idUnidad, periodoElegido,p.numeroPartida);
+                partidaTemp.Add(partidaTemporal);
+            }
+
+            foreach (Partida p in partidaTemp)
                 {
                     PartidaUnidad partidaU = new PartidaUnidad();
                     partidaU.IdPartida = p.idPartida;
@@ -1165,8 +1293,8 @@ namespace Proyecto.Catalogos.Ejecucion
 
                     listaPartidasEgreso = presupuestoEgreso_PartidaServicios.obtenerEgreso_Partida_porIdPartida(Convert.ToString(p.idPartida));
                     Double montoDisponible = (Double)listaPartidasEgreso.Sum(presupuesto => presupuesto.monto);
-
-                    partidaU.MontoDisponible = montoDisponible;
+                   // Double montoDisponible = (Double)presupuestoEgresosServicios.getPresupuestosEgresosPorUnidad(unidad).Sum(presupuesto => presupuesto.montoTotal);
+                partidaU.MontoDisponible = montoDisponible;
                     partidaUnidad.Add(partidaU);
 
                 }
@@ -1568,6 +1696,16 @@ namespace Proyecto.Catalogos.Ejecucion
 
         //    ButtonRepartir.Visible = bl;
         //}
-
+        protected void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            //
+            // This changes the main window text when you type into the TextBox.
+            //
+            if (IsNumeric(txtMontoIngresar.Text))
+            {
+                monto = monto + Convert.ToDouble(txtMontoIngresar.Text);
+            }
+           
+        }
     }
 }

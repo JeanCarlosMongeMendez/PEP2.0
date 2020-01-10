@@ -30,7 +30,7 @@ namespace AccesoDatos
 
 where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.numero_partida;";
 
-           SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
+            SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
             sqlCommand.Parameters.AddWithValue("@ano_periodo_", anoPeriodo);
 
             SqlDataReader reader;
@@ -43,7 +43,7 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.numero_partid
                 partida.idPartida = Convert.ToInt32(reader["id_partida"].ToString());
                 partida.numeroPartida = reader["numero_partida"].ToString();
                 partida.descripcionPartida = reader["descripcion_partida"].ToString();
-                partida.esUCR= Boolean.Parse(reader["esUCR"].ToString());
+                partida.esUCR = Boolean.Parse(reader["esUCR"].ToString());
                 partida.periodo = new Periodo();
                 partida.periodo.anoPeriodo = Convert.ToInt32(reader["ano_periodo"].ToString());
 
@@ -180,7 +180,7 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.numero_partid
                 partida.idPartida = Convert.ToInt32(reader["id_partida"].ToString());
                 partida.numeroPartida = reader["numero_partida"].ToString();
                 partida.descripcionPartida = reader["descripcion_partida"].ToString();
-                partida.esUCR =Convert.ToBoolean(reader["esUCR"].ToString());
+                partida.esUCR = Convert.ToBoolean(reader["esUCR"].ToString());
 
                 //Si la partida padre contiene un valor se le agrega, sino se deja como nulo
                 if (!DBNull.Value.Equals(reader["id_partida_padre"]))
@@ -277,8 +277,8 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.numero_partid
 
                     List<Partida> listaTemp = partidas.Where(partidaBD => partidaBD.idPartida == partida.idPartida).ToList();
 
-                    if(listaTemp.Count==0)
-                    partidas.Add(partida);
+                    if (listaTemp.Count == 0)
+                        partidas.Add(partida);
                 }
 
                 sqlConnection.Close();
@@ -487,6 +487,91 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.numero_partid
 
             return partida;
         }
+        public Partida ObtenerPorIdYNumeroPartida(int idPartida, string numeroPartida)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+            SqlCommand sqlCommand = new SqlCommand("select id_partida, numero_partida, descripcion_partida, id_partida_padre, ano_periodo, esUCR " +
+                "from Partida where id_partida=@id_partida_ and numero_partida=@numero_partida_ AND disponible=1 order by numero_partida;", sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@numero_partida_", numeroPartida);
+            sqlCommand.Parameters.AddWithValue("@id_partida_", idPartida);
 
+            Partida partida = new Partida();
+
+
+            SqlDataReader reader;
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+
+
+            if (reader.Read())
+            {
+               
+                partida.idPartida = Convert.ToInt32(reader["id_partida"].ToString());
+                partida.numeroPartida = reader["numero_partida"].ToString();
+                partida.descripcionPartida = reader["descripcion_partida"].ToString();
+                partida.esUCR = Convert.ToBoolean(reader["esUCR"].ToString());
+
+                //Si la partida padre contiene un valor se le agrega, sino se deja como nulo
+                if (!DBNull.Value.Equals(reader["id_partida_padre"]))
+                {
+                    partida.partidaPadre = new Partida();
+                    partida.partidaPadre.idPartida = Convert.ToInt32(reader["id_partida_padre"].ToString());
+                }
+                else
+                {
+                    partida.partidaPadre = null;
+                }
+
+                partida.periodo = new Periodo();
+                partida.periodo.anoPeriodo = Convert.ToInt32(reader["ano_periodo"].ToString());
+
+            }
+
+            sqlConnection.Close();
+
+
+            return partida;
+
+        }
+        public Partida ObtienePartidaPorPeriodoUnidadProyectoYNumeroUnidad(int proyecto,int idUnidad, int periodo, string numeroPartida)
+        {
+            Partida partida = new Partida();
+            SqlConnection sqlConnection = conexion.conexionPEP();
+            
+                SqlCommand sqlCommand = new SqlCommand("select id_partida,Partida.numero_partida, descripcion_partida,esUCR " +
+               "from Proyecto,Unidad,Periodo,Partida " +
+               "where Periodo.ano_periodo=@periodo and  Proyecto.ano_periodo=Periodo.ano_periodo AND Partida.ano_periodo=Proyecto.ano_periodo" +
+               " and Unidad.id_proyecto=Proyecto.id_proyecto and Proyecto.id_proyecto = @proyecto and Unidad.id_unidad=@unidad and Partida.numero_partida=@numeroPartida and Partida.disponible=1  order by numero_partida;", sqlConnection);
+
+                sqlCommand.Parameters.AddWithValue("@periodo", periodo);
+                sqlCommand.Parameters.AddWithValue("@proyecto", proyecto);
+                sqlCommand.Parameters.AddWithValue("@unidad", idUnidad);
+                sqlCommand.Parameters.AddWithValue("@numeroPartida", numeroPartida);
+                 SqlDataReader reader;
+                sqlConnection.Open();
+                reader = sqlCommand.ExecuteReader();
+
+                while (reader.Read())
+                {
+                   
+                    partida.idPartida = Convert.ToInt32(reader["id_partida"].ToString());
+                    partida.numeroPartida = reader["numero_partida"].ToString();
+                    partida.descripcionPartida = reader["descripcion_partida"].ToString();
+                    partida.esUCR = Convert.ToBoolean(reader["esUCR"].ToString());
+                    partida.idUnidad = idUnidad;
+
+                    //List<Partida> listaTemp = partida;
+
+                    
+                       
+                }
+
+                sqlConnection.Close();
+            
+
+
+            return partida;
+        }
     }
 }

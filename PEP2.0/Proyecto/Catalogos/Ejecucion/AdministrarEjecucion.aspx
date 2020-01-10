@@ -44,7 +44,7 @@
                             <ItemTemplate>
                                 <tr style="text-align: center">
                                     <td>
-                                        <asp:LinkButton ID="btnEliminarUnidad" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("idUnidad") %>' OnClick="EliminarUnidadSeleccionada_OnChanged"><span class="btn glyphicon glyphicon-remove"></span></asp:LinkButton>
+                                        <asp:LinkButton ID="btnEliminarUnidad" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("idUnidad") %>' OnClick="EliminarUnidadSeleccionada_OnChanged" Cssclass="btn glyphicon glyphicon-remove" />
 
                                     </td>
                                     <td>
@@ -124,7 +124,7 @@
                             <ItemTemplate>
                                 <tr style="text-align: center">
                                     <td>
-                                        <asp:LinkButton ID="btnEliminarPartida" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("numeroPartida") %>' OnClick="EliminarPartidaSeleccionada_OnChanged"><span class="btn glyphicon glyphicon-remove"></span></asp:LinkButton>
+                                        <asp:LinkButton ID="btnEliminarPartida" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("numeroPartida") %>' OnClick="EliminarPartidaSeleccionada_OnChanged" Cssclass="btn glyphicon glyphicon-remove" />
 
                                     </td>
                                     <td>
@@ -197,7 +197,7 @@
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                     <asp:Label ID="Label5" runat="server" Text="Monto" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                     ₡
-                    <asp:TextBox class="form-control" ID="txtMontoIngresar" runat="server" Enabled="true" ></asp:TextBox>
+                    <asp:TextBox class="form-control" ID="txtMontoIngresar" runat="server" Enabled="true" OnTextChanged="textBox1_TextChanged" ></asp:TextBox>
                     
                 </div>
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
@@ -224,7 +224,7 @@
                                     <ItemTemplate>
                                         <tr style="text-align: center">
                                             <td>
-                                                <%--                                       <asp:LinkButton ID="btnEliminarPartida" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("numeroPartida") %>' OnClick="EliminarPartidaSeleccionada_OnChanged"><span class="btn glyphicon glyphicon-remove"></span></asp:LinkButton>--%>
+                                             <asp:LinkButton ID="btnEliminarPartida" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("numeroPartida") %>' OnClick="EliminarMontoRepartido_OnChanged" Cssclass="btn glyphicon glyphicon-remove" />
 
                                             </td>
                                             <td>
@@ -308,7 +308,7 @@
                                                 <tr style="text-align: center">
 
                                                     <td>
-                                                        <asp:LinkButton ID="btnAnadirNuevaPartida" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("numeroPartida") %>' OnClick="btnAnadirNuevaPartida_Click"><span class="btn  glyphicon glyphicon-ok-sign"></span></asp:LinkButton>
+                                                        <asp:LinkButton ID="btnAnadirNuevaPartida" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("numeroPartida") %>' OnClick="btnAnadirNuevaPartida_Click" Cssclass="btn glyphicon glyphicon-remove" />
 
                                                     </td>
                                                     <td>
@@ -395,10 +395,15 @@
                              <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                     <asp:Label ID="Label7" runat="server" Text="Monto pendiente de repartir" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                    ₡  <asp:Label ID="montoRepartir" runat="server" Text="" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
-                                
-                </div>
+                       
+                                 
+                             </div>
                         </div>
                         <div class="modal-body">
+                             <div class="col-md-3 col-xs-3 col-sm-3">
+                                        <asp:Label ID="label8" runat="server" Text="Partida" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                        <asp:DropDownList ID="ddlPartida" class="btn btn-default dropdown-toggle" runat="server"></asp:DropDownList>
+                        </div>
                             <%-- campos a llenar --%>
                             <div class="row">
                                   <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
@@ -421,7 +426,7 @@
                                                 <tr style="text-align: center">
 
                                                     <td>
-                                                       <asp:LinkButton ID="btnAlmacenarUnidadPartida" runat="server" ToolTip="Almacenar" CommandArgument='<%# Eval("idPartida") %>'  OnClick="btnAlmacenarUnidadPartida_Click"><span class="btn  glyphicon glyphicon-ok-sign"></span></asp:LinkButton>
+                                                       <asp:LinkButton ID="btnAlmacenarUnidadPartida" runat="server" ToolTip="Almacenar" CommandArgument='<%# Eval("idPartida") %>'  OnClick="btnAlmacenarUnidadPartida_Click" Cssclass="btn glyphicon glyphicon-remove" />
 
                                                     </td>
                                                     <td>
@@ -457,12 +462,12 @@
                                     </table>
 
                                 </div>
-                            <div class="modal-footer" style="text-align: center">
+                           
+                            </div>
+                             <div class="modal-footer" style="text-align: center">
 
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         </div>
-                            </div>
-
                     </div>
                 </div>
              </div>
@@ -513,7 +518,7 @@
                                         <ItemTemplate>
                                             <tr style="text-align: center">
                                                 <td>
-                                                    <asp:LinkButton ID="btnAnadirPartida" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("idUnidad") %>' OnClick="btnUnidadSeleccionada_Click"><span class="btn  glyphicon glyphicon-ok"></span></asp:LinkButton>
+                                                    <asp:LinkButton ID="btnAnadirPartida" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("idUnidad") %>' OnClick="btnUnidadSeleccionada_Click" Cssclass="btn glyphicon glyphicon-remove" />
 
                                                 </td>
                                                 <td>
