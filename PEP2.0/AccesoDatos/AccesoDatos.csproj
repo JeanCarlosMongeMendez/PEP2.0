@@ -68,6 +68,7 @@
     <Compile Include="Proyeccion_CargaSocialDatos.cs" />
     <Compile Include="ProyectoDatos.cs" />
     <Compile Include="Reporte_EgresosDatos.cs" />
+    <Compile Include="Reporte_Egresos_UnidadDatos.cs" />
     <Compile Include="TipoTramitesDatos.cs" />
     <Compile Include="UnidadDatos.cs" />
   </ItemGroup>
