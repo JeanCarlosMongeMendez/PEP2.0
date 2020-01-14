@@ -402,8 +402,9 @@
                         <div class="modal-body">
                              <div class="col-md-3 col-xs-3 col-sm-3">
                                         <asp:Label ID="label8" runat="server" Text="Partida" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
-                                        <asp:DropDownList ID="ddlPartida" class="btn btn-default dropdown-toggle" runat="server"></asp:DropDownList>
-                        </div>
+                                        <%--<asp:DropDownList ID="ddlPartida" class="btn btn-default dropdown-toggle" runat="server"></asp:DropDownList>--%>
+                                        <asp:DropDownList ID="ddlPartida" class="btn btn-default dropdown-toggle" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlUnidad_SelectedIndexChanged"></asp:DropDownList>
+                                 </div>
                             <%-- campos a llenar --%>
                             <div class="row">
                                   <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">

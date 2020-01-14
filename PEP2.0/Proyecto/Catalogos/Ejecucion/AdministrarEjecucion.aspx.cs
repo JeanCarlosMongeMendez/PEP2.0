@@ -23,6 +23,7 @@ namespace Proyecto.Catalogos.Ejecucion
         PartidaServicios partidaServicios;
         PresupuestoEgreso_PartidaServicios presupuestoEgreso_PartidaServicios;
         PartidaUnidad partidaUnidad;
+        int idUnidadElegida;
         private int elmentosMostrar = 10;
         //se utiliza en el metodo  MostrarDatosTablaUnidad();se utiliza para pasar unidades seleccionadas de la tabla que aparece en el  #modalElegirUnidad
         static List<Unidad> listaUnidad = new List<Unidad>();
@@ -1044,9 +1045,9 @@ namespace Proyecto.Catalogos.Ejecucion
                     ddlPartida.Items.Add(itemUnidad);
                 }
 
-
+               
             }
-
+          
         }
         /// <summary>
         /// Josseline M
@@ -1142,7 +1143,7 @@ namespace Proyecto.Catalogos.Ejecucion
 
                     Session["partidasAsignadasConMonto"] = partidasElegidasConMonto;
                     MostrarUnidadesConMontoRepartido();
-                    partidasElegidas.RemoveAll(item => item.IdPartida == Convert.ToInt32(idPartida));
+                    partidasElegidas.RemoveAll(item => item.IdPartida == Convert.ToInt32(idPartida)&& item.IdUnidad==idUnidadElegida);
                     Session["partidasAsignadas"] = partidasElegidas;
                     obtenerUnidadesPartidasAsignarMonto();
 
@@ -1260,6 +1261,14 @@ namespace Proyecto.Catalogos.Ejecucion
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalElegirUnidad();", true);
 
         }
+        protected void ddlUnidad_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            idUnidadElegida = Int32.Parse(ddlPartida.SelectedValue);
+            obtenerUnidadesPartidasAsignarMonto();
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalRepartirPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalRepartirPartidas').hide();", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalRepartirPartidas();", true);
+           
+        }
 
         /// <summary>
         /// Josseline M
@@ -1270,21 +1279,22 @@ namespace Proyecto.Catalogos.Ejecucion
            
             int proyectoElegido = Int32.Parse(ProyectosDDL.SelectedValue);
             int periodoElegido = Int32.Parse(PeriodosDDL.SelectedValue);
-            int idUnidad = Int32.Parse(ddlPartida.SelectedValue);
-            List<Partida> partidasElegidas = new List<Partida>();
-            List<Partida> partidaTemp = new List<Partida>();
-            partidasElegidas = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
-            List<PartidaUnidad> partidaUnidad = new List<PartidaUnidad>();
-            List<PresupuestoEgresoPartida> listaPartidasEgreso = new List<PresupuestoEgresoPartida>();
-            foreach (Partida p in partidasElegidas)
-            {
-                
-                Partida partidaTemporal=new Partida();
-                partidaTemporal = partidaServicios.ObtienePartidaPorPeriodoUnidadProyectoYNumeroUnidad(proyectoElegido, idUnidad, periodoElegido,p.numeroPartida);
-                partidaTemp.Add(partidaTemporal);
-            }
+            idUnidadElegida = Int32.Parse(ddlPartida.SelectedValue);
+            if (idUnidadElegida != 0){
+                List<Partida> partidasElegidas = new List<Partida>();
+                List<Partida> partidaTemp = new List<Partida>();
+                partidasElegidas = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
+                List<PartidaUnidad> partidaUnidad = new List<PartidaUnidad>();
+                List<PresupuestoEgresoPartida> listaPartidasEgreso = new List<PresupuestoEgresoPartida>();
+                foreach (Partida p in partidasElegidas)
+                {
 
-            foreach (Partida p in partidaTemp)
+                    Partida partidaTemporal = new Partida();
+                    partidaTemporal = partidaServicios.ObtienePartidaPorPeriodoUnidadProyectoYNumeroUnidad(proyectoElegido, idUnidadElegida, periodoElegido, p.numeroPartida);
+                    partidaTemp.Add(partidaTemporal);
+                }
+
+                foreach (Partida p in partidaTemp)
                 {
                     PartidaUnidad partidaU = new PartidaUnidad();
                     partidaU.IdPartida = p.idPartida;
@@ -1293,29 +1303,30 @@ namespace Proyecto.Catalogos.Ejecucion
 
                     listaPartidasEgreso = presupuestoEgreso_PartidaServicios.obtenerEgreso_Partida_porIdPartida(Convert.ToString(p.idPartida));
                     Double montoDisponible = (Double)listaPartidasEgreso.Sum(presupuesto => presupuesto.monto);
-                   // Double montoDisponible = (Double)presupuestoEgresosServicios.getPresupuestosEgresosPorUnidad(unidad).Sum(presupuesto => presupuesto.montoTotal);
-                partidaU.MontoDisponible = montoDisponible;
+                    // Double montoDisponible = (Double)presupuestoEgresosServicios.getPresupuestosEgresosPorUnidad(unidad).Sum(presupuesto => presupuesto.montoTotal);
+                    partidaU.MontoDisponible = montoDisponible;
                     partidaUnidad.Add(partidaU);
 
                 }
                 Session["partidasAsignadas"] = partidaUnidad;
-            List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
-            if (partidasElegidasConMonto != null)
-            {
-                
-                List<PartidaUnidad> TempPartida = partidaUnidad.Where(a => !partidasElegidasConMonto.Any(a1 => a1.NumeroPartida == a.NumeroPartida))
-                .Union(partidasElegidasConMonto.Where(a => !partidaUnidad.Any(a1 => a1.NumeroPartida == a.NumeroPartida))).ToList();
-                Session["partidasAsignadas"] =TempPartida;
-                if (TempPartida.Count > 0)
+                List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
+                if (partidasElegidasConMonto != null)
                 {
-                    List<PartidaUnidad> partida = partidasElegidasConMonto.Where(a => !TempPartida.Any(a1 => a1.NumeroPartida != a.NumeroPartida))
-                    .Union(TempPartida.Where(a => !partidasElegidasConMonto.Any(a1 => a1.NumeroPartida == a.NumeroPartida))).ToList();
-                    Session["partidasAsignadas"] = partida;
+
+                    List<PartidaUnidad> TempPartida = partidaUnidad.Where(a => !partidasElegidasConMonto.Any(a1 => a1.NumeroPartida == a.NumeroPartida && a1.IdUnidad == a.IdUnidad))
+                    .Union(partidasElegidasConMonto.Where(a => !partidaUnidad.Any(a1 => a1.NumeroPartida == a.NumeroPartida && a1.IdUnidad==a.IdUnidad ))).ToList();
+                    
+                    //if (TempPartida.Count > 0)
+                    //{
+                    //    List<PartidaUnidad> partida = partidasElegidasConMonto.Where(a => !TempPartida.Any(a1 => a1.NumeroPartida != a.NumeroPartida && a1.IdUnidad != a.IdUnidad))
+                    //    .Union(TempPartida.Where(a => partidasElegidasConMonto.Any(a1 => a1.NumeroPartida != a.NumeroPartida && a1.IdUnidad != a.IdUnidad))).ToList();
+                          //Session["partidasAsignadas"] = partida;
+                    Session["partidasAsignadas"] = TempPartida.Where(item => item.IdUnidad == idUnidadElegida).ToList();
+                    //}
                 }
-            }
-            partidaUnidad=(List<PartidaUnidad>)Session["partidasAsignadas"];
-            
-            var dt = partidaUnidad;
+                partidaUnidad = (List<PartidaUnidad>)Session["partidasAsignadas"];
+
+                var dt = partidaUnidad;
                 pgsource.DataSource = dt;
                 pgsource.AllowPaging = true;
                 //numero de items que se muestran en el Repeater
@@ -1334,30 +1345,33 @@ namespace Proyecto.Catalogos.Ejecucion
                 rpUnidadPartida.DataSource = pgsource;
                 rpUnidadPartida.DataBind();
                 contador++;
-            //}
-            //else
-            //{
-            //    partidaUnidad= (List<PartidaUnidad>)Session["partidasAsignadas"];
-            //    var dt = partidaUnidad;
-            //    pgsource.DataSource = dt;
-            //    pgsource.AllowPaging = true;
-            //    //numero de items que se muestran en el Repeater
-            //    //pgsource.PageSize = elmentosMostrar;
-            //    //pgsource.CurrentPageIndex = paginaActual;
-            //    //mantiene el total de paginas en View State
-            //    //ViewState["TotalPaginas"] = pgsource.PageCount;
-            //    //Ejemplo: "Página 1 al 10"
-            //    //  lblpagina1.Text = "Página " + (paginaActual + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
-            //    //Habilitar los botones primero, último, anterior y siguiente
-            //    //lbAnterior1.Enabled = !pgsource.IsFirstPage;
-            //    //lbSiguiente1.Enabled = !pgsource.IsLastPage;
-            //    //lbPrimero1.Enabled = !pgsource.IsFirstPage;
-            //    //lbUltimo1.Enabled = !pgsource.IsLastPage;
+                //}
+                //else
+                //{
+                //    partidaUnidad= (List<PartidaUnidad>)Session["partidasAsignadas"];
+                //    var dt = partidaUnidad;
+                //    pgsource.DataSource = dt;
+                //    pgsource.AllowPaging = true;
+                //    //numero de items que se muestran en el Repeater
+                //    //pgsource.PageSize = elmentosMostrar;
+                //    //pgsource.CurrentPageIndex = paginaActual;
+                //    //mantiene el total de paginas en View State
+                //    //ViewState["TotalPaginas"] = pgsource.PageCount;
+                //    //Ejemplo: "Página 1 al 10"
+                //    //  lblpagina1.Text = "Página " + (paginaActual + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
+                //    //Habilitar los botones primero, último, anterior y siguiente
+                //    //lbAnterior1.Enabled = !pgsource.IsFirstPage;
+                //    //lbSiguiente1.Enabled = !pgsource.IsLastPage;
+                //    //lbPrimero1.Enabled = !pgsource.IsFirstPage;
+                //    //lbUltimo1.Enabled = !pgsource.IsLastPage;
 
-            //    rpUnidadPartida.DataSource = pgsource;
-            //    rpUnidadPartida.DataBind();
-            //}
-           
+                //    rpUnidadPartida.DataSource = pgsource;
+                //    rpUnidadPartida.DataBind();
+                //}
+
+            }
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalElegirUnidad", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalRepartirPartidas').hide();", true);
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalRepartirPartidas();", true);
 
         }
 
