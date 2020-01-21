@@ -22,6 +22,7 @@ namespace Proyecto.Catalogos.Ejecucion
         UnidadServicios unidadServicios;
         PartidaServicios partidaServicios;
         PresupuestoEgreso_PartidaServicios presupuestoEgreso_PartidaServicios;
+       PresupuestoEgresosServicios presupuestoEgresosServicio;
         PartidaUnidad partidaUnidad;
         int idUnidadElegida;
         private int elmentosMostrar = 10;
@@ -105,6 +106,9 @@ namespace Proyecto.Catalogos.Ejecucion
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
+
+            this.presupuestoEgresosServicio = new PresupuestoEgresosServicios();
             this.periodoServicios = new PeriodoServicios();
             this.proyectoServicios = new ProyectoServicios();
             this.unidadServicios = new UnidadServicios();
@@ -1285,7 +1289,8 @@ namespace Proyecto.Catalogos.Ejecucion
                 List<Partida> partidaTemp = new List<Partida>();
                 partidasElegidas = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
                 List<PartidaUnidad> partidaUnidad = new List<PartidaUnidad>();
-                List<PresupuestoEgresoPartida> listaPartidasEgreso = new List<PresupuestoEgresoPartida>();
+                List<PresupuestoEgreso> listaPartidasEgreso = new List<PresupuestoEgreso>();
+                List<PresupuestoEgresoPartida> listaPresuouestosEgreso = new List<PresupuestoEgresoPartida>();
                 foreach (Partida p in partidasElegidas)
                 {
 
@@ -1300,10 +1305,17 @@ namespace Proyecto.Catalogos.Ejecucion
                     partidaU.IdPartida = p.idPartida;
                     partidaU.IdUnidad = p.idUnidad;
                     partidaU.NumeroPartida = p.numeroPartida;
+                    Unidad unidad = new Unidad();
+                    unidad.idUnidad = p.idUnidad;
 
-                    listaPartidasEgreso = presupuestoEgreso_PartidaServicios.obtenerEgreso_Partida_porIdPartida(Convert.ToString(p.idPartida));
-                    Double montoDisponible = (Double)listaPartidasEgreso.Sum(presupuesto => presupuesto.monto);
-                    // Double montoDisponible = (Double)presupuestoEgresosServicios.getPresupuestosEgresosPorUnidad(unidad).Sum(presupuesto => presupuesto.montoTotal);
+
+                    listaPartidasEgreso = presupuestoEgresosServicio.getPresupuestosEgresosPorUnidad(unidad);
+                    PresupuestoEgreso presupuestoEgreso = new PresupuestoEgreso();
+                    presupuestoEgreso.idPresupuestoEgreso= listaPartidasEgreso.Where(item => item.unidad.idUnidad == p.idUnidad).ToList().First().idPresupuestoEgreso; 
+                    listaPresuouestosEgreso = presupuestoEgreso_PartidaServicios.getPresupuestoEgresoPartidas(presupuestoEgreso);
+                    
+                    Double montoDisponible = (Double)listaPresuouestosEgreso.Where(item => item.partida.numeroPartida == p.numeroPartida).ToList().First().monto; 
+                     
                     partidaU.MontoDisponible = montoDisponible;
                     partidaUnidad.Add(partidaU);
 
@@ -1315,14 +1327,9 @@ namespace Proyecto.Catalogos.Ejecucion
 
                     List<PartidaUnidad> TempPartida = partidaUnidad.Where(a => !partidasElegidasConMonto.Any(a1 => a1.NumeroPartida == a.NumeroPartida && a1.IdUnidad == a.IdUnidad))
                     .Union(partidasElegidasConMonto.Where(a => !partidaUnidad.Any(a1 => a1.NumeroPartida == a.NumeroPartida && a1.IdUnidad==a.IdUnidad ))).ToList();
-                    
-                    //if (TempPartida.Count > 0)
-                    //{
-                    //    List<PartidaUnidad> partida = partidasElegidasConMonto.Where(a => !TempPartida.Any(a1 => a1.NumeroPartida != a.NumeroPartida && a1.IdUnidad != a.IdUnidad))
-                    //    .Union(TempPartida.Where(a => partidasElegidasConMonto.Any(a1 => a1.NumeroPartida != a.NumeroPartida && a1.IdUnidad != a.IdUnidad))).ToList();
-                          //Session["partidasAsignadas"] = partida;
+                   
                     Session["partidasAsignadas"] = TempPartida.Where(item => item.IdUnidad == idUnidadElegida).ToList();
-                    //}
+                   
                 }
                 partidaUnidad = (List<PartidaUnidad>)Session["partidasAsignadas"];
 

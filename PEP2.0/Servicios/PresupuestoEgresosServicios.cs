@@ -55,7 +55,7 @@ namespace Servicios
         {
             return presupuestoEgresoDatos.getPresupuestosEgresosPorUnidad(unidad);
         }
-
+       
         /// <summary>
         /// Leonardo Carrion
         /// 11/oct/2019
