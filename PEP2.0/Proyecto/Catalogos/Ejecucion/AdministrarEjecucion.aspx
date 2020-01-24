@@ -224,8 +224,8 @@
                                     <ItemTemplate>
                                         <tr style="text-align: center">
                                             <td>
-                                             <asp:LinkButton ID="btnEliminarPartida" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("numeroPartida") %>' OnClick="EliminarMontoRepartido_OnChanged" Cssclass="btn glyphicon glyphicon-remove" />
-
+                                             <asp:LinkButton ID="btnEliminarPartida" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("numeroPartida") +"::"+Eval("idUnidad") %>'  OnClick="EliminarMontoRepartido_OnChanged" Cssclass="btn glyphicon glyphicon-remove" />
+                                             
                                             </td>
                                             <td>
                                                  <%# Eval("idUnidad") %>
@@ -257,8 +257,6 @@
 
         </ContentTemplate>
     </asp:UpdatePanel>
-
-
 
     <!-- Modal elegir partida -->
     <asp:UpdatePanel ID="UpdatePanel9" runat="server">

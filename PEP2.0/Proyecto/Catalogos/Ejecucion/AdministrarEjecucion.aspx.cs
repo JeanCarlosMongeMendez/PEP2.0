@@ -1115,23 +1115,23 @@ namespace Proyecto.Catalogos.Ejecucion
                                     String txtMont = txtMonto.Text.Replace(".", ",");
                                     if (Double.TryParse(txtMont, out Double montoo) && idPartid == Convert.ToInt32(idPartida))
                                     {
-                                        montoRepartir.Text = (Convert.ToString(Convert.ToInt32(montoRepartir.Text) - Convert.ToInt32(txtMont)));
-                                        monto = Convert.ToInt32(montoRepartir.Text) + Convert.ToInt32(txtMont);
+                                        montoRepartir.Text = (Convert.ToString(Convert.ToDouble(montoRepartir.Text) - Convert.ToDouble(txtMont)));
+                                        monto = Convert.ToDouble(montoRepartir.Text) + Convert.ToDouble(txtMont);
 
                                         //txtMonto.Text = monto.ToString();
 
-                                        if (monto >= 0 && Convert.ToDouble(txtMontoIngresar.Text) > Convert.ToDouble(txtMont))
+                                        if (monto >= 0 && Convert.ToDouble(txtMontoIngresar.Text) >= Convert.ToDouble(txtMont))
                                         {
 
                                             monto = Convert.ToDouble(montoRepartir.Text);
-                                            double saldo = p.MontoDisponible - Convert.ToInt32(txtMont);
+                                            double saldo = p.MontoDisponible - Convert.ToDouble(txtMont);
                                             partidaUnidad.MontoDisponible = saldo;
-                                            partidaUnidad.Monto = Convert.ToInt32(txtMont);
+                                            partidaUnidad.Monto = Convert.ToDouble(txtMont);
                                             partidasElegidasConMonto.Add(partidaUnidad);
                                         }
                                         else
                                         {
-                                            montoRepartir.Text = (Convert.ToString(Convert.ToInt32(montoRepartir.Text) + Convert.ToInt32(txtMont)));
+                                            montoRepartir.Text = (Convert.ToString(Convert.ToDouble(montoRepartir.Text) + Convert.ToDouble(txtMont)));
                                             monto = Convert.ToDouble(montoRepartir.Text);
                                             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El monto a repartir es insuficiente" + "');", true);
                                         }
@@ -1155,18 +1155,9 @@ namespace Proyecto.Catalogos.Ejecucion
                             obtenerUnidadesPartidasAsignarMonto();
 
 
-                        }
-                        else
+                        }else if(monto!=0)
                         {
-                            if (monto == 0)
-                            {
-                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El monto a repartir es insuficiente" + "');", true);
-                            }
-                            else
-                            {
-                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "La Partida no cuenta con el dinero suficiente" + "');", true);
-                            }
-
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "La Partida no cuenta con el dinero suficiente" + "');", true);
                         }
 
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalRepartirPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalRepartirPartidas').hide();", true);
@@ -1178,15 +1169,16 @@ namespace Proyecto.Catalogos.Ejecucion
         }
         protected void EliminarMontoRepartido_OnChanged(object sender, EventArgs e)
         {
-
-            string numeroPartida = (((LinkButton)(sender)).CommandArgument).ToString();
+            string [] unidadNumeroPartida= (((LinkButton)(sender)).CommandArgument.ToString().Split(new string[] { "::" }, StringSplitOptions.None));
+            string numeroPartida = unidadNumeroPartida[0];
+            string idUnidad = unidadNumeroPartida[1];
             List<PartidaUnidad> partidasAsignadas = (List<PartidaUnidad>)Session["partidasAsignadas"];
             List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
            
-            partidasAsignadas.Add((PartidaUnidad)partidasElegidasConMonto.Where(item => item.NumeroPartida == numeroPartida).ToList().First());
-            double montoEliminado = partidasElegidasConMonto.Where(item => item.NumeroPartida == numeroPartida).ToList().First().Monto;
+            partidasAsignadas.Add((PartidaUnidad)partidasElegidasConMonto.Where(item => item.NumeroPartida == numeroPartida && item.IdUnidad== Convert.ToInt32(idUnidad)).ToList().First());
+            double montoEliminado = partidasElegidasConMonto.Where(item => item.NumeroPartida == numeroPartida && item.IdUnidad == Convert.ToInt32(idUnidad)).ToList().First().Monto;
             monto = monto + montoEliminado;
-            partidasElegidasConMonto.RemoveAll(item => item.NumeroPartida == numeroPartida);
+            partidasElegidasConMonto.RemoveAll(item => item.NumeroPartida == numeroPartida && item.IdUnidad == Convert.ToInt32(idUnidad));
             MostrarUnidadesConMontoRepartido();
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La unidad fue borrada con exito" + "');", true);
