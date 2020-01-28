@@ -940,52 +940,70 @@ namespace Proyecto.Catalogos.Ejecucion
     protected void ButtonRepartirPartidas_Click(object sender, EventArgs e)
         {
             CargarPartidasPorUnidades();
-            if (IsNumeric(txtMontoIngresar.Text))
+            List<PartidaUnidad> partidasAsignadasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
+            Double montoDisponible=0;
+            if (partidasAsignadasConMonto != null)
             {
-                if (Convert.ToInt32((txtMontoIngresar.Text)) >= 0)
-                {
-                    if (contadorBotonRepartir == 0)
-                    {
+                
+                 montoDisponible= (Double)partidasAsignadasConMonto.Sum(monto => monto.Monto);
+            }
 
-                        montoRepartir.Text = txtMontoIngresar.Text;
-                        obtenerUnidadesPartidasAsignarMonto();
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalRepartirPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalRepartirPartidas').hide();", true);
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalRepartirPartidas();", true);
-                        contadorBotonRepartir++;
+            if (montoDisponible <= Convert.ToInt32((txtMontoIngresar.Text)))
+            {
+
+
+
+                if (IsNumeric(txtMontoIngresar.Text))
+                {
+                    if (Convert.ToInt32((txtMontoIngresar.Text)) >= 0)
+                    {
+                        if (contadorBotonRepartir == 0)
+                        {
+
+                            montoRepartir.Text = txtMontoIngresar.Text;
+                            obtenerUnidadesPartidasAsignarMonto();
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalRepartirPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalRepartirPartidas').hide();", true);
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalRepartirPartidas();", true);
+                            contadorBotonRepartir++;
+                        }
+                        else
+                        {
+                            //List<PartidaUnidad> partidasAsignadasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
+                            //Double sumaMontoTotalRepartir = (Double)partidasAsignadasConMonto.Sum(PartidaUnidad => PartidaUnidad.Monto);
+                            //if (Convert.ToDouble(txtMontoIngresar.Text) >= sumaMontoTotalRepartir || monto == 0)
+                            //{
+                            if (partidasAsignadasConMonto != null)
+                            {
+                                montoDisponible = (Double)partidasAsignadasConMonto.Sum(monto => monto.Monto);
+
+
+                                montoRepartir.Text = Convert.ToString(Convert.ToDouble(txtMontoIngresar.Text) - Convert.ToDouble(montoDisponible));
+                            }
+                            obtenerUnidadesPartidasAsignarMonto();
+                            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalRepartirPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalRepartirPartidas').hide();", true);
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalRepartirPartidas();", true);
+                            contadorBotonRepartir++;
+                            //}
+                            //else
+                            //{
+                            //    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El monto asignado es insuficiente" + "');", true);
+                            //}
+                        }
                     }
                     else
                     {
-                        List<PartidaUnidad> partidasAsignadasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
-                        //Double sumaMontoTotalRepartir = (Double)partidasAsignadasConMonto.Sum(PartidaUnidad => PartidaUnidad.Monto);
-                        //if (Convert.ToDouble(txtMontoIngresar.Text) >= sumaMontoTotalRepartir || monto == 0)
-                        //{
-                        if (partidasAsignadasConMonto != null)
-                        {
-                            Double montoDisponible = (Double)partidasAsignadasConMonto.Sum(monto => monto.Monto);
-
-
-                            montoRepartir.Text = Convert.ToString(Convert.ToDouble(txtMontoIngresar.Text) - Convert.ToDouble(montoDisponible));
-                        }
-                        obtenerUnidadesPartidasAsignarMonto();
-                        ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalRepartirPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalRepartirPartidas').hide();", true);
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalRepartirPartidas();", true);
-                        contadorBotonRepartir++;
-                        //}
-                        //else
-                        //{
-                        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El monto asignado es insuficiente" + "');", true);
-                        //}
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El texto ingresado deben ser montos Positivos" + "');", true);
                     }
+
                 }
                 else
                 {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El texto ingresado deben ser montos Positivos" + "');", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El texto ingresado deben ser números" + "');", true);
                 }
-
             }
             else
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El texto ingresado deben ser números" + "');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El texto ingresado deben ser mayor para cubrir los gastos" + "');", true);
             }
         }
         protected void recargarTablaRepartirMontos(List<PartidaUnidad> partidaUnidad)
@@ -1744,6 +1762,7 @@ namespace Proyecto.Catalogos.Ejecucion
             {
                 monto = monto + Convert.ToDouble(txtMontoIngresar.Text);
             }
+            
            
         }
     }
