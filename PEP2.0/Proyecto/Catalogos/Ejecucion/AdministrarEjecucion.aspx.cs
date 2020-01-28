@@ -1033,7 +1033,7 @@ namespace Proyecto.Catalogos.Ejecucion
                 //obtenerPartidasPorProyectoUnidadPeriodo();
             }
             List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
-            if (partidasElegidasConMonto.Exists(element => element.IdUnidad.Equals(idUnidad)))
+            if (partidasElegidasConMonto.Exists(element => element.IdUnidad.Equals(idUnidad)&& partidasElegidasConMonto!=null))
             {
                 double montoEliminado = partidasElegidasConMonto.Where(item => item.IdUnidad == idUnidad).ToList().First().Monto;
                 monto = monto + montoEliminado;
@@ -1120,14 +1120,14 @@ namespace Proyecto.Catalogos.Ejecucion
                                     int idPartid = Convert.ToInt32(hdIdPartida.Value);
                                     TextBox txtMonto = (TextBox)item.FindControl("TextBox1");
                                     String txtMont = txtMonto.Text.Replace(".", ",");
-                                    if (Double.TryParse(txtMont, out Double montoo) && idPartid == Convert.ToInt32(idPartida))
+                                    if (Double.TryParse(txtMont, out Double montoo) && idPartid == Convert.ToDouble(idPartida) && Convert.ToDouble(txtMont) > 0)
                                     {
                                         montoRepartir.Text = (Convert.ToString(Convert.ToDouble(montoRepartir.Text) - Convert.ToDouble(txtMont)));
                                         monto = Convert.ToDouble(montoRepartir.Text) + Convert.ToDouble(txtMont);
 
                                         //txtMonto.Text = monto.ToString();
 
-                                        if (monto >= 0 && Convert.ToDouble(txtMontoIngresar.Text) >= Convert.ToDouble(txtMont))
+                                        if (monto >= 0 && monto >= Convert.ToDouble(txtMont))
                                         {
 
                                             monto = Convert.ToDouble(montoRepartir.Text);
@@ -1142,6 +1142,15 @@ namespace Proyecto.Catalogos.Ejecucion
                                             monto = Convert.ToDouble(montoRepartir.Text);
                                             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El monto a repartir es insuficiente" + "');", true);
                                         }
+                                    }else if (!IsNumeric(txtMont))
+                                    {
+                                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Por favor ingrese numeros" + "');", true);
+                                        
+                                    }
+                                    else if(Convert.ToDouble(txtMont) < 0 && IsNumeric(txtMont))
+                                        
+                                    {
+                                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Por favor ingrese montos positivos" + "');", true);
                                     }
 
 
@@ -1604,7 +1613,7 @@ namespace Proyecto.Catalogos.Ejecucion
         {
             List<Partida> partidasElegidas = new List<Partida>();
             partidasElegidas = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
-            if (listaUnidad.Count >= 2  && partidasElegidas!=null)
+            if (listaUnidad.Count >= 1  && partidasElegidas!=null)
             {
                 UpdatePanel10.Visible = true;
                 ButtonRepartir.Visible = true;
