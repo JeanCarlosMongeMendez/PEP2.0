@@ -939,6 +939,7 @@ namespace Proyecto.Catalogos.Ejecucion
 
     protected void ButtonRepartirPartidas_Click(object sender, EventArgs e)
         {
+            //
             CargarPartidasPorUnidades();
             List<PartidaUnidad> partidasAsignadasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
             Double montoDisponible=0;
@@ -947,15 +948,25 @@ namespace Proyecto.Catalogos.Ejecucion
                 
                  montoDisponible= (Double)partidasAsignadasConMonto.Sum(monto => monto.Monto);
             }
+            else
+            {
+                montoRepartir.Text = txtMontoIngresar.Text;
+            }
 
-            if (montoDisponible <= Convert.ToInt32((txtMontoIngresar.Text)))
+            if (partidasAsignadasConMonto == null)
+            {
+
+               
+            }
+
+                if (montoDisponible <= Convert.ToDouble((txtMontoIngresar.Text)))
             {
 
 
 
                 if (IsNumeric(txtMontoIngresar.Text))
                 {
-                    if (Convert.ToInt32((txtMontoIngresar.Text)) >= 0)
+                    if (Convert.ToDouble((txtMontoIngresar.Text)) >= 0)
                     {
                         if (contadorBotonRepartir == 0)
                         {
@@ -1121,8 +1132,8 @@ namespace Proyecto.Catalogos.Ejecucion
 
                     foreach (PartidaUnidad p in partidasElegidas.ToList())
                     {
-                        Double montoDisponible= partidasElegidas.Where(item => p.IdUnidad == item.IdUnidad && item.NumeroPartida==p.NumeroPartida).ToList().First().MontoDisponible;
-                        if (monto <=montoDisponible && monto > 0)
+                        Double montoDisponible= partidasElegidasTemporal.Where(item => p.IdUnidad == item.IdUnidad && item.NumeroPartida==p.NumeroPartida).ToList().First().MontoDisponible;
+                        if (monto <= montoDisponible || monto >= 0)
                         {
                             if (p.IdPartida == Convert.ToInt32(idPartida))
                             {
@@ -1169,30 +1180,33 @@ namespace Proyecto.Catalogos.Ejecucion
                                         
                                     {
                                         ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Por favor ingrese montos positivos" + "');", true);
+                                    }else if (montoDisponible < monto)
+                                    {
+                                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "La Partida no cuenta con el dinero suficiente" + "');", true);
                                     }
+                                   
 
 
 
+                                }
+                                if (montoDisponible >= monto)
+                                {
+                                    Session["partidasAsignadasConMonto"] = partidasElegidasConMonto;
+                                    MostrarUnidadesConMontoRepartido();
+                                    partidasElegidas.RemoveAll(item => item.IdPartida == Convert.ToInt32(idPartida) && item.IdUnidad == idUnidadElegida);
+                                    Session["partidasAsignadas"] = partidasElegidas;
+                                    obtenerUnidadesPartidasAsignarMonto();
+                                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La Partida fue añadida con exito" + "');", true);
                                 }
 
 
                                 // partidasElegidas.Add(partidaUnidad);
                             }
 
-
-
-
-                            Session["partidasAsignadasConMonto"] = partidasElegidasConMonto;
-                            MostrarUnidadesConMontoRepartido();
-                            partidasElegidas.RemoveAll(item => item.IdPartida == Convert.ToInt32(idPartida) && item.IdUnidad == idUnidadElegida);
-                            Session["partidasAsignadas"] = partidasElegidas;
-                            obtenerUnidadesPartidasAsignarMonto();
-
-
-                        }else if(monto!=0)
-                        {
-                            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "La Partida no cuenta con el dinero suficiente" + "');", true);
-                        }
+                        }/*else if(monto!=0)*/
+                        //{
+                        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "La Partida no cuenta con el dinero suficiente" + "');", true);
+                        //}
 
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalRepartirPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalRepartirPartidas').hide();", true);
                         ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", " activarModalRepartirPartidas();", true);
@@ -1615,17 +1629,6 @@ namespace Proyecto.Catalogos.Ejecucion
             MostrarTablaRepartirGastos();
         }
 
-        //protected void txtMontoIngresar_TextChanged(object sender, EventArgs e)
-        //{
-        //    if (txtMontoIngresar.Text != "")
-        //    {
-        //        ButtonRepartir.Visible=false;
-        //    }
-        //    else
-        //    {
-        //        ButtonRepartir.Visible=true;
-        //    }
-        //}
 
         private void MostrarTablaRepartirGastos()
         {
