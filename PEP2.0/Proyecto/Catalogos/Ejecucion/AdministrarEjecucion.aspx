@@ -254,9 +254,23 @@
                     </ContentTemplate>
                 </asp:UpdatePanel>
             </div>
-
+           
         </ContentTemplate>
+       
     </asp:UpdatePanel>
+    <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+       
+        <asp:Button ID="Button1" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="btnGuardar_Click" />
+    </div>
+    <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+       
+        <asp:Button ID="Button2" runat="server" Text="Aprobar" CssClass="btn btn-primary" OnClick="btnGuardar_Click" />
+    </div>
+    <br >
+
+
+    <br />
+
 
     <!-- Modal elegir partida -->
     <asp:UpdatePanel ID="UpdatePanel9" runat="server">

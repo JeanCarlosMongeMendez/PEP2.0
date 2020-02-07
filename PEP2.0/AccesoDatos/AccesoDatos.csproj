@@ -47,6 +47,7 @@
     <Compile Include="CargaSocialDatos.cs" />
     <Compile Include="ConexionDatos.cs" />
     <Compile Include="ContactoDatos.cs" />
+    <Compile Include="Ejecucion.Datos.cs" />
     <Compile Include="EscalaSalarialDatos.cs" />
     <Compile Include="EstadoPresupIngresoDatos.cs" />
     <Compile Include="EstadoPresupuestoDatos.cs" />
