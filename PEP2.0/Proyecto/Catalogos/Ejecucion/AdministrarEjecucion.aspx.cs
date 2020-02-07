@@ -205,6 +205,11 @@ namespace Proyecto.Catalogos.Ejecucion
         /// </summary>
         private void obtenerPartidasPorProyectoUnidadPeriodo()
         {
+            if (listaUnidad == null || listaUnidad.Count == 0)
+            {
+                Session["partidasPorUnidadesProyectoPeriodo"] = null;
+            }
+           
             List<Partida> partidas = (List<Partida>)Session["partidasPorUnidadesProyectoPeriodo"];
             if (partidas == null || partidas.Count==0)
             {
@@ -215,7 +220,7 @@ namespace Proyecto.Catalogos.Ejecucion
                 {
                     unidades.AddFirst(unidad.idUnidad);
                 }
-
+                
                 if (proyectoElegido != 0 && periodoElegido != 0)
                 {
                     Session["partidasPorUnidadesProyectoPeriodo"] = partidaServicios.ObtienePartidaPorPeriodoUnidadProyecto(proyectoElegido, unidades, periodoElegido);
@@ -246,6 +251,7 @@ namespace Proyecto.Catalogos.Ejecucion
                 }
                 else
                 {
+
                     partidas = null;
                     var dt = partidas;
                     pgsource.DataSource = dt;
@@ -256,6 +262,7 @@ namespace Proyecto.Catalogos.Ejecucion
             }
             else
             {
+               
                 List<Partida> partidasN = (List<Partida>)Session["partidasPorUnidadesProyectoPeriodo"];
                 var dt5 = partidasN;
                 pgsource.DataSource = dt5;
@@ -834,12 +841,17 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         private void MostrarDatosTabla()
         {
-
+    
             if ((ProyectosDDL.Items.Count > 0) && (count == 0))
             {
 
                 listUnidades = unidadServicios.ObtenerPorProyecto(Int32.Parse(ProyectosDDL.SelectedValue));
+       
                 listUnidad = listUnidades.ToList<Unidad>();
+                if (listaUnidad ==null || listaUnidad.Count == 0)
+                {
+                    Session["partidasPorUnidadesProyectoPeriodo"] = null;
+                }
                 var dt = listUnidad;
                 pgsource.DataSource = dt;
                 pgsource.AllowPaging = true;
@@ -959,7 +971,11 @@ namespace Proyecto.Catalogos.Ejecucion
                
             }
 
-                if (montoDisponible <= Convert.ToDouble((txtMontoIngresar.Text)))
+            if (!IsNumeric(txtMontoIngresar.Text))
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El texto ingresado deben ser números" + "');", true);
+            }
+            else if (montoDisponible <= Convert.ToDouble((txtMontoIngresar.Text)))
             {
 
 
@@ -1062,14 +1078,16 @@ namespace Proyecto.Catalogos.Ejecucion
                 //obtenerPartidasPorProyectoUnidadPeriodo();
             }
             List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
-            if (partidasElegidasConMonto.Exists(element => element.IdUnidad.Equals(idUnidad)&& partidasElegidasConMonto!=null))
+            if (partidasElegidasConMonto != null)
             {
-                double montoEliminado = partidasElegidasConMonto.Where(item => item.IdUnidad == idUnidad).ToList().First().Monto;
-                monto = monto + montoEliminado;
-                partidasElegidasConMonto.RemoveAll(item => item.IdUnidad == idUnidad);
-                MostrarUnidadesConMontoRepartido();
+                if (partidasElegidasConMonto.Exists(element => element.IdUnidad.Equals(idUnidad)))
+                {
+                    double montoEliminado = partidasElegidasConMonto.Where(item => item.IdUnidad == idUnidad).ToList().First().Monto;
+                    monto = monto + montoEliminado;
+                    partidasElegidasConMonto.RemoveAll(item => item.IdUnidad == idUnidad);
+                    MostrarUnidadesConMontoRepartido();
+                }
             }
-
         }
         private void CargarPartidasPorUnidades()
         {
@@ -1156,7 +1174,7 @@ namespace Proyecto.Catalogos.Ejecucion
 
                                         //txtMonto.Text = monto.ToString();
 
-                                        if (monto >= 0 && monto >= Convert.ToDouble(txtMont))
+                                        if (monto >= 0 && monto >= Convert.ToDouble(txtMont) && montoDisponible>= Convert.ToDouble(txtMont))
                                         {
 
                                             monto = Convert.ToDouble(montoRepartir.Text);
@@ -1272,9 +1290,13 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         protected void EliminarPartidaSeleccionada_OnChanged(object sender, EventArgs e)
         {
+
+            
             String numeroPartida = ((LinkButton)(sender)).CommandArgument.ToString();
-            Partida partida = partidaServicios.ObtenerPorNumeroPartida(numeroPartida);
+          
             List<Partida> partidasElegidas = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
+            Partida partida =partidasElegidas.Where(item => numeroPartida==item.numeroPartida).ToList().First();   /* partidaServicios.ObtenerPorNumeroPartida(numeroPartida);*/
+
             if (partidasElegidas == null)
             {
                 partidasElegidas = new List<Partida>();
