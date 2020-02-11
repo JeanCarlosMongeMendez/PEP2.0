@@ -22,28 +22,37 @@ namespace Servicios
         /// Inserta una Ejecucion_Partida
         /// </summary>
         /// <param name="unidad">Unidad</param>
-        /// /// <param name="numeroReferencia">Unidad</param>
-        public void InsertarEjecucionUnidad(Unidad unidad,string numeroReferencia)
+        /// /// <param name="numeroReferencia">string</param>
+        public void InsertarEjecucionUnidad(Unidad unidad,string numeroReferencia, int respuesta)
         {
-             ejecucionDatos.insertarEjecucionUnidad(unidad,numeroReferencia); 
+             ejecucionDatos.insertarEjecucionUnidad(unidad,numeroReferencia,respuesta); 
         }
         /// <summary>
         /// Inserta una Ejecucion_Partida
         /// </summary>
-        /// <param name="partida">Unidad</param>
-        /// /// <param name="numeroReferencia">Unidad</param>
-        public void InsertarEjecucionPartidas(Partida partida, string numeroReferencia)
+        /// <param name="partida">Partida</param>
+        /// /// <param name="numeroReferencia">string</param>
+        public void InsertarEjecucionPartidas(Partida partida, string numeroReferencia,int respuesta)
         {
-            ejecucionDatos.insertarEjecucionPartidas(partida, numeroReferencia);
+            ejecucionDatos.insertarEjecucionPartidas(partida, numeroReferencia,respuesta);
         }
         /// <summary>
         /// Inserta una EjecucionPartidaMontoElelegido
         /// </summary>
-        /// <param name="partidaUnidad">Unidad</param>
-        /// /// <param name="numeroReferencia">Unidad</param>
-        public void InsertarEjecucionPartidaMontoElelegido(PartidaUnidad partidaUnidad, string numeroReferencia)
+        /// <param name="partidaUnidad">PartidaUnidad</param>
+        /// /// <param name="numeroReferencia">String</param>
+        public void InsertarEjecucionPartidaMontoElelegido(PartidaUnidad partidaUnidad, string numeroReferencia,int respuesta)
         {
-            ejecucionDatos.insertarEjecucionMontoPartidaElegida(partidaUnidad, numeroReferencia);
+            ejecucionDatos.insertarEjecucionMontoPartidaElegida(partidaUnidad, numeroReferencia,respuesta);
+        }
+        /// <summary>
+        /// Inserta una Ejecucion
+        /// </summary>
+        /// <param name="ejecucion">Ejecucion</param>
+        ///
+        public int InsertarEjecucion(Ejecucion ejecucion)
+        {
+           return ejecucionDatos.insertarEjecucion(ejecucion);
         }
     }
 }

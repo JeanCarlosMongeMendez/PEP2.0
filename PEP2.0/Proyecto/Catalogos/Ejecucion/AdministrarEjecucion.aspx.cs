@@ -1800,11 +1800,20 @@ namespace Proyecto.Catalogos.Ejecucion
             List<Partida> partidasAsignadas = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
             List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
             Unidad unidad = new Unidad();
+
+            ejecucionGuardar.idestado = 1;
+            ejecucionGuardar.anoPeriodo = Convert.ToInt32(PeriodosDDL.SelectedValue);
+            ejecucionGuardar.idProyecto = Int32.Parse(ProyectosDDL.SelectedValue);
+            ejecucionGuardar.monto = Convert.ToInt32(txtMontoIngresar.Text);
+            ejecucionGuardar.idTipoTramite = Int32.Parse(DDLTipoTramite.SelectedValue);
+            ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
+            int respuesta = ejecucionServicios.InsertarEjecucion(ejecucionGuardar);
+            
             foreach (Unidad u in listaUnidad)
             {
                 unidad.idUnidad = u.idUnidad;
                 unidad.nombreUnidad = u.nombreUnidad;
-                ejecucionServicios.InsertarEjecucionUnidad(unidad, numeroReferencia.Text);
+                ejecucionServicios.InsertarEjecucionUnidad(unidad,numeroReferencia.Text,respuesta);
             }
             Partida partida = new Partida();
             foreach (Partida p in partidasAsignadas)
@@ -1813,7 +1822,7 @@ namespace Proyecto.Catalogos.Ejecucion
                 partida.numeroPartida = p.numeroPartida;
                 partida.idPartida = p.idPartida;
                 partida.descripcionPartida = p.descripcionPartida;
-                ejecucionServicios.InsertarEjecucionPartidas(partida, numeroReferencia.Text);
+                ejecucionServicios.InsertarEjecucionPartidas(partida, numeroReferencia.Text,respuesta);
             }
             PartidaUnidad partidaUnidad = new PartidaUnidad();
             foreach (PartidaUnidad pu in partidasElegidasConMonto)
@@ -1824,14 +1833,9 @@ namespace Proyecto.Catalogos.Ejecucion
                 partidaUnidad.Monto = pu.Monto;
                 partidaUnidad.MontoDisponible = pu.MontoDisponible;
                 partidaUnidad.NumeroPartida = pu.NumeroPartida;
-                ejecucionServicios.InsertarEjecucionPartidaMontoElelegido(partidaUnidad, numeroReferencia.Text);
+                ejecucionServicios.InsertarEjecucionPartidaMontoElelegido(partidaUnidad, numeroReferencia.Text,respuesta);
             }
-            ejecucionGuardar.idEjecucion = 1;
-            ejecucionGuardar.anoPeriodo = Convert.ToInt32(PeriodosDDL.SelectedValue);
-            ejecucionGuardar.idProyecto = Int32.Parse(ProyectosDDL.SelectedValue);
-            ejecucionGuardar.monto= partidasElegidasConMonto.Sum(PartidaUnidad => PartidaUnidad.Monto);
-            ejecucionGuardar.idTipoTramite = Int32.Parse(DDLTipoTramite.SelectedValue);
-            ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
+           
             
 
 
