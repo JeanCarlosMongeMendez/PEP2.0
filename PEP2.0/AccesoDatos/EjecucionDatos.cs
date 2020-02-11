@@ -93,6 +93,32 @@ namespace AccesoDatos
             command.ExecuteReader();
             sqlConnection.Close();
         }
+        /// <summary>
+        /// Inserta EjecucionMontoPartidaElegida
+        /// </summary>
+        /// <param name="partida">Presupuesto de Egreso</param>
+        public void insertarEjecucion(Ejecucion ejecucion)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+
+            String consulta = @"insert EjecucionMontoPartidasElegidas (numero_referencia,id_partida,id_unidad,monto,monto_disponible,numero_partida) 
+                                            values(@numero_referencia,@id_partida,@id_unidad,@monto,@monto_disponible,@numero_partida)";
+
+            SqlCommand command = new SqlCommand(consulta, sqlConnection);
+
+            command.Parameters.AddWithValue("@numero_referencia", ejecucion);
+            command.Parameters.AddWithValue("@id_partida", ejecucion);
+            command.Parameters.AddWithValue("@id_unidad", ejecucion);
+            command.Parameters.AddWithValue("@monto", ejecucion);
+            command.Parameters.AddWithValue("@monto_disponible", ejecucion);
+            command.Parameters.AddWithValue("@numero_partida", ejecucion);
+
+
+
+            sqlConnection.Open();
+            command.ExecuteReader();
+            sqlConnection.Close();
+        }
     }
 }
 

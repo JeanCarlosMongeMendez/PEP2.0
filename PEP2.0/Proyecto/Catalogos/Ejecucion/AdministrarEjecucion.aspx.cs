@@ -1809,6 +1809,7 @@ namespace Proyecto.Catalogos.Ejecucion
             Partida partida = new Partida();
             foreach (Partida p in partidasAsignadas)
             {
+
                 partida.numeroPartida = p.numeroPartida;
                 partida.idPartida = p.idPartida;
                 partida.descripcionPartida = p.descripcionPartida;
@@ -1817,6 +1818,7 @@ namespace Proyecto.Catalogos.Ejecucion
             PartidaUnidad partidaUnidad = new PartidaUnidad();
             foreach (PartidaUnidad pu in partidasElegidasConMonto)
             {
+
                 partidaUnidad.IdPartida = pu.IdPartida;
                 partidaUnidad.IdUnidad = pu.IdUnidad;
                 partidaUnidad.Monto = pu.Monto;
@@ -1824,10 +1826,19 @@ namespace Proyecto.Catalogos.Ejecucion
                 partidaUnidad.NumeroPartida = pu.NumeroPartida;
                 ejecucionServicios.InsertarEjecucionPartidaMontoElelegido(partidaUnidad, numeroReferencia.Text);
             }
+            ejecucionGuardar.idEjecucion = 1;
+            ejecucionGuardar.anoPeriodo = Convert.ToInt32(PeriodosDDL.SelectedValue);
+            ejecucionGuardar.idProyecto = Int32.Parse(ProyectosDDL.SelectedValue);
+            ejecucionGuardar.monto= partidasElegidasConMonto.Sum(PartidaUnidad => PartidaUnidad.Monto);
+            ejecucionGuardar.idTipoTramite = Int32.Parse(DDLTipoTramite.SelectedValue);
+            ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
+            
 
 
 
-            }
+
+
+        }
             }
             }
        
