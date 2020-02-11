@@ -261,10 +261,9 @@
     <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
        
         <asp:Button ID="Button1" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="btnGuardar_Click" />
-    </div>
-    <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
        
-        <asp:Button ID="Button2" runat="server" Text="Aprobar" CssClass="btn btn-primary" OnClick="btnGuardar_Click" />
+        <asp:Button ID="Button2" runat="server" Text="Aprobar" CssClass="btn btn-primary" OnClick="btnApobar_Click" />
     </div>
     <br >
 

@@ -20,8 +20,12 @@ namespace AccesoDatos
         /// Inserta una EjecucionUnidad
         /// </summary>
         /// <param name="unidad">Unidad</param>
+        ///  <param name="numeroReferencia"></param>
+        ///  <param name="respuesta"></param>
         public void insertarEjecucionUnidad(Unidad unidad, string numeroReferencia,int respuesta)
         {
+
+
             SqlConnection sqlConnection = conexion.conexionPEP();
 
             String consulta = @"insert Unidad_ejecucion (numero_referencia,id_unidad,nombre_unidad,id_ejecucion)
@@ -44,7 +48,9 @@ namespace AccesoDatos
         /// <summary>
         /// Inserta una PartidaEjecucion
         /// </summary>
-        /// <param name="partida">Presupuesto de Egreso</param>
+        /// <param name="partida">partida</param>
+        /// <param name="numeroReferencia"></param>
+        /// <param name="respuesta"></param>
         public void insertarEjecucionPartidas(Partida partida,string numeroReferencia, int respuesta)
         {
             SqlConnection sqlConnection = conexion.conexionPEP();
@@ -71,7 +77,9 @@ namespace AccesoDatos
         /// <summary>
         /// Inserta EjecucionMontoPartidaElegida
         /// </summary>
-        /// <param name="partida">Presupuesto de Egreso</param>
+        /// <param name="partidaUnidad">PartidaUnidad</param>
+        /// <param name="numeroReferencia"></param>
+        /// <param name="respuesta"></param>
         public void insertarEjecucionMontoPartidaElegida(PartidaUnidad partidaUnidad, string numeroReferencia, int respuesta)
         {
             SqlConnection sqlConnection = conexion.conexionPEP();
@@ -95,9 +103,9 @@ namespace AccesoDatos
             sqlConnection.Close();
         }
         /// <summary>
-        /// Inserta EjecucionMontoPartidaElegida
+        /// Inserta Ejecucion
         /// </summary>
-        /// <param name="partida">Presupuesto de Egreso</param>
+        /// <param name="ejecucion">ejecucion</param>
         public int insertarEjecucion(Ejecucion ejecucion)
         {
             SqlConnection sqlConnection = conexion.conexionPEP();
@@ -120,6 +128,103 @@ namespace AccesoDatos
             sqlConnection.Close();
             return respuesta;
         }
+
+
+        /// <summary>
+        /// Eliminar una EjecucionUnidad
+        /// </summary>
+        /// <param name="respuesta">respuesta</param>
+        public void EliminarEjecucionUnidad(int respuesta)
+        {
+
+
+            SqlConnection sqlConnection = conexion.conexionPEP();
+
+            String consulta = @"delete  Unidad_ejecucion where id_ejecucion=@id_ejecucion";
+
+            SqlCommand command = new SqlCommand(consulta, sqlConnection);
+
+            command.Parameters.AddWithValue("@id_ejecucion", respuesta);
+
+
+            sqlConnection.Open();
+            command.ExecuteReader();
+            sqlConnection.Close();
+        }
+        /// <summary>
+        /// Eliminar una PartidaEjecucion
+        /// </summary>
+        /// <param name="respuesta"></param>
+        public void eliminarEjecucionPartidas( int respuesta)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+
+            String consulta = @"delete Partida_ejecucion where id_ejecucion=@id_ejecucion" ;
+                                           
+
+            SqlCommand command = new SqlCommand(consulta, sqlConnection);
+
+            
+           
+            command.Parameters.AddWithValue("@id_ejecucion", respuesta);
+
+
+
+            sqlConnection.Open();
+            command.ExecuteReader();
+            sqlConnection.Close();
+        }
+        /// <summary>
+        /// Eliminar EjecucionMontoPartidaElegida
+        /// </summary>
+        /// <param name="respuesta"></param>
+        public void eliminarEjecucionMontoPartidaElegida(int respuesta)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+
+            String consulta = @"delete EjecucionMontoPartidasElegidas where id_ejecucion=@id_ejecucion"; 
+                                        
+
+            SqlCommand command = new SqlCommand(consulta, sqlConnection);
+
+           
+           
+            command.Parameters.AddWithValue("@id_ejecucion", respuesta);
+
+
+            sqlConnection.Open();
+            command.ExecuteReader();
+            sqlConnection.Close();
+        }
+        /// <summary>
+        /// Actulizar Ejecucion
+        /// </summary>
+        /// <param name="ejecucion">ejecucion</param>
+        /// <param name="respuesta"></param>
+        public void actualizarEjecucion(Ejecucion ejecucion)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+
+            String consulta = @"update Ejecucion set id_estado=@id_estado,ano_periodo=@ano_periodo ,id_proyecto=@id_proyecto,monto=@monto,id_tipo_tramite=@id_tipo_tramite,numero_referencia=@numero_referencia 
+                                 where id_ejecucion=@id_ejecucion";
+
+
+            SqlCommand command = new SqlCommand(consulta, sqlConnection);
+            command.Parameters.AddWithValue("@id_ejecucion",ejecucion.idEjecucion);
+            command.Parameters.AddWithValue("@id_estado", ejecucion.idestado);
+            command.Parameters.AddWithValue("@ano_periodo", ejecucion.anoPeriodo);
+            command.Parameters.AddWithValue("@id_proyecto", ejecucion.idProyecto);
+            command.Parameters.AddWithValue("@monto", ejecucion.monto);
+            command.Parameters.AddWithValue("@id_tipo_tramite", ejecucion.idTipoTramite);
+            command.Parameters.AddWithValue("@numero_referencia", ejecucion.numeroReferencia);
+           
+
+            sqlConnection.Open();
+            command.ExecuteReader();
+            sqlConnection.Close();
+        }
+
+
     }
 }
 

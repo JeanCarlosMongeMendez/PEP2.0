@@ -54,5 +54,45 @@ namespace Servicios
         {
            return ejecucionDatos.insertarEjecucion(ejecucion);
         }
+        /// <summary>
+        /// Editar una Ejecucion
+        /// </summary>
+        /// <param name="ejecucion">Ejecucion</param>
+        ///
+        public void EditarEjecucion(Ejecucion ejecucion)
+        {
+           ejecucionDatos.actualizarEjecucion(ejecucion);
+        }
+
+        /// <summary>
+        /// Eliminar una Ejecucion_Partida
+        /// </summary>
+        /// <param name="unidad">Unidad</param>
+        /// /// <param name="respuesta">string</param>
+        public void EliminarEjecucionUnidad( int respuesta)
+        {
+            ejecucionDatos.EliminarEjecucionUnidad( respuesta);
+        }
+
+        /// <summary>
+        /// 
+        ///Eliminar una Ejecucion_Partida
+        /// </summary>
+        /// <param name="partida">Partida</param>
+        /// /// <param name="respuesta">string</param>
+        public void EliminarEjecucionPartidas( int respuesta)
+        {
+            ejecucionDatos.eliminarEjecucionPartidas(respuesta);
+        }
+
+        /// <summary>
+        /// Eliminar una EjecucionPartidaMontoElelegido
+        /// </summary>
+        /// <param name="partidaUnidad">PartidaUnidad</param>
+        /// /// <param name="respuesta">String</param>
+        public void EliminarEjecucionPartidaMontoElelegido(int respuesta)
+        {
+            ejecucionDatos.eliminarEjecucionMontoPartidaElegida(respuesta);
+        }
     }
 }
