@@ -24,6 +24,7 @@ namespace Proyecto.Catalogos.Ejecucion
         PresupuestoEgreso_PartidaServicios presupuestoEgreso_PartidaServicios;
         PresupuestoEgresosServicios presupuestoEgresosServicio;
         PartidaUnidad partidaUnidad;
+        EjecucionServicios ejecucionServicios;
         int idUnidadElegida;
         private int elmentosMostrar = 10;
         //se utiliza en el metodo  MostrarDatosTablaUnidad();se utiliza para pasar unidades seleccionadas de la tabla que aparece en el  #modalElegirUnidad
@@ -107,7 +108,7 @@ namespace Proyecto.Catalogos.Ejecucion
         protected void Page_Load(object sender, EventArgs e)
         {
 
-
+            this.ejecucionServicios = new EjecucionServicios();
             this.presupuestoEgresosServicio = new PresupuestoEgresosServicios();
             this.periodoServicios = new PeriodoServicios();
             this.proyectoServicios = new ProyectoServicios();
@@ -1796,8 +1797,37 @@ namespace Proyecto.Catalogos.Ejecucion
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
             Entidades.Ejecucion ejecucionGuardar = new Entidades.Ejecucion();
-            
+            List<Partida> partidasAsignadas = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
+            List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
+            Unidad unidad = new Unidad();
+            foreach (Unidad u in listaUnidad)
+            {
+                unidad.idUnidad = u.idUnidad;
+                unidad.nombreUnidad = u.nombreUnidad;
+                ejecucionServicios.InsertarEjecucionUnidad(unidad, numeroReferencia.Text);
+            }
+            Partida partida = new Partida();
+            foreach (Partida p in partidasAsignadas)
+            {
+                partida.numeroPartida = p.numeroPartida;
+                partida.idPartida = p.idPartida;
+                partida.descripcionPartida = p.descripcionPartida;
+                ejecucionServicios.InsertarEjecucionPartidas(partida, numeroReferencia.Text);
+            }
+            PartidaUnidad partidaUnidad = new PartidaUnidad();
+            foreach (PartidaUnidad pu in partidasElegidasConMonto)
+            {
+                partidaUnidad.IdPartida = pu.IdPartida;
+                partidaUnidad.IdUnidad = pu.IdUnidad;
+                partidaUnidad.Monto = pu.Monto;
+                partidaUnidad.MontoDisponible = pu.MontoDisponible;
+                partidaUnidad.NumeroPartida = pu.NumeroPartida;
+                ejecucionServicios.InsertarEjecucionPartidaMontoElelegido(partidaUnidad, numeroReferencia.Text);
+            }
 
-        }
-    }
-}
+
+
+            }
+            }
+            }
+       
