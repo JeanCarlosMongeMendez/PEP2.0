@@ -22,7 +22,8 @@ namespace Servicios
         /// Inserta una Ejecucion_Partida
         /// </summary>
         /// <param name="unidad">Unidad</param>
-        /// /// <param name="numeroReferencia">string</param>
+        /// <param name="numeroReferencia">string</param>
+        /// <param name="respuesta">string</param>
         public void InsertarEjecucionUnidad(Unidad unidad,string numeroReferencia, int respuesta)
         {
              ejecucionDatos.insertarEjecucionUnidad(unidad,numeroReferencia,respuesta); 
@@ -31,7 +32,8 @@ namespace Servicios
         /// Inserta una Ejecucion_Partida
         /// </summary>
         /// <param name="partida">Partida</param>
-        /// /// <param name="numeroReferencia">string</param>
+        ///  <param name="numeroReferencia">string</param>
+        ///  <param name="respuesta">string</param>
         public void InsertarEjecucionPartidas(Partida partida, string numeroReferencia,int respuesta)
         {
             ejecucionDatos.insertarEjecucionPartidas(partida, numeroReferencia,respuesta);
@@ -40,7 +42,8 @@ namespace Servicios
         /// Inserta una EjecucionPartidaMontoElelegido
         /// </summary>
         /// <param name="partidaUnidad">PartidaUnidad</param>
-        /// /// <param name="numeroReferencia">String</param>
+        ///  <param name="numeroReferencia">String</param>
+        /// <param name="respuesta">String</param>
         public void InsertarEjecucionPartidaMontoElelegido(PartidaUnidad partidaUnidad, string numeroReferencia,int respuesta)
         {
             ejecucionDatos.insertarEjecucionMontoPartidaElegida(partidaUnidad, numeroReferencia,respuesta);
@@ -58,7 +61,7 @@ namespace Servicios
         /// Editar una Ejecucion
         /// </summary>
         /// <param name="ejecucion">Ejecucion</param>
-        ///
+        /
         public void EditarEjecucion(Ejecucion ejecucion)
         {
            ejecucionDatos.actualizarEjecucion(ejecucion);
@@ -67,8 +70,7 @@ namespace Servicios
         /// <summary>
         /// Eliminar una Ejecucion_Partida
         /// </summary>
-        /// <param name="unidad">Unidad</param>
-        /// /// <param name="respuesta">string</param>
+        /// <param name="respuesta">string</param>
         public void EliminarEjecucionUnidad( int respuesta)
         {
             ejecucionDatos.EliminarEjecucionUnidad( respuesta);
@@ -78,7 +80,6 @@ namespace Servicios
         /// 
         ///Eliminar una Ejecucion_Partida
         /// </summary>
-        /// <param name="partida">Partida</param>
         /// /// <param name="respuesta">string</param>
         public void EliminarEjecucionPartidas( int respuesta)
         {
@@ -88,11 +89,19 @@ namespace Servicios
         /// <summary>
         /// Eliminar una EjecucionPartidaMontoElelegido
         /// </summary>
-        /// <param name="partidaUnidad">PartidaUnidad</param>
         /// /// <param name="respuesta">String</param>
         public void EliminarEjecucionPartidaMontoElelegido(int respuesta)
         {
             ejecucionDatos.eliminarEjecucionMontoPartidaElegida(respuesta);
+        }
+        /// <summary>
+        /// CONSULTA Monto disponible de la partida
+        /// </summary>
+        /// <param name="idPartida">String</param>
+        /// <param name="idPresupuestoEgreso">String</param>
+        public double ConsultaMontoDisponiblePartida(String idPartida,String idPresupuestoEgreso)
+        {
+            return ejecucionDatos.consultarMontoDiponible(idPartida, idPresupuestoEgreso);
         }
     }
 }

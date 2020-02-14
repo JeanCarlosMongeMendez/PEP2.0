@@ -223,6 +223,37 @@ namespace AccesoDatos
             command.ExecuteReader();
             sqlConnection.Close();
         }
+        /// <summary>
+        /// Consulta Monto disponible
+        /// </summary>
+        /// <param name="idPartida"></param>
+        ///  <param name="idPresupuestoEgreso"></param>
+        public double consultarMontoDiponible(string idPartida,string idPresupuestoEgreso)
+        {
+            Double monto=0;
+            SqlConnection sqlConnection = conexion.conexionPEP();
+
+            String consulta = @"select (
+                                         select SUM(monto) as monto from Presupuesto_Egreso_Partida
+                                         where id_partida=@idPartida and id_presupuesto_egreso= @idPresupuestoEgreso and id_estado_presupuesto=2 ) - ISNULL((
+                                         select SUM(EMPE.monto) as monto_ejecutado from EjecucionMontoPartidasElegidas EMPE where EMPE.id_partida=@idPartida 
+                                         and EMPE.id_ejecucion  =( (select E.id_ejecucion from Ejecucion E where E.id_ejecucion=EMPE.id_ejecucion and E.id_estado=2 ))),0)as montoDisponible";
+
+            SqlCommand command = new SqlCommand(consulta, sqlConnection);
+
+            command.Parameters.AddWithValue("@idPartida",Convert.ToInt32(idPartida));
+            command.Parameters.AddWithValue("@idPresupuestoEgreso", Convert.ToInt32(idPresupuestoEgreso));
+
+            SqlDataReader reader;
+            sqlConnection.Open();
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+               monto = Convert.ToDouble(reader["montoDisponible"].ToString());
+            }
+            sqlConnection.Close();
+            return monto;
+        }
 
 
     }
