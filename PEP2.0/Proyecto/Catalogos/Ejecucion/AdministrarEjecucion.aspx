@@ -251,6 +251,40 @@
                                 </asp:Repeater>
                             </table>
                         </div>
+                         <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                                    <center>
+                    <table class="table" style="max-width:664px;">
+                        <tr style="padding:1px !important">
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbPrimero6" runat="server" CssClass="btn btn-primary" OnClick="lbPrimero6_Click"><span class="glyphicon glyphicon-fast-backward"></span></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbAnterior6" runat="server" CssClass="btn btn-default" OnClick="lbAnterior6_Click"><span class="glyphicon glyphicon-backward"></asp:LinkButton>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:DataList ID="DataList2" runat="server"
+                                    OnItemCommand="rptPaginacion6_ItemCommand"
+                                    OnItemDataBound="rptPaginacion6_ItemDataBound" RepeatDirection="Horizontal">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lbPaginacion6" runat="server" CssClass="btn btn-default"
+                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
+                                            Text='<%# Eval("PaginaText") %>' ></asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:DataList>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbSiguiente6" CssClass="btn btn-default" runat="server" OnClick="lbSiguiente6_Click"><span class="glyphicon glyphicon-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbUltimo6" CssClass="btn btn-primary" runat="server" OnClick="lbUltimo6_Click"><span class="glyphicon glyphicon-fast-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:Label ID="lblpagina6" runat="server" Text=""></asp:Label>
+                            </td>
+                        </tr>
+                    </table>
+                        </center>
+                                </div>
                     </ContentTemplate>
                 </asp:UpdatePanel>
             </div>
@@ -474,6 +508,40 @@
                                     </table>
 
                                 </div>
+                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                    <center>
+                    <table class="table" style="max-width:664px;">
+                        <tr style="padding:1px !important">
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbPrimero5" runat="server" CssClass="btn btn-primary" OnClick="lbPrimero5_Click"><span class="glyphicon glyphicon-fast-backward"></span></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbAnterior5" runat="server" CssClass="btn btn-default" OnClick="lbAnterior5_Click"><span class="glyphicon glyphicon-backward"></asp:LinkButton>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:DataList ID="DataList1" runat="server"
+                                    OnItemCommand="rptPaginacion5_ItemCommand"
+                                    OnItemDataBound="rptPaginacion5_ItemDataBound" RepeatDirection="Horizontal">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lbPaginacion5" runat="server" CssClass="btn btn-default"
+                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
+                                            Text='<%# Eval("PaginaText") %>' ></asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:DataList>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbSiguiente5" CssClass="btn btn-default" runat="server" OnClick="lbSiguiente5_Click"><span class="glyphicon glyphicon-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbUltimo5" CssClass="btn btn-primary" runat="server" OnClick="lbUltimo5_Click"><span class="glyphicon glyphicon-fast-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:Label ID="lblpagina5" runat="server" Text=""></asp:Label>
+                            </td>
+                        </tr>
+                    </table>
+                        </center>
+                </div>
                            
                             </div>
                              <div class="modal-footer" style="text-align: center">

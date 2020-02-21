@@ -61,7 +61,7 @@ namespace Servicios
         /// Editar una Ejecucion
         /// </summary>
         /// <param name="ejecucion">Ejecucion</param>
-        /
+        
         public void EditarEjecucion(Ejecucion ejecucion)
         {
            ejecucionDatos.actualizarEjecucion(ejecucion);
