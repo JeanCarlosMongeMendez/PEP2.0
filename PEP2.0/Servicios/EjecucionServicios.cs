@@ -66,6 +66,16 @@ namespace Servicios
         {
            ejecucionDatos.actualizarEjecucion(ejecucion);
         }
+        /// <summary>
+        /// Consultar una Ejecucion
+        /// </summary>
+        /// <param name="Proyecto">Ejecucion</param>
+        /// <param name="Periodo">Ejecucion</param>
+
+        public List<Ejecucion> ConsultarEjecucion(string Periodo,string Proyecto)
+        {
+            return ejecucionDatos.consultaEjecucion(Periodo,Proyecto);
+        }
 
         /// <summary>
         /// Eliminar una Ejecucion_Partida

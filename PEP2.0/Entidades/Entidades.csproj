@@ -46,6 +46,7 @@
     <Compile Include="Contacto.cs" />
     <Compile Include="Ejecucion.cs" />
     <Compile Include="EscalaSalarial.cs" />
+    <Compile Include="EstadoEjecucion.cs" />
     <Compile Include="EstadoPresupIngreso.cs" />
     <Compile Include="EstadoPresupuesto.cs" />
     <Compile Include="Funcionario.cs" />

@@ -86,6 +86,7 @@
   <ItemGroup>
     <Content Include="Catalogos\CargasSociales\AdministrarCargasSociales.aspx" />
     <Content Include="Catalogos\Ejecucion\AdministrarEjecucion.aspx" />
+    <Content Include="Catalogos\Ejecucion\ElegirEjecucion.aspx" />
     <Content Include="Catalogos\Jornadas\AdministrarJornadas.aspx" />
     <Content Include="Catalogos\Partidas\AdministrarPartida - Copia.aspx" />
     <Content Include="Catalogos\Partidas\AdministrarPartidas.aspx" />
@@ -187,6 +188,13 @@
     </Compile>
     <Compile Include="Catalogos\Ejecucion\AdministrarEjecucion.aspx.designer.cs">
       <DependentUpon>AdministrarEjecucion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Catalogos\Ejecucion\ElegirEjecucion.aspx.cs">
+      <DependentUpon>ElegirEjecucion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Catalogos\Ejecucion\ElegirEjecucion.aspx.designer.cs">
+      <DependentUpon>ElegirEjecucion.aspx</DependentUpon>
     </Compile>
     <Compile Include="Catalogos\Jornadas\AdministrarJornadas.aspx.cs">
       <DependentUpon>AdministrarJornadas.aspx</DependentUpon>

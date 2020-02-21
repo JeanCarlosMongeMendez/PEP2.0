@@ -1513,11 +1513,11 @@ namespace Proyecto.Catalogos.Ejecucion
             List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
             Unidad unidad = new Unidad();
 
-            ejecucionGuardar.idestado = 1;
+            ejecucionGuardar.idestado.idEstado = 1;
             ejecucionGuardar.anoPeriodo = Convert.ToInt32(PeriodosDDL.SelectedValue);
             ejecucionGuardar.idProyecto = Int32.Parse(ProyectosDDL.SelectedValue);
             ejecucionGuardar.monto = Convert.ToInt32(txtMontoIngresar.Text);
-            ejecucionGuardar.idTipoTramite = Int32.Parse(DDLTipoTramite.SelectedValue);
+            ejecucionGuardar.idTipoTramite.idTramite = Int32.Parse(DDLTipoTramite.SelectedValue);
             ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
             int respuesta = ejecucionServicios.InsertarEjecucion(ejecucionGuardar);
 
@@ -1568,11 +1568,11 @@ namespace Proyecto.Catalogos.Ejecucion
             Unidad unidad = new Unidad();
 
             ejecucionGuardar.idEjecucion = 4;
-            ejecucionGuardar.idestado = 2;
+            ejecucionGuardar.idestado.idEstado = 2;
             ejecucionGuardar.anoPeriodo = Convert.ToInt32(PeriodosDDL.SelectedValue);
             ejecucionGuardar.idProyecto = Int32.Parse(ProyectosDDL.SelectedValue);
             ejecucionGuardar.monto = Convert.ToInt32(txtMontoIngresar.Text);
-            ejecucionGuardar.idTipoTramite = Int32.Parse(DDLTipoTramite.SelectedValue);
+            ejecucionGuardar.idTipoTramite.idTramite = Int32.Parse(DDLTipoTramite.SelectedValue);
             ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
             ejecucionServicios.EliminarEjecucionUnidad(ejecucionGuardar.idEjecucion);
             ejecucionServicios.EliminarEjecucionPartidas(ejecucionGuardar.idEjecucion);

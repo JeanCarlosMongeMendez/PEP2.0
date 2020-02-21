@@ -116,11 +116,11 @@ namespace AccesoDatos
 
             SqlCommand command = new SqlCommand(consulta, sqlConnection);
 
-            command.Parameters.AddWithValue("@id_estado", ejecucion.idestado);
+            command.Parameters.AddWithValue("@id_estado", ejecucion.idestado.idEstado);
             command.Parameters.AddWithValue("@ano_periodo", ejecucion.anoPeriodo);
             command.Parameters.AddWithValue("@id_proyecto", ejecucion.idProyecto);
             command.Parameters.AddWithValue("@monto", ejecucion.monto);
-            command.Parameters.AddWithValue("@id_tipo_tramite", ejecucion.idTipoTramite);
+            command.Parameters.AddWithValue("@id_tipo_tramite", ejecucion.idTipoTramite.idTramite);
             command.Parameters.AddWithValue("@numero_referencia", ejecucion.numeroReferencia);
             respuesta = (int)command.ExecuteScalar();
 
@@ -211,11 +211,11 @@ namespace AccesoDatos
 
             SqlCommand command = new SqlCommand(consulta, sqlConnection);
             command.Parameters.AddWithValue("@id_ejecucion",ejecucion.idEjecucion);
-            command.Parameters.AddWithValue("@id_estado", ejecucion.idestado);
+            command.Parameters.AddWithValue("@id_estado", ejecucion.idestado.idEstado);
             command.Parameters.AddWithValue("@ano_periodo", ejecucion.anoPeriodo);
             command.Parameters.AddWithValue("@id_proyecto", ejecucion.idProyecto);
             command.Parameters.AddWithValue("@monto", ejecucion.monto);
-            command.Parameters.AddWithValue("@id_tipo_tramite", ejecucion.idTipoTramite);
+            command.Parameters.AddWithValue("@id_tipo_tramite", ejecucion.idTipoTramite.idTramite);
             command.Parameters.AddWithValue("@numero_referencia", ejecucion.numeroReferencia);
            
 
@@ -253,6 +253,48 @@ namespace AccesoDatos
             }
             sqlConnection.Close();
             return monto;
+        }
+
+
+
+
+        /// <summary>
+        /// Consulta Ejecucion
+        /// </summary>
+        /// <param name="Periodo"></param>
+        ///  <param name="Proyecto"></param>
+        public List<Ejecucion> consultaEjecucion(string Periodo, string Proyecto)
+        {
+            List<Ejecucion> listaEjecucion = new List<Ejecucion>();
+            SqlConnection sqlConnection = conexion.conexionPEP();
+
+            String consulta = @"select descripcion_estado,monto,numero_referencia,nombre_tramite
+                                      from EstadoEjecucion Es,Ejecucion E,Tipos_tramite T
+                                      where E.id_proyecto=@idProyecto and E.ano_periodo=@Periodo and E.id_tipo_tramite= T.id_tramite and E.id_estado= Es.id_estado";
+
+            SqlCommand command = new SqlCommand(consulta, sqlConnection);
+
+            command.Parameters.AddWithValue("@Periodo", Convert.ToInt32(Periodo));
+            command.Parameters.AddWithValue("@idProyecto", Convert.ToInt32(Proyecto));
+
+            SqlDataReader reader;
+            sqlConnection.Open();
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                EstadoEjecucion estadoEjecucion = new EstadoEjecucion();
+                TipoTramite tipoTramite = new TipoTramite();
+                Ejecucion ejecucion = new Ejecucion();
+                ejecucion.monto = Convert.ToInt32(reader["monto"].ToString());
+                ejecucion.numeroReferencia = Convert.ToString(reader["numero_referencia"].ToString());
+                tipoTramite.nombreTramite = Convert.ToString(reader["nombre_tramite"].ToString());
+                ejecucion.idTipoTramite = tipoTramite;
+                estadoEjecucion.descripcion= Convert.ToString(reader["descripcion_estado"].ToString());
+                ejecucion.idestado = estadoEjecucion;
+                listaEjecucion.Add(ejecucion);
+            }
+            sqlConnection.Close();
+            return listaEjecucion;
         }
 
 
