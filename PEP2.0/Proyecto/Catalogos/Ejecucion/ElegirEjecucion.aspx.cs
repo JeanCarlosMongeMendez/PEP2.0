@@ -2,6 +2,7 @@
 using Servicios;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -15,6 +16,116 @@ namespace Proyecto.Catalogos.Ejecucion
         ProyectoServicios proyectoServicios;
         PeriodoServicios periodoServicios;
         EjecucionServicios ejecucionServicios;
+        private int elmentosMostrar = 10;
+
+
+        private int paginaActual4
+        {
+            get
+            {
+                if (ViewState["paginaActual"] == null)
+                {
+                    return 0;
+                }
+                return ((int)ViewState["paginaActual"]);
+            }
+            set
+            {
+                ViewState["paginaActual"] = value;
+            }
+        }
+
+        protected void lbPrimero4_Click(object sender, EventArgs e)
+        {
+            paginaActual4 = 0;
+            MostrarDatosTablaUnidad();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: se devuelve a la ultima pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Ultima pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbUltimo4_Click(object sender, EventArgs e)
+        {
+            paginaActual4 = (Convert.ToInt32(ViewState["TotalPaginas4"]) - 1);
+            MostrarDatosTablaUnidad();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: se devuelve a la pagina anterior y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Anterior pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbAnterior4_Click(object sender, EventArgs e)
+        {
+            paginaActual4 -= 1;
+            MostrarDatosTablaUnidad();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: se devuelve a la pagina siguiente y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Siguiente pagina"
+        /// Modifica: elementos mostrados en la tabla de notas
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbSiguiente4_Click(object sender, EventArgs e)
+        {
+            paginaActual4 += 1;
+            MostrarDatosTablaUnidad();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: actualiza la la pagina actual y muestra los datos de la misma
+        /// Requiere: -
+        /// Modifica: elementos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+
+        protected void rptPaginacion4_ItemCommand(object source, DataListCommandEventArgs e)
+        {
+            if (!e.CommandName.Equals("nuevaPagina")) return;
+            paginaActual4 = Convert.ToInt32(e.CommandArgument.ToString());
+            MostrarDatosTablaUnidad();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 16/jul/2019
+        /// Efecto: marca el boton de la pagina seleccionada
+        /// Requiere: dar clic al boton de paginacion
+        /// Modifica: color del boton seleccionado
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+        protected void rptPaginacion4_ItemDataBound(object sender, DataListItemEventArgs e)
+        {
+            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion4");
+            if (lnkPagina.CommandArgument != paginaActual4.ToString()) return;
+            lnkPagina.Enabled = false;
+            lnkPagina.BackColor = Color.FromName("#005da4");
+            lnkPagina.ForeColor = Color.FromName("#FFFFFF");
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             this.proyectoServicios = new ProyectoServicios();
@@ -26,6 +137,10 @@ namespace Proyecto.Catalogos.Ejecucion
                 PeriodosDDL.Items.Clear();
                 ProyectosDDL.Items.Clear();
                 CargarPeriodos();
+                Session["listaUnidad"] = null;
+                Session["listaPartida"] = null;
+                Session["listaMontoPartidaDisponible"] = null;
+
                 //DDLTipoTramite.Items.Clear();
                 //ddlPartida.Items.Clear();
             }
@@ -44,7 +159,7 @@ namespace Proyecto.Catalogos.Ejecucion
             //Session["partidasPorUnidadesProyectoPeriodo"] = null;
             //Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
              CargarProyectos();
-            
+             MostrarDatosTablaUnidad();
             //reiniciarTablaUnidad();
             //DDLTipoTramite.Items.Clear();
             //descripcionOtroTipoTramite.Visible = false;
@@ -80,7 +195,7 @@ namespace Proyecto.Catalogos.Ejecucion
                     //CargarUnidades();
 
                 }
-                MostrarDatosTablaUnidad();
+                //MostrarDatosTablaUnidad();
             }
 
         }
@@ -155,29 +270,45 @@ namespace Proyecto.Catalogos.Ejecucion
         {
 
             string a = ProyectosDDL.SelectedValue;
-            var dt = ejecucionServicios.ConsultarEjecucion(PeriodosDDL.SelectedValue, ProyectosDDL.SelectedValue);
+            var dt = ejecucionServicios.ConsultarEjecucion(PeriodosDDL.SelectedValue, a);
                 pgsource.DataSource = dt;
                 pgsource.AllowPaging = true;
-                //numero de items que se muestran en el Repeater
-                //pgsource.PageSize = elmentosMostrar;
-                //pgsource.CurrentPageIndex = paginaActual2;
-                //mantiene el total de paginas en View State
-                //ViewState["TotalPaginas2"] = pgsource.PageCount;
-                //Ejemplo: "Página 1 al 10"
-                //lblpagina2.Text = "Página " + (paginaActual2 + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
-                //Habilitar los botones primero, último, anterior y siguiente
-                //lbAnterior2.Enabled = !pgsource.IsFirstPage;
-                //lbSiguiente2.Enabled = !pgsource.IsLastPage;
-                //lbPrimero2.Enabled = !pgsource.IsFirstPage;
-                //lbUltimo2.Enabled = !pgsource.IsLastPage;
+            //numero de items que se muestran en el Repeater
+            pgsource.PageSize = elmentosMostrar;
+            pgsource.CurrentPageIndex = paginaActual4;
+            //mantiene el total de paginas en View State
+            ViewState["TotalPaginas2"] = pgsource.PageCount;
+            //Ejemplo: "Página 1 al 10"
+            lblpagina4.Text = "Página " + (paginaActual4 + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
+            //Habilitar los botones primero, último, anterior y siguiente
+            lbAnterior4.Enabled = !pgsource.IsFirstPage;
+            lbSiguiente4.Enabled = !pgsource.IsLastPage;
+            lbPrimero4.Enabled = !pgsource.IsFirstPage;
+            lbUltimo4.Enabled = !pgsource.IsLastPage;
 
-                rpUnidadSelecionadas.DataSource = pgsource;
-                rpUnidadSelecionadas.DataBind();
+            rpUnidadSelecionadas.DataSource = pgsource;
+            rpUnidadSelecionadas.DataBind();
 
                 //metodo que realiza la paginacion
                 //Paginacion2();
 
            
+        }
+        protected void EditarEjecucion_OnChanged(object sender, EventArgs e)
+        {
+           
+            string idEjecucion = ((LinkButton)(sender)).CommandArgument.ToString();
+
+            Session["listaUnidad"]= ejecucionServicios.ConsultarUnidadEjecucion(Convert.ToInt32(idEjecucion));
+            Session["listaPartida"] = ejecucionServicios.ConsultarPartidaEjecucion(Convert.ToInt32(idEjecucion));
+            Session["listaMontoPartidaDisponible"] = ejecucionServicios.ConsultarEjecucionMontoPartida(Convert.ToInt32(idEjecucion));
+            String url = Page.ResolveUrl("~/Catalogos/Ejecucion/AdministrarEjecucion.aspx");
+            Response.Redirect(url);
+            //string[] unidadNumeroPartida = (((LinkButton)(sender)).CommandArgument.ToString().Split(new string[] { "::" }, StringSplitOptions.None));
+            //string numeroPartida = unidadNumeroPartida[0];
+            //string idUnidad = unidadNumeroPartida[1];
+
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La unidad fue borrada con exito" + "');", true);
         }
 
     }

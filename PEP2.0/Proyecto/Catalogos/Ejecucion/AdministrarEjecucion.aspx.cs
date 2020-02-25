@@ -29,6 +29,7 @@ namespace Proyecto.Catalogos.Ejecucion
         EjecucionServicios ejecucionServicios;
         int idUnidadElegida;
         private int elmentosMostrar = 10;
+        string periodooo = "2020";
         //se utiliza en el metodo  MostrarDatosTablaUnidad();se utiliza para pasar unidades seleccionadas de la tabla que aparece en el  #modalElegirUnidad
         static List<Unidad> listaUnidad = new List<Unidad>();
         //Esta llena la tabla en el metodo mostrarDatosTabla(),la uso como temporal de la linkedlist
@@ -974,8 +975,12 @@ namespace Proyecto.Catalogos.Ejecucion
             {
                 Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());
                 Session["partidasPorUnidadesProyectoPeriodo"] = null;
-                Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
+                //Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
+               Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = (List<Partida>)Session["listaPartida"];
                 Session["partidasAsignadasConMonto"] = null;
+                listaUnidad = (List<Unidad>)Session["listaUnidad"];
+                MostrarDatosTablaUnidad(listaUnidad);
+               
                 PeriodosDDL.Items.Clear();
                 ProyectosDDL.Items.Clear();
                 DDLTipoTramite.Items.Clear();
@@ -987,6 +992,7 @@ namespace Proyecto.Catalogos.Ejecucion
             }
             else
             {
+                listaUnidad = (List<Unidad>)Session["listaUnidad"];
                 obtenerPartidasSeleccionadas();
             }
 
@@ -1766,6 +1772,7 @@ namespace Proyecto.Catalogos.Ejecucion
             PeriodosDDL.Items.Clear();
             periodos = this.periodoServicios.ObtenerTodos();
             int anoHabilitado = 0;
+            int año = 0;
             Session["partidasPorUnidadesProyectoPeriodo"] = null;
             Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
             if (periodos.Count > 0)
@@ -1783,17 +1790,26 @@ namespace Proyecto.Catalogos.Ejecucion
                     {
                         nombre = periodo.anoPeriodo.ToString();
                     }
+                    if (periodo.anoPeriodo.Equals(2020))
+                    {
+                        año = periodo.anoPeriodo;
+                    }
 
-                    ListItem itemPeriodo = new ListItem(nombre, periodo.anoPeriodo.ToString());
-                    PeriodosDDL.Items.Add(itemPeriodo);
-                }
+                        ListItem itemPeriodo = new ListItem(nombre, periodo.anoPeriodo.ToString());
 
-                if (anoHabilitado != 0)
+                } 
+                if (periodooo != "")
                 {
-                    PeriodosDDL.Items.FindByValue(anoHabilitado.ToString()).Selected = true;
+                        PeriodosDDL.Items.FindByValue(año.ToString()).Selected = true;
+                   
                 }
+                    else if (anoHabilitado != 0)
+                    {
 
-                CargarProyectos();
+                        PeriodosDDL.Items.FindByValue(anoHabilitado.ToString()).Selected = true;
+                    }
+
+                    CargarProyectos();
 
 
             }
@@ -1860,6 +1876,7 @@ namespace Proyecto.Catalogos.Ejecucion
                 {
                     Session["partidasPorUnidadesProyectoPeriodo"] = null;
                 }
+
                 var dt = listUnidad;
                 pgsource.DataSource = dt;
                 pgsource.AllowPaging = true;

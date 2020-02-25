@@ -113,5 +113,36 @@ namespace Servicios
         {
             return ejecucionDatos.consultarMontoDiponible(idPartida, idPresupuestoEgreso);
         }
+        /// <summary>
+        /// Consultar una UnidadEjecucion
+        /// </summary>
+        /// <param name="idEjecucion">Ejecucion</param>
+       
+
+        public List<Unidad> ConsultarUnidadEjecucion(int idEjecucion)
+        {
+            return ejecucionDatos.ConsultarEjecucionUnidad(idEjecucion);
+        }
+
+
+        /// <summary>
+        /// Consultar una PartidaEjecucion
+        /// </summary>
+        /// <param name="idEjecucion">Ejecucion</param>
+
+        public List<Partida> ConsultarPartidaEjecucion(int idEjecucion)
+        {
+            return ejecucionDatos.ConsultarEjecucionPartidas(idEjecucion);
+        }
+
+        /// <summary>
+        /// Consultar una EjecucionMontoPartida
+        /// </summary>
+        /// <param name="idEjecucion">Ejecucion</param>
+
+        public List<PartidaUnidad> ConsultarEjecucionMontoPartida(int idEjecucion)
+        {
+            return ejecucionDatos.ConsultarEjecucionMontoPartidaElegida(idEjecucion);
+        }
     }
 }

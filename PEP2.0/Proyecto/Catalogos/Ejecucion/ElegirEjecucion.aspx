@@ -22,6 +22,7 @@
                         <thead style="text-align: center">
                             <tr style="text-align: center" class="btn-primary">
                                 <th></th>
+                                 <th>Número de Ejecución</th>
                                 <th>Número de Referencia</th>
                                 <th>Estado</th>
                                 <th>Tipo de Tramite</th>
@@ -37,8 +38,13 @@
                             <ItemTemplate>
                                 <tr style="text-align: center">
                                     <td>
-<%--                                        <asp:LinkButton ID="btnEliminarUnidad" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("idUnidad") %>' OnClick="EliminarUnidadSeleccionada_OnChanged" Cssclass="btn glyphicon glyphicon-remove" />--%>
+<%--                                        <asp:LinkButton ID="btnEliminarUnidad" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("idUnidad") %>' OnClick="EliminarUnidadSeleccionada_OnChanged" Cssclass="btn glyphicon glyphicon-eye-open" />--%>
+                                       <asp:LinkButton ID="btnEditarEjecucion" runat="server" ToolTip="Editar" CommandArgument='<%# Eval("idEjecucion") %>' OnClick=" EditarEjecucion_OnChanged" Cssclass="btn glyphicon glyphicon-pencil" />
+                                    </td>
 
+                                    <td>
+                                        <%# Eval("idEjecucion") %>
+                                    
                                     </td>
                                     <td>
                                         <%# Eval("numeroReferencia") %>
@@ -46,10 +52,10 @@
                                     </td>
 
                                     <td>
-                                        <%# Eval("descripcion") %>
+                                        <%# Eval("idestado.descripcion") %>
                                     </td>
                                      <td>
-                                        <%# Eval("nombreTramite") %>
+                                        <%# Eval("idTipoTramite.nombreTramite") %>
                                     </td>
                                      <td>
                                         <%# Eval("monto") %>
@@ -63,6 +69,40 @@
                         </asp:Repeater>
                     </table>
                 </div>
+                 <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                                    <center>
+                    <table class="table" style="max-width:664px;">
+                        <tr style="padding:1px !important">
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbPrimero4" runat="server" CssClass="btn btn-primary" OnClick="lbPrimero4_Click"><span class="glyphicon glyphicon-fast-backward"></span></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbAnterior4" runat="server" CssClass="btn btn-default" OnClick="lbAnterior4_Click"><span class="glyphicon glyphicon-backward"></asp:LinkButton>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:DataList ID="DataList2" runat="server"
+                                    OnItemCommand="rptPaginacion4_ItemCommand"
+                                    OnItemDataBound="rptPaginacion4_ItemDataBound" RepeatDirection="Horizontal">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lbPaginacion4" runat="server" CssClass="btn btn-default"
+                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
+                                            Text='<%# Eval("PaginaText") %>' ></asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:DataList>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbSiguiente4" CssClass="btn btn-default" runat="server" OnClick="lbSiguiente4_Click"><span class="glyphicon glyphicon-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbUltimo4" CssClass="btn btn-primary" runat="server" OnClick="lbUltimo4_Click"><span class="glyphicon glyphicon-fast-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:Label ID="lblpagina4" runat="server" Text=""></asp:Label>
+                            </td>
+                        </tr>
+                    </table>
+                        </center>
+                                </div>
                    </ContentTemplate>
     </asp:UpdatePanel>
  </asp:Content>

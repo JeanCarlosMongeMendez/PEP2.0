@@ -268,7 +268,7 @@ namespace AccesoDatos
             List<Ejecucion> listaEjecucion = new List<Ejecucion>();
             SqlConnection sqlConnection = conexion.conexionPEP();
 
-            String consulta = @"select descripcion_estado,monto,numero_referencia,nombre_tramite
+            String consulta = @"select descripcion_estado,monto,numero_referencia,nombre_tramite,E.id_ejecucion
                                       from EstadoEjecucion Es,Ejecucion E,Tipos_tramite T
                                       where E.id_proyecto=@idProyecto and E.ano_periodo=@Periodo and E.id_tipo_tramite= T.id_tramite and E.id_estado= Es.id_estado";
 
@@ -285,6 +285,7 @@ namespace AccesoDatos
                 EstadoEjecucion estadoEjecucion = new EstadoEjecucion();
                 TipoTramite tipoTramite = new TipoTramite();
                 Ejecucion ejecucion = new Ejecucion();
+                ejecucion.idEjecucion= Convert.ToInt32(reader["id_ejecucion"].ToString());
                 ejecucion.monto = Convert.ToInt32(reader["monto"].ToString());
                 ejecucion.numeroReferencia = Convert.ToString(reader["numero_referencia"].ToString());
                 tipoTramite.nombreTramite = Convert.ToString(reader["nombre_tramite"].ToString());
@@ -296,6 +297,109 @@ namespace AccesoDatos
             sqlConnection.Close();
             return listaEjecucion;
         }
+        /// <summary>
+        /// Consultar una EjecucionUnidad
+        /// </summary>
+        ///  <param name="idEjecucion"></param>
+        public List<Unidad> ConsultarEjecucionUnidad(int idEjecucion )
+        {
+
+            List<Unidad> listaUnidad = new List<Unidad>();
+            SqlConnection sqlConnection = conexion.conexionPEP();
+
+            String consulta = @"select numero_referencia,id_unidad,nombre_unidad,id_ejecucion
+                                            from Unidad_ejecucion
+                                            where id_ejecucion=@idEjecucion";
+
+            SqlCommand command = new SqlCommand(consulta, sqlConnection);
+
+            command.Parameters.AddWithValue("@idEjecucion", idEjecucion);
+
+            SqlDataReader reader;
+            sqlConnection.Open();
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Unidad unidad = new Unidad();
+                unidad.idUnidad= Convert.ToInt32(reader["id_unidad"].ToString());
+                unidad.nombreUnidad= Convert.ToString(reader["nombre_unidad"].ToString());
+                listaUnidad.Add(unidad);
+            }
+            
+                sqlConnection.Close();
+            return listaUnidad;
+        }
+
+        /// <summary>
+        /// Consultar una PartidaEjecucion
+        /// </summary>
+        /// <param name="partida">partida</param>
+       
+        public List<Partida> ConsultarEjecucionPartidas(int idEjecucion)
+        {
+            List<Partida> listaPartida = new List<Partida>();
+            SqlConnection sqlConnection = conexion.conexionPEP();
+
+            String consulta = @"select numero_referencia,id_partida,numero_partida,descripcion_partida,id_ejecucion
+                                            from Partida_ejecucion
+                                            where id_ejecucion=@idEjecucion";
+
+            SqlCommand command = new SqlCommand(consulta, sqlConnection);
+
+            command.Parameters.AddWithValue("@idEjecucion", Convert.ToInt32(idEjecucion));
+
+            SqlDataReader reader;
+            sqlConnection.Open();
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                Partida partida = new Partida();
+                partida.idPartida = Convert.ToInt32(reader["id_partida"].ToString());
+                partida.numeroPartida = Convert.ToString(reader["numero_partida"].ToString());
+                partida.descripcionPartida = Convert.ToString(reader["descripcion_partida"].ToString());
+                listaPartida.Add(partida);
+            }
+
+            sqlConnection.Close();
+            return listaPartida;
+        }
+
+        /// <summary>
+        /// Consultar EjecucionMontoPartidaElegida
+        /// </summary>
+        /// <param name="idEjecucion">PartidaUnidad</param>
+       
+        public List<PartidaUnidad> ConsultarEjecucionMontoPartidaElegida( int idEjecucion)
+        {
+            List<PartidaUnidad> listapartidaUnidad = new List<PartidaUnidad>();
+            SqlConnection sqlConnection = conexion.conexionPEP();
+
+            String consulta = @"select  numero_referencia,id_partida,id_unidad,monto,monto_disponible,numero_partida,id_ejecucion 
+                                           from EjecucionMontoPartidasElegidas
+                                           where id_ejecucion=@idEjecucion";
+
+            SqlCommand command = new SqlCommand(consulta, sqlConnection);
+
+            command.Parameters.AddWithValue("@idEjecucion", Convert.ToInt32(idEjecucion));
+
+            SqlDataReader reader;
+            sqlConnection.Open();
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                PartidaUnidad partidaUnidad = new PartidaUnidad();
+                partidaUnidad.IdPartida = Convert.ToInt32(reader["id_partida"].ToString());
+                partidaUnidad.IdUnidad = Convert.ToInt32(reader["id_unidad"].ToString());
+                partidaUnidad.Monto = Convert.ToDouble(reader["monto"].ToString());
+                partidaUnidad.MontoDisponible = Convert.ToDouble(reader["monto_disponible"].ToString());
+                partidaUnidad.NumeroPartida = Convert.ToString(reader["numero_partida"].ToString());
+                listapartidaUnidad.Add(partidaUnidad);
+            }
+
+            sqlConnection.Close();
+            return listapartidaUnidad;
+        }
+
 
 
     }
