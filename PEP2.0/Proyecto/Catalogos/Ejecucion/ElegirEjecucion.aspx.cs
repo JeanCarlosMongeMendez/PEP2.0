@@ -147,6 +147,7 @@ namespace Proyecto.Catalogos.Ejecucion
                 Session["numeroReferencia"] = null;
                 Session["monto"] = null;
                 Session["nuevaEjecucion"] = null;
+                Session["idEjecucion"] = null;
                 //DDLTipoTramite.Items.Clear();
                 //ddlPartida.Items.Clear();
             }
@@ -308,7 +309,7 @@ namespace Proyecto.Catalogos.Ejecucion
             Session["nuevaEjecucion"] = 0;
             Session["listaUnidad"]= ejecucionServicios.ConsultarUnidadEjecucion(Convert.ToInt32(idEjecucion));
             Session["listaPartida"] = ejecucionServicios.ConsultarPartidaEjecucion(Convert.ToInt32(idEjecucion));
-            List<Partida> par = (List < Partida > )Session["listaPartida"];
+        
             listaEjecucion = ejecucionServicios.ConsultarEjecucion(PeriodosDDL.SelectedValue, ProyectosDDL.SelectedValue);
             int idTipoTramite= listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().idTipoTramite.idTramite;
             Session["listaMontoPartidaDisponible"] = ejecucionServicios.ConsultarEjecucionMontoPartida(Convert.ToInt32(idEjecucion));
@@ -317,6 +318,7 @@ namespace Proyecto.Catalogos.Ejecucion
             Session["idTipoTramite"] =  idTipoTramite;
             Session["numeroReferencia"] = listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().numeroReferencia;
             Session["monto"]= listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().monto;
+            Session["idEjecucion"] = Convert.ToInt32(idEjecucion);
             String url = Page.ResolveUrl("~/Catalogos/Ejecucion/AdministrarEjecucion.aspx");
             Response.Redirect(url);
            

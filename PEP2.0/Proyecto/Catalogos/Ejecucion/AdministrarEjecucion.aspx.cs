@@ -33,6 +33,7 @@ namespace Proyecto.Catalogos.Ejecucion
         string proyectoo = "";
         string tipoTramite = "";
         int nuevaEjecucion;
+        int idEjecucion;
         //se utiliza en el metodo  MostrarDatosTablaUnidad();se utiliza para pasar unidades seleccionadas de la tabla que aparece en el  #modalElegirUnidad
         static List<Unidad> listaUnidad = new List<Unidad>();
         //Esta llena la tabla en el metodo mostrarDatosTabla(),la uso como temporal de la linkedlist
@@ -1028,7 +1029,9 @@ namespace Proyecto.Catalogos.Ejecucion
                     obtenerPartidasSeleccionadas();
                     CargarTramites();
                     MostrarUnidadesConMontoRepartido();
-                    
+                    idEjecucion = Convert.ToInt32(Session["idEjecucion"]);
+
+
                     descripcionOtroTipoTramite.Visible = false;
                     UpdatePanel10.Visible = false;
                     ButtonRepartir.Visible = false;
@@ -1631,7 +1634,7 @@ namespace Proyecto.Catalogos.Ejecucion
             List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
             Unidad unidad = new Unidad();
 
-            ejecucionGuardar.idEjecucion = 4;
+            ejecucionGuardar.idEjecucion = idEjecucion;
             ejecucionGuardar.idestado.idEstado = 2;
             ejecucionGuardar.anoPeriodo = Convert.ToInt32(PeriodosDDL.SelectedValue);
             ejecucionGuardar.idProyecto = Int32.Parse(ProyectosDDL.SelectedValue);
