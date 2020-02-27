@@ -31,12 +31,14 @@ namespace Proyecto.Catalogos.Ejecucion
         private int elmentosMostrar = 10;
         string periodooo = "";
         string proyectoo = "";
+        string tipoTramite = "";
+        int nuevaEjecucion;
         //se utiliza en el metodo  MostrarDatosTablaUnidad();se utiliza para pasar unidades seleccionadas de la tabla que aparece en el  #modalElegirUnidad
         static List<Unidad> listaUnidad = new List<Unidad>();
         //Esta llena la tabla en el metodo mostrarDatosTabla(),la uso como temporal de la linkedlist
         static List<Unidad> listUnidad = new List<Unidad>();
         //se utiliza tambien en el metodo mostrarDatosTabla(),para llenar la tabla en el inicio 
-        static LinkedList<Unidad> listUnidades = new LinkedList<Unidad>();
+        static List<Unidad> listUnidades = new List<Unidad>();
 
         int primerIndex, ultimoIndex, primerIndex2, ultimoIndex2, primerIndex3, ultimoIndex3, primerIndex4, ultimoIndex4;
         //contador que se utiliza en el metodo MostrarDatosTabla(),se utiliza para que recorra solo una ves en listUnidades
@@ -974,34 +976,81 @@ namespace Proyecto.Catalogos.Ejecucion
             this.partidaUnidad = new PartidaUnidad();
             if (!IsPostBack)
             {
-                Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());
-                Session["partidasPorUnidadesProyectoPeriodo"] = null;
-                //Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
-                Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = (List<Partida>)Session["listaPartida"];
-                Session["partidasAsignadasConMonto"] = null;
-                listaUnidad = (List<Unidad>)Session["listaUnidad"];
-                MostrarDatosTablaUnidad(listaUnidad);
-                periodooo = Convert.ToString( Session["periodo"]);
-                proyectoo = Convert.ToString(Session["proyecto"]);
-                
+                nuevaEjecucion = Convert.ToInt32(Session["nuevaEjecucion"]);
+                if (nuevaEjecucion == 0)
+                {
+                    List<Entidades.Unidad> comparaListaUnidades = new List<Entidades.Unidad>();
+                    LinkedList<int> unidades = new LinkedList<int>();
+                    Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());
+
+                    //Session["partidasPorUnidadesProyectoPeriodo"] = null;
+                    //Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
+                    Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = (List<Partida>)Session["listaPartida"];
+                    // Session["partidasAsignadasConMonto"] = null;
+                    periodooo = Convert.ToString(Session["periodo"]);
+                    proyectoo = Convert.ToString(Session["proyecto"]);
+                    Session["partidasAsignadasConMonto"] = (List<PartidaUnidad>)Session["listaMontoPartidaDisponible"];
+
+                    listaUnidad = (List<Unidad>)Session["listaUnidad"];
+                    MostrarDatosTablaUnidad(listaUnidad);
 
 
+                    comparaListaUnidades = unidadServicios.ObtenerPorProyecto(Convert.ToInt32(proyectoo)).ToList<Unidad>();
+                    List<Unidad> tempUnidad = listaUnidad.Where(a => !comparaListaUnidades.Any(a1 => a1.idUnidad == a.idUnidad))
+                         .Union(comparaListaUnidades.Where(a => !listaUnidad.Any(a1 => a1.idUnidad == a.idUnidad))).ToList();
 
-                PeriodosDDL.Items.Clear();
-                ProyectosDDL.Items.Clear();
-                DDLTipoTramite.Items.Clear();
-                ddlPartida.Items.Clear();
-               
-                CargarPeriodos();
-                //obtenerUnidadesPartidasAsignarMonto();
-                obtenerPartidasSeleccionadas();
-                descripcionOtroTipoTramite.Visible = false;
-                UpdatePanel10.Visible = false;
-                ButtonRepartir.Visible = false;
+                    listUnidad = tempUnidad;
+                    count = count + 1;
+                    
+                   
+                    foreach (Unidad unidad in listaUnidad)
+                    {
+                        unidades.AddFirst(unidad.idUnidad);
+                    }
+                    List<Partida> tempPartida = new List<Partida>();
+                    List<Partida> Partidas =partidaServicios.ObtienePartidaPorPeriodoUnidadProyecto(Convert.ToInt32(proyectoo), unidades, Convert.ToInt32(periodooo));
+                    List<Partida> temppartidasSeleccionadasPorUnidadesProyectoPeriodo= (List<Partida>)Session["listaPartida"];
+                    tempPartida = Partidas.Where(a => !temppartidasSeleccionadasPorUnidadesProyectoPeriodo.Any(a1 => a1.numeroPartida == a.numeroPartida && a1.idPartida==a.idPartida))
+                         .Union(temppartidasSeleccionadasPorUnidadesProyectoPeriodo.Where(a => !Partidas.Any(a1 => a1.numeroPartida != a.numeroPartida && a1.idPartida!=a.idPartida))).ToList();
+                    //MostrarDatosTabla();
+                    Session["partidasPorUnidadesProyectoPeriodo"] = tempPartida;
+                    tipoTramite = Convert.ToString(Session["idTipoTramite"]);
+                    txtMontoIngresar.Text = Convert.ToString(Session["monto"]);
+                    numeroReferencia.Text = Convert.ToString(Session["numeroReferencia"]);
+
+                    PeriodosDDL.Items.Clear();
+                    ProyectosDDL.Items.Clear();
+                    DDLTipoTramite.Items.Clear();
+                    ddlPartida.Items.Clear();
+
+                    CargarPeriodos();
+                    //obtenerUnidadesPartidasAsignarMonto();
+                    obtenerPartidasSeleccionadas();
+                    CargarTramites();
+                    MostrarUnidadesConMontoRepartido();
+                    
+                    descripcionOtroTipoTramite.Visible = false;
+                    UpdatePanel10.Visible = false;
+                    ButtonRepartir.Visible = false;
+                    MostrarTablaRepartirGastos();
+                }
+                else
+                {
+                    descripcionOtroTipoTramite.Visible = false;
+                    UpdatePanel10.Visible = false;
+                    ButtonRepartir.Visible = false;
+                    Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());
+                    Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
+                    Session["partidasPorUnidadesProyectoPeriodo"] = null;
+                    Session["partidasAsignadasConMonto"] = null;
+                    CargarPeriodos();
+                    CargarTramites();
+                    MostrarTablaRepartirGastos();
+                }
             }
             else
             {
-                listaUnidad = (List<Unidad>)Session["listaUnidad"];
+               
                 obtenerPartidasSeleccionadas();
             }
 
@@ -1691,8 +1740,11 @@ namespace Proyecto.Catalogos.Ejecucion
 
                 if (proyectoElegido != 0 && periodoElegido != 0)
                 {
-                    Session["partidasPorUnidadesProyectoPeriodo"] = partidaServicios.ObtienePartidaPorPeriodoUnidadProyecto(proyectoElegido, unidades, periodoElegido);
+                    if (periodooo.Equals("")){
 
+                        Session["partidasPorUnidadesProyectoPeriodo"] = partidaServicios.ObtienePartidaPorPeriodoUnidadProyecto(proyectoElegido, unidades, periodoElegido);
+                    }
+                   
                     List<Partida> partidasF = (List<Partida>)Session["partidasPorUnidadesProyectoPeriodo"];
                     var dt2 = partidasF;
                     pgsource.DataSource = dt2;
@@ -1782,10 +1834,11 @@ namespace Proyecto.Catalogos.Ejecucion
             periodos = this.periodoServicios.ObtenerTodos();
             int anoHabilitado = 0;
 
-            Session["partidasPorUnidadesProyectoPeriodo"] = null;
+           
             if (periodooo.Equals("")) { 
             Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
-                  }
+                Session["partidasPorUnidadesProyectoPeriodo"] = null;
+            }
             if (periodos.Count > 0)
             {
                 foreach (Periodo periodo in periodos)
@@ -1873,45 +1926,46 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         private void MostrarDatosTabla()
         {
-
+           
             if ((ProyectosDDL.Items.Count > 0) && (count == 0))
             {
+               
+                    listUnidades = unidadServicios.ObtenerPorProyecto(Int32.Parse(ProyectosDDL.SelectedValue)).ToList<Unidad>();
 
-                listUnidades = unidadServicios.ObtenerPorProyecto(Int32.Parse(ProyectosDDL.SelectedValue));
+                    listUnidad = listUnidades.ToList<Unidad>();
+                    if (listaUnidad == null || listaUnidad.Count == 0)
+                    {
+                        Session["partidasPorUnidadesProyectoPeriodo"] = null;
+                    }
 
-                listUnidad = listUnidades.ToList<Unidad>();
-                if (listaUnidad == null || listaUnidad.Count == 0)
-                {
-                    Session["partidasPorUnidadesProyectoPeriodo"] = null;
-                }
+                    var dt = listUnidad;
+                    pgsource.DataSource = dt;
+                    pgsource.AllowPaging = true;
+                    //numero de items que se muestran en el Repeater
+                    pgsource.PageSize = elmentosMostrar;
+                    pgsource.CurrentPageIndex = paginaActual;
+                    //mantiene el total de paginas en View State
+                    ViewState["TotalPaginas"] = pgsource.PageCount;
+                    //Ejemplo: "Página 1 al 10"
+                    lblpagina1.Text = "Página " + (paginaActual + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
+                    //Habilitar los botones primero, último, anterior y siguiente
+                    lbAnterior1.Enabled = !pgsource.IsFirstPage;
+                    lbSiguiente1.Enabled = !pgsource.IsLastPage;
+                    lbPrimero1.Enabled = !pgsource.IsFirstPage;
+                    lbUltimo1.Enabled = !pgsource.IsLastPage;
 
-                var dt = listUnidad;
-                pgsource.DataSource = dt;
-                pgsource.AllowPaging = true;
-                //numero de items que se muestran en el Repeater
-                pgsource.PageSize = elmentosMostrar;
-                pgsource.CurrentPageIndex = paginaActual;
-                //mantiene el total de paginas en View State
-                ViewState["TotalPaginas"] = pgsource.PageCount;
-                //Ejemplo: "Página 1 al 10"
-                lblpagina1.Text = "Página " + (paginaActual + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
-                //Habilitar los botones primero, último, anterior y siguiente
-                lbAnterior1.Enabled = !pgsource.IsFirstPage;
-                lbSiguiente1.Enabled = !pgsource.IsLastPage;
-                lbPrimero1.Enabled = !pgsource.IsFirstPage;
-                lbUltimo1.Enabled = !pgsource.IsLastPage;
+                    Repeater1.DataSource = pgsource;
+                    Repeater1.DataBind();
 
-                Repeater1.DataSource = pgsource;
-                Repeater1.DataBind();
-
-                //metodo que realiza la paginacion
-                Paginacion1();
-                count++;
+                    //metodo que realiza la paginacion
+                    Paginacion1();
+                    count++;
+                
             }
             else
             {
 
-
+               
                 var dt = listUnidad;
                 pgsource.DataSource = dt;
                 pgsource.AllowPaging = true;
@@ -2130,6 +2184,10 @@ namespace Proyecto.Catalogos.Ejecucion
                     }
 
 
+                }
+                if (tipoTramite != "")
+                {
+                    DDLTipoTramite.Items.FindByValue(tipoTramite.ToString()).Selected = true;
                 }
             }
 

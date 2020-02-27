@@ -103,6 +103,10 @@
                     </table>
                         </center>
                                 </div>
+                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+                    
+                    <asp:Button ID="ButtonNuevaEjecucion" runat="server" Text="Nueva Ejecución" CssClass="btn btn-primary" OnClick="NuevaEjecucion_OnChanged" />
+                </div>
                    </ContentTemplate>
     </asp:UpdatePanel>
  </asp:Content>

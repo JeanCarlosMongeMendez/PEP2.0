@@ -268,7 +268,7 @@ namespace AccesoDatos
             List<Ejecucion> listaEjecucion = new List<Ejecucion>();
             SqlConnection sqlConnection = conexion.conexionPEP();
 
-            String consulta = @"select descripcion_estado,monto,numero_referencia,nombre_tramite,E.id_ejecucion
+            String consulta = @"select descripcion_estado,monto,numero_referencia,nombre_tramite,E.id_ejecucion,T.id_tramite
                                       from EstadoEjecucion Es,Ejecucion E,Tipos_tramite T
                                       where E.id_proyecto=@idProyecto and E.ano_periodo=@Periodo and E.id_tipo_tramite= T.id_tramite and E.id_estado= Es.id_estado";
 
@@ -289,6 +289,7 @@ namespace AccesoDatos
                 ejecucion.monto = Convert.ToInt32(reader["monto"].ToString());
                 ejecucion.numeroReferencia = Convert.ToString(reader["numero_referencia"].ToString());
                 tipoTramite.nombreTramite = Convert.ToString(reader["nombre_tramite"].ToString());
+                tipoTramite.idTramite = Convert.ToInt32(reader["id_tramite"].ToString());
                 ejecucion.idTipoTramite = tipoTramite;
                 estadoEjecucion.descripcion= Convert.ToString(reader["descripcion_estado"].ToString());
                 ejecucion.idestado = estadoEjecucion;
@@ -340,9 +341,9 @@ namespace AccesoDatos
             List<Partida> listaPartida = new List<Partida>();
             SqlConnection sqlConnection = conexion.conexionPEP();
 
-            String consulta = @"select numero_referencia,id_partida,numero_partida,descripcion_partida,id_ejecucion
-                                            from Partida_ejecucion
-                                            where id_ejecucion=@idEjecucion";
+            String consulta = @"select P.numero_referencia,P.id_partida,P.numero_partida,P.descripcion_partida,P.id_ejecucion,U.Id_unidad
+                                            from Partida_ejecucion P,Unidad_ejecucion U
+                                            where P.id_ejecucion=@idEjecucion and u.id_ejecucion=P.id_ejecucion";
 
             SqlCommand command = new SqlCommand(consulta, sqlConnection);
 
@@ -355,12 +356,21 @@ namespace AccesoDatos
             {
                 Partida partida = new Partida();
                 partida.idPartida = Convert.ToInt32(reader["id_partida"].ToString());
+                partida.idUnidad = Convert.ToInt32(reader["id_unidad"].ToString());
                 partida.numeroPartida = Convert.ToString(reader["numero_partida"].ToString());
                 partida.descripcionPartida = Convert.ToString(reader["descripcion_partida"].ToString());
-                listaPartida.Add(partida);
-            }
 
+                List<Partida> listaTemp = listaPartida.Where(partidaBD => partidaBD.idPartida == partida.idPartida).ToList();
+
+                if (listaTemp.Count == 0)
+                {
+
+                    listaPartida.Add(partida);
+                }
+            }
+           
             sqlConnection.Close();
+
             return listaPartida;
         }
 
