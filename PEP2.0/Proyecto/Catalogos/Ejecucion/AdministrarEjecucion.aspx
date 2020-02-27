@@ -342,7 +342,7 @@
                                                 <th>Número de partida</th>
                                                 <th>Descripción </th>
 
-                                            </tr>
+                                             </tr>
                                         </thead>
 
                                         <asp:Repeater ID="rpElegirPartida" runat="server">

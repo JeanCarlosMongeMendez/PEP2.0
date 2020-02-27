@@ -140,7 +140,8 @@ namespace Proyecto.Catalogos.Ejecucion
                 Session["listaUnidad"] = null;
                 Session["listaPartida"] = null;
                 Session["listaMontoPartidaDisponible"] = null;
-
+                Session["periodo"] = null;
+                Session["proyecto"] = null;
                 //DDLTipoTramite.Items.Clear();
                 //ddlPartida.Items.Clear();
             }
@@ -301,7 +302,10 @@ namespace Proyecto.Catalogos.Ejecucion
 
             Session["listaUnidad"]= ejecucionServicios.ConsultarUnidadEjecucion(Convert.ToInt32(idEjecucion));
             Session["listaPartida"] = ejecucionServicios.ConsultarPartidaEjecucion(Convert.ToInt32(idEjecucion));
+          
             Session["listaMontoPartidaDisponible"] = ejecucionServicios.ConsultarEjecucionMontoPartida(Convert.ToInt32(idEjecucion));
+            Session["periodo"] = Convert.ToString(PeriodosDDL.SelectedValue);
+            Session["proyecto"] = Convert.ToString(ProyectosDDL.SelectedValue);
             String url = Page.ResolveUrl("~/Catalogos/Ejecucion/AdministrarEjecucion.aspx");
             Response.Redirect(url);
             //string[] unidadNumeroPartida = (((LinkButton)(sender)).CommandArgument.ToString().Split(new string[] { "::" }, StringSplitOptions.None));
