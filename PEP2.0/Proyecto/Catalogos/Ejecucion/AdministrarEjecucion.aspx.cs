@@ -33,6 +33,7 @@ namespace Proyecto.Catalogos.Ejecucion
         string proyectoo = "";
         string tipoTramite = "";
         int nuevaEjecucion;
+        int verEjecucion;
         static string idEjecucioon="";
         //se utiliza en el metodo  MostrarDatosTablaUnidad();se utiliza para pasar unidades seleccionadas de la tabla que aparece en el  #modalElegirUnidad
         static List<Unidad> listaUnidad = new List<Unidad>();
@@ -978,6 +979,7 @@ namespace Proyecto.Catalogos.Ejecucion
             if (!IsPostBack)
             {
                 nuevaEjecucion = Convert.ToInt32(Session["nuevaEjecucion"]);
+                verEjecucion = Convert.ToInt32(Session["verEjecucion"]);
                 if (nuevaEjecucion == 0)
                 {
                     List<Entidades.Unidad> comparaListaUnidades = new List<Entidades.Unidad>();
@@ -1037,6 +1039,15 @@ namespace Proyecto.Catalogos.Ejecucion
                     UpdatePanel10.Visible = false;
                     ButtonRepartir.Visible = false;
                     MostrarTablaRepartirGastos();
+                    if (!verEjecucion.Equals(""))
+                    {
+                        //ButtonAsociar.Visible = false;
+                        //ButtonAsociarPartida.Visible = false;
+                        //ButtonRepartir.Visible = false;
+                        //Button1.Visible = false;
+                        //Button2.Visible = false;
+                        //ddlPartida.Enabled = true;
+                    }
                 }
                 else
                 {

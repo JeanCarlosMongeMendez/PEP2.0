@@ -38,8 +38,8 @@
                             <ItemTemplate>
                                 <tr style="text-align: center">
                                     <td>
-<%--                                        <asp:LinkButton ID="btnEliminarUnidad" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("idUnidad") %>' OnClick="EliminarUnidadSeleccionada_OnChanged" Cssclass="btn glyphicon glyphicon-eye-open" />--%>
-                                       <asp:LinkButton ID="btnEditarEjecucion" runat="server" ToolTip="Editar" CommandArgument='<%# Eval("idEjecucion") %>' OnClick=" EditarEjecucion_OnChanged" Cssclass="btn glyphicon glyphicon-pencil" />
+                                        <asp:LinkButton ID="btnVerUnidad" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("idEjecucion") %>' OnClick=" VerEjecucion_OnChanged" Cssclass="btn glyphicon glyphicon-eye-open" />
+                                        <asp:LinkButton ID="btnEditarEjecucion" runat="server" ToolTip="Editar" CommandArgument='<%# Eval("idEjecucion") %>' OnClick=" EditarEjecucion_OnChanged" Cssclass="btn glyphicon glyphicon-pencil" />
                                     </td>
 
                                     <td>

@@ -148,11 +148,12 @@ namespace Proyecto.Catalogos.Ejecucion
                 Session["monto"] = null;
                 Session["nuevaEjecucion"] = null;
                 Session["idEjecucion"] = null;
+                Session["verEjecucion"] = null;
                 //DDLTipoTramite.Items.Clear();
                 //ddlPartida.Items.Clear();
             }
 
-            
+
 
         }
         /// <summary>
@@ -165,8 +166,8 @@ namespace Proyecto.Catalogos.Ejecucion
         {
             //Session["partidasPorUnidadesProyectoPeriodo"] = null;
             //Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
-             CargarProyectos();
-             MostrarDatosTablaUnidad();
+            CargarProyectos();
+            MostrarDatosTablaUnidad();
             //reiniciarTablaUnidad();
             //DDLTipoTramite.Items.Clear();
             //descripcionOtroTipoTramite.Visible = false;
@@ -198,7 +199,7 @@ namespace Proyecto.Catalogos.Ejecucion
                         Session["proyecto"] = proyecto.idProyecto;
                         ProyectosDDL.Items.Add(itemLB);
                     }
-                   
+
                     //CargarUnidades();
 
                 }
@@ -251,15 +252,15 @@ namespace Proyecto.Catalogos.Ejecucion
                     PeriodosDDL.Items.FindByValue(anoHabilitado.ToString()).Selected = true;
                 }
 
-                 CargarProyectos();
-                
+                CargarProyectos();
+
 
             }
 
         }
         protected void Proyectos_OnChanged(object sender, EventArgs e)
         {
-            
+
             MostrarDatosTablaUnidad();
         }
 
@@ -278,8 +279,8 @@ namespace Proyecto.Catalogos.Ejecucion
 
             string a = ProyectosDDL.SelectedValue;
             var dt = ejecucionServicios.ConsultarEjecucion(PeriodosDDL.SelectedValue, a);
-                pgsource.DataSource = dt;
-                pgsource.AllowPaging = true;
+            pgsource.DataSource = dt;
+            pgsource.AllowPaging = true;
             //numero de items que se muestran en el Repeater
             pgsource.PageSize = elmentosMostrar;
             pgsource.CurrentPageIndex = paginaActual4;
@@ -296,32 +297,32 @@ namespace Proyecto.Catalogos.Ejecucion
             rpUnidadSelecionadas.DataSource = pgsource;
             rpUnidadSelecionadas.DataBind();
 
-                //metodo que realiza la paginacion
-                //Paginacion2();
+            //metodo que realiza la paginacion
+            //Paginacion2();
 
-           
+
         }
         protected void EditarEjecucion_OnChanged(object sender, EventArgs e)
         {
-           
+
             string idEjecucion = ((LinkButton)(sender)).CommandArgument.ToString();
             List<Entidades.Ejecucion> listaEjecucion = new List<Entidades.Ejecucion>();
             Session["nuevaEjecucion"] = 0;
-            Session["listaUnidad"]= ejecucionServicios.ConsultarUnidadEjecucion(Convert.ToInt32(idEjecucion));
+            Session["listaUnidad"] = ejecucionServicios.ConsultarUnidadEjecucion(Convert.ToInt32(idEjecucion));
             Session["listaPartida"] = ejecucionServicios.ConsultarPartidaEjecucion(Convert.ToInt32(idEjecucion));
-        
+
             listaEjecucion = ejecucionServicios.ConsultarEjecucion(PeriodosDDL.SelectedValue, ProyectosDDL.SelectedValue);
-            int idTipoTramite= listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().idTipoTramite.idTramite;
+            int idTipoTramite = listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().idTipoTramite.idTramite;
             Session["listaMontoPartidaDisponible"] = ejecucionServicios.ConsultarEjecucionMontoPartida(Convert.ToInt32(idEjecucion));
             Session["periodo"] = Convert.ToString(PeriodosDDL.SelectedValue);
             Session["proyecto"] = Convert.ToString(ProyectosDDL.SelectedValue);
-            Session["idTipoTramite"] =  idTipoTramite;
+            Session["idTipoTramite"] = idTipoTramite;
             Session["numeroReferencia"] = listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().numeroReferencia;
-            Session["monto"]= listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().monto;
+            Session["monto"] = listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().monto;
             Session["idEjecucion"] = Convert.ToInt32(idEjecucion);
             String url = Page.ResolveUrl("~/Catalogos/Ejecucion/AdministrarEjecucion.aspx");
             Response.Redirect(url);
-           
+
         }
         protected void NuevaEjecucion_OnChanged(object sender, EventArgs e)
         {
@@ -329,5 +330,27 @@ namespace Proyecto.Catalogos.Ejecucion
             String url = Page.ResolveUrl("~/Catalogos/Ejecucion/AdministrarEjecucion.aspx");
             Response.Redirect(url);
         }
+        protected void VerEjecucion_OnChanged(object sender, EventArgs e)
+        {
+            Session["verEjecucion"] = 0;
+            Session["nuevaEjecucion"] = 1;
+            string idEjecucion = ((LinkButton)(sender)).CommandArgument.ToString();
+            List<Entidades.Ejecucion> listaEjecucion = new List<Entidades.Ejecucion>();
+           
+            Session["listaUnidad"] = ejecucionServicios.ConsultarUnidadEjecucion(Convert.ToInt32(idEjecucion));
+            Session["listaPartida"] = ejecucionServicios.ConsultarPartidaEjecucion(Convert.ToInt32(idEjecucion));
+
+            listaEjecucion = ejecucionServicios.ConsultarEjecucion(PeriodosDDL.SelectedValue, ProyectosDDL.SelectedValue);
+            int idTipoTramite = listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().idTipoTramite.idTramite;
+            Session["listaMontoPartidaDisponible"] = ejecucionServicios.ConsultarEjecucionMontoPartida(Convert.ToInt32(idEjecucion));
+            Session["periodo"] = Convert.ToString(PeriodosDDL.SelectedValue);
+            Session["proyecto"] = Convert.ToString(ProyectosDDL.SelectedValue);
+            Session["idTipoTramite"] = idTipoTramite;
+            Session["numeroReferencia"] = listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().numeroReferencia;
+            Session["monto"] = listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().monto;
+            Session["idEjecucion"] = Convert.ToInt32(idEjecucion);
+            String url = Page.ResolveUrl("~/Catalogos/Ejecucion/AdministrarEjecucion.aspx");
+            Response.Redirect(url);
         }
-}
+    }
+    }
