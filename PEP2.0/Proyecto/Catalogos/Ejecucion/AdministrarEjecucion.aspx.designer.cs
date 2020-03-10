@@ -346,13 +346,13 @@ namespace Proyecto.Catalogos.Ejecucion {
         protected global::System.Web.UI.WebControls.LinkButton lbUltimo6;
         
         /// <summary>
-        /// Control  lblpagina6.
+        /// Control lblpagina6.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label  lblpagina6;
+        protected global::System.Web.UI.WebControls.Label lblpagina6;
         
         /// <summary>
         /// Control Button1.
@@ -371,6 +371,24 @@ namespace Proyecto.Catalogos.Ejecucion {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button Button2;
+        
+        /// <summary>
+        /// Control BtnCerrar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BtnCerrar;
+        
+        /// <summary>
+        /// Control BtnElimarEjecucion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BtnElimarEjecucion;
         
         /// <summary>
         /// Control UpdatePanel9.

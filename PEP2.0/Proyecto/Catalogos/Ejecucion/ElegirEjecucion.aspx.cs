@@ -308,6 +308,7 @@ namespace Proyecto.Catalogos.Ejecucion
             string idEjecucion = ((LinkButton)(sender)).CommandArgument.ToString();
             List<Entidades.Ejecucion> listaEjecucion = new List<Entidades.Ejecucion>();
             Session["nuevaEjecucion"] = 0;
+            Session["verEjecucion"] = 1;
             Session["listaUnidad"] = ejecucionServicios.ConsultarUnidadEjecucion(Convert.ToInt32(idEjecucion));
             Session["listaPartida"] = ejecucionServicios.ConsultarPartidaEjecucion(Convert.ToInt32(idEjecucion));
 
@@ -333,7 +334,7 @@ namespace Proyecto.Catalogos.Ejecucion
         protected void VerEjecucion_OnChanged(object sender, EventArgs e)
         {
             Session["verEjecucion"] = 0;
-            Session["nuevaEjecucion"] = 1;
+            Session["nuevaEjecucion"] = 0;
             string idEjecucion = ((LinkButton)(sender)).CommandArgument.ToString();
             List<Entidades.Ejecucion> listaEjecucion = new List<Entidades.Ejecucion>();
            

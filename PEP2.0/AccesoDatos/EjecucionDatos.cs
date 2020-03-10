@@ -409,6 +409,28 @@ namespace AccesoDatos
             sqlConnection.Close();
             return listapartidaUnidad;
         }
+        /// <summary>
+        /// Eliminar Ejecucion
+        /// </summary>
+        /// <param name="idEjecucion">ejecucion</param>
+       
+        public void eliminarEjecucion(int idEjecucion)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+
+            String consulta = @"delete Ejecucion 
+                                 where id_ejecucion=@id_ejecucion";
+
+
+            SqlCommand command = new SqlCommand(consulta, sqlConnection);
+            command.Parameters.AddWithValue("@id_ejecucion",idEjecucion);
+            
+
+
+            sqlConnection.Open();
+            command.ExecuteReader();
+            sqlConnection.Close();
+        }
 
 
 

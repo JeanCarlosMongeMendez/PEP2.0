@@ -144,5 +144,15 @@ namespace Servicios
         {
             return ejecucionDatos.ConsultarEjecucionMontoPartidaElegida(idEjecucion);
         }
+
+
+        /// <summary>
+        /// Eliminar una Ejecucion
+        /// </summary>
+        /// /// <param name="idEjecucion">String</param>
+        public void EliminarEjecucion(int idEjecucion)
+        {
+            ejecucionDatos.eliminarEjecucion(idEjecucion);
+        }
     }
 }

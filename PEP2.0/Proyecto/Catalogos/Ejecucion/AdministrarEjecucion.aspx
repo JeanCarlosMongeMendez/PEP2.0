@@ -298,7 +298,13 @@
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
        
         <asp:Button ID="Button2" runat="server" Text="Aprobar" CssClass="btn btn-primary" OnClick="btnApobar_Click" />
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         <asp:Button ID="BtnCerrar" runat="server" Text="Volver" CssClass="btn btn-primary" OnClick="btnVolver_Click" />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     <asp:Button ID="BtnElimarEjecucion" runat="server" Text="Eliminar" CssClass="btn btn-primary" OnClick="btnEliminarEjecucion_Click" />
     </div>
+    
+       
     <br >
 
 
@@ -353,7 +359,7 @@
                                                 <tr style="text-align: center">
 
                                                     <td>
-                                                        <asp:LinkButton ID="btnAnadirNuevaPartida" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("numeroPartida") %>' OnClick="btnAnadirNuevaPartida_Click" Cssclass="btn glyphicon glyphicon-remove" />
+                                                        <asp:LinkButton ID="btnAnadirNuevaPartida" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("numeroPartida") %>' OnClick="btnAnadirNuevaPartida_Click" Cssclass="btn glyphicon glyphicon-ok" />
 
                                                     </td>
                                                     <td>
@@ -472,7 +478,7 @@
                                                 <tr style="text-align: center">
 
                                                     <td>
-                                                       <asp:LinkButton ID="btnAlmacenarUnidadPartida" runat="server" ToolTip="Almacenar" CommandArgument='<%# Eval("idPartida") %>'  OnClick="btnAlmacenarUnidadPartida_Click" Cssclass="btn glyphicon glyphicon-remove" />
+                                                       <asp:LinkButton ID="btnAlmacenarUnidadPartida" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("idPartida") %>'  OnClick="btnAlmacenarUnidadPartida_Click" Cssclass="btn glyphicon glyphicon-ok" />
 
                                                     </td>
                                                     <td>
@@ -598,7 +604,7 @@
                                         <ItemTemplate>
                                             <tr style="text-align: center">
                                                 <td>
-                                                    <asp:LinkButton ID="btnAnadirPartida" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("idUnidad") %>' OnClick="btnUnidadSeleccionada_Click" Cssclass="btn glyphicon glyphicon-remove" />
+                                                    <asp:LinkButton ID="btnAnadirPartida" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("idUnidad") %>' OnClick="btnUnidadSeleccionada_Click" Cssclass="btn glyphicon glyphicon-ok" />
 
                                                 </td>
                                                 <td>
