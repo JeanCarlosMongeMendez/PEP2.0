@@ -9,7 +9,7 @@ namespace Entidades
    public class Ejecucion
     {
         public int idEjecucion { get; set; }
-        public string estado { get; set; }
+        public EstadoEjecucion idestado { get; set; }
         public  int anoPeriodo { get; set; }
         public int idProyecto { get; set; }
         public double monto { get; set; }

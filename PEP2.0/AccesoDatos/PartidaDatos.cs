@@ -254,11 +254,14 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.numero_partid
             SqlConnection sqlConnection = conexion.conexionPEP();
             foreach (int idUnidad in unidades)
             {
-                SqlCommand sqlCommand = new SqlCommand("select id_partida, numero_partida, descripcion_partida,esUCR " +
-               "from Proyecto,Unidad,Periodo,Partida " +
-               "where Periodo.ano_periodo=@periodo and  Proyecto.ano_periodo=Periodo.ano_periodo AND Partida.ano_periodo=Proyecto.ano_periodo" +
-               " and Unidad.id_proyecto=Proyecto.id_proyecto and Proyecto.id_proyecto = @proyecto and Unidad.id_unidad=@unidad and Partida.disponible=1  order by numero_partida;", sqlConnection);
+                SqlCommand sqlCommand = new SqlCommand("select Partida.id_partida, numero_partida, descripcion_partida,esUCR ,PE.monto" +
+               " from Proyecto,Unidad,Periodo,Partida,Presupuesto_Egreso_Partida PE ,Presupuesto_egreso P" +
+               " where Periodo.ano_periodo=@periodo and  Proyecto.ano_periodo=Periodo.ano_periodo AND Partida.ano_periodo=Proyecto.ano_periodo" +
+               " and Unidad.id_proyecto=Proyecto.id_proyecto and Proyecto.id_proyecto = @proyecto and Unidad.id_unidad=@unidad and Partida.id_partida=PE.id_partida  and Partida.disponible=1 and P.id_presupuesto_egreso=PE.id_presupuesto_egreso and Unidad.id_unidad=P.id_unidad and PE.id_estado_presupuesto=2  order by numero_partida;", sqlConnection);
 
+                //SqlCommand sqlCommand = new SqlCommand("select id_partida,numero_partida,descripcion_partida,esUCR" +
+                //    "from Presupuesto_Egreso PE,Proyecto P,Unidad U"+
+                //    "where PE.id_unidad=@unidad and U.id_unidad=Pe.id_unidad and U.id_proyecto=@proyecto  and P.id_proyecto=U.id_peroyecto and P.ano_periodo=@periodo ;",sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@periodo", periodo);
                 sqlCommand.Parameters.AddWithValue("@proyecto", proyecto);
                 sqlCommand.Parameters.AddWithValue("@unidad", idUnidad);
@@ -269,16 +272,21 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.numero_partid
                 while (reader.Read())
                 {
                     Partida partida = new Partida();
+                    PresupuestoEgreso presupuestoEgreso = new PresupuestoEgreso();
                     partida.idPartida = Convert.ToInt32(reader["id_partida"].ToString());
                     partida.numeroPartida = reader["numero_partida"].ToString();
                     partida.descripcionPartida = reader["descripcion_partida"].ToString();
                     partida.esUCR = Convert.ToBoolean(reader["esUCR"].ToString());
                     partida.idUnidad = idUnidad;
+                    double montoTotal= Convert.ToDouble(reader["monto"].ToString());
 
-                    List<Partida> listaTemp = partidas.Where(partidaBD => partidaBD.idPartida == partida.idPartida).ToList();
+                    //if (montoTotal != 0)
+                    //{
+                        List<Partida> listaTemp = partidas.Where(partidaBD => partidaBD.idPartida == partida.idPartida).ToList();
 
-                    if (listaTemp.Count == 0)
-                        partidas.Add(partida);
+                        if (listaTemp.Count == 0)
+                            partidas.Add(partida);
+                    //}
                 }
 
                 sqlConnection.Close();

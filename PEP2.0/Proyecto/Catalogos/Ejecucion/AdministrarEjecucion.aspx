@@ -224,8 +224,8 @@
                                     <ItemTemplate>
                                         <tr style="text-align: center">
                                             <td>
-                                             <asp:LinkButton ID="btnEliminarPartida" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("numeroPartida") %>' OnClick="EliminarMontoRepartido_OnChanged" Cssclass="btn glyphicon glyphicon-remove" />
-
+                                             <asp:LinkButton ID="btnEliminarPartida" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("numeroPartida") +"::"+Eval("idUnidad") %>'  OnClick="EliminarMontoRepartido_OnChanged" Cssclass="btn glyphicon glyphicon-remove" />
+                                             
                                             </td>
                                             <td>
                                                  <%# Eval("idUnidad") %>
@@ -251,13 +251,64 @@
                                 </asp:Repeater>
                             </table>
                         </div>
+                         <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                                    <center>
+                    <table class="table" style="max-width:664px;">
+                        <tr style="padding:1px !important">
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbPrimero6" runat="server" CssClass="btn btn-primary" OnClick="lbPrimero6_Click"><span class="glyphicon glyphicon-fast-backward"></span></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbAnterior6" runat="server" CssClass="btn btn-default" OnClick="lbAnterior6_Click"><span class="glyphicon glyphicon-backward"></asp:LinkButton>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:DataList ID="DataList2" runat="server"
+                                    OnItemCommand="rptPaginacion6_ItemCommand"
+                                    OnItemDataBound="rptPaginacion6_ItemDataBound" RepeatDirection="Horizontal">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lbPaginacion6" runat="server" CssClass="btn btn-default"
+                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
+                                            Text='<%# Eval("PaginaText") %>' ></asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:DataList>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbSiguiente6" CssClass="btn btn-default" runat="server" OnClick="lbSiguiente6_Click"><span class="glyphicon glyphicon-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbUltimo6" CssClass="btn btn-primary" runat="server" OnClick="lbUltimo6_Click"><span class="glyphicon glyphicon-fast-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:Label ID="lblpagina6" runat="server" Text=""></asp:Label>
+                            </td>
+                        </tr>
+                    </table>
+                        </center>
+                                </div>
                     </ContentTemplate>
                 </asp:UpdatePanel>
             </div>
-
+           
         </ContentTemplate>
+       
     </asp:UpdatePanel>
+    <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+       
+        <asp:Button ID="Button1" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="btnGuardar_Click" />
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+       
+        <asp:Button ID="Button2" runat="server" Text="Aprobar" CssClass="btn btn-primary" OnClick="btnApobar_Click" />
+         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         <asp:Button ID="BtnCerrar" runat="server" Text="Volver" CssClass="btn btn-primary" OnClick="btnVolver_Click" />
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     <asp:Button ID="BtnElimarEjecucion" runat="server" Text="Eliminar" CssClass="btn btn-primary" OnClick="btnEliminarEjecucion_Click" />
+    </div>
+    
+       
+    <br >
 
+
+    <br />
 
 
     <!-- Modal elegir partida -->
@@ -297,7 +348,7 @@
                                                 <th>Número de partida</th>
                                                 <th>Descripción </th>
 
-                                            </tr>
+                                             </tr>
                                         </thead>
 
                                         <asp:Repeater ID="rpElegirPartida" runat="server">
@@ -308,7 +359,7 @@
                                                 <tr style="text-align: center">
 
                                                     <td>
-                                                        <asp:LinkButton ID="btnAnadirNuevaPartida" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("numeroPartida") %>' OnClick="btnAnadirNuevaPartida_Click" Cssclass="btn glyphicon glyphicon-remove" />
+                                                        <asp:LinkButton ID="btnAnadirNuevaPartida" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("numeroPartida") %>' OnClick="btnAnadirNuevaPartida_Click" Cssclass="btn glyphicon glyphicon-ok" />
 
                                                     </td>
                                                     <td>
@@ -402,8 +453,9 @@
                         <div class="modal-body">
                              <div class="col-md-3 col-xs-3 col-sm-3">
                                         <asp:Label ID="label8" runat="server" Text="Partida" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
-                                        <asp:DropDownList ID="ddlPartida" class="btn btn-default dropdown-toggle" runat="server"></asp:DropDownList>
-                        </div>
+                                        <%--<asp:DropDownList ID="ddlPartida" class="btn btn-default dropdown-toggle" runat="server"></asp:DropDownList>--%>
+                                        <asp:DropDownList ID="ddlPartida" class="btn btn-default dropdown-toggle" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlUnidad_SelectedIndexChanged"></asp:DropDownList>
+                                 </div>
                             <%-- campos a llenar --%>
                             <div class="row">
                                   <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
@@ -426,7 +478,7 @@
                                                 <tr style="text-align: center">
 
                                                     <td>
-                                                       <asp:LinkButton ID="btnAlmacenarUnidadPartida" runat="server" ToolTip="Almacenar" CommandArgument='<%# Eval("idPartida") %>'  OnClick="btnAlmacenarUnidadPartida_Click" Cssclass="btn glyphicon glyphicon-remove" />
+                                                       <asp:LinkButton ID="btnAlmacenarUnidadPartida" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("idPartida") %>'  OnClick="btnAlmacenarUnidadPartida_Click" Cssclass="btn glyphicon glyphicon-ok" />
 
                                                     </td>
                                                     <td>
@@ -462,6 +514,40 @@
                                     </table>
 
                                 </div>
+                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                    <center>
+                    <table class="table" style="max-width:664px;">
+                        <tr style="padding:1px !important">
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbPrimero5" runat="server" CssClass="btn btn-primary" OnClick="lbPrimero5_Click"><span class="glyphicon glyphicon-fast-backward"></span></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbAnterior5" runat="server" CssClass="btn btn-default" OnClick="lbAnterior5_Click"><span class="glyphicon glyphicon-backward"></asp:LinkButton>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:DataList ID="DataList1" runat="server"
+                                    OnItemCommand="rptPaginacion5_ItemCommand"
+                                    OnItemDataBound="rptPaginacion5_ItemDataBound" RepeatDirection="Horizontal">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lbPaginacion5" runat="server" CssClass="btn btn-default"
+                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
+                                            Text='<%# Eval("PaginaText") %>' ></asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:DataList>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbSiguiente5" CssClass="btn btn-default" runat="server" OnClick="lbSiguiente5_Click"><span class="glyphicon glyphicon-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbUltimo5" CssClass="btn btn-primary" runat="server" OnClick="lbUltimo5_Click"><span class="glyphicon glyphicon-fast-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:Label ID="lblpagina5" runat="server" Text=""></asp:Label>
+                            </td>
+                        </tr>
+                    </table>
+                        </center>
+                </div>
                            
                             </div>
                              <div class="modal-footer" style="text-align: center">
@@ -518,7 +604,7 @@
                                         <ItemTemplate>
                                             <tr style="text-align: center">
                                                 <td>
-                                                    <asp:LinkButton ID="btnAnadirPartida" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("idUnidad") %>' OnClick="btnUnidadSeleccionada_Click" Cssclass="btn glyphicon glyphicon-remove" />
+                                                    <asp:LinkButton ID="btnAnadirPartida" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("idUnidad") %>' OnClick="btnUnidadSeleccionada_Click" Cssclass="btn glyphicon glyphicon-ok" />
 
                                                 </td>
                                                 <td>

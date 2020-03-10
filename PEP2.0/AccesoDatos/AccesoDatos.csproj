@@ -47,6 +47,7 @@
     <Compile Include="CargaSocialDatos.cs" />
     <Compile Include="ConexionDatos.cs" />
     <Compile Include="ContactoDatos.cs" />
+    <Compile Include="EjecucionDatos.cs" />
     <Compile Include="EscalaSalarialDatos.cs" />
     <Compile Include="EstadoPresupIngresoDatos.cs" />
     <Compile Include="EstadoPresupuestoDatos.cs" />
@@ -68,7 +69,6 @@
     <Compile Include="Proyeccion_CargaSocialDatos.cs" />
     <Compile Include="ProyectoDatos.cs" />
     <Compile Include="Reporte_EgresosDatos.cs" />
-    <Compile Include="Reporte_Egresos_UnidadDatos.cs" />
     <Compile Include="TipoTramitesDatos.cs" />
     <Compile Include="UnidadDatos.cs" />
   </ItemGroup>

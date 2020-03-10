@@ -46,6 +46,7 @@
     <Compile Include="Contacto.cs" />
     <Compile Include="Ejecucion.cs" />
     <Compile Include="EscalaSalarial.cs" />
+    <Compile Include="EstadoEjecucion.cs" />
     <Compile Include="EstadoPresupIngreso.cs" />
     <Compile Include="EstadoPresupuesto.cs" />
     <Compile Include="Funcionario.cs" />
@@ -65,7 +66,6 @@
     <Compile Include="Proyeccion_CargaSocial.cs" />
     <Compile Include="Proyectos.cs" />
     <Compile Include="Reporte_Egresos.cs" />
-    <Compile Include="Reporte_Egresos_Unidad.cs" />
     <Compile Include="TipoTramite.cs" />
     <Compile Include="Unidad.cs" />
     <Compile Include="JornadaUnidadFuncionario.cs" />

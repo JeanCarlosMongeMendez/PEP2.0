@@ -138,7 +138,8 @@
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Ejecución<span class="caret"></span></a>
                                         <ul class="dropdown-menu" role="menu">
                                             <%--<li><a href='<%=Page.ResolveUrl("~/Default.aspx") %>'>Default</a></li>--%>
-                                            <li><a href='<%=Page.ResolveUrl("~/Catalogos/Ejecucion/AdministrarEjecucion.aspx") %>'>Administrar Ejecución</a></li>
+                                           
+                                             <li><a href='<%=Page.ResolveUrl("~/Catalogos/Ejecucion/ElegirEjecucion.aspx") %>'>Administrar Ejecución</a></li>
                                           
                                         </ul>
                                     </li>
@@ -146,7 +147,6 @@
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reportes<span class="caret"></span></a>
                                         <ul class="dropdown-menu" role="menu">
                                             <li><a href='<%=Page.ResolveUrl("~/Reportes/ReporteEgresos.aspx") %>'>Reporte Egreso</a></li>
-                                            <li><a href='<%=Page.ResolveUrl("~/Reportes/ReporteEgresosUnidades.aspx") %>'>Reporte Egreso por unidades</a></li>
                                         </ul>
                                     </li>
                                     <li>
