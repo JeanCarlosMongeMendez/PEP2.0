@@ -463,6 +463,7 @@
     <Content Include="Scripts\bootstrap3-dialog-master.zip" />
     <Content Include="SiteMaster.Master" />
     <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
