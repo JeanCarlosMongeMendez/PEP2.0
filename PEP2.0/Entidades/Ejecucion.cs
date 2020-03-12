@@ -17,6 +17,6 @@ namespace Entidades
         public string numeroReferencia { get; set; }
         public Partida idPartida { get; set; }
         public Unidad idUnidad { get; set; }
-
+        public string descripcionEjecucionOtro { get; set; }
     }
 }

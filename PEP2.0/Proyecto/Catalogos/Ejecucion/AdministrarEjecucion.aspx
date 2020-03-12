@@ -213,7 +213,7 @@
                                         <th>Unidad</th>
                                         <th>Número Partida</th>
                                         <th>monto</th>
-                                        <th>Monto Disponible</th>
+                                       <%-- <th>Monto Disponible</th>--%>
                                     </tr>
                                 </thead>
 
@@ -239,9 +239,9 @@
                                              <td>
                                                 <%# Eval("Monto") %>
                                             </td>
-                                             <td>
+                                           <%--  <td>
                                                 <%# Eval("MontoDisponible") %>
-                                            </td>
+                                            </td>--%>
                                         </tr>
 
                                     </ItemTemplate>
@@ -673,7 +673,54 @@
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
-    <!-- Fin modal elegir unidad -->
+     <!-- Fin modal elegir unidad -->
+
+     <!-- Modal confirmar Ejecucion -->
+     <asp:UpdatePanel ID="confirmarEjecucion" runat="server">
+                    <ContentTemplate>
+                        <div id="modalConfirmarEliminar" class="modal" role="alertdialog">
+                            <div class="modal-dialog modal-lg">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Confirmar Eliminar Ejecucion</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <%-- campos a llenar --%>
+                                        <div class="row">
+
+                                            <%-- fin campos a llenar --%>
+
+                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                <br />
+                                            </div>
+                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                <center>
+                                             <asp:Label runat="server" Text="" Font-Size="Large" ForeColor="Black"></asp:Label>
+                                             <p>¿Está seguro que desea eliminar la Ejecución?</p> 
+                                              <asp:Label ID="lbConfEje" runat="server" Text="" Font-Size="Large" ForeColor="Black" CssClass="label"></asp:Label>             
+                                            </center>
+                                            </div>
+
+                                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                                <br />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer" style="text-align: center">
+                                        <asp:Button ID="Button3" runat="server" Text="Confirmar" CssClass="btn btn-primary boton-eliminar" OnClick="btnConfirmarEjecucion_Click" />
+                                        <button type="button" class="btn btn-default boton-otro" data-dismiss="modal">Cancelar</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+                <!-- FIN Modal Confirmar Eliminar Ejec -->
+   
 
 
     <script type="text/javascript">
@@ -686,6 +733,9 @@
 
          function activarModalRepartirPartidas() {
             $('#modalRepartirPartidas').modal('show');
+        };
+         function activarModalConfirmarEjecucion() {
+            $('#modalConfirmarEliminar').modal('show');
         };
 
         
