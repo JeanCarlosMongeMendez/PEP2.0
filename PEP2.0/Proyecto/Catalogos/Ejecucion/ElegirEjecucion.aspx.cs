@@ -16,6 +16,7 @@ namespace Proyecto.Catalogos.Ejecucion
         ProyectoServicios proyectoServicios;
         PeriodoServicios periodoServicios;
         EjecucionServicios ejecucionServicios;
+        ArchivoEjecucionServicios archivoEjecucionServicios;
         private int elmentosMostrar = 10;
 
 
@@ -131,6 +132,7 @@ namespace Proyecto.Catalogos.Ejecucion
             this.proyectoServicios = new ProyectoServicios();
             this.periodoServicios = new PeriodoServicios();
             this.ejecucionServicios = new EjecucionServicios();
+            this.archivoEjecucionServicios = new ArchivoEjecucionServicios();
             if (!IsPostBack)
             {
                 Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());
@@ -149,6 +151,7 @@ namespace Proyecto.Catalogos.Ejecucion
                 Session["nuevaEjecucion"] = null;
                 Session["idEjecucion"] = null;
                 Session["verEjecucion"] = null;
+                Session["listaArchivoEjecucion"] = null;
                 Session["descripcionEjecionOtro"] = null;
                 //DDLTipoTramite.Items.Clear();
                 //ddlPartida.Items.Clear();
@@ -312,7 +315,8 @@ namespace Proyecto.Catalogos.Ejecucion
             Session["verEjecucion"] = 1;
             Session["listaUnidad"] = ejecucionServicios.ConsultarUnidadEjecucion(Convert.ToInt32(idEjecucion));
             Session["listaPartida"] = ejecucionServicios.ConsultarPartidaEjecucion(Convert.ToInt32(idEjecucion));
-
+            List<Entidades.ArchivoEjecucion> eje = new List<Entidades.ArchivoEjecucion>();
+            Session["listaArchivoEjecucion"] = archivoEjecucionServicios.obtenerArchivoMuestra(Convert.ToInt32(idEjecucion));
             listaEjecucion = ejecucionServicios.ConsultarEjecucion(PeriodosDDL.SelectedValue, ProyectosDDL.SelectedValue);
             int idTipoTramite = listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().idTipoTramite.idTramite;
             Session["listaMontoPartidaDisponible"] = ejecucionServicios.ConsultarEjecucionMontoPartida(Convert.ToInt32(idEjecucion));

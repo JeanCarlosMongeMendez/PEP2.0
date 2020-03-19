@@ -1,9 +1,11 @@
 ﻿using Entidades;
+using PEP;
 using Servicios;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -27,6 +29,7 @@ namespace Proyecto.Catalogos.Ejecucion
         PresupuestoEgresosServicios presupuestoEgresosServicio;
         PartidaUnidad partidaUnidad;
         EjecucionServicios ejecucionServicios;
+        ArchivoEjecucionServicios archivoEjecucionServicios;
         int idUnidadElegida;
         private int elmentosMostrar = 10;
         string periodooo = "";
@@ -34,8 +37,9 @@ namespace Proyecto.Catalogos.Ejecucion
         string tipoTramite = "";
         int nuevaEjecucion;
         int verEjecucion;
+        string nombre;
         string descripcionEjecucionOtro;
-        static string idEjecucioon="";
+        static string idEjecucioon = "";
         //se utiliza en el metodo  MostrarDatosTablaUnidad();se utiliza para pasar unidades seleccionadas de la tabla que aparece en el  #modalElegirUnidad
         static List<Unidad> listaUnidad = new List<Unidad>();
         //Esta llena la tabla en el metodo mostrarDatosTabla(),la uso como temporal de la linkedlist
@@ -762,7 +766,7 @@ namespace Proyecto.Catalogos.Ejecucion
 
 
 
-        
+
         /// <summary>
         /// Leonardo Carrion
         /// 14/jun/2019
@@ -977,11 +981,13 @@ namespace Proyecto.Catalogos.Ejecucion
             this.tipoTramiteServicios = new TipoTramiteServicios();
             this.presupuestoEgreso_PartidaServicios = new PresupuestoEgreso_PartidaServicios();
             this.partidaUnidad = new PartidaUnidad();
+            this.archivoEjecucionServicios = new ArchivoEjecucionServicios();
             if (!IsPostBack)
             {
                 descripcionEjecucionOtro = Convert.ToString(Session["descripcionEjecionOtro"]);
                 nuevaEjecucion = Convert.ToInt32(Session["nuevaEjecucion"]);
                 verEjecucion = Convert.ToInt32(Session["verEjecucion"]);
+                nombre = Convert.ToString(Session["nombreCompleto"]);
                 if (nuevaEjecucion == 0)
                 {
                     List<Entidades.Unidad> comparaListaUnidades = new List<Entidades.Unidad>();
@@ -995,7 +1001,7 @@ namespace Proyecto.Catalogos.Ejecucion
                     periodooo = Convert.ToString(Session["periodo"]);
                     proyectoo = Convert.ToString(Session["proyecto"]);
                     Session["partidasAsignadasConMonto"] = (List<PartidaUnidad>)Session["listaMontoPartidaDisponible"];
-
+                    Session["listaArchivoEjecucion"] = (List<ArchivoEjecucion>)Session["listaArchivoEjecucion"];
                     listaUnidad = (List<Unidad>)Session["listaUnidad"];
                     MostrarDatosTablaUnidad(listaUnidad);
 
@@ -1006,17 +1012,17 @@ namespace Proyecto.Catalogos.Ejecucion
 
                     listUnidad = tempUnidad;
                     count = count + 1;
-                    
-                   
+
+
                     foreach (Unidad unidad in listaUnidad)
                     {
                         unidades.AddFirst(unidad.idUnidad);
                     }
                     List<Partida> tempPartida = new List<Partida>();
-                    List<Partida> Partidas =partidaServicios.ObtienePartidaPorPeriodoUnidadProyecto(Convert.ToInt32(proyectoo), unidades, Convert.ToInt32(periodooo));
-                    List<Partida> temppartidasSeleccionadasPorUnidadesProyectoPeriodo= (List<Partida>)Session["listaPartida"];
-                    tempPartida = Partidas.Where(a => !temppartidasSeleccionadasPorUnidadesProyectoPeriodo.Any(a1 => a1.numeroPartida == a.numeroPartida && a1.idPartida==a.idPartida))
-                         .Union(temppartidasSeleccionadasPorUnidadesProyectoPeriodo.Where(a => !Partidas.Any(a1 => a1.numeroPartida != a.numeroPartida && a1.idPartida!=a.idPartida))).ToList();
+                    List<Partida> Partidas = partidaServicios.ObtienePartidaPorPeriodoUnidadProyecto(Convert.ToInt32(proyectoo), unidades, Convert.ToInt32(periodooo));
+                    List<Partida> temppartidasSeleccionadasPorUnidadesProyectoPeriodo = (List<Partida>)Session["listaPartida"];
+                    tempPartida = Partidas.Where(a => !temppartidasSeleccionadasPorUnidadesProyectoPeriodo.Any(a1 => a1.numeroPartida == a.numeroPartida && a1.idPartida == a.idPartida))
+                         .Union(temppartidasSeleccionadasPorUnidadesProyectoPeriodo.Where(a => !Partidas.Any(a1 => a1.numeroPartida != a.numeroPartida && a1.idPartida != a.idPartida))).ToList();
                     //MostrarDatosTabla();
                     Session["partidasPorUnidadesProyectoPeriodo"] = tempPartida;
                     tipoTramite = Convert.ToString(Session["idTipoTramite"]);
@@ -1034,8 +1040,8 @@ namespace Proyecto.Catalogos.Ejecucion
                     obtenerPartidasSeleccionadas();
                     CargarTramites();
                     MostrarUnidadesConMontoRepartido();
-                    
-                  
+
+
 
                     descripcionOtroTipoTramite.Visible = false;
                     UpdatePanel10.Visible = false;
@@ -1043,11 +1049,11 @@ namespace Proyecto.Catalogos.Ejecucion
                     BtnElimarEjecucion.Visible = false;
                     BtnCerrar.Visible = true;
                     MostrarTablaRepartirGastos();
-                    if (verEjecucion==0)
+                    if (verEjecucion == 0)
                     {
-                       
+
                         MostrarEjecucionBotonesLink();
-                   
+
                     }
                     if (!descripcionEjecucionOtro.Equals(""))
                     {
@@ -1074,7 +1080,7 @@ namespace Proyecto.Catalogos.Ejecucion
             }
             else
             {
-               
+
                 obtenerPartidasSeleccionadas();
             }
 
@@ -1109,7 +1115,7 @@ namespace Proyecto.Catalogos.Ejecucion
             Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
             CargarProyectos();
             reiniciarTablaUnidad();
-           
+
             obtenerPartidasSeleccionadas();
             DDLTipoTramite.Items.Clear();
             descripcionOtroTipoTramite.Visible = false;
@@ -1121,7 +1127,7 @@ namespace Proyecto.Catalogos.Ejecucion
             Session["partidasPorUnidadesProyectoPeriodo"] = null;
             Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
             reiniciarTablaUnidad();
-           
+
             obtenerPartidasSeleccionadas();
             DDLTipoTramite.Items.Clear();
             descripcionOtroTipoTramite.Visible = false;
@@ -1309,7 +1315,7 @@ namespace Proyecto.Catalogos.Ejecucion
                                     {
                                         ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "La Partida no cuenta con el dinero suficiente" + "');", true);
                                     }
-                                    else if (Convert.ToDouble(txtMont)==0 && idPartid == Convert.ToDouble(idPartida))
+                                    else if (Convert.ToDouble(txtMont) == 0 && idPartid == Convert.ToDouble(idPartida))
                                     {
                                         ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Por favor ingrese montos mayores que 0" + "');", true);
                                     }
@@ -1642,99 +1648,122 @@ namespace Proyecto.Catalogos.Ejecucion
             if (!txtMontoIngresar.Text.Equals(""))
             {
 
-             if ((valor.Equals("Otros") && !descripcionOtroTipoTramite.Text.Equals("")) || !valor.Equals("Otros"))
-             {
-
-
-                if (partidasAsignadas == null)
-                {
-                    partidasAsignadas = new List<Partida>();
-                }
-                if (partidasElegidasConMonto == null)
-                {
-                    partidasElegidasConMonto = new List<PartidaUnidad>();
-                }
-                if (listaUnidad == null)
+                if ((valor.Equals("Otros") && !descripcionOtroTipoTramite.Text.Equals("")) || !valor.Equals("Otros"))
                 {
 
-                    listaUnidad = new List<Unidad>();
-                }
 
-                if (idEjecucioon.Equals(""))
+                    if (partidasAsignadas == null)
+                    {
+                        partidasAsignadas = new List<Partida>();
+                    }
+                    if (partidasElegidasConMonto == null)
+                    {
+                        partidasElegidasConMonto = new List<PartidaUnidad>();
+                    }
+                    if (listaUnidad == null)
+                    {
 
-                {
-                    Entidades.Ejecucion ejecucionGuardar = new Entidades.Ejecucion();
-                    estadoEjecucion.idEstado = 1;
-                    ejecucionGuardar.idestado = estadoEjecucion;
-                    ejecucionGuardar.anoPeriodo = Convert.ToInt32(PeriodosDDL.SelectedValue);
-                    ejecucionGuardar.idProyecto = Int32.Parse(ProyectosDDL.SelectedValue);
-                    ejecucionGuardar.monto = Convert.ToInt32(txtMontoIngresar.Text);
-                    tipoTramite.idTramite = Int32.Parse(DDLTipoTramite.SelectedValue);
-                    ejecucionGuardar.idTipoTramite = tipoTramite;
-                    ejecucionGuardar.descripcionEjecucionOtro = descripcionOtroTipoTramite.Text;
-                    ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
-                    ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
-                    respuesta = ejecucionServicios.InsertarEjecucion(ejecucionGuardar);
-                }
-                else
-                {
-                    Entidades.Ejecucion ejecucionGuardar = new Entidades.Ejecucion();
+                        listaUnidad = new List<Unidad>();
+                    }
 
-                    respuesta = Convert.ToInt32(idEjecucioon);
-                    ejecucionGuardar.idEjecucion = respuesta;
-                    estadoEjecucion.idEstado = 1;
-                    ejecucionGuardar.idestado = estadoEjecucion;
-                    ejecucionGuardar.anoPeriodo = Convert.ToInt32(PeriodosDDL.SelectedValue);
-                    ejecucionGuardar.idProyecto = Int32.Parse(ProyectosDDL.SelectedValue);
-                    ejecucionGuardar.monto = Convert.ToInt32(txtMontoIngresar.Text);
-                    tipoTramite.idTramite = Int32.Parse(DDLTipoTramite.SelectedValue);
-                    ejecucionGuardar.idTipoTramite = tipoTramite;
-                    ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
-                    ejecucionGuardar.descripcionEjecucionOtro = descripcionOtroTipoTramite.Text;
-                    ejecucionServicios.EliminarEjecucionUnidad(respuesta);
-                    ejecucionServicios.EliminarEjecucionPartidas(respuesta);
-                    ejecucionServicios.EliminarEjecucionPartidaMontoElelegido(respuesta);
-                    ejecucionServicios.EditarEjecucion(ejecucionGuardar);
-                }
-                foreach (Unidad u in listaUnidad)
-                {
-                    unidad.idUnidad = u.idUnidad;
-                    unidad.nombreUnidad = u.nombreUnidad;
-                    ejecucionServicios.InsertarEjecucionUnidad(unidad, numeroReferencia.Text, respuesta);
-                }
-                Partida partida = new Partida();
-                foreach (Partida p in partidasAsignadas)
-                {
+                    if (idEjecucioon.Equals(""))
 
-                    partida.numeroPartida = p.numeroPartida;
-                    partida.idPartida = p.idPartida;
-                    partida.descripcionPartida = p.descripcionPartida;
-                    ejecucionServicios.InsertarEjecucionPartidas(partida, numeroReferencia.Text, respuesta);
-                }
-                PartidaUnidad partidaUnidad = new PartidaUnidad();
-                foreach (PartidaUnidad pu in partidasElegidasConMonto)
-                {
+                    {
+                        Entidades.Ejecucion ejecucionGuardar = new Entidades.Ejecucion();
+                        estadoEjecucion.idEstado = 1;
+                        ejecucionGuardar.idestado = estadoEjecucion;
+                        ejecucionGuardar.anoPeriodo = Convert.ToInt32(PeriodosDDL.SelectedValue);
+                        ejecucionGuardar.idProyecto = Int32.Parse(ProyectosDDL.SelectedValue);
+                        ejecucionGuardar.monto = Convert.ToInt32(txtMontoIngresar.Text);
+                        tipoTramite.idTramite = Int32.Parse(DDLTipoTramite.SelectedValue);
+                        ejecucionGuardar.idTipoTramite = tipoTramite;
+                        ejecucionGuardar.descripcionEjecucionOtro = descripcionOtroTipoTramite.Text;
+                        ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
+                        ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
+                        respuesta = ejecucionServicios.InsertarEjecucion(ejecucionGuardar);
+                        // Inserción de los archivos en el servidor y en la BD
+                        if (fuArchivos.HasFiles)
+                        {
+                            ejecucionGuardar.idEjecucion = respuesta;
+                            List<ArchivoEjecucion> listaArchivos = guardarArchivos(ejecucionGuardar, fuArchivos);
 
-                    partidaUnidad.IdPartida = pu.IdPartida;
-                    partidaUnidad.IdUnidad = pu.IdUnidad;
-                    partidaUnidad.Monto = pu.Monto;
-                    partidaUnidad.MontoDisponible = pu.MontoDisponible;
-                    partidaUnidad.NumeroPartida = pu.NumeroPartida;
-                    ejecucionServicios.InsertarEjecucionPartidaMontoElelegido(partidaUnidad, numeroReferencia.Text, respuesta);
-                }
-                String url = Page.ResolveUrl("~/Catalogos/Ejecucion/ElegirEjecucion.aspx");
-                Response.Redirect(url);
+                            foreach (ArchivoEjecucion archivo in listaArchivos)
+                            {
+                                //archivo.tipoArchivo = tipoArchivoServicios.getTipoArchivoPorDatos("Archivo");
+                                archivoEjecucionServicios.insertarArchivoMuestra(archivo);
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        Entidades.Ejecucion ejecucionGuardar = new Entidades.Ejecucion();
+
+                        respuesta = Convert.ToInt32(idEjecucioon);
+                        ejecucionGuardar.idEjecucion = respuesta;
+                        estadoEjecucion.idEstado = 1;
+                        ejecucionGuardar.idestado = estadoEjecucion;
+                        ejecucionGuardar.anoPeriodo = Convert.ToInt32(PeriodosDDL.SelectedValue);
+                        ejecucionGuardar.idProyecto = Int32.Parse(ProyectosDDL.SelectedValue);
+                        ejecucionGuardar.monto = Convert.ToInt32(txtMontoIngresar.Text);
+                        tipoTramite.idTramite = Int32.Parse(DDLTipoTramite.SelectedValue);
+                        ejecucionGuardar.idTipoTramite = tipoTramite;
+                        ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
+                        ejecucionGuardar.descripcionEjecucionOtro = descripcionOtroTipoTramite.Text;
+                        ejecucionServicios.EliminarEjecucionUnidad(respuesta);
+                        ejecucionServicios.EliminarEjecucionPartidas(respuesta);
+                        ejecucionServicios.EliminarEjecucionPartidaMontoElelegido(respuesta);
+                        ejecucionServicios.EditarEjecucion(ejecucionGuardar);
+                        if (fuArchivos.HasFiles)
+                        {
+                            List<ArchivoEjecucion> listaArchivos = guardarArchivos(ejecucionGuardar, fuArchivos);
+
+                            foreach (ArchivoEjecucion archivo in listaArchivos)
+                            {
+                                //archivo.tipoArchivo = tipoArchivoServicios.getTipoArchivoPorDatos("Archivo");
+                                archivoEjecucionServicios.insertarArchivoMuestra(archivo);
+                            }
+                        }
+                    }
+                    foreach (Unidad u in listaUnidad)
+                    {
+                        unidad.idUnidad = u.idUnidad;
+                        unidad.nombreUnidad = u.nombreUnidad;
+                        ejecucionServicios.InsertarEjecucionUnidad(unidad, numeroReferencia.Text, respuesta);
+                    }
+                    Partida partida = new Partida();
+                    foreach (Partida p in partidasAsignadas)
+                    {
+
+                        partida.numeroPartida = p.numeroPartida;
+                        partida.idPartida = p.idPartida;
+                        partida.descripcionPartida = p.descripcionPartida;
+                        ejecucionServicios.InsertarEjecucionPartidas(partida, numeroReferencia.Text, respuesta);
+                    }
+                    PartidaUnidad partidaUnidad = new PartidaUnidad();
+                    foreach (PartidaUnidad pu in partidasElegidasConMonto)
+                    {
+
+                        partidaUnidad.IdPartida = pu.IdPartida;
+                        partidaUnidad.IdUnidad = pu.IdUnidad;
+                        partidaUnidad.Monto = pu.Monto;
+                        partidaUnidad.MontoDisponible = pu.MontoDisponible;
+                        partidaUnidad.NumeroPartida = pu.NumeroPartida;
+                        ejecucionServicios.InsertarEjecucionPartidaMontoElelegido(partidaUnidad, numeroReferencia.Text, respuesta);
+                    }
+                    String url = Page.ResolveUrl("~/Catalogos/Ejecucion/ElegirEjecucion.aspx");
+                    Response.Redirect(url);
                 }
                 else
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Por favor ingrese una descripción del tipo de trámite Otros" + "');", true);
                 }
-        }
+            }
             else
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Por favor ingrese un monto" + "');", true);
             }
-           
+
 
         }
         /// <summary>
@@ -1753,7 +1782,7 @@ namespace Proyecto.Catalogos.Ejecucion
             Entidades.Ejecucion ejecucionGuardar = new Entidades.Ejecucion();
             List<Partida> partidasAsignadas = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
             List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
-            
+
             EstadoEjecucion estadoEjecucion = new EstadoEjecucion();
             TipoTramite tipoTramite = new TipoTramite();
             Unidad unidad = new Unidad();
@@ -1790,6 +1819,18 @@ namespace Proyecto.Catalogos.Ejecucion
                         ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
                         ejecucionGuardar.descripcionEjecucionOtro = descripcionOtroTipoTramite.Text;
                         respuesta = ejecucionServicios.InsertarEjecucion(ejecucionGuardar);
+                        // Inserción de los archivos en el servidor y en la BD
+                        if (fuArchivos.HasFiles)
+                        {
+                            ejecucionGuardar.idEjecucion = respuesta;
+                            List<ArchivoEjecucion> listaArchivos = guardarArchivos(ejecucionGuardar, fuArchivos);
+
+                            foreach (ArchivoEjecucion archivo in listaArchivos)
+                            {
+                                //archivo.tipoArchivo = tipoArchivoServicios.getTipoArchivoPorDatos("Archivo");
+                                archivoEjecucionServicios.insertarArchivoMuestra(archivo);
+                            }
+                        }
                     }
                     else
                     {
@@ -1809,6 +1850,16 @@ namespace Proyecto.Catalogos.Ejecucion
                         ejecucionServicios.EliminarEjecucionPartidas(ejecucionGuardar.idEjecucion);
                         ejecucionServicios.EliminarEjecucionPartidaMontoElelegido(ejecucionGuardar.idEjecucion);
                         ejecucionServicios.EditarEjecucion(ejecucionGuardar);
+                        if (fuArchivos.HasFiles)
+                        {
+                            List<ArchivoEjecucion> listaArchivos = guardarArchivos(ejecucionGuardar, fuArchivos);
+
+                            foreach (ArchivoEjecucion archivo in listaArchivos)
+                            {
+                                //archivo.tipoArchivo = tipoArchivoServicios.getTipoArchivoPorDatos("Archivo");
+                                archivoEjecucionServicios.insertarArchivoMuestra(archivo);
+                            }
+                        }
 
                     }
 
@@ -1857,8 +1908,8 @@ namespace Proyecto.Catalogos.Ejecucion
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Por favor ingrese un monto" + "');", true);
                 }
             }
-            
-          
+
+
         }
         /// <summary>
         /// Kevin Picado Quesada
@@ -1892,14 +1943,14 @@ namespace Proyecto.Catalogos.Ejecucion
             Response.Redirect(url);
         }
 
-            #endregion
-            #region logica 
+        #endregion
+        #region logica 
 
-            /// <summary>
-            /// Josseline M 
-            /// este método muestra las partidas selecionadas en el modal
-            /// </summary>
-            private void obtenerPartidasSeleccionadas()
+        /// <summary>
+        /// Josseline M 
+        /// este método muestra las partidas selecionadas en el modal
+        /// </summary>
+        private void obtenerPartidasSeleccionadas()
         {
             List<Partida> partidas = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
             if (partidas != null)
@@ -1977,11 +2028,12 @@ namespace Proyecto.Catalogos.Ejecucion
 
                 if (proyectoElegido != 0 && periodoElegido != 0)
                 {
-                    if (periodooo.Equals("")){
+                    if (periodooo.Equals(""))
+                    {
 
                         Session["partidasPorUnidadesProyectoPeriodo"] = partidaServicios.ObtienePartidaPorPeriodoUnidadProyecto(proyectoElegido, unidades, periodoElegido);
                     }
-                   
+
                     List<Partida> partidasF = (List<Partida>)Session["partidasPorUnidadesProyectoPeriodo"];
                     var dt2 = partidasF;
                     pgsource.DataSource = dt2;
@@ -2071,9 +2123,10 @@ namespace Proyecto.Catalogos.Ejecucion
             periodos = this.periodoServicios.ObtenerTodos();
             int anoHabilitado = 0;
 
-           
-            if (periodooo.Equals("")) { 
-            Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
+
+            if (periodooo.Equals(""))
+            {
+                Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
                 Session["partidasPorUnidadesProyectoPeriodo"] = null;
             }
             if (periodos.Count > 0)
@@ -2098,15 +2151,15 @@ namespace Proyecto.Catalogos.Ejecucion
 
                     ListItem itemPeriodo = new ListItem(nombre, periodo.anoPeriodo.ToString());
                     PeriodosDDL.Items.Add(itemPeriodo);
-                } 
-              
-                   if (anoHabilitado != 0)
-                    {
+                }
 
-                        PeriodosDDL.Items.FindByValue(anoHabilitado.ToString()).Selected = true;
-                    }
+                if (anoHabilitado != 0)
+                {
 
-                    CargarProyectos();
+                    PeriodosDDL.Items.FindByValue(anoHabilitado.ToString()).Selected = true;
+                }
+
+                CargarProyectos();
 
 
             }
@@ -2140,8 +2193,8 @@ namespace Proyecto.Catalogos.Ejecucion
                         Session["proyecto"] = proyecto.idProyecto;
                         ProyectosDDL.Items.Add(itemLB);
                     }
-                    if(proyectoo!="")
-                    ProyectosDDL.Items.FindByValue(proyectoo.ToString()).Selected = true;
+                    if (proyectoo != "")
+                        ProyectosDDL.Items.FindByValue(proyectoo.ToString()).Selected = true;
                     //CargarUnidades();
                 }
             }
@@ -2149,7 +2202,7 @@ namespace Proyecto.Catalogos.Ejecucion
         }
 
 
-       
+
 
         /// <summary>
         /// Kevin Picado
@@ -2163,46 +2216,46 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         private void MostrarDatosTabla()
         {
-           
+
             if ((ProyectosDDL.Items.Count > 0) && (count == 0))
             {
-               
-                    listUnidades = unidadServicios.ObtenerPorProyecto(Int32.Parse(ProyectosDDL.SelectedValue)).ToList<Unidad>();
 
-                    listUnidad = listUnidades.ToList<Unidad>();
-                    if (listaUnidad == null || listaUnidad.Count == 0)
-                    {
-                        Session["partidasPorUnidadesProyectoPeriodo"] = null;
-                    }
+                listUnidades = unidadServicios.ObtenerPorProyecto(Int32.Parse(ProyectosDDL.SelectedValue)).ToList<Unidad>();
 
-                    var dt = listUnidad;
-                    pgsource.DataSource = dt;
-                    pgsource.AllowPaging = true;
-                    //numero de items que se muestran en el Repeater
-                    pgsource.PageSize = elmentosMostrar;
-                    pgsource.CurrentPageIndex = paginaActual;
-                    //mantiene el total de paginas en View State
-                    ViewState["TotalPaginas"] = pgsource.PageCount;
-                    //Ejemplo: "Página 1 al 10"
-                    lblpagina1.Text = "Página " + (paginaActual + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
-                    //Habilitar los botones primero, último, anterior y siguiente
-                    lbAnterior1.Enabled = !pgsource.IsFirstPage;
-                    lbSiguiente1.Enabled = !pgsource.IsLastPage;
-                    lbPrimero1.Enabled = !pgsource.IsFirstPage;
-                    lbUltimo1.Enabled = !pgsource.IsLastPage;
+                listUnidad = listUnidades.ToList<Unidad>();
+                if (listaUnidad == null || listaUnidad.Count == 0)
+                {
+                    Session["partidasPorUnidadesProyectoPeriodo"] = null;
+                }
 
-                    Repeater1.DataSource = pgsource;
-                    Repeater1.DataBind();
+                var dt = listUnidad;
+                pgsource.DataSource = dt;
+                pgsource.AllowPaging = true;
+                //numero de items que se muestran en el Repeater
+                pgsource.PageSize = elmentosMostrar;
+                pgsource.CurrentPageIndex = paginaActual;
+                //mantiene el total de paginas en View State
+                ViewState["TotalPaginas"] = pgsource.PageCount;
+                //Ejemplo: "Página 1 al 10"
+                lblpagina1.Text = "Página " + (paginaActual + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
+                //Habilitar los botones primero, último, anterior y siguiente
+                lbAnterior1.Enabled = !pgsource.IsFirstPage;
+                lbSiguiente1.Enabled = !pgsource.IsLastPage;
+                lbPrimero1.Enabled = !pgsource.IsFirstPage;
+                lbUltimo1.Enabled = !pgsource.IsLastPage;
 
-                    //metodo que realiza la paginacion
-                    Paginacion1();
-                    count++;
-                
+                Repeater1.DataSource = pgsource;
+                Repeater1.DataBind();
+
+                //metodo que realiza la paginacion
+                Paginacion1();
+                count++;
+
             }
             else
             {
 
-               
+
                 var dt = listUnidad;
                 pgsource.DataSource = dt;
                 pgsource.AllowPaging = true;
@@ -2227,10 +2280,10 @@ namespace Proyecto.Catalogos.Ejecucion
             }
         }
 
-        
 
 
-       
+
+
 
         private bool IsNumeric(string num)
         {
@@ -2247,7 +2300,7 @@ namespace Proyecto.Catalogos.Ejecucion
 
 
 
-       
+
         protected void recargarTablaRepartirMontos(List<PartidaUnidad> partidaUnidad)
         {
 
@@ -2272,28 +2325,28 @@ namespace Proyecto.Catalogos.Ejecucion
 
 
         }
-        
+
         private void CargarPartidasPorUnidades()
         {
 
             ddlPartida.Items.Clear();
-           
-                if (listaUnidad.Count > 0)
-                {
-                    foreach (Unidad unidad in listaUnidad)
-                    {
 
-                        ListItem itemUnidad = new ListItem(unidad.nombreUnidad, unidad.idUnidad.ToString());
-                        ddlPartida.Items.Add(itemUnidad);
-                    }
+            if (listaUnidad.Count > 0)
+            {
+                foreach (Unidad unidad in listaUnidad)
+                {
+
+                    ListItem itemUnidad = new ListItem(unidad.nombreUnidad, unidad.idUnidad.ToString());
+                    ddlPartida.Items.Add(itemUnidad);
+                }
 
 
             }
-           
 
-        
+
+
         }
-       
+
 
         /// <summary>
         /// Josseline M
@@ -2304,9 +2357,9 @@ namespace Proyecto.Catalogos.Ejecucion
 
             int proyectoElegido = Int32.Parse(ProyectosDDL.SelectedValue);
             int periodoElegido = Int32.Parse(PeriodosDDL.SelectedValue);
-            
+
             idUnidadElegida = Int32.Parse(ddlPartida.SelectedValue);
-            
+
             if (idUnidadElegida != 0)
             {
                 List<Partida> partidasElegidas = new List<Partida>();
@@ -2341,9 +2394,9 @@ namespace Proyecto.Catalogos.Ejecucion
                     listaPresuouestosEgreso = presupuestoEgreso_PartidaServicios.getPresupuestoEgresoPartidas(presupuestoEgreso);
 
                     //Double montoDisponible = (Double)listaPresuouestosEgreso.Where(item => item.partida.numeroPartida == p.numeroPartida).ToList().FirstOrDefault().monto;
-                    string idPartida= Convert.ToString(listaPresuouestosEgreso.Where(item => item.partida.numeroPartida == p.numeroPartida).ToList().FirstOrDefault().partida.idPartida);
+                    string idPartida = Convert.ToString(listaPresuouestosEgreso.Where(item => item.partida.numeroPartida == p.numeroPartida).ToList().FirstOrDefault().partida.idPartida);
 
-                    Double montoDisponible = ejecucionServicios.ConsultaMontoDisponiblePartida(idPartida,Convert.ToString(idPresupuestoEgreso));
+                    Double montoDisponible = ejecucionServicios.ConsultaMontoDisponiblePartida(idPartida, Convert.ToString(idPresupuestoEgreso));
                     partidaU.MontoDisponible = montoDisponible;
                     partidaUnidad.Add(partidaU);
 
@@ -2380,17 +2433,17 @@ namespace Proyecto.Catalogos.Ejecucion
                 rpUnidadPartida.DataSource = pgsource;
                 rpUnidadPartida.DataBind();
                 contador++;
-                
+
 
             }
-            
+
 
         }
 
 
 
 
-        
+
 
         /// <summary>
         /// Josseline M
@@ -2430,7 +2483,7 @@ namespace Proyecto.Catalogos.Ejecucion
 
         }
 
-       
+
 
 
         /// <summary>
@@ -2587,7 +2640,7 @@ namespace Proyecto.Catalogos.Ejecucion
             ButtonRepartir.Visible = false;
             Button1.Visible = false;
             Button2.Visible = false;
-            
+
             DDLTipoTramite.Enabled = false;
             txtMontoIngresar.Enabled = false;
             numeroReferencia.Enabled = false;
@@ -2598,8 +2651,77 @@ namespace Proyecto.Catalogos.Ejecucion
             BtnCerrar.Visible = true;
         }
 
-            #endregion
+        public List<ArchivoEjecucion> guardarArchivos(Entidades.Ejecucion ejecucion, FileUpload fuArchivos)
+        {
+            List<ArchivoEjecucion> listaArchivos = new List<ArchivoEjecucion>();
+
+            String archivosRepetidos = "";
+
+            foreach (HttpPostedFile file in fuArchivos.PostedFiles)
+            {
+                String nombreArchivo = Path.GetFileName(file.FileName);
+                nombreArchivo = nombreArchivo.Replace(' ', '_');
+                DateTime fechaHoy = DateTime.Now;
+                String carpeta = Convert.ToString(ejecucion.idEjecucion + "-" + ProyectosDDL.SelectedItem.Text);
+
+                int guardado = Utilidades.SaveFile(file, fechaHoy.Year, nombreArchivo, carpeta);
+
+                if (guardado == 0)
+                {
+
+                    ArchivoEjecucion archivoEjecucion = new ArchivoEjecucion();
+                    archivoEjecucion.idEjecucion = ejecucion.idEjecucion;
+                    archivoEjecucion.nombreArchivo = nombreArchivo;
+                    archivoEjecucion.rutaArchivo = Utilidades.path + fechaHoy.Year + "\\" + carpeta + "\\" + nombreArchivo;
+                    archivoEjecucion.fechaCreacion = fechaHoy;
+                    // archivoEjecucion.muestra = muestra;
+                    archivoEjecucion.creadoPor = "Kevin";
+
+                    listaArchivos.Add(archivoEjecucion);
+                }
+                else
+                {
+                    archivosRepetidos += "* " + nombreArchivo + ", \n";
+                }
+            }
+
+            if (archivosRepetidos.Trim() != "")
+            {
+                archivosRepetidos = archivosRepetidos.Remove(archivosRepetidos.Length - 3);
+                //(this.Master as SiteMaster).Mensaje("Los archivos " + archivosRepetidos + " no se pudieron guardar porque ya había archivos con ese nombre", "¡Alerta!");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Los archivos " + archivosRepetidos + " no se pudieron guardar porque ya había archivos con ese nombre" + "');", true);
+            }
+
+            return listaArchivos;
+        }
+        public void EliminarArchivo()
+        {
+            List<ArchivoEjecucion> listaArchivoEjecucion = (List<ArchivoEjecucion>)Session["listaArchivoEjecucion"];
+
+            foreach (ArchivoEjecucion archivoEjecucion in listaArchivoEjecucion)
+            {
+                string ruta = archivoEjecucion.rutaArchivo;
+                if (System.IO.File.Exists(@ruta))
+                {
+                    try
+                    {
+                        System.IO.File.Delete(@ruta);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        //(this.Master as SiteMaster).Mensaje("No se pudo eliminar el archivo", "¡Alerta!");
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "No se pudo eliminar el archivo" + "');", true);
+                    }
+                }
+
+                //archivoMuestraServicios.eliminarArchivoMuestra(archivoMuestra, (String)Session["nombreCompleto"]);
+            }
+        }
+
+        #endregion
 
     }
 }
+   
        

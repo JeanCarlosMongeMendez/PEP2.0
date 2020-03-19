@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnualidadDatos.cs" />
+    <Compile Include="ArchivoEjecucionDatos.cs" />
     <Compile Include="CargaSocialDatos.cs" />
     <Compile Include="ConexionDatos.cs" />
     <Compile Include="ContactoDatos.cs" />

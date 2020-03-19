@@ -190,6 +190,15 @@
 
                 </div>
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+                
+                    <asp:Label ID="lblArchivos" runat="server" Text="Archivos " Font-Size="Medium" ForeColor="Black" Font-Bold="true" CssClass="label"></asp:Label>
+             
+                
+                    <asp:FileUpload ID="fuArchivos" runat="server" AllowMultiple="true" oninput="validarArchivos(this);" onchange="validarArchivos(this);" />
+                
+                
+            </div>
+                <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                     <asp:Label ID="Label6" runat="server" Text="Número de referencia" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                     <asp:TextBox class="form-control" ID="numeroReferencia" runat="server" Enabled="true"></asp:TextBox>
 
