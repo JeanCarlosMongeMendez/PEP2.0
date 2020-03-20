@@ -316,7 +316,7 @@ namespace Proyecto.Catalogos.Ejecucion
             Session["listaUnidad"] = ejecucionServicios.ConsultarUnidadEjecucion(Convert.ToInt32(idEjecucion));
             Session["listaPartida"] = ejecucionServicios.ConsultarPartidaEjecucion(Convert.ToInt32(idEjecucion));
             List<Entidades.ArchivoEjecucion> eje = new List<Entidades.ArchivoEjecucion>();
-            Session["listaArchivoEjecucion"] = archivoEjecucionServicios.obtenerArchivoMuestra(Convert.ToInt32(idEjecucion));
+            Session["listaArchivoEjecucion"] = archivoEjecucionServicios.obtenerArchivoEjecucion(Convert.ToInt32(idEjecucion));
             listaEjecucion = ejecucionServicios.ConsultarEjecucion(PeriodosDDL.SelectedValue, ProyectosDDL.SelectedValue);
             int idTipoTramite = listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().idTipoTramite.idTramite;
             Session["listaMontoPartidaDisponible"] = ejecucionServicios.ConsultarEjecucionMontoPartida(Convert.ToInt32(idEjecucion));
@@ -342,8 +342,9 @@ namespace Proyecto.Catalogos.Ejecucion
             Session["verEjecucion"] = 0;
             Session["nuevaEjecucion"] = 0;
             string idEjecucion = ((LinkButton)(sender)).CommandArgument.ToString();
+
             List<Entidades.Ejecucion> listaEjecucion = new List<Entidades.Ejecucion>();
-           
+            Session["listaArchivoEjecucion"] = archivoEjecucionServicios.obtenerArchivoEjecucion(Convert.ToInt32(idEjecucion));
             Session["listaUnidad"] = ejecucionServicios.ConsultarUnidadEjecucion(Convert.ToInt32(idEjecucion));
             Session["listaPartida"] = ejecucionServicios.ConsultarPartidaEjecucion(Convert.ToInt32(idEjecucion));
 

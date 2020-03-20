@@ -16,6 +16,10 @@
                 <p class="mt-1">Seleccione un proyecto</p>
                 <asp:DropDownList AutoPostBack="true" ID="ProyectosDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="Proyectos_OnChanged"></asp:DropDownList>
                 </div>
+                  <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+                    
+                    <asp:Button ID="Button1" runat="server" Text="Nueva Ejecución" CssClass="btn btn-primary" OnClick="NuevaEjecucion_OnChanged" />
+                </div>
                  <%-- tabla--%>
                 <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
                     <table id="tblUnidad" class="table table-bordered">

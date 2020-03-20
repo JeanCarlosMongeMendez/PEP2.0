@@ -199,6 +199,9 @@
                 
             </div>
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+                    <asp:Button ID="Button4" runat="server" Text="Ver Archivos" CssClass="btn btn-primary" OnClick="btnVerEjecucionArchivo_Click" />
+                </div>
+                <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                     <asp:Label ID="Label6" runat="server" Text="Número de referencia" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                     <asp:TextBox class="form-control" ID="numeroReferencia" runat="server" Enabled="true"></asp:TextBox>
 
@@ -276,7 +279,7 @@
                                     OnItemDataBound="rptPaginacion6_ItemDataBound" RepeatDirection="Horizontal">
                                     <ItemTemplate>
                                         <asp:LinkButton ID="lbPaginacion6" runat="server" CssClass="btn btn-default"
-                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
+                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina6"
                                             Text='<%# Eval("PaginaText") %>' ></asp:LinkButton>
                                     </ItemTemplate>
                                 </asp:DataList>
@@ -684,7 +687,7 @@
     </asp:UpdatePanel>
      <!-- Fin modal elegir unidad -->
 
-     <!-- Modal confirmar Ejecucion -->
+     <!-- Modal confirmar Eliminar Ejecucion -->
      <asp:UpdatePanel ID="confirmarEjecucion" runat="server">
                     <ContentTemplate>
                         <div id="modalConfirmarEliminar" class="modal" role="alertdialog">
@@ -730,7 +733,126 @@
                 </asp:UpdatePanel>
                 <!-- FIN Modal Confirmar Eliminar Ejec -->
    
+     <!-- Modal VerEjecucionArchivo -->
+    <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+        <ContentTemplate>
+            <div id="modalVerEjecucionArchivo" class="modal fade" role="alertdialog">
+                <div class="modal-dialog modal-lg">
 
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Ver Archivo</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="col-md-12 col-xs-12 col-sm-12">
+                                <br />
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
+                                <div class="col-md-3 col-xs-3 col-sm-3">
+                                    <asp:Label ID="label9" runat="server" Text="Seleccione un Archivo" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+
+                            </div>
+                            <%-- tabla--%>
+                            <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                                <table id="tblArchivo" class="table table-bordered">
+                                    <thead style="text-align: center">
+                                        <tr style="text-align: center" class="btn-primary">
+                                            <th></th>
+                                            <th>Número Ejecución</th>
+                                            <th>Nombre Archivo</th>
+                                             <th>Creado Por</th>
+
+                                        </tr>
+                                    </thead>
+
+                                    <asp:Repeater ID="RepeaterArchivo" runat="server">
+                                        <HeaderTemplate>
+                                        </HeaderTemplate>
+
+                                        <ItemTemplate>
+                                            <tr style="text-align: center">
+                                                <td>
+                                             <asp:LinkButton ID="btnArchivo" runat="server" ToolTip="Descargar" CommandArgument='<%# Eval("nombreArchivo") %>' OnClick="btnVerArchivo_Click" Cssclass="btn glyphicon glyphicon-download-alt" />
+                                             <asp:LinkButton ID="btnEliminarArchivo" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("nombreArchivo") %>' OnClick="EliminarArchivoSeleccionado_Click" Cssclass="btn glyphicon glyphicon-remove" />
+
+                                                </td>
+                                               
+                                                <td>
+                                                    <%# Eval("idEjecucion") %>
+                                    
+                                                </td>
+
+
+                                                <td>
+                                                    <%# Eval("nombreArchivo") %>
+                                                <td>
+
+                                                    <%# Eval("creadoPor") %>
+                                                </td>
+                                                </td>
+                                            </tr>
+
+                                        </ItemTemplate>
+
+                                        <FooterTemplate>
+                                        </FooterTemplate>
+                                    </asp:Repeater>
+                                </table>
+
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                                    <center>
+                    <table class="table" style="max-width:664px;">
+                        <tr style="padding:1px !important">
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbPrimero7" runat="server" CssClass="btn btn-primary" OnClick="lbPrimero7_Click"><span class="glyphicon glyphicon-fast-backward"></span></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbAnterior7" runat="server" CssClass="btn btn-default" OnClick="lbAnterior7_Click"><span class="glyphicon glyphicon-backward"></asp:LinkButton>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:DataList ID="DataList7" runat="server"
+                                    OnItemCommand="rptPaginacion7_ItemCommand"
+                                    OnItemDataBound="rptPaginacion7_ItemDataBound" RepeatDirection="Horizontal">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lbPaginacion7" runat="server" CssClass="btn btn-default"
+                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
+                                            Text='<%# Eval("PaginaText") %>' ></asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:DataList>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbSiguiente7" CssClass="btn btn-default" runat="server" OnClick="lbSiguiente7_Click"><span class="glyphicon glyphicon-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbUltimo7" CssClass="btn btn-primary" runat="server" OnClick="lbUltimo7_Click"><span class="glyphicon glyphicon-fast-forward"></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:Label ID="lblpagina7" runat="server" Text=""></asp:Label>
+                            </td>
+                        </tr>
+                    </table>
+                        </center>
+                                </div>
+
+
+                        <div class="modal-footer" style="text-align: center">
+
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+     <!-- Fin modal VerEjecucionArchivo -->
 
     <script type="text/javascript">
         function activarModalElegirUnidad() {
@@ -745,6 +867,9 @@
         };
          function activarModalConfirmarEjecucion() {
             $('#modalConfirmarEliminar').modal('show');
+        };
+         function activarModalVerEjecucionArchivo() {
+            $('#modalVerEjecucionArchivo').modal('show');
         };
 
         
