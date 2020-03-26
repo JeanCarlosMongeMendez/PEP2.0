@@ -48,7 +48,7 @@ namespace Proyecto.Catalogos.Ejecucion
         //se utiliza tambien en el metodo mostrarDatosTabla(),para llenar la tabla en el inicio 
         static List<Unidad> listUnidades = new List<Unidad>();
 
-        int primerIndex, ultimoIndex, primerIndex2, ultimoIndex2, primerIndex3, ultimoIndex3, primerIndex4, ultimoIndex4, primerIndex7, ultimoIndex7, primerIndex6, ultimoIndex6;
+        int primerIndex, ultimoIndex, primerIndex2, ultimoIndex2, primerIndex3, ultimoIndex3, primerIndex4, ultimoIndex4, primerIndex5, ultimoIndex5, primerIndex7, ultimoIndex7, primerIndex6, ultimoIndex6;
         //contador que se utiliza en el metodo MostrarDatosTabla(),se utiliza para que recorra solo una ves en listUnidades
         static int count = 0;
         static int contador = 0;
@@ -267,7 +267,7 @@ namespace Proyecto.Catalogos.Ejecucion
             if (ultimoIndex3 > Convert.ToInt32(ViewState["TotalPaginas3"]))
             {
                 ultimoIndex3 = Convert.ToInt32(ViewState["TotalPaginas3"]);
-                primerIndex3 = ultimoIndex2 - 4;
+                primerIndex3 = ultimoIndex3 - 4;
             }
 
             if (primerIndex3 < 0)
@@ -299,10 +299,10 @@ namespace Proyecto.Catalogos.Ejecucion
                 ultimoIndex4 = 4;
 
             //se revisa que la ultima pagina sea menor que el total de paginas a mostrar, sino se resta para que muestre bien la paginacion
-            if (ultimoIndex2 > Convert.ToInt32(ViewState["TotalPaginas4"]))
+            if (ultimoIndex4 > Convert.ToInt32(ViewState["TotalPaginas4"]))
             {
                 ultimoIndex4 = Convert.ToInt32(ViewState["TotalPaginas4"]);
-                primerIndex4 = ultimoIndex2 - 4;
+                primerIndex4 = ultimoIndex4 - 4;
             }
 
             if (primerIndex4 < 0)
@@ -316,7 +316,6 @@ namespace Proyecto.Catalogos.Ejecucion
                 dr[1] = i + 1;
                 dt.Rows.Add(dr);
             }
-
             rptPaginacion4.DataSource = dt;
             rptPaginacion4.DataBind();
         }
@@ -326,30 +325,31 @@ namespace Proyecto.Catalogos.Ejecucion
             dt.Columns.Add("IndexPagina"); //Inicia en 0
             dt.Columns.Add("PaginaText"); //Inicia en 1
 
-            primerIndex = paginaActual - 2;
-            if (paginaActual > 2)
-                ultimoIndex = paginaActual + 2;
+            primerIndex5 = paginaActual5 - 2;
+            if (paginaActual5 > 2)
+                ultimoIndex5 = paginaActual5 + 2;
             else
-                ultimoIndex = 4;
+                ultimoIndex5 = 4;
 
             //se revisa que la ultima pagina sea menor que el total de paginas a mostrar, sino se resta para que muestre bien la paginacion
-            if (ultimoIndex > Convert.ToInt32(ViewState["TotalPaginas"]))
+            if (ultimoIndex5 > Convert.ToInt32(ViewState["TotalPaginas5"]))
             {
-                ultimoIndex = Convert.ToInt32(ViewState["TotalPaginas"]);
-                primerIndex = ultimoIndex - 4;
+                ultimoIndex5 = Convert.ToInt32(ViewState["TotalPaginas5"]);
+                primerIndex5 = ultimoIndex5 - 4;
             }
 
-            if (primerIndex < 0)
-                primerIndex = 0;
+            if (primerIndex5 < 0)
+                primerIndex5 = 0;
 
             //se crea el numero de paginas basado en la primera y ultima pagina
-            for (var i = primerIndex; i < ultimoIndex; i++)
+            for (var i = primerIndex5; i < ultimoIndex5; i++)
             {
                 var dr = dt.NewRow();
                 dr[0] = i;
                 dr[1] = i + 1;
                 dt.Rows.Add(dr);
             }
+          
 
             DataList1.DataSource = dt;
             DataList1.DataBind();
@@ -395,9 +395,9 @@ namespace Proyecto.Catalogos.Ejecucion
             dt.Columns.Add("IndexPagina"); //Inicia en 0
             dt.Columns.Add("PaginaText"); //Inicia en 1
 
-            primerIndex7 = paginaActual - 2;
-            if (paginaActual > 2)
-                ultimoIndex7 = paginaActual + 2;
+            primerIndex7 = paginaActual7 - 2;
+            if (paginaActual7 > 2)
+                ultimoIndex7 = paginaActual7 + 2;
             else
                 ultimoIndex7 = 4;
 
@@ -405,7 +405,7 @@ namespace Proyecto.Catalogos.Ejecucion
             if (ultimoIndex7 > Convert.ToInt32(ViewState["TotalPaginas7"]))
             {
                 ultimoIndex7 = Convert.ToInt32(ViewState["TotalPaginas7"]);
-                primerIndex7 = ultimoIndex - 4;
+                primerIndex7 = ultimoIndex7 - 4;
             }
 
             if (primerIndex7 < 0)
@@ -789,7 +789,7 @@ namespace Proyecto.Catalogos.Ejecucion
 
         protected void rptPaginacion4_ItemCommand(object source, DataListCommandEventArgs e)
         {
-            if (!e.CommandName.Equals("nuevaPagina")) return;
+            if (!e.CommandName.Equals("nuevaPagina4")) return;
             paginaActual4 = Convert.ToInt32(e.CommandArgument.ToString());
             obtenerPartidasPorProyectoUnidadPeriodo();
         }
@@ -846,7 +846,7 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         protected void lbUltimo5_Click(object sender, EventArgs e)
         {
-            paginaActual5 = (Convert.ToInt32(ViewState["TotalPaginas"]) - 1);
+            paginaActual5 = (Convert.ToInt32(ViewState["TotalPaginas5"]) - 1);
             obtenerUnidadesPartidasAsignarMonto();
            
         }
@@ -897,7 +897,7 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         protected void rptPaginacion5_ItemCommand(object source, DataListCommandEventArgs e)
         {
-            if (!e.CommandName.Equals("nuevaPagina")) return;
+            if (!e.CommandName.Equals("nuevaPagina5")) return;
             paginaActual5 = Convert.ToInt32(e.CommandArgument.ToString());
             obtenerUnidadesPartidasAsignarMonto();
             
@@ -915,8 +915,8 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         protected void rptPaginacion5_ItemDataBound(object sender, DataListItemEventArgs e)
         {
-            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion");
-            if (lnkPagina.CommandArgument != paginaActual.ToString()) return;
+            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion5");
+            if (lnkPagina.CommandArgument != paginaActual5.ToString()) return;
             lnkPagina.Enabled = false;
             lnkPagina.BackColor = Color.FromName("#005da4");
             lnkPagina.ForeColor = Color.FromName("#FFFFFF");
@@ -1054,7 +1054,7 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         protected void lbUltimo7_Click(object sender, EventArgs e)
         {
-            paginaActual7 = (Convert.ToInt32(ViewState["TotalPaginas"]) - 1);
+            paginaActual7 = (Convert.ToInt32(ViewState["TotalPaginas7"]) - 1);
             VerEjecucionArchivos();
         }
 
@@ -1102,7 +1102,7 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         protected void rptPaginacion7_ItemCommand(object source, DataListCommandEventArgs e)
         {
-            if (!e.CommandName.Equals("nuevaPagina")) return;
+            if (!e.CommandName.Equals("nuevaPagina7")) return;
             paginaActual7 = Convert.ToInt32(e.CommandArgument.ToString());
             VerEjecucionArchivos();
         }
@@ -1119,7 +1119,7 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         protected void rptPaginacion7_ItemDataBound(object sender, DataListItemEventArgs e)
         {
-            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion");
+            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion7");
             if (lnkPagina.CommandArgument != paginaActual7.ToString()) return;
             lnkPagina.Enabled = false;
             lnkPagina.BackColor = Color.FromName("#005da4");
@@ -1145,7 +1145,7 @@ namespace Proyecto.Catalogos.Ejecucion
                 descripcionEjecucionOtro = Convert.ToString(Session["descripcionEjecionOtro"]);
                 nuevaEjecucion = Convert.ToInt32(Session["nuevaEjecucion"]);
                 verEjecucion = Convert.ToInt32(Session["verEjecucion"]);
-                nombre = Convert.ToString(Session["nombreCompleto"]);
+                nombre = Convert.ToString(Session["nombreCompleto"]); 
                 if (nuevaEjecucion == 0)
                 {
                     List<Entidades.Unidad> comparaListaUnidades = new List<Entidades.Unidad>();
@@ -2115,15 +2115,84 @@ namespace Proyecto.Catalogos.Ejecucion
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalVerEjecucionArchivo", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalVerEjecucionArchivo').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalVerEjecucionArchivo();", true);
         }
+        /*
+     * Kevin Picado
+     * 20/03/20
+     * Efecto: elimina el archivo seleccionado en el modal activarModalVerEjecucionArchivo()
+     * Requiere: -
+     * Modifica: -
+     * Devuelve: -
+     */
+        public void EliminarArchivoSeleccionado_Click(object sender, EventArgs e)
+        {
+            List<ArchivoEjecucion> listaArchivoEjecucion = (List<ArchivoEjecucion>)Session["listaArchivoEjecucion"];
+            String nombreArchivo = (((LinkButton)(sender)).CommandArgument).ToString();
+            if (listaArchivoEjecucion != null || listaArchivoEjecucion.Count() != 0)
+            {
+                foreach (ArchivoEjecucion archivoEjecucion in listaArchivoEjecucion)
+                {
+                    if (archivoEjecucion.nombreArchivo.Equals(nombreArchivo))
+                    {
+                        string ruta = archivoEjecucion.rutaArchivo;
+                        if (System.IO.File.Exists(@ruta))
+                        {
+                            try
+                            {
+                                System.IO.File.Delete(@ruta);
 
-            #endregion
-            #region logica 
+                            }
+                            catch (Exception ex)
+                            {
+                                //(this.Master as SiteMaster).Mensaje("No se pudo eliminar el archivo", "¡Alerta!");
+                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "No se pudo eliminar el archivo" + "');", true);
+                            }
+                        }
+                    }
+                    //archivoMuestraServicios.eliminarArchivoMuestra(archivoMuestra, (String)Session["nombreCompleto"]);
+                }
+                archivoEjecucionServicios.eliminarArchivoEjecucionPorNombreYId(Convert.ToInt32(idEjecucioon), nombreArchivo);
+                Session["listaArchivoEjecucion"] = archivoEjecucionServicios.obtenerArchivoEjecucion(Convert.ToInt32(idEjecucioon));
+                VerEjecucionArchivos();
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalVerEjecucionArchivo", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalVerEjecucionArchivo').hide();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalVerEjecucionArchivo();", true);
+            }
 
-            /// <summary>
-            /// Josseline M 
-            /// este método muestra las partidas selecionadas en el modal
-            /// </summary>
-            private void obtenerPartidasSeleccionadas()
+        }
+
+        /*Kevin Picado
+       * 20/03/20
+       * Efecto: descarga el archivo para que el usuario lo pueda ver
+       * Requiere: clic en el archivo
+       * Modifica: -
+       * Devuelve: -
+       */
+        protected void btnVerArchivo_Click(object sender, EventArgs e)
+        {
+            List<ArchivoEjecucion> archivoEjecucion = (List<ArchivoEjecucion>)Session["listaArchivoEjecucion"];
+            //String[] infoArchivo = (((LinkButton)(sender)).CommandArgument).ToString().Split(',');
+            //String nombreArchivo = infoArchivo[1];
+            String rutaArchivo = (((LinkButton)(sender)).CommandArgument).ToString();
+            string ruta = archivoEjecucion.Where(item => item.nombreArchivo.Equals(rutaArchivo)).ToList().First().rutaArchivo;
+            FileStream fileStream = new FileStream(ruta, FileMode.Open, FileAccess.Read);
+            BinaryReader binaryReader = new BinaryReader(fileStream);
+            Byte[] blobValue = binaryReader.ReadBytes(Convert.ToInt32(fileStream.Length));
+
+            fileStream.Close();
+            binaryReader.Close();
+
+            descargar(rutaArchivo, ruta);
+            VerEjecucionArchivos();
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalVerEjecucionArchivo", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalVerEjecucionArchivo').hide();", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalVerEjecucionArchivo();", true);
+        }
+        #endregion
+        #region logica 
+
+        /// <summary>
+        /// Josseline M 
+        /// este método muestra las partidas selecionadas en el modal
+        /// </summary>
+        private void obtenerPartidasSeleccionadas()
         {
             List<Partida> partidas = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
             if (partidas != null)
@@ -2189,74 +2258,86 @@ namespace Proyecto.Catalogos.Ejecucion
                 Session["partidasPorUnidadesProyectoPeriodo"] = null;
             }
 
-            List<Partida> partidas = (List<Partida>)Session["partidasPorUnidadesProyectoPeriodo"];
-            if (partidas == null || partidas.Count == 0)
-            {
-                int proyectoElegido = Int32.Parse(ProyectosDDL.SelectedValue);
-                int periodoElegido = Int32.Parse(PeriodosDDL.SelectedValue);
-                LinkedList<int> unidades = new LinkedList<int>();
-                foreach (Unidad unidad in listaUnidad)
-                {
-                    unidades.AddFirst(unidad.idUnidad);
-                }
+            //List<Partida> partidas = (List<Partida>)Session["partidasPorUnidadesProyectoPeriodo"];
+            //if (partidas == null || partidas.Count == 0)
+            //{
+            //    int proyectoElegido = Int32.Parse(ProyectosDDL.SelectedValue);
+            //    int periodoElegido = Int32.Parse(PeriodosDDL.SelectedValue);
+            //    LinkedList<int> unidades = new LinkedList<int>();
+            //    foreach (Unidad unidad in listaUnidad)
+            //    {
+            //        unidades.AddFirst(unidad.idUnidad);
+            //    }
 
-                if (proyectoElegido != 0 && periodoElegido != 0)
-                {
-                    if (periodooo.Equals(""))
-                    {
+            //    if (proyectoElegido != 0 && periodoElegido != 0)
+            //    {
+            //        if (periodooo.Equals(""))
+            //        {
 
-                        Session["partidasPorUnidadesProyectoPeriodo"] = partidaServicios.ObtienePartidaPorPeriodoUnidadProyecto(proyectoElegido, unidades, periodoElegido);
-                    }
+            //            Session["partidasPorUnidadesProyectoPeriodo"] = partidaServicios.ObtienePartidaPorPeriodoUnidadProyecto(proyectoElegido, unidades, periodoElegido);
+            //        }
 
-                    List<Partida> partidasF = (List<Partida>)Session["partidasPorUnidadesProyectoPeriodo"];
-                    var dt2 = partidasF;
-                    pgsource.DataSource = dt2;
-                    pgsource.AllowPaging = true;
-                    //numero de items que se muestran en el Repeater
-                    pgsource.PageSize = elmentosMostrar;
-                    pgsource.CurrentPageIndex = paginaActual4;
-                    //mantiene el total de paginas en View State
-                    ViewState["TotalPaginas4"] = pgsource.PageCount;
-                    //Ejemplo: "Página 1 al 10"
-                    lblpagina4.Text = "Página " + (paginaActual4 + 1) + " de " + pgsource.PageCount + " (" + dt2.Count + " - elementos)";
-                    //Habilitar los botones primero, último, anterior y siguiente
-                    lbAnterior4.Enabled = !pgsource.IsFirstPage;
-                    lbSiguiente4.Enabled = !pgsource.IsLastPage;
-                    lbPrimero4.Enabled = !pgsource.IsFirstPage;
-                    lbUltimo4.Enabled = !pgsource.IsLastPage;
+            //        List<Partida> partidasF = (List<Partida>)Session["partidasPorUnidadesProyectoPeriodo"];
+            //        var dt2 = partidasF;
+            //        pgsource.DataSource = dt2;
+            //        pgsource.AllowPaging = true;
+            //        //numero de items que se muestran en el Repeater
+            //        pgsource.PageSize = elmentosMostrar;
+            //        pgsource.CurrentPageIndex = paginaActual4;
+            //        //mantiene el total de paginas en View State
+            //        ViewState["TotalPaginas4"] = pgsource.PageCount;
+            //        //Ejemplo: "Página 1 al 10"
+            //        lblpagina4.Text = "Página " + (paginaActual4 + 1) + " de " + pgsource.PageCount + " (" + dt2.Count + " - elementos)";
+            //        //Habilitar los botones primero, último, anterior y siguiente
+            //        lbAnterior4.Enabled = !pgsource.IsFirstPage;
+            //        lbSiguiente4.Enabled = !pgsource.IsLastPage;
+            //        lbPrimero4.Enabled = !pgsource.IsFirstPage;
+            //        lbUltimo4.Enabled = !pgsource.IsLastPage;
 
-                    rpElegirPartida.DataSource = pgsource;
-                    rpElegirPartida.DataBind();
+            //        rpElegirPartida.DataSource = pgsource;
+            //        rpElegirPartida.DataBind();
 
-                    //metodo que realiza la paginacion
-                    Paginacion4();
+            //        //metodo que realiza la paginacion
+            //        Paginacion4();
 
-                }
-                else
-                {
+            //    }
+            //    else
+            //    {
 
-                    partidas = null;
-                    var dt = partidas;
-                    pgsource.DataSource = dt;
-                    rpElegirPartida.DataSource = pgsource;
-                    rpElegirPartida.DataBind();
-                }
+            //        partidas = null;
+            //        var dt = partidas;
+            //        pgsource.DataSource = dt;
+            //        rpElegirPartida.DataSource = pgsource;
+            //        rpElegirPartida.DataBind();
+            //    }
 
-            }
-            else
-            {
-                LinkedList<int> unidades = new LinkedList<int>();
+            //}
+            //else
+            //{
+           
+            List<Partida> TempPartidasN = new List<Partida>();
+            LinkedList<int> unidades = new LinkedList<int>();
                 foreach (Unidad unidad in listaUnidad)
                 {
                     unidades.AddFirst(unidad.idUnidad);
                 }
             
-                List<Partida> TempPartidasN = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
+                 TempPartidasN = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
                     //(List<Partida>)Session["partidasPorUnidadesProyectoPeriodo"];
                 int proyectoElegido = Int32.Parse(ProyectosDDL.SelectedValue);
                 int periodoElegido = Int32.Parse(PeriodosDDL.SelectedValue);
                 List<Partida> partidasN = partidaServicios.ObtienePartidaPorPeriodoUnidadProyecto(proyectoElegido, unidades, periodoElegido);
-                if (TempPartidasN != null || TempPartidasN.Count !=0)
+            if (periodooo.Equals(""))
+            {
+
+                Session["partidasPorUnidadesProyectoPeriodo"] = partidaServicios.ObtienePartidaPorPeriodoUnidadProyecto(proyectoElegido, unidades, periodoElegido);
+            }
+            if (TempPartidasN == null)
+            {
+                List<Partida> TempPartidas = new List<Partida>();
+                TempPartidasN = TempPartidas;
+            }
+            if (TempPartidasN != null || TempPartidasN.Count !=0)
                 {
                     TempPartida = TempPartidasN.Where(a => !partidasN.Any(a1 => a1.numeroPartida == a.numeroPartida))
                    .Union(partidasN.Where(a => !TempPartidasN.Any(a1 => a1.numeroPartida == a.numeroPartida))).ToList();
@@ -2288,11 +2369,11 @@ namespace Proyecto.Catalogos.Ejecucion
 
                 //metodo que realiza la paginacion
                 Paginacion4();
+
+
                 MostrarTablaRepartirGastos();
 
-
-
-            }
+            //}
             ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalElegirPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalElegirPartidas').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalElegirPartidas();", true);
 
@@ -2613,9 +2694,9 @@ namespace Proyecto.Catalogos.Ejecucion
                 pgsource.AllowPaging = true;
                 //numero de items que se muestran en el Repeater
                 pgsource.PageSize = elmentosMostrar;
-                pgsource.CurrentPageIndex = paginaActual;
+                pgsource.CurrentPageIndex = paginaActual5;
                 //mantiene el total de paginas en View State
-                ViewState["TotalPaginas"] = pgsource.PageCount;
+                ViewState["TotalPaginas5"] = pgsource.PageCount;
                 //Ejemplo: "Página 1 al 10"
                 lblpagina5.Text = "Página " + (paginaActual5 + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
                 //Habilitar los botones primero, último, anterior y siguiente
@@ -2628,7 +2709,9 @@ namespace Proyecto.Catalogos.Ejecucion
                 rpUnidadPartida.DataBind();
                 contador++;
 
-
+                Paginacion5();
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalRepartirPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalRepartirPartidas').hide();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalRepartirPartidas();", true);
             }
 
 
@@ -2884,8 +2967,8 @@ namespace Proyecto.Catalogos.Ejecucion
                     archivoEjecucion.rutaArchivo = Utilidades.path + fechaHoy.Year + "\\" + carpeta + "\\" + nombreArchivo;
                     archivoEjecucion.fechaCreacion = fechaHoy;
                     // archivoEjecucion.muestra = muestra;
-                    archivoEjecucion.creadoPor = "Kevin";
-
+                    //archivoEjecucion.creadoPor = "Kevin";
+                    archivoEjecucion.creadoPor = nombre;
                     listaArchivos.Add(archivoEjecucion);
                 }
                 else
@@ -2939,49 +3022,7 @@ namespace Proyecto.Catalogos.Ejecucion
             }
         }
 
-        /*
-       * Kevin Picado
-       * 20/03/20
-       * Efecto: elimina el archivo seleccionado en el modal activarModalVerEjecucionArchivo()
-       * Requiere: -
-       * Modifica: -
-       * Devuelve: -
-       */
-        public void EliminarArchivoSeleccionado_Click(object sender, EventArgs e)
-        {
-            List<ArchivoEjecucion> listaArchivoEjecucion = (List<ArchivoEjecucion>)Session["listaArchivoEjecucion"];
-            String nombreArchivo = (((LinkButton)(sender)).CommandArgument).ToString();
-            if (listaArchivoEjecucion != null || listaArchivoEjecucion.Count() != 0)
-            {
-                foreach (ArchivoEjecucion archivoEjecucion in listaArchivoEjecucion)
-                {
-                    if (archivoEjecucion.nombreArchivo.Equals(nombreArchivo))
-                    {
-                        string ruta = archivoEjecucion.rutaArchivo;
-                        if (System.IO.File.Exists(@ruta))
-                        {
-                            try
-                            {
-                                System.IO.File.Delete(@ruta);
-
-                            }
-                            catch (Exception ex)
-                            {
-                                //(this.Master as SiteMaster).Mensaje("No se pudo eliminar el archivo", "¡Alerta!");
-                                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "No se pudo eliminar el archivo" + "');", true);
-                            }
-                        }
-                    }
-                    //archivoMuestraServicios.eliminarArchivoMuestra(archivoMuestra, (String)Session["nombreCompleto"]);
-                }
-                archivoEjecucionServicios.eliminarArchivoEjecucionPorNombreYId(Convert.ToInt32(idEjecucioon),nombreArchivo);
-                Session["listaArchivoEjecucion"] = archivoEjecucionServicios.obtenerArchivoEjecucion(Convert.ToInt32(idEjecucioon));
-                VerEjecucionArchivos();
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalVerEjecucionArchivo", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalVerEjecucionArchivo').hide();", true);
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalVerEjecucionArchivo();", true);
-            }
-        }
-
+      
 
         /*
        * Kevin Picado
@@ -3003,7 +3044,7 @@ namespace Proyecto.Catalogos.Ejecucion
                 pgsource.PageSize = elmentosMostrar;
                 pgsource.CurrentPageIndex = paginaActual7;
                 //mantiene el total de paginas en View State
-                ViewState["TotalPaginas2"] = pgsource.PageCount;
+                ViewState["TotalPaginas7"] = pgsource.PageCount;
                 //Ejemplo: "Página 1 al 10"
                 lblpagina7.Text = "Página " + (paginaActual7 + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
                 //Habilitar los botones primero, último, anterior y siguiente
@@ -3046,32 +3087,7 @@ namespace Proyecto.Catalogos.Ejecucion
 
 
         }
-        /*Kevin Picado
-        * 20/03/20
-        * Efecto: descarga el archivo para que el usuario lo pueda ver
-        * Requiere: clic en el archivo
-        * Modifica: -
-        * Devuelve: -
-        */
-        protected void btnVerArchivo_Click(object sender, EventArgs e)
-        {
-            List<ArchivoEjecucion> archivoEjecucion = (List<ArchivoEjecucion>)Session["listaArchivoEjecucion"];
-            //String[] infoArchivo = (((LinkButton)(sender)).CommandArgument).ToString().Split(',');
-            //String nombreArchivo = infoArchivo[1];
-            String rutaArchivo = (((LinkButton)(sender)).CommandArgument).ToString();
-            string ruta = archivoEjecucion.Where(item => item.nombreArchivo.Equals(rutaArchivo)).ToList().First().rutaArchivo; 
-            FileStream fileStream = new FileStream(ruta, FileMode.Open, FileAccess.Read);
-            BinaryReader binaryReader = new BinaryReader(fileStream);
-            Byte[] blobValue = binaryReader.ReadBytes(Convert.ToInt32(fileStream.Length));
-
-            fileStream.Close();
-            binaryReader.Close();
-
-            descargar(rutaArchivo, ruta);
-            VerEjecucionArchivos();
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalVerEjecucionArchivo", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalVerEjecucionArchivo').hide();", true);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalVerEjecucionArchivo();", true);
-        }
+       
         /*
         * Kevin Picado
         * 20/03/20

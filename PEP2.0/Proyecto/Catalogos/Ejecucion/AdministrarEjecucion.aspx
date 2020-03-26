@@ -411,7 +411,7 @@
                                     OnItemDataBound="rptPaginacion4_ItemDataBound" RepeatDirection="Horizontal">
                                     <ItemTemplate>
                                         <asp:LinkButton ID="lbPaginacion4" runat="server" CssClass="btn btn-default"
-                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
+                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina4"
                                             Text='<%# Eval("PaginaText") %>' ></asp:LinkButton>
                                     </ItemTemplate>
                                 </asp:DataList>
@@ -542,7 +542,7 @@
                                     OnItemDataBound="rptPaginacion5_ItemDataBound" RepeatDirection="Horizontal">
                                     <ItemTemplate>
                                         <asp:LinkButton ID="lbPaginacion5" runat="server" CssClass="btn btn-default"
-                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
+                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina5"
                                             Text='<%# Eval("PaginaText") %>' ></asp:LinkButton>
                                     </ItemTemplate>
                                 </asp:DataList>
@@ -822,7 +822,7 @@
                                     OnItemDataBound="rptPaginacion7_ItemDataBound" RepeatDirection="Horizontal">
                                     <ItemTemplate>
                                         <asp:LinkButton ID="lbPaginacion7" runat="server" CssClass="btn btn-default"
-                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
+                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina7"
                                             Text='<%# Eval("PaginaText") %>' ></asp:LinkButton>
                                     </ItemTemplate>
                                 </asp:DataList>
