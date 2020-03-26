@@ -2,6 +2,7 @@
 using Servicios;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Web;
@@ -18,21 +19,21 @@ namespace Proyecto.Catalogos.Ejecucion
         EjecucionServicios ejecucionServicios;
         ArchivoEjecucionServicios archivoEjecucionServicios;
         private int elmentosMostrar = 10;
-
+        int primerIndex4, ultimoIndex4;
 
         private int paginaActual4
         {
             get
             {
-                if (ViewState["paginaActual"] == null)
+                if (ViewState["paginaActual4"] == null)
                 {
                     return 0;
                 }
-                return ((int)ViewState["paginaActual"]);
+                return ((int)ViewState["paginaActual4"]);
             }
             set
             {
-                ViewState["paginaActual"] = value;
+                ViewState["paginaActual4"] = value;
             }
         }
 
@@ -40,6 +41,40 @@ namespace Proyecto.Catalogos.Ejecucion
         {
             paginaActual4 = 0;
             MostrarDatosTablaUnidad();
+        }
+        private void Paginacion4()
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("IndexPagina"); //Inicia en 0
+            dt.Columns.Add("PaginaText"); //Inicia en 1
+
+            primerIndex4 = paginaActual4 - 2;
+            if (paginaActual4 > 2)
+                ultimoIndex4 = paginaActual4 + 2;
+            else
+                ultimoIndex4 = 4;
+
+            //se revisa que la ultima pagina sea menor que el total de paginas a mostrar, sino se resta para que muestre bien la paginacion
+            if (ultimoIndex4 > Convert.ToInt32(ViewState["TotalPaginas4"]))
+            {
+                ultimoIndex4 = Convert.ToInt32(ViewState["TotalPaginas4"]);
+                primerIndex4 = ultimoIndex4 - 4;
+            }
+
+            if (primerIndex4 < 0)
+                primerIndex4 = 0;
+
+            //se crea el numero de paginas basado en la primera y ultima pagina
+            for (var i = primerIndex4; i < ultimoIndex4; i++)
+            {
+                var dr = dt.NewRow();
+                dr[0] = i;
+                dr[1] = i + 1;
+                dt.Rows.Add(dr);
+            }
+
+            DataList2.DataSource = dt;
+            DataList2.DataBind();
         }
 
         /// <summary>
@@ -103,7 +138,7 @@ namespace Proyecto.Catalogos.Ejecucion
 
         protected void rptPaginacion4_ItemCommand(object source, DataListCommandEventArgs e)
         {
-            if (!e.CommandName.Equals("nuevaPagina")) return;
+            if (!e.CommandName.Equals("nuevaPagina4")) return;
             paginaActual4 = Convert.ToInt32(e.CommandArgument.ToString());
             MostrarDatosTablaUnidad();
         }
@@ -289,7 +324,7 @@ namespace Proyecto.Catalogos.Ejecucion
             pgsource.PageSize = elmentosMostrar;
             pgsource.CurrentPageIndex = paginaActual4;
             //mantiene el total de paginas en View State
-            ViewState["TotalPaginas2"] = pgsource.PageCount;
+            ViewState["TotalPaginas4"] = pgsource.PageCount;
             //Ejemplo: "Página 1 al 10"
             lblpagina4.Text = "Página " + (paginaActual4 + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
             //Habilitar los botones primero, último, anterior y siguiente
@@ -302,8 +337,8 @@ namespace Proyecto.Catalogos.Ejecucion
             rpUnidadSelecionadas.DataBind();
 
             //metodo que realiza la paginacion
-            //Paginacion2();
-
+           
+            Paginacion4();
 
         }
         protected void EditarEjecucion_OnChanged(object sender, EventArgs e)

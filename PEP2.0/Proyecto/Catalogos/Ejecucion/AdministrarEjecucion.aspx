@@ -161,7 +161,7 @@
                                     OnItemDataBound="rptPaginacion3_ItemDataBound" RepeatDirection="Horizontal">
                                     <ItemTemplate>
                                         <asp:LinkButton ID="lbPaginacion3" runat="server" CssClass="btn btn-default"
-                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
+                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina3"
                                             Text='<%# Eval("PaginaText") %>' ></asp:LinkButton>
                                     </ItemTemplate>
                                 </asp:DataList>

@@ -688,7 +688,7 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         protected void rptPaginacion3_ItemCommand(object source, DataListCommandEventArgs e)
         {
-            if (!e.CommandName.Equals("nuevaPagina")) return;
+            if (!e.CommandName.Equals("nuevaPagina3")) return;
             paginaActual3 = Convert.ToInt32(e.CommandArgument.ToString());
             obtenerPartidasSeleccionadas();
         }
@@ -706,7 +706,7 @@ namespace Proyecto.Catalogos.Ejecucion
         protected void rptPaginacion3_ItemDataBound(object sender, DataListItemEventArgs e)
         {
             var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion3");
-            if (lnkPagina.CommandArgument != paginaActual.ToString()) return;
+            if (lnkPagina.CommandArgument != paginaActual3.ToString()) return;
             lnkPagina.Enabled = false;
             lnkPagina.BackColor = Color.FromName("#005da4");
             lnkPagina.ForeColor = Color.FromName("#FFFFFF");
