@@ -19,6 +19,7 @@ namespace Proyecto.Planilla
         readonly PagedDataSource pgsource = new PagedDataSource();
         int primerIndex, ultimoIndex;
         private int elmentosMostrar = 10;
+        Boolean mostrar;
         private int paginaActual
         {
             get
@@ -289,7 +290,15 @@ namespace Proyecto.Planilla
 
         protected void btnNuevaPlanilla_Click(object sender, EventArgs e)
         {
-            ClientScript.RegisterStartupScript(GetType(), "activar", "activarModalNuevaPlanilla();", true);
+            if (mostrar = false)
+            {
+                ClientScript.RegisterStartupScript(GetType(), "activar", "activarModalNuevaPlanilla();", true);
+            }
+            else
+            {
+                mostrar = false;
+            }
+           
         }
 
         protected void btnSelccionar_Click(object sender, EventArgs e)
@@ -319,6 +328,7 @@ namespace Proyecto.Planilla
         {
             paginaActual = 0;
             mostrarDatosTabla();
+            mostrar = true;
         }
 
         protected void btnEliminar_Click(object sender, EventArgs e)

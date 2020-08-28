@@ -244,7 +244,7 @@ namespace Proyecto.Planilla
             //metodo que realiza la paginacion
             Paginacion2();
 
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarFuncionario", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarFuncionario').hide();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarFuncionario", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarFuncionario').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarFuncionario();", true);
         }
 
@@ -291,7 +291,7 @@ namespace Proyecto.Planilla
             //metodo que realiza la paginacion
             Paginacion3();
 
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarFuncionario", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarFuncionario').hide();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarFuncionario", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarFuncionario').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarFuncionario();", true);
         }
 
@@ -965,8 +965,8 @@ namespace Proyecto.Planilla
         {
             paginaActual2 = 0;
             cargarDatosTblFuncionariosAPasar();
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarFuncionario", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarFuncionario').hide();", true);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarFuncionario();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarFuncionario", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarFuncionario').hide();", true);
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarFuncionario();", true);
         }
 
         /// <summary>
@@ -983,8 +983,8 @@ namespace Proyecto.Planilla
         {
             paginaActual3 = 0;
             cargarDatosTblFuncionariosAgregados();
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarFuncionario", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarFuncionario').hide();", true);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarFuncionario();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarFuncionario", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarFuncionario').hide();", true);
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarFuncionario();", true);
         }
 
         /// <summary>

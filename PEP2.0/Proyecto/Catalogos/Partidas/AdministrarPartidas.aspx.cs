@@ -102,7 +102,7 @@ namespace Proyecto.Catalogos.Partidas
             llenarDdlPeriodos(ddlPeriodoModal);
 
             Session["listaPartidasPorPeriodo"] = partidaServicios.ObtenerPorPeriodo(Convert.ToInt32(ddlPeriodoModal.SelectedValue));
-
+            List<Partida> lista =( List<Partida>)Session["listaPartidasPorPeriodo"];
             llenarPartidasPadreDDL(ddlPartidasPadre);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevaPartida();", true);
         }

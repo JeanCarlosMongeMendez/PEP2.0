@@ -101,6 +101,7 @@ namespace Proyecto.Mantenimiento.EscalasSalariales
 
                 mostrarDatosTabla();
             }
+          
         }
         #endregion
 
@@ -512,8 +513,9 @@ namespace Proyecto.Mantenimiento.EscalasSalariales
 
             //metodo que realiza la paginacion
             Paginacion2();
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarEscala", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarEscala').hide();", true);
 
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarEscala", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarEscala').hide();", true);
+
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarEscala();", true);
 
         }
@@ -560,9 +562,9 @@ namespace Proyecto.Mantenimiento.EscalasSalariales
 
             //metodo que realiza la paginacion
             Paginacion3();
-
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarEscala", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarEscala').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarEscala();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarEscala", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarEscala').hide();", true);
+           
         }
 
         /// <summary>
@@ -1315,7 +1317,7 @@ namespace Proyecto.Mantenimiento.EscalasSalariales
             Session["listaEscalasAgregadasFiltrada"] = listaEscalasAgregadas;
 
             cargarDatosTblEscalasAgregadas();
-
+           
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarEscala();", true);
         }
 
@@ -1342,8 +1344,8 @@ namespace Proyecto.Mantenimiento.EscalasSalariales
 
             cargarDatosTblEscalasAgregadas();
 
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarEscala", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarEscala').hide();", true);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarEscala();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarEscala", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarEscala').hide();", true);
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarEscala();", true);
         }
 
         /// <summary>
@@ -1360,8 +1362,8 @@ namespace Proyecto.Mantenimiento.EscalasSalariales
         {
             paginaActual2 = 0;
             cargarDatosTblEscalasAPasar();
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarEscala", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarEscala').hide();", true);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarEscala();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarEscala", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarEscala').hide();", true);
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarEscala();", true);
         }
 
         /// <summary>
@@ -1387,8 +1389,8 @@ namespace Proyecto.Mantenimiento.EscalasSalariales
             Session["listaEscalasAgregadasFiltrada"] = listaEscalasAgregadas;
 
             cargarDatosTblEscalasAgregadas();
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarEscala", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarEscala').hide();", true);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarEscala();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarEscala", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarEscala').hide();", true);
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarEscala();", true);
         }
 
         /// <summary>

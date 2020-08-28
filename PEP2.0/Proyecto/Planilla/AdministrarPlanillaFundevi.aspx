@@ -32,7 +32,7 @@
                         <asp:LinkButton ID="btnFiltrar" runat="server" CssClass="btn btn-primary" OnClick="btnFiltrar_Click"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton></td>
                     <td>
                         <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                            
                             <asp:TextBox ID="txtBuscarPeriodo" runat="server" CssClass="form-control chat-input" placeholder="filtro período" OnTextChanged="btnFiltrar_Click"></asp:TextBox>
                         </div>
                     </td>

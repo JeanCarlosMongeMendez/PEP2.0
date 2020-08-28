@@ -47,16 +47,13 @@
                         </thead>
                         <tr>
                             <td>
-                                <asp:LinkButton ID="btnFiltrar" runat="server" CssClass="btn btn-primary" OnClick="btnFiltrar_Click"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton></td>
+                                <asp:LinkButton ID="btnFiltrar" runat="server" CssClass="btn btn-primary" OnClick="btnFiltrar_Click"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton>
+
+                            </td>
                             <td>
-                                <asp:UpdatePanel ID="UpdatePanel4" runat="server">
-                                    <ContentTemplate>
-                                        <asp:TextBox ID="txtBuscarDesc" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción" AutoPostBack="true" OnTextChanged="txtBuscarDesc_TextChanged"></asp:TextBox>
-                                    </ContentTemplate>
-                                    <Triggers>
-                                        <asp:PostBackTrigger ControlID="txtBuscarDesc" />
-                                    </Triggers>
-                                </asp:UpdatePanel>
+                                
+                                <asp:TextBox ID="txtBuscarDesc" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción" AutoPostBack="true" OnTextChanged="txtBuscarDesc_TextChanged"></asp:TextBox>
+                                 
                             </td>
                             <td></td>
                             <td></td>
@@ -409,14 +406,16 @@
     <!-- Fin modal eliminar carga social -->
 
     <!-- Modal pasar carga social -->
-    <asp:UpdatePanel ID="UpdatePanel6" runat="server">
-        <ContentTemplate>
+   <%-- <asp:UpdatePanel ID="UpdatePanel6" runat="server">
+        <ContentTemplate>--%>
             <div id="modalPasarCargaSocial" class="modal fade" role="alertdialog">
                 <div class="modal-dialog modal-lg" style="width: 98% !important">
 
                     <!-- Modal content-->
                     <div class="modal-content">
-                        <div class="modal-header">
+                        <asp:UpdatePanel ID="UpdatePanel4" runat="server">
+                            <ContentTemplate>
+                                <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Pasar cargas sociales</h4>
                         </div>
@@ -448,11 +447,12 @@
                                     <div class="col-md-6 col-xs-6 col-sm-6">
                                         <asp:Label ID="lblPeriodoSeleccionado" runat="server" Text="" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                                     </div>
-
-                                    <div class="col-md-6 col-xs-6 col-sm-6">
-                                        <asp:DropDownList ID="ddlPeriodoModalPasarCargasSociales" class="btn btn-default dropdown-toggle" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlPeriodoModalPasarCargasSociales_SelectedIndexChanged"></asp:DropDownList>
-                                    </div>
-
+                                    
+                                           
+                                            <div class="col-md-6 col-xs-6 col-sm-6">
+                                                <asp:DropDownList ID="ddlPeriodoModalPasarCargasSociales" class="btn btn-default dropdown-toggle" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlPeriodoModalPasarCargasSociales_SelectedIndexChanged"></asp:DropDownList>
+                                           </div>
+                                    
                                 </div>
 
                                 <div class="col-md-12 col-xs-12 col-sm-12">
@@ -525,7 +525,8 @@
                                                 <td>
                                                     <asp:LinkButton ID="btnFiltrarCargasSocialesAgregadas" runat="server" CssClass="btn btn-primary" OnClick="btnFiltrarEscalasAgregadas_Click"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton></td>
                                                 <td>
-                                                    <asp:TextBox ID="txtBuscarDescCargasSocialesAgregadas" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción"></asp:TextBox>
+                                                    
+                                                    <asp:TextBox ID="txtBuscarDescCargasSocialesAgregadas" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción" onkeypress="enter3_click()" ></asp:TextBox>
                                                 </td>
                                                 <td></td>
                                                 <td></td>
@@ -630,7 +631,7 @@
                         </tr>
                     </table>
                         </center>
-                                    </div>
+                                    
                                     <!-- ---------------------- FIN tabla paginacion cargas sociales agregadas ------------------------- -->
                                 </div>
 
@@ -639,12 +640,12 @@
                         <div class="modal-footer" style="text-align: center">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         </div>
-
+                            </ContentTemplate>
+                        </asp:UpdatePanel>
                     </div>
                 </div>
             </div>
-        </ContentTemplate>
-    </asp:UpdatePanel>
+
     <!-- Fin modal pasar carga social -->
 
     <script type="text/javascript">
@@ -663,6 +664,13 @@
         function activarModalPasarCargaSocial() {
             $('#modalPasarCargaSocial').modal('show');
         };
+
+         function enter3_click() {
+            if (window.event.keyCode == 13) {
+              document.getElementById('<%=btnFiltrarCargasSocialesAgregadas.ClientID%>').focus();
+                document.getElementById('<%=btnFiltrarCargasSocialesAgregadas.ClientID%>').click();
+            }
+         }
     </script>
 
 </asp:Content>

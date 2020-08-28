@@ -138,9 +138,12 @@
                 </div>
 
             </div>
-      
+          </ContentTemplate>
+    </asp:UpdatePanel>
 
     <!-- Modal nueva partida -->
+    <asp:UpdatePanel ID="UpdatePanel7" runat="server">
+     <ContentTemplate>
             <div id="modalNuevaPartida" class="modal fade" role="alertdialog">
                 <div class="modal-dialog modal-lg">
 
@@ -234,6 +237,8 @@
 
                 </div>
             </div>
+                </ContentTemplate>
+    </asp:UpdatePanel>
     <!-- Fin modal nueva partida -->
 
 
@@ -442,11 +447,15 @@
 
 
          <!-- Modal pasar partidas -->
+       
          <div id="modalPasarPartida" class="modal fade" role="alertdialog">
              <div class="modal-dialog modal-lg" style="width: 98% !important">
 
                  <!-- Modal content-->
                  <div class="modal-content">
+                     <asp:UpdatePanel ID="UpdatePanel5" runat="server">
+                     <ContentTemplate>
+                    
                      <div class="modal-header">
                          <button type="button" class="close" data-dismiss="modal">&times;</button>
                          <h4 class="modal-title">Pasar Partidas</h4>
@@ -509,7 +518,7 @@
                                              <td>
                                                  <asp:LinkButton ID="btnFiltrarPartidasAPasar" runat="server" CssClass="btn btn-primary" OnClick="btnFiltrarPartidasAPasar_Click"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton></td>
                                              <td>
-                                                 <asp:TextBox ID="txtBuscarDescPartidasAPasar" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción"></asp:TextBox>
+                                                 <asp:TextBox ID="txtBuscarDescPartidasAPasar" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción" onkeypress="enter2_click()"></asp:TextBox>
                                              </td>
                                              <td></td>
                                        
@@ -566,7 +575,7 @@
                                              <td>
                                                  <asp:LinkButton ID="btnFiltrarPartidasAgregadas" runat="server" CssClass="btn btn-primary" OnClick="btnFiltrarPartidasAgregadas_Click"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton></td>
                                              <td>
-                                                 <asp:TextBox ID="txtBuscarDescPartidasAgregadas" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción"></asp:TextBox>
+                                                 <asp:TextBox ID="txtBuscarDescPartidasAgregadas" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción" onkeypress="enter3_click()"></asp:TextBox>
                                              </td>
                                              <td></td>
                                              <td>
@@ -685,14 +694,14 @@
                              </div>
 
 
-
-
-
                          </div>
                      </div>
+                  </ContentTemplate>
+                               </asp:UpdatePanel>
                  </div>
              </div>
          </div>
+                     
 
              <!-- Modal Confirmar Eliminar Unidad -->
     <asp:UpdatePanel ID="UPEliminar" runat="server">
@@ -747,8 +756,8 @@
 
 
 
-     </ContentTemplate>
-    </asp:UpdatePanel>
+<%--     </ContentTemplate>
+    </asp:UpdatePanel>--%>
     
 
      <!-- Script inicio -->
@@ -770,6 +779,22 @@
         };
         function activarModalConfirmarPartida() {
              $('#modalConfirmarPartida').modal('show');
+        }
+
+         function enter3_click() {
+            if (window.event.keyCode == 13) {
+              document.getElementById('<%=btnFiltrarPartidasAgregadas.ClientID%>').focus();
+                document.getElementById('<%=btnFiltrarPartidasAgregadas.ClientID%>').click();
+            }
+        }
+
+
+       
+        function enter2_click() {
+            if (window.event.keyCode == 13) {
+              document.getElementById('<%= btnFiltrarPartidasAPasar.ClientID%>').focus();
+                document.getElementById('<%=btnFiltrarPartidasAPasar.ClientID%>').click();
+            }
         }
     </script>
     <!-- Script fin -->

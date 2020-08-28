@@ -239,7 +239,7 @@ namespace Proyecto.Catalogos.CargasSociales
             //metodo que realiza la paginacion
             Paginacion2();
 
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarCargaSocial", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarCargaSocial').hide();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarCargaSocial", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarCargaSocial').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarCargaSocial();", true);
 
         }
@@ -287,7 +287,7 @@ namespace Proyecto.Catalogos.CargasSociales
             //metodo que realiza la paginacion
             Paginacion3();
 
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarCargaSocial", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarCargaSocial').hide();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarCargaSocial", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarCargaSocial').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarCargaSocial();", true);
         }
 
@@ -1144,8 +1144,8 @@ namespace Proyecto.Catalogos.CargasSociales
 
             cargarDatosTblCargasSocialesAgregadas();
 
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarCargaSocial", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarCargaSocial').hide();", true);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarCargaSocial();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarCargaSocial", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarCargaSocial').hide();", true);
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarCargaSocial();", true);
         }
 
         /// <summary>
@@ -1162,8 +1162,8 @@ namespace Proyecto.Catalogos.CargasSociales
         {
             paginaActual2 = 0;
             cargarDatosTblCargasSocialesAPasar();
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarCargaSocial", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarCargaSocial').hide();", true);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarCargaSocial();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarCargaSocial", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarCargaSocial').hide();", true);
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarCargaSocial();", true);
         }
         
         /// <summary>
@@ -1189,8 +1189,8 @@ namespace Proyecto.Catalogos.CargasSociales
             Session["listaCargasSocialesAgregadasFiltrada"] = listaCargasSocialesAgregadas;
 
             cargarDatosTblCargasSocialesAgregadas();
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarCargaSocial", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarCargaSocial').hide();", true);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarCargaSocial();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarCargaSocial", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarCargaSocial').hide();", true);
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarCargaSocial();", true);
         }
 
         /// <summary>

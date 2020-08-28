@@ -538,13 +538,15 @@
     <!-- Fin modal eliminar escala -->
 
     <!-- Modal pasar escala -->
-    <asp:UpdatePanel ID="UpdatePanel5" runat="server">
-        <ContentTemplate>
+    <%--<asp:UpdatePanel ID="UpdatePanel5" runat="server">
+        <ContentTemplate>--%>
             <div id="modalPasarEscala" class="modal fade" role="alertdialog">
                 <div class="modal-dialog modal-lg" style="width: 98% !important">
 
                     <!-- Modal content-->
                     <div class="modal-content">
+                        <asp:UpdatePanel ID="UpdatePanel6" runat="server">
+                        <ContentTemplate>
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Pasar escalas salariales</h4>
@@ -554,7 +556,7 @@
                             <div class="row">
 
                                 <%-- fin campos a llenar --%>
-
+                                
                                 <div class="col-md-12 col-xs-12 col-sm-12">
                                     <br />
                                 </div>
@@ -577,17 +579,20 @@
                                     <div class="col-md-6 col-xs-6 col-sm-6">
                                         <asp:Label ID="lblPeriodoSeleccionado" runat="server" Text="" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                                     </div>
-
-                                    <div class="col-md-6 col-xs-6 col-sm-6">
-                                        <asp:DropDownList ID="ddlPeriodoModalPasarEscalas" class="btn btn-default dropdown-toggle" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlPeriodoModalPasarEscalas_SelectedIndexChanged"></asp:DropDownList>
-                                    </div>
+                                    <asp:UpdatePanel ID="UpdatePanel5" runat="server">
+                                        <ContentTemplate>
+                                            <div class="col-md-6 col-xs-6 col-sm-6">
+                                                <asp:DropDownList ID="ddlPeriodoModalPasarEscalas" class="btn btn-default dropdown-toggle" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlPeriodoModalPasarEscalas_SelectedIndexChanged"></asp:DropDownList>
+                                            </div>
+                                        </ContentTemplate>
+                                    </asp:UpdatePanel>
 
                                 </div>
 
                                 <div class="col-md-12 col-xs-12 col-sm-12">
                                     <hr />
                                 </div>
-
+                                
                                 <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
                                     <!-- ------------------------ tabla escalas salariales a pasar --------------------------- -->
                                     <div class=" table-responsive col-md-6 col-xs-6 col-sm-6" style="text-align: center; overflow-y: auto;">
@@ -607,7 +612,7 @@
                                                 <td>
                                                     <asp:LinkButton ID="btnFiltrarEscalasAPasar" runat="server" CssClass="btn btn-primary" OnClick="btnFiltrarEscalasAPasar_Click"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton></td>
                                                 <td>
-                                                    <asp:TextBox ID="txtBuscarDescEscalasAPasar" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción" onkeypress="enter2_click()"></asp:TextBox>
+                                                    <asp:TextBox ID="txtBuscarDescEscalasAPasar" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción" AutoPostBack="true" OnTextChanged="btnFiltrarEscalasAPasar_Click"></asp:TextBox>
                                                 </td>
                                                 <td></td>
                                                 <td></td>
@@ -647,6 +652,7 @@
                                     <!-- ---------------------- FIN tabla escalas salariales a pasar ------------------------- -->
 
                                     <!-- ------------------------ tabla escalas salariales agregadas pasar --------------------------- -->
+                                 
                                     <div class=" table-responsive col-md-6 col-xs-6 col-sm-6" style="text-align: center; overflow-y: auto;">
 
                                         <table id="tblEscalasAgregadas" class="table table-bordered">
@@ -661,9 +667,11 @@
                                             </thead>
                                             <tr>
                                                 <td>
-                                                    <asp:LinkButton ID="btnFiltrarEscalasAgregadas" runat="server" CssClass="btn btn-primary" OnClick="btnFiltrarEscalasAgregadas_Click"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton></td>
+                                                    <asp:TextBox ID="txtBuscarDescEscalasAgregadas" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción"  onkeypress="enter3_click()"></asp:TextBox>
+                                                    <%--<asp:LinkButton ID="btnFiltrarEscalasAgregadas" runat="server" CssClass="btn btn-primary" OnClick="btnFiltrarEscalasAgregadas_Click"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton>--%>
+                                                    <asp:LinkButton ID="btnFiltrarEscalasAgregadas" runat="server" CssClass="btn btn-primary" style="display:none" OnClick="btnFiltrarEscalasAgregadas_Click"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton></td>
                                                 <td>
-                                                    <asp:TextBox ID="txtBuscarDescEscalasAgregadas" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción" onkeypress="enter3_click()"></asp:TextBox>
+                                                    <%--<asp:TextBox ID="txtBuscarDescEscalasAgregadas" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción" onkeypress="enter3_click()"></asp:TextBox>--%>
                                                 </td>
                                                 <td></td>
                                                 <td></td>
@@ -699,7 +707,7 @@
                                     </div>
                                     <!-- ---------------------- FIN tabla escalas salariales agregadas pasar ------------------------- -->
                                 </div>
-
+                                
                                 <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
                                     <!-- ---------------------- tabla paginacion escalas salariales a pasar ------------------------- -->
                                     <div class="col-md-6 col-xs-6 col-sm-6" style="text-align: center; overflow-y: auto;">
@@ -736,6 +744,7 @@
                     </table>
                         </center>
                                     </div>
+                                
                                     <!-- ---------------------- FIN tabla paginacion escalas salariales a pasar ------------------------- -->
 
                                     <!-- ---------------------- tabla paginacion escalas agregadas ------------------------- -->
@@ -773,20 +782,22 @@
                     </table>
                         </center>
                                     </div>
+                                    </div>
                                     <!-- ---------------------- FIN tabla paginacion escalas agregadas ------------------------- -->
                                 </div>
-
-                            </div>
-                        </div>
-                        <div class="modal-footer" style="text-align: center">
+                                 <div class="modal-footer" style="text-align: center">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         </div>
 
+                         </ContentTemplate>
+                                </asp:UpdatePanel>
+                            </div>
+                        </div>
+                       
                     </div>
-                </div>
-            </div>
-        </ContentTemplate>
-    </asp:UpdatePanel>
+                
+   <%--     </ContentTemplate>
+    </asp:UpdatePanel>--%>
     <!-- Fin modal pasar escala -->
 
     <script type="text/javascript">
@@ -822,7 +833,7 @@
 
         function enter3_click() {
             if (window.event.keyCode == 13) {
-                document.getElementById('<%=btnFiltrarEscalasAgregadas.ClientID%>').focus();
+              document.getElementById('<%=btnFiltrarEscalasAgregadas.ClientID%>').focus();
                 document.getElementById('<%=btnFiltrarEscalasAgregadas.ClientID%>').click();
             }
         }

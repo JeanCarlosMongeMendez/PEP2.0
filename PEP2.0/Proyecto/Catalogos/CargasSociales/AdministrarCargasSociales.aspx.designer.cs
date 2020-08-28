@@ -67,15 +67,6 @@ namespace Proyecto.Catalogos.CargasSociales {
         protected global::System.Web.UI.WebControls.LinkButton btnFiltrar;
         
         /// <summary>
-        /// Control UpdatePanel4.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel4;
-        
-        /// <summary>
         /// Control txtBuscarDesc.
         /// </summary>
         /// <remarks>
@@ -427,13 +418,13 @@ namespace Proyecto.Catalogos.CargasSociales {
         protected global::System.Web.UI.WebControls.Button btnEliminarCargaSocialModal;
         
         /// <summary>
-        /// Control UpdatePanel6.
+        /// Control UpdatePanel4.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel6;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel4;
         
         /// <summary>
         /// Control Label13.

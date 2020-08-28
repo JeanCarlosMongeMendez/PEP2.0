@@ -18,7 +18,7 @@ namespace Proyecto.Planilla
         PeriodoServicios periodoServicios = new PeriodoServicios();
         PlanillaServicios planillaServicios = new PlanillaServicios();
         static Entidades.Planilla planillaSeleccionada = new Entidades.Planilla();
-
+        Boolean mostrar;
         readonly PagedDataSource pgsource = new PagedDataSource();
         int primerIndex, ultimoIndex;
         private int elmentosMostrar = 10;
@@ -482,8 +482,15 @@ namespace Proyecto.Planilla
         {
             txtAnualidad1.CssClass = "form-control";
             txtAnualidad2.CssClass = "form-control";
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevaPlanilla", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevaPlanilla').hide();", true);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevaPlanilla();", true);
+            if (mostrar == false)
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevaPlanilla", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevaPlanilla').hide();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevaPlanilla();", true);
+            }
+            else
+            {
+                mostrar = false;
+            }
         }
 
         /// <summary>
@@ -500,6 +507,7 @@ namespace Proyecto.Planilla
         {
             paginaActual = 0;
             mostrarDatosTabla();
+            mostrar = true;
         }
 
         /// <summary>

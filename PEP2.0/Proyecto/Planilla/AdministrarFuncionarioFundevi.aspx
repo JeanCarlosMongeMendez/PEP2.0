@@ -4,11 +4,17 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnableCdn="true"></asp:ScriptManager>
-    <div class="col-md-12 col-xs-12 col-sm-12">
-        <center>
-                        <asp:Label ID="label" runat="server" Text="Planillas Fundevi" Font-Size="Large" ForeColor="Black"></asp:Label>
-                    </center>
-    </div>
+    <asp:UpdatePanel ID="UpdatePanel20" runat="server">
+        <ContentTemplate>
+
+        <div class="row" style="text-align: center">
+
+            <div class="col-md-12 col-xs-12 col-sm-12" style="align-content: center; text-align: center;">
+                <asp:Label ID="label" runat="server" Text="Planillas Fundevi" Font-Size="Large" ForeColor="Black"></asp:Label>
+            </div>
+
+
+     
     <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
         <hr />
     </div>
@@ -114,7 +120,9 @@
             </div>
         </div>
     </div>
-
+    </div>
+        </ContentTemplate>
+    </asp:UpdatePanel>
     <%-- fin tabla--%>
 
 
@@ -288,9 +296,12 @@
 
     <!-- modal pasar funcionarios -->
 
-    <div class="modal fade" id="modalPasarFuncionario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <%--<div class="modal fade" id="modalPasarFuncionario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">--%>
+         <div id="modalPasarFuncionario" class="modal fade" role="alertdialog">
         <div class="modal-dialog" role="document" style="width: 98% !important">
             <div class="modal-content">
+                <asp:UpdatePanel ID="UpdatePanel21" runat="server">
+                <ContentTemplate>
                 <div class="modal-header">
                     <h5>
                         <asp:Label ID="Label2" runat="server" Text="Copiar funcionario" Font-Size="Large" ForeColor="Black"></asp:Label>
@@ -301,8 +312,8 @@
                 </div>
                 <div class="modal-body" style="align-content: center">
                     <div class="row">
-                        <asp:UpdatePanel ID="UpdatePanel3" runat="server">
-                            <ContentTemplate>
+                        <%--<asp:UpdatePanel ID="UpdatePanel3" runat="server">
+                            <ContentTemplate>--%>
 
                                 <div class="col-md-12 col-xs-12 col-sm-12">
                                     <br />
@@ -351,17 +362,17 @@
                                             </thead>
                                             <tr>
                                                 <td>
-                                                    <asp:LinkButton ID="btnFiltrarEscalasAPasar" runat="server" CssClass="btn btn-primary"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton>
+                                                    <asp:LinkButton ID="btnFiltrarEscalasAPasar" runat="server" CssClass="btn btn-primary" OnClick="txtBuscarNombreFuncionarioAPasar_TextChanged"><span aria-hidden="true" class="glyphicon glyphicon-search" ></span> </asp:LinkButton>
                                                 </td>
                                                 <td>
-                                                    <asp:UpdatePanel ID="UpdatePanel2" runat="server">
-                                                        <ContentTemplate>
-                                                            <asp:TextBox ID="txtBuscarNombreFuncionarioAPasar" runat="server" CssClass="form-control chat-input" placeholder="filtro nombre" AutoPostBack="true" OnTextChanged="txtBuscarNombreFuncionarioAPasar_TextChanged"></asp:TextBox>
-                                                        </ContentTemplate>
-                                                        <Triggers>
+                                                    <%--<asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                                                        <ContentTemplate>--%>
+                                                            <asp:TextBox ID="txtBuscarNombreFuncionarioAPasar" runat="server" CssClass="form-control chat-input" placeholder="filtro nombre"  onkeypress="enter3_click()"></asp:TextBox>
+                                                        <%--</ContentTemplate>--%>
+                                                       <%-- <Triggers>
                                                             <asp:PostBackTrigger ControlID="txtBuscarNombreFuncionarioAPasar" />
                                                         </Triggers>
-                                                    </asp:UpdatePanel>
+                                                    </asp:UpdatePanel>--%>
                                                 </td>
                                                 <td></td>
                                             </tr>
@@ -401,16 +412,16 @@
                                             </thead>
                                             <tr>
                                                 <td>
-                                                    <asp:LinkButton ID="btnFiltrarEscalasAgregadas" runat="server" CssClass="btn btn-primary"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton></td>
+                                                    <asp:LinkButton ID="btnFiltrarEscalasAgregadas" runat="server" CssClass="btn btn-primary" OnClick="txtBuscarNombreFuncionarioAgregadas_TextChanged"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton></td>
                                                 <td>
-                                                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                                                        <ContentTemplate>
-                                                            <asp:TextBox ID="txtBuscarNombreFuncionarioAgregadas" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción" AutoPostBack="true" OnTextChanged="txtBuscarNombreFuncionarioAgregadas_TextChanged"></asp:TextBox>
-                                                        </ContentTemplate>
+                                                    <%--<asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                                        <ContentTemplate>--%>
+                                                            <asp:TextBox ID="txtBuscarNombreFuncionarioAgregadas" runat="server" CssClass="form-control chat-input" placeholder="filtro descripción"  onkeypress="enter2_click()" ></asp:TextBox>
+                                                       <%-- </ContentTemplate>
                                                         <Triggers>
                                                             <asp:PostBackTrigger ControlID="txtBuscarNombreFuncionarioAgregadas" />
                                                         </Triggers>
-                                                    </asp:UpdatePanel>
+                                                    </asp:UpdatePanel>--%>
                                                 </td>
                                                 <td></td>
                                             </tr>
@@ -514,17 +525,19 @@
                                 </div>
 
                                 </div>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
-                    </div>
+                          <%--  </ContentTemplate>
+                        </asp:UpdatePanel>--%>
+                    
                     <div class="modal-footer" style="align-content: center; text-align: center">
                         <asp:Button CssClass="btn btn-danger" data-dismiss="modal" runat="server" Text="Cerrar" />
                     </div>
-                </div>
+                            </ContentTemplate>
+                </asp:UpdatePanel>
             </div>
         </div>
+    </div>
 
-        <!-- fin modal pasar funcionarios-->
+    <!-- fin modal pasar funcionarios-->
 
         <!-- modal nuevo funcionario -->
         <asp:UpdatePanel ID="UpdatePanel4" runat="server">
@@ -628,6 +641,19 @@
             function activarModalNuevoFuncionario() {
                 $('#modalNuevoFuncionario').modal('show');
             };
+             function enter3_click() {
+                 if (window.event.keyCode == 13) {
+                     document.getElementById('<%=btnFiltrarEscalasAPasar.ClientID%>').focus();
+                document.getElementById('<%=btnFiltrarEscalasAPasar.ClientID%>').click();
+                 }
+            }
+
+            function enter2_click() {
+                 if (window.event.keyCode == 13) {
+                     document.getElementById('<%=btnFiltrarEscalasAgregadas.ClientID%>').focus();
+                document.getElementById('<%=btnFiltrarEscalasAgregadas.ClientID%>').click();
+                 }
+             }
         </script>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ScriptContent" runat="server">

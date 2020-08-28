@@ -526,13 +526,13 @@ namespace Proyecto.Mantenimiento.EscalasSalariales {
         protected global::System.Web.UI.WebControls.Button btnEliminarEscalaModal;
         
         /// <summary>
-        /// Control UpdatePanel5.
+        /// Control UpdatePanel6.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel5;
+        protected global::System.Web.UI.UpdatePanel UpdatePanel6;
         
         /// <summary>
         /// Control Label13.
@@ -560,6 +560,15 @@ namespace Proyecto.Mantenimiento.EscalasSalariales {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblPeriodoSeleccionado;
+        
+        /// <summary>
+        /// Control UpdatePanel5.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel5;
         
         /// <summary>
         /// Control ddlPeriodoModalPasarEscalas.
@@ -598,15 +607,6 @@ namespace Proyecto.Mantenimiento.EscalasSalariales {
         protected global::System.Web.UI.WebControls.Repeater rpEscalasAPasar;
         
         /// <summary>
-        /// Control btnFiltrarEscalasAgregadas.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnFiltrarEscalasAgregadas;
-        
-        /// <summary>
         /// Control txtBuscarDescEscalasAgregadas.
         /// </summary>
         /// <remarks>
@@ -614,6 +614,15 @@ namespace Proyecto.Mantenimiento.EscalasSalariales {
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtBuscarDescEscalasAgregadas;
+        
+        /// <summary>
+        /// Control btnFiltrarEscalasAgregadas.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnFiltrarEscalasAgregadas;
         
         /// <summary>
         /// Control rpEscalasAgregadas.
