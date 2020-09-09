@@ -4,9 +4,10 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnableCdn="true"></asp:ScriptManager>
-
+    
     <div class="row">
-
+        
+        
         <div class="col-md-12 col-xs-12 col-sm-12" style="align-content: center; text-align: center;">
             <asp:Label ID="label" runat="server" Text="Período" Font-Size="Large" ForeColor="Black"></asp:Label>
             <asp:Label ID="lblPeriodo" runat="server" Text="" Font-Size="Large" ForeColor="Black"></asp:Label>
@@ -133,7 +134,7 @@
             <asp:Button ID="btnRegresar" runat="server" Text="Regresar" CssClass="btn btn-danger boton-nuevo" OnClick="btnRegresar_Click" />
         </div>
 
-    </div>
+   
 
 
     <!-- Modal funcionario -->
@@ -623,6 +624,7 @@
                                     <h6 style="text-align: left">Los campos marcados con <span style='color: red'>*</span> son requeridos.</h6>
                                 </div>
                             </div>
+                        
 
                             <%-- Fin campos a llenar --%>
                         </div>
@@ -1349,7 +1351,8 @@
             </div>
         </div>
     </div>
-
+     </div>
+         
     <script src="../Scripts/moment.js"></script>
     <script src="../Scripts/transition.js"></script>
     <script src="../Scripts/collapse.js"></script>

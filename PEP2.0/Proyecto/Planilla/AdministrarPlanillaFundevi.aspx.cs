@@ -290,7 +290,7 @@ namespace Proyecto.Planilla
 
         protected void btnNuevaPlanilla_Click(object sender, EventArgs e)
         {
-            if (mostrar = false)
+            if (mostrar == false)
             {
                 ClientScript.RegisterStartupScript(GetType(), "activar", "activarModalNuevaPlanilla();", true);
             }

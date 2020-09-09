@@ -63,10 +63,10 @@
                                     <td>
                                         <asp:LinkButton ID="btnFiltrar" runat="server" CssClass="btn btn-primary" OnClick="btnFiltrar_Click"><span aria-hidden="true" class="glyphicon glyphicon-search"></span> </asp:LinkButton></td>
                                     <td>
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                                            <asp:TextBox ID="txtBuscarNombre" runat="server" CssClass="form-control chat-input" placeholder="filtro nombre"></asp:TextBox>
-                                        </div>
+                                     
+                                           
+                                            <asp:TextBox ID="txtBuscarNombre" runat="server" CssClass="form-control chat-input" placeholder="filtro nombre" onkeypress="enter3_click()"></asp:TextBox>
+                                     
                                     </td>
                                 </tr>
                                 <asp:Repeater ID="rpFuncionarios" runat="server">
@@ -396,6 +396,12 @@
         function cerrarModalAsignarJornada() {
             $('#modalAsignarJornada').modal('hide');
         };
+         function enter3_click() {
+            if (window.event.keyCode == 13) {
+              document.getElementById('<%=btnFiltrar.ClientID%>').focus();
+                document.getElementById('<%=btnFiltrar.ClientID%>').click();
+            }
+        }
 
         function agregarDistribucion(josnListaUnidades) {
             var listaUnidadesAsignadas = JSON.parse(josnListaUnidades);

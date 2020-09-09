@@ -492,8 +492,8 @@ namespace Proyecto.Mantenimiento.EscalasSalariales
             Session["listaEscalasAPasarFiltrada"] = listaEscalas;
 
             //lista solicitudes
-            var dt2 = listaEscalas;
-            pgsource.DataSource = dt2;
+            var dt16 = listaEscalas;
+            pgsource.DataSource = dt16;
             pgsource.AllowPaging = true;
             //numero de items que se muestran en el Repeater
             pgsource.PageSize = elmentosMostrar;
@@ -501,7 +501,7 @@ namespace Proyecto.Mantenimiento.EscalasSalariales
             //mantiene el total de paginas en View State
             ViewState["TotalPaginas2"] = pgsource.PageCount;
             //Ejemplo: "Página 1 al 10"
-            lblpagina2.Text = "Página " + (paginaActual2 + 1) + " de " + pgsource.PageCount + " (" + dt2.Count + " - elementos)";
+            lblpagina2.Text = "Página " + (paginaActual2 + 1) + " de " + pgsource.PageCount + " (" + dt16.Count + " - elementos)";
             //Habilitar los botones primero, último, anterior y siguiente
             lbAnterior2.Enabled = !pgsource.IsFirstPage;
             lbSiguiente2.Enabled = !pgsource.IsLastPage;
@@ -1451,8 +1451,8 @@ namespace Proyecto.Mantenimiento.EscalasSalariales
 
             cargarDatosTblEscalasAgregadas();
 
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarEscala", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarEscala').hide();", true);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarEscala();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarEscala", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarEscala').hide();", true);
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarEscala();", true);
 
         }
         #endregion

@@ -6,6 +6,7 @@
 
     <asp:UpdatePanel ID="UpdatePanel3" runat="server">
         <ContentTemplate>
+
             <div class="row">
                 <%-- titulo pantalla --%>
                 <div class="col-md-12 col-xs-12 col-sm-12">
@@ -627,7 +628,7 @@
                                                 <ItemTemplate>
                                                     <tr style="text-align: center">
                                                         <td>
-                                                            <asp:LinkButton ID="btnSeleccionarEscala" runat="server" ToolTip="Copiar escala salarial" CommandArgument='<%# Eval("idEscalaSalarial") %>' OnClick="btnSeleccionarEscala_Click"><span class="glyphicon glyphicon-share-alt"></span></asp:LinkButton>
+                                                            <asp:LinkButton ID="btnSeleccionarEscala" runat="server" ToolTip="Copiar escala salarial" CommandArgument='<%# Eval("idEscalaSalarial") %>' OnClick="btnSeleccionarEscala_Click"  CssClass="glyphicon glyphicon-share-alt"></asp:LinkButton>
                                                         </td>
                                                         <td>
                                                             <%# Eval("descEscalaSalarial") %>
