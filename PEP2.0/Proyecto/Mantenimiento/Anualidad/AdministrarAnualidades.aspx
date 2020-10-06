@@ -24,7 +24,7 @@
                 <%-- tabla--%>
 
                 <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" >
                         <thead style="text-align: center !important; align-content: center">
                             <tr style="text-align: center" class="btn-primary">
                                 <th></th>
