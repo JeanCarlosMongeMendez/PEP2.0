@@ -148,6 +148,7 @@
     <Content Include="Planilla\AgregarFuncionarioFundevi.aspx" />
     <Content Include="Planilla\AsignarFuncionariosPlanillaFundevi.aspx" />
     <Content Include="Reportes\ReporteEgresos.aspx" />
+    <Content Include="Reportes\ReporteEgresosUnidades.aspx" />
     <Content Include="Scripts\abrirfile.js" />
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
@@ -402,6 +403,13 @@
     <Compile Include="Reportes\ReporteEgresos.aspx.designer.cs">
       <DependentUpon>ReporteEgresos.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Reportes\ReporteEgresosUnidades.aspx.cs">
+      <DependentUpon>ReporteEgresosUnidades.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reportes\ReporteEgresosUnidades.aspx.designer.cs">
+      <DependentUpon>ReporteEgresosUnidades.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SiteMaster.Master.cs">
       <DependentUpon>SiteMaster.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -471,6 +479,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reportes\ReporteEgresos.rdlc" />
+    <EmbeddedResource Include="Reportes\ReporteEgresosUnidades.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
