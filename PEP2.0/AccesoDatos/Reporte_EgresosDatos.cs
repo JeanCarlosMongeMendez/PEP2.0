@@ -34,13 +34,13 @@ namespace AccesoDatos
             SqlConnection sqlConnection = conexion.conexionPEP();
             List<Reporte_Egresos> egresos = new List<Reporte_Egresos>();
 
-            String consulta = @"select P2.numero_partida as numero_partida_padre,P2.descripcion_partida as descripcion_partida_padre,P.numero_partida as numero_partida_hija,P.descripcion_partida as descripcion_partida_hija,U.nombre_unidad,PEP.monto
+            String consulta = @"select P2.numero_partida as numero_partida_padre,P2.descripcion_partida as descripcion_partida_padre,P.numero_partida as numero_partida_hija,P.descripcion_partida as descripcion_partida_hija,U.nombre_unidad,PEP.monto,PEP.id_linea
                                 from Partida P,Partida P2, Proyecto PR,Unidad U, Presupuesto_Egreso PE, Presupuesto_Egreso_Partida PEP
                                 where P.disponible = 1 and P.id_partida_padre is not null and P2.id_partida = P.id_partida_padre
                                 and PR.id_proyecto = @idProyecto and U.id_proyecto = PR.id_proyecto and PE.id_unidad = U.id_unidad and
                                 PEP.id_presupuesto_egreso = PE.id_presupuesto_egreso and P.id_partida = PEP.id_partida
                                 union
-                                select P2.numero_partida as numero_partida_padre,P2.descripcion_partida as descripcion_partida_padre,P.numero_partida as numero_partida_hija,P.descripcion_partida as descripcion_partida_hija,U.nombre_unidad, 0 as monto
+                                select P2.numero_partida as numero_partida_padre,P2.descripcion_partida as descripcion_partida_padre,P.numero_partida as numero_partida_hija,P.descripcion_partida as descripcion_partida_hija,U.nombre_unidad, 0 as monto,0 as id_linea
                                 from Unidad U, Partida P, Partida P2
                                 Where U.id_proyecto = @idProyecto and P.disponible = 1 and P.id_partida_padre is not null and P2.id_partida = P.id_partida_padre
                                 and P.ano_periodo = @anoPeriodo and P.id_partida not in (select id_partida from Presupuesto_Egreso_Partida where id_presupuesto_egreso in(
