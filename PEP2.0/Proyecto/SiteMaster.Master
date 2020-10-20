@@ -223,7 +223,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <asp:Label ID="Label1" runat="server" Text="Versión:" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
-                                    01.00.2019
+                                    20.10.2020
                                 </div>
                                 <div class="col-md-12">
                                     <br />

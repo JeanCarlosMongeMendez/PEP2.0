@@ -1280,6 +1280,7 @@ namespace Proyecto.Planilla
             txtEscalafonesI.Text = funcionarioEditar.noEscalafones1.ToString();
             txtEscalafonesII.Text = funcionarioEditar.noEscalafones2.ToString();
             ddlEscalaSalarial.SelectedValue = funcionarioEditar.escalaSalarial.idEscalaSalarial.ToString();
+            escalaSeleccionada = funcionarioEditar.escalaSalarial;
             txtFecha.Text = funcionarioEditar.fechaIngreso.ToString();
             txtMontoAnualidadesI.Text = funcionarioEditar.montoAnualidad1.ToString();
             txtMontoAnualidadesII.Text = funcionarioEditar.montoAnualidad2.ToString();

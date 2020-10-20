@@ -467,7 +467,7 @@
                                     <div class="col-md-8 col-xs-12 col-sm-12">
                                         <div class="input-group">
                                             <span class="input-group-addon">#</span>
-                                            <asp:TextBox class="form-control" ID="txtEscalafonesII" runat="server" TextMode="Number" min="0" ReadOnly="true"></asp:TextBox>
+                                            <asp:TextBox class="form-control" ID="txtEscalafonesII" runat="server" TextMode="Number" min="0"></asp:TextBox>
                                         </div>
                                         <asp:LinkButton ID="btnCalcularNumeroEscalafones2" runat="server" OnClick="btnCalcularNumeroEscalafones2_Click">Calcular</asp:LinkButton>
                                     </div>
