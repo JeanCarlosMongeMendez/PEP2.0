@@ -11,7 +11,7 @@ namespace PEP
     internal static class Utilidades
     {
         public static List<System.Web.UI.WebControls.HyperLink> aplicaciones { get; set; }
-        public static string path = "\\\\gaia\\AppFiles\\PEP\\";
+        public static string path = @"C:\\Users\\Usuario\\OneDrive\\Documents\\Pep arreglo\\documentos//";
         public static string logs_path = path + "logs";
 
 

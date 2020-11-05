@@ -35,7 +35,7 @@
                             </tr>
                         </thead>
 
-                        <asp:Repeater ID="rpUnidadSelecionadas" runat="server">
+                        <asp:Repeater ID="rpUnidadSelecionadas" runat="server" OnItemDataBound="rpEjecucion_ItemDataBound">
                             <HeaderTemplate>
                             </HeaderTemplate>
 

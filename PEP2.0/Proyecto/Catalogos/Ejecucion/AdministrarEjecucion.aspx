@@ -189,6 +189,9 @@
                     <asp:TextBox class="form-control" ID="descripcionOtroTipoTramite" runat="server"  ></asp:TextBox>
 
                 </div>
+                
+                 <asp:UpdatePanel ID="UpdatePanel4" runat="server">
+                 <ContentTemplate>
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                 
                     <asp:Label ID="lblArchivos" runat="server" Text="Archivos " Font-Size="Medium" ForeColor="Black" Font-Bold="true" CssClass="label"></asp:Label>
@@ -198,6 +201,9 @@
                 
                 
             </div>
+                       </ContentTemplate>
+                
+                    </asp:UpdatePanel>
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                     <asp:Button ID="Button4" runat="server" Text="Ver Archivos" CssClass="btn btn-primary" OnClick="btnVerEjecucionArchivo_Click" />
                 </div>
@@ -317,7 +323,7 @@
     </div>
     
        
-    <br >
+    <br>
 
 
     <br />
@@ -445,8 +451,7 @@
                     </div>
                 </div>
             </div>
-    <%--    </ContentTemplate>
-    </asp:UpdatePanel--%>>
+   
 
         <!-- Modal repartir partida -->
   

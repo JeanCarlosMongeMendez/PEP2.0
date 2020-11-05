@@ -18,6 +18,7 @@ namespace Proyecto.Catalogos.Ejecucion
         ProyectoServicios proyectoServicios;
         PeriodoServicios periodoServicios;
         EjecucionServicios ejecucionServicios;
+      
         ArchivoEjecucionServicios archivoEjecucionServicios;
         private int elmentosMostrar = 10;
         int primerIndex4, ultimoIndex4;
@@ -192,8 +193,14 @@ namespace Proyecto.Catalogos.Ejecucion
                 Session["verEjecucion"] = null;
                 Session["listaArchivoEjecucion"] = null;
                 Session["descripcionEjecionOtro"] = null;
+                MostrarDatosTablaUnidad();
                 //DDLTipoTramite.Items.Clear();
                 //ddlPartida.Items.Clear();
+            }
+            else
+            {
+                paginaActual4 = 0;
+                MostrarDatosTablaUnidad();
             }
 
 
@@ -202,6 +209,44 @@ namespace Proyecto.Catalogos.Ejecucion
         #endregion
 
         #region eventos
+
+
+        ///// <summary>
+        ///// Kevin Picado
+        ///// 22/oct/2020
+        ///// Efecto: deshabilita botones
+        ///// Requiere: -
+        ///// Modifica: -
+        ///// Devuelve: -
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        protected void rpEjecucion_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            int idEjecucion;
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                LinkButton btnEditar = e.Item.FindControl("btnEditarEjecucion") as LinkButton;
+
+                //Entidades.Ejecucion ejecucion = new Entidades.Ejecucion();
+              idEjecucion= Convert.ToInt32(btnEditar.CommandArgument.ToString());
+                int Estado= ejecucionServicios.EstadoEjecucion(idEjecucion);
+
+                if (Estado == 2)
+                {
+                    btnEditar.Visible = false;
+                }
+                else
+                {
+                    btnEditar.Visible = true;
+                }
+
+               
+
+            }
+
+           
+        }
         /// <summary>
         /// kevin Picado Quesada
         /// Método utilizado para la accion en la selección del droplist
@@ -296,142 +341,144 @@ namespace Proyecto.Catalogos.Ejecucion
             String url = Page.ResolveUrl("~/Catalogos/Ejecucion/AdministrarEjecucion.aspx");
             Response.Redirect(url);
         }
-    
-    #endregion
 
-    #region logica 
-    /// <summary>
-    /// Kevin Picado
-    /// 21/2/2020
-    /// Efecto: cambia los datos de las unidades segun el periodo seleccionado
-    /// Requiere: cambiar periodo
-    /// Modifica: datos de la tabla
-    /// Devuelve: -
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void CargarProyectos()
-    {
-        ProyectosDDL.Items.Clear();
+        #endregion
 
-        if (!PeriodosDDL.SelectedValue.Equals(""))
+        #region logica 
+        /// <summary>
+        /// Kevin Picado
+        /// 21/2/2020
+        /// Efecto: cambia los datos de las unidades segun el periodo seleccionado
+        /// Requiere: cambiar periodo
+        /// Modifica: datos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CargarProyectos()
         {
-            LinkedList<Proyectos> proyectos = new LinkedList<Proyectos>();
-            proyectos = this.proyectoServicios.ObtenerPorPeriodo(Int32.Parse(PeriodosDDL.SelectedValue));
+            ProyectosDDL.Items.Clear();
 
-            if (proyectos.Count > 0)
+            if (!PeriodosDDL.SelectedValue.Equals(""))
             {
-                foreach (Proyectos proyecto in proyectos)
+                LinkedList<Proyectos> proyectos = new LinkedList<Proyectos>();
+                proyectos = this.proyectoServicios.ObtenerPorPeriodo(Int32.Parse(PeriodosDDL.SelectedValue));
+
+                if (proyectos.Count > 0)
                 {
-                    ListItem itemLB = new ListItem(proyecto.nombreProyecto, proyecto.idProyecto.ToString());
-                    Session["proyecto"] = proyecto.idProyecto;
-                    ProyectosDDL.Items.Add(itemLB);
+                    foreach (Proyectos proyecto in proyectos)
+                    {
+                        ListItem itemLB = new ListItem(proyecto.nombreProyecto, proyecto.idProyecto.ToString());
+                        Session["proyecto"] = proyecto.idProyecto;
+                        ProyectosDDL.Items.Add(itemLB);
+                    }
+
+                    //CargarUnidades();
+
                 }
-
-                //CargarUnidades();
-
+                //MostrarDatosTablaUnidad();
             }
-            //MostrarDatosTablaUnidad();
-        }
-
-    }
-
-
-    /// <summary>
-    /// Kevin Picado 
-    /// 09/oct/2019
-    /// Efecto: cambia los datos del proyrcto segun el periodo seleccionado
-    /// Requiere: seleccionar un periodo
-    /// Modifica: DropDownList de proyectos
-    /// Devuelve: -
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void CargarPeriodos()
-    {
-        LinkedList<Periodo> periodos = new LinkedList<Periodo>();
-        PeriodosDDL.Items.Clear();
-        periodos = this.periodoServicios.ObtenerTodos();
-        int anoHabilitado = 0;
-        //Session["partidasPorUnidadesProyectoPeriodo"] = null;
-        //Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
-        if (periodos.Count > 0)
-        {
-            foreach (Periodo periodo in periodos)
-            {
-                string nombre;
-
-                if (periodo.habilitado)
-                {
-                    nombre = periodo.anoPeriodo.ToString() + " (Actual)";
-                    anoHabilitado = periodo.anoPeriodo;
-                }
-                else
-                {
-                    nombre = periodo.anoPeriodo.ToString();
-                }
-
-                ListItem itemPeriodo = new ListItem(nombre, periodo.anoPeriodo.ToString());
-                PeriodosDDL.Items.Add(itemPeriodo);
-            }
-
-            if (anoHabilitado != 0)
-            {
-                PeriodosDDL.Items.FindByValue(anoHabilitado.ToString()).Selected = true;
-            }
-
-            CargarProyectos();
-
 
         }
 
+
+        /// <summary>
+        /// Kevin Picado 
+        /// 09/oct/2019
+        /// Efecto: cambia los datos del proyrcto segun el periodo seleccionado
+        /// Requiere: seleccionar un periodo
+        /// Modifica: DropDownList de proyectos
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CargarPeriodos()
+        {
+            LinkedList<Periodo> periodos = new LinkedList<Periodo>();
+            PeriodosDDL.Items.Clear();
+            periodos = this.periodoServicios.ObtenerTodos();
+            int anoHabilitado = 0;
+            //Session["partidasPorUnidadesProyectoPeriodo"] = null;
+            //Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"] = null;
+            if (periodos.Count > 0)
+            {
+                foreach (Periodo periodo in periodos)
+                {
+                    string nombre;
+
+                    if (periodo.habilitado)
+                    {
+                        nombre = periodo.anoPeriodo.ToString() + " (Actual)";
+                        anoHabilitado = periodo.anoPeriodo;
+                    }
+                    else
+                    {
+                        nombre = periodo.anoPeriodo.ToString();
+                    }
+
+                    ListItem itemPeriodo = new ListItem(nombre, periodo.anoPeriodo.ToString());
+                    PeriodosDDL.Items.Add(itemPeriodo);
+                }
+
+                if (anoHabilitado != 0)
+                {
+                    PeriodosDDL.Items.FindByValue(anoHabilitado.ToString()).Selected = true;
+                }
+
+                CargarProyectos();
+
+
+            }
+
+        }
+
+
+
+        /// <summary>
+        /// Kevin Picado
+        /// 09/oct/2019
+        /// Efecto: Muestra las unidades seleccionadas 
+        /// Requiere: Seleccionar la unidad para cargarla en la lista
+        /// Modifica: tabla Unidades
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MostrarDatosTablaUnidad()
+        {
+
+            string a = ProyectosDDL.SelectedValue;
+            var dt = ejecucionServicios.ConsultarEjecucion(PeriodosDDL.SelectedValue, a);
+            pgsource.DataSource = dt;
+            pgsource.AllowPaging = true;
+            //numero de items que se muestran en el Repeater
+            pgsource.PageSize = elmentosMostrar;
+            pgsource.CurrentPageIndex = paginaActual4;
+            //mantiene el total de paginas en View State
+            ViewState["TotalPaginas4"] = pgsource.PageCount;
+            //Ejemplo: "Página 1 al 10"
+            lblpagina4.Text = "Página " + (paginaActual4 + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
+            //Habilitar los botones primero, último, anterior y siguiente
+            lbAnterior4.Enabled = !pgsource.IsFirstPage;
+            lbSiguiente4.Enabled = !pgsource.IsLastPage;
+            lbPrimero4.Enabled = !pgsource.IsFirstPage;
+            lbUltimo4.Enabled = !pgsource.IsLastPage;
+
+            rpUnidadSelecionadas.DataSource = pgsource;
+            rpUnidadSelecionadas.DataBind();
+
+            //metodo que realiza la paginacion
+
+            Paginacion4();
+
+        }
+
+
+
+
+
+        #endregion
+
     }
-
-
-
-    /// <summary>
-    /// Kevin Picado
-    /// 09/oct/2019
-    /// Efecto: Muestra las unidades seleccionadas 
-    /// Requiere: Seleccionar la unidad para cargarla en la lista
-    /// Modifica: tabla Unidades
-    /// Devuelve: -
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void MostrarDatosTablaUnidad()
-    {
-
-        string a = ProyectosDDL.SelectedValue;
-        var dt = ejecucionServicios.ConsultarEjecucion(PeriodosDDL.SelectedValue, a);
-        pgsource.DataSource = dt;
-        pgsource.AllowPaging = true;
-        //numero de items que se muestran en el Repeater
-        pgsource.PageSize = elmentosMostrar;
-        pgsource.CurrentPageIndex = paginaActual4;
-        //mantiene el total de paginas en View State
-        ViewState["TotalPaginas4"] = pgsource.PageCount;
-        //Ejemplo: "Página 1 al 10"
-        lblpagina4.Text = "Página " + (paginaActual4 + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
-        //Habilitar los botones primero, último, anterior y siguiente
-        lbAnterior4.Enabled = !pgsource.IsFirstPage;
-        lbSiguiente4.Enabled = !pgsource.IsLastPage;
-        lbPrimero4.Enabled = !pgsource.IsFirstPage;
-        lbUltimo4.Enabled = !pgsource.IsLastPage;
-
-        rpUnidadSelecionadas.DataSource = pgsource;
-        rpUnidadSelecionadas.DataBind();
-
-        //metodo que realiza la paginacion
-
-        Paginacion4();
-
-    }
-
-
-
-
-    #endregion
-}
 }
 

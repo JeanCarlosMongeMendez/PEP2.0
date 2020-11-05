@@ -435,6 +435,40 @@ namespace AccesoDatos
             sqlConnection.Close();
         }
 
+        /// <summary>
+        /// Consultar EjecucionMontoPartidaElegida
+        /// </summary>
+        /// <param name="idEjecucion">PartidaUnidad</param>
+
+        public int ConsultarEjecucionEstado(int idEjecucion)
+        {
+ 
+            SqlConnection sqlConnection = conexion.conexionPEP();
+
+            String consulta = @"select  id_estado 
+                                           from Ejecucion
+                                           where id_ejecucion=@idEjecucion";
+
+            SqlCommand command = new SqlCommand(consulta, sqlConnection);
+
+            command.Parameters.AddWithValue("@idEjecucion", Convert.ToInt32(idEjecucion));
+
+            SqlDataReader reader;
+            sqlConnection.Open();
+            reader = command.ExecuteReader();
+            int idEstado=0;
+            while (reader.Read())
+            {
+                idEstado = Convert.ToInt32(reader["id_estado"].ToString());
+
+            }
+            
+              
+           
+
+            sqlConnection.Close();
+            return idEstado;
+        }
 
 
     }

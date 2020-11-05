@@ -1145,7 +1145,7 @@ namespace Proyecto.Catalogos.Ejecucion
                 descripcionEjecucionOtro = Convert.ToString(Session["descripcionEjecionOtro"]);
                 nuevaEjecucion = Convert.ToInt32(Session["nuevaEjecucion"]);
                 verEjecucion = Convert.ToInt32(Session["verEjecucion"]);
-                nombre = Convert.ToString(Session["nombreCompleto"]); 
+                nombre = Convert.ToString(Page.Session["nombreCompleto"]); 
                 if (nuevaEjecucion == 0)
                 {
                     List<Entidades.Unidad> comparaListaUnidades = new List<Entidades.Unidad>();
@@ -1242,6 +1242,7 @@ namespace Proyecto.Catalogos.Ejecucion
             {
 
                 obtenerPartidasSeleccionadas();
+
             }
 
 
@@ -1810,6 +1811,7 @@ namespace Proyecto.Catalogos.Ejecucion
             EstadoEjecucion estadoEjecucion = new EstadoEjecucion();
             TipoTramite tipoTramite = new TipoTramite();
             String valor = DDLTipoTramite.SelectedItem.Text;
+            
             if (!txtMontoIngresar.Text.Equals(""))
             {
 
@@ -2969,8 +2971,8 @@ namespace Proyecto.Catalogos.Ejecucion
                     archivoEjecucion.rutaArchivo = Utilidades.path + fechaHoy.Year + "\\" + carpeta + "\\" + nombreArchivo;
                     archivoEjecucion.fechaCreacion = fechaHoy;
                     // archivoEjecucion.muestra = muestra;
-                    //archivoEjecucion.creadoPor = "Kevin";
-                    archivoEjecucion.creadoPor = nombre;
+                    archivoEjecucion.creadoPor = "Kevin";
+                    //archivoEjecucion.creadoPor = nombre;
                     listaArchivos.Add(archivoEjecucion);
                 }
                 else

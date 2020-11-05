@@ -154,5 +154,15 @@ namespace Servicios
         {
             ejecucionDatos.eliminarEjecucion(idEjecucion);
         }
+
+        /// <summary>
+        /// Traer estado de la ejecucion
+        /// </summary>
+        /// /// <param name="idEjecucion">String</param>
+        public int EstadoEjecucion(int idEjecucion)
+        {
+            return ejecucionDatos.ConsultarEjecucionEstado(idEjecucion);
+        }
+       
     }
 }
