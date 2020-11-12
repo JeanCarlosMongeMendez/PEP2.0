@@ -327,13 +327,14 @@ namespace Proyecto.Catalogos.Ejecucion
             Session["listaArchivoEjecucion"] = archivoEjecucionServicios.obtenerArchivoEjecucion(Convert.ToInt32(idEjecucion));
             Session["listaUnidad"] = ejecucionServicios.ConsultarUnidadEjecucion(Convert.ToInt32(idEjecucion));
             Session["listaPartida"] = ejecucionServicios.ConsultarPartidaEjecucion(Convert.ToInt32(idEjecucion));
-
+  
             listaEjecucion = ejecucionServicios.ConsultarEjecucion(PeriodosDDL.SelectedValue, ProyectosDDL.SelectedValue);
             int idTipoTramite = listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().idTipoTramite.idTramite;
             Session["listaMontoPartidaDisponible"] = ejecucionServicios.ConsultarEjecucionMontoPartida(Convert.ToInt32(idEjecucion));
             Session["periodo"] = Convert.ToString(PeriodosDDL.SelectedValue);
             Session["proyecto"] = Convert.ToString(ProyectosDDL.SelectedValue);
             Session["idTipoTramite"] = idTipoTramite;
+            Session["idEstado"] = listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().idestado.descripcion;
             Session["numeroReferencia"] = listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().numeroReferencia;
             Session["monto"] = listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().monto;
             Session["idEjecucion"] = Convert.ToInt32(idEjecucion);

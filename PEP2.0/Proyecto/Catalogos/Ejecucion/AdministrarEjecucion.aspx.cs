@@ -39,6 +39,7 @@ namespace Proyecto.Catalogos.Ejecucion
         int nuevaEjecucion;
         int verEjecucion;
         string nombre;
+        string estado;
         string descripcionEjecucionOtro;
         static string idEjecucioon = "";
         //se utiliza en el metodo  MostrarDatosTablaUnidad();se utiliza para pasar unidades seleccionadas de la tabla que aparece en el  #modalElegirUnidad
@@ -1140,12 +1141,14 @@ namespace Proyecto.Catalogos.Ejecucion
             this.presupuestoEgreso_PartidaServicios = new PresupuestoEgreso_PartidaServicios();
             this.partidaUnidad = new PartidaUnidad();
             this.archivoEjecucionServicios = new ArchivoEjecucionServicios();
+            nombre = Convert.ToString(Page.Session["nombreCompleto"]);
             if (!IsPostBack)
             {
                 descripcionEjecucionOtro = Convert.ToString(Session["descripcionEjecionOtro"]);
                 nuevaEjecucion = Convert.ToInt32(Session["nuevaEjecucion"]);
                 verEjecucion = Convert.ToInt32(Session["verEjecucion"]);
-                nombre = Convert.ToString(Page.Session["nombreCompleto"]); 
+                nombre = Convert.ToString(Page.Session["nombreCompleto"]);
+                estado=Convert.ToString(Page.Session["idEstado"]);
                 if (nuevaEjecucion == 0)
                 {
                     List<Entidades.Unidad> comparaListaUnidades = new List<Entidades.Unidad>();
@@ -1206,7 +1209,15 @@ namespace Proyecto.Catalogos.Ejecucion
                     descripcionOtroTipoTramite.Visible = false;
                     UpdatePanel10.Visible = false;
                     ButtonRepartir.Visible = false;
-                    BtnElimarEjecucion.Visible = false;
+                    if (estado.Equals("Aprobado"))
+                    {
+                        BtnElimarEjecucion.Visible = false;
+                    }
+                    else
+                    {
+                        BtnElimarEjecucion.Visible = true;
+                    }
+                    
                     BtnCerrar.Visible = true;
                     MostrarTablaRepartirGastos();
                     if (verEjecucion == 0)
@@ -2935,7 +2946,14 @@ namespace Proyecto.Catalogos.Ejecucion
             ButtonRepartir.Enabled = false;
             PeriodosDDL.Enabled = false;
             ProyectosDDL.Enabled = false;
-            BtnElimarEjecucion.Visible = true;
+            if (estado.Equals("Aprobado")){
+                BtnElimarEjecucion.Visible = false;
+            }
+            else
+            {
+                BtnElimarEjecucion.Visible = true;
+            }
+          
             BtnCerrar.Visible = true;
         }
         /*
@@ -2971,8 +2989,8 @@ namespace Proyecto.Catalogos.Ejecucion
                     archivoEjecucion.rutaArchivo = Utilidades.path + fechaHoy.Year + "\\" + carpeta + "\\" + nombreArchivo;
                     archivoEjecucion.fechaCreacion = fechaHoy;
                     // archivoEjecucion.muestra = muestra;
-                    archivoEjecucion.creadoPor = "Kevin";
-                    //archivoEjecucion.creadoPor = nombre;
+                    //archivoEjecucion.creadoPor = "Kevin";
+                    archivoEjecucion.creadoPor = nombre;
                     listaArchivos.Add(archivoEjecucion);
                 }
                 else
@@ -2987,7 +3005,7 @@ namespace Proyecto.Catalogos.Ejecucion
                 //(this.Master as SiteMaster).Mensaje("Los archivos " + archivosRepetidos + " no se pudieron guardar porque ya había archivos con ese nombre", "¡Alerta!");
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Los archivos " + archivosRepetidos + " no se pudieron guardar porque ya había archivos con ese nombre" + "');", true);
             }
-
+             
             return listaArchivos;
         }
         /*
