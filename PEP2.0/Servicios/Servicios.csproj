@@ -68,6 +68,7 @@
     <Compile Include="ProyectoServicios.cs" />
     <Compile Include="Reporte_EgresosServicios.cs" />
     <Compile Include="Reporte_Egresos_UnidadServicios.cs" />
+    <Compile Include="SubUnidadServicios.cs" />
     <Compile Include="TipoTramiteServicios.cs" />
     <Compile Include="UnidadServicios.cs" />
   </ItemGroup>

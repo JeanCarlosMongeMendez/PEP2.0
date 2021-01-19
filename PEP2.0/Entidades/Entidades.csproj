@@ -68,6 +68,7 @@
     <Compile Include="Proyectos.cs" />
     <Compile Include="Reporte_Egresos.cs" />
     <Compile Include="Reporte_Egresos_Unidad.cs" />
+    <Compile Include="SubUnidad.cs" />
     <Compile Include="TipoTramite.cs" />
     <Compile Include="Unidad.cs" />
     <Compile Include="JornadaUnidadFuncionario.cs" />

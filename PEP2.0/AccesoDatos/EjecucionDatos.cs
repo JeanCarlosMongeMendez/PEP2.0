@@ -387,9 +387,10 @@ namespace AccesoDatos
             List<PartidaUnidad> listapartidaUnidad = new List<PartidaUnidad>();
             SqlConnection sqlConnection = conexion.conexionPEP();
 
-            String consulta = @"select  numero_referencia,id_partida,id_unidad,monto,monto_disponible,numero_partida,id_ejecucion 
-                                           from EjecucionMontoPartidasElegidas
-                                           where id_ejecucion=@idEjecucion";
+            String consulta = @"select  E.numero_referencia,E.id_partida,E.id_unidad,E.monto,E.monto_disponible,E.numero_partida,E.id_ejecucion , U.nombre_unidad
+                                           from EjecucionMontoPartidasElegidas E, Unidad U
+										   where U.id_unidad = E.id_unidad
+                                           and id_ejecucion=@idEjecucion";
 
             SqlCommand command = new SqlCommand(consulta, sqlConnection);
 
@@ -406,6 +407,7 @@ namespace AccesoDatos
                 partidaUnidad.Monto = Convert.ToDouble(reader["monto"].ToString());
                 partidaUnidad.MontoDisponible = Convert.ToDouble(reader["monto_disponible"].ToString());
                 partidaUnidad.NumeroPartida = Convert.ToString(reader["numero_partida"].ToString());
+                partidaUnidad.nombreUnidad = reader["nombre_unidad"].ToString();
                 listapartidaUnidad.Add(partidaUnidad);
             }
 

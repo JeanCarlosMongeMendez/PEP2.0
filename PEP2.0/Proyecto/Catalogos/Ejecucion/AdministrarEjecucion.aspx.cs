@@ -1440,6 +1440,7 @@ namespace Proyecto.Catalogos.Ejecucion
                             {
                                 partidaUnidad.IdPartida = p.IdPartida;
                                 partidaUnidad.IdUnidad = p.IdUnidad;
+                                partidaUnidad.nombreUnidad = ddlPartida.SelectedItem.Text;
                                 partidaUnidad.NumeroPartida = p.NumeroPartida;
 
                                 // partidasElegidas.RemoveAll(item => item.IdPartida == p.IdPartida);
@@ -2684,8 +2685,9 @@ namespace Proyecto.Catalogos.Ejecucion
                     listaPresuouestosEgreso = presupuestoEgreso_PartidaServicios.getPresupuestoEgresoPartidas(presupuestoEgreso);
 
                     //Double montoDisponible = (Double)listaPresuouestosEgreso.Where(item => item.partida.numeroPartida == p.numeroPartida).ToList().FirstOrDefault().monto;
-                    string idPartida = Convert.ToString(listaPresuouestosEgreso.Where(item => item.partida.numeroPartida == p.numeroPartida).ToList().FirstOrDefault().partida.idPartida);
-
+                    Partida partida = (listaPresuouestosEgreso.Where(item => item.partida.numeroPartida == p.numeroPartida).ToList().FirstOrDefault().partida);
+                    
+                    string idPartida = Convert.ToString(partida.idPartida);
                     Double montoDisponible = ejecucionServicios.ConsultaMontoDisponiblePartida(idPartida, Convert.ToString(idPresupuestoEgreso));
                     partidaU.MontoDisponible = montoDisponible;
                     partidaUnidad.Add(partidaU);

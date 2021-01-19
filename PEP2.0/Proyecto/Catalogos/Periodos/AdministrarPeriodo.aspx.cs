@@ -17,6 +17,7 @@ namespace PEP.Catalogos.Periodos
         private PeriodoServicios periodoServicios;
         private ProyectoServicios proyectoServicios;
         private UnidadServicios unidadServicios;
+        private SubUnidadServicios subUnidadServicios = new SubUnidadServicios();
         private static int periodoActualSelec;
         public static int proyectoActualSelec = 0;
         private bool botones = false;
@@ -28,7 +29,7 @@ namespace PEP.Catalogos.Periodos
         readonly PagedDataSource pgsourcePeriodos = new PagedDataSource();
         readonly PagedDataSource pgsourceProyectos = new PagedDataSource();
         readonly PagedDataSource pgsource = new PagedDataSource();
-        int primerIndex, ultimoIndex, primerIndex2, ultimoIndex2, primerIndex3, ultimoIndex3, primerIndex4, ultimoIndex4, primerIndex5, ultimoIndex5;
+        int primerIndex, ultimoIndex, primerIndex2, ultimoIndex2, primerIndex3, ultimoIndex3, primerIndex4, ultimoIndex4, primerIndex5, ultimoIndex5, primerIndex6, ultimoIndex6;
         private int elmentosMostrar = 10;
 
         private int paginaActual
@@ -108,6 +109,22 @@ namespace PEP.Catalogos.Periodos
             set
             {
                 ViewState["paginaActual5"] = value;
+            }
+        }
+
+        private int paginaActual6
+        {
+            get
+            {
+                if (ViewState["paginaActual6"] == null)
+                {
+                    return 0;
+                }
+                return ((int)ViewState["paginaActual6"]);
+            }
+            set
+            {
+                ViewState["paginaActual6"] = value;
             }
         }
         #endregion
@@ -732,7 +749,7 @@ namespace PEP.Catalogos.Periodos
         protected void lbSiguiente4_Click(object sender, EventArgs e)
         {
             paginaActual4 += 1;
-
+            MostrarTablaProyectos();
         }
 
         /// <summary>
@@ -823,7 +840,7 @@ namespace PEP.Catalogos.Periodos
         /// <param name="e"></param>
         protected void lbAnterior5_Click(object sender, EventArgs e)
         {
-            paginaActual2 -= 1;
+            paginaActual5 -= 1;
             mostrarTablaUnidades();
         }
 
@@ -875,7 +892,7 @@ namespace PEP.Catalogos.Periodos
         /// <param name="e"></param>
         protected void lbSiguiente5_Click(object sender, EventArgs e)
         {
-            paginaActual2 += 1;
+            paginaActual5 += 1;
             mostrarTablaUnidades();
         }
 
@@ -893,6 +910,149 @@ namespace PEP.Catalogos.Periodos
         {
             paginaActual5 = (Convert.ToInt32(ViewState["TotalPaginas5"]) - 1);
             mostrarTablaUnidades();
+        }
+
+        /// <summary>
+        /// Mariela Calvo
+        /// septiembre/2019
+        /// Efecto: realiza la paginacion de la tabla proyectos unidades
+        /// Requiere: - 
+        /// Modifica: DropDownList
+        /// Devuelve: -
+        /// </summary>
+        private void Paginacion6()
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("IndexPagina"); //Inicia en 0
+            dt.Columns.Add("PaginaText"); //Inicia en 1
+
+            primerIndex6 = paginaActual6 - 2;
+            if (paginaActual6 > 2)
+                ultimoIndex6 = paginaActual6 + 2;
+            else
+                ultimoIndex6 = 4;
+
+            //se revisa que la ultima pagina sea menor que el total de paginas a mostrar, sino se resta para que muestre bien la paginacion
+            if (ultimoIndex6 > Convert.ToInt32(ViewState["TotalPaginas6"]))
+            {
+                ultimoIndex6 = Convert.ToInt32(ViewState["TotalPaginas6"]);
+                primerIndex6 = ultimoIndex5 - 4;
+            }
+
+            if (primerIndex6 < 0)
+                primerIndex6 = 0;
+
+            //se crea el numero de paginas basado en la primera y ultima pagina
+            for (var i = primerIndex6; i < ultimoIndex6; i++)
+            {
+                var dr = dt.NewRow();
+                dr[0] = i;
+                dr[1] = i + 1;
+                dt.Rows.Add(dr);
+            }
+
+            rptPaginacion6.DataSource = dt;
+            rptPaginacion6.DataBind();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 28/oct/2020
+        /// Efecto: se devuelve a la primera pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Primer pagina"
+        /// Modifica: elementos mostrados
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbPrimero6_Click(object sender, EventArgs e)
+        {
+            paginaActual6 = 0;
+            mostrarTablaSubUnidades();
+        }
+
+        /// <summary>
+        ///Mariela Calvo
+        /// 28/oct/2020
+        /// Efecto: se devuelve a la pagina anterior y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Anterior pagina"
+        /// Modifica: elementos mostrados
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbAnterior6_Click(object sender, EventArgs e)
+        {
+            paginaActual6 -= 1;
+            mostrarTablaSubUnidades();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 28/oct/2020
+        /// Efecto: actualiza la la pagina actual y muestra los datos de la misma
+        /// Requiere: -
+        /// Modifica: elementos de la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacion6_ItemCommand(object source, DataListCommandEventArgs e)
+        {
+            if (!e.CommandName.Equals("nuevaPagina")) return;
+            paginaActual6 = Convert.ToInt32(e.CommandArgument.ToString());
+            mostrarTablaSubUnidades();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 28/oct/2020
+        /// Efecto: marca el boton de la pagina seleccionada
+        /// Requiere: dar clic al boton de paginacion
+        /// Modifica: color del boton seleccionado
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void rptPaginacion6_ItemDataBound(object sender, DataListItemEventArgs e)
+        {
+            var lnkPagina = (LinkButton)e.Item.FindControl("lbPaginacion6");
+            if (lnkPagina.CommandArgument != paginaActual5.ToString()) return;
+            lnkPagina.Enabled = false;
+            lnkPagina.BackColor = Color.FromName("#005da4");
+            lnkPagina.ForeColor = Color.FromName("#FFFFFF");
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 28/oct/2020
+        /// Efecto: se devuelve a la pagina siguiente y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Siguiente pagina"
+        /// Modifica: elementos mostrados en la tabla
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbSiguiente6_Click(object sender, EventArgs e)
+        {
+            paginaActual6 += 1;
+            mostrarTablaSubUnidades();
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 28/oct/2020
+        /// Efecto: se devuelve a la ultima pagina y muestra los datos de la misma
+        /// Requiere: dar clic al boton de "Ultima pagina"
+        /// Modifica: elementos mostrados en la tabla
+        /// Devuelve: -lbPrimero
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lbUltimo6_Click(object sender, EventArgs e)
+        {
+            paginaActual6 = (Convert.ToInt32(ViewState["TotalPaginas6"]) - 1);
+            mostrarTablaSubUnidades();
         }
         #endregion
 
@@ -1102,12 +1262,14 @@ namespace PEP.Catalogos.Periodos
                 LinkedList<Periodo> listaPeriodos = periodoServicios.ObtenerTodos();
                 Session["listaPeriodos"] = listaPeriodos;
                 MostrarPeriodos();
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevoPeriodo", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevoPeriodo').hide();", true);
+
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "cerrarModalNuevoPeriodo();", true);
+                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevoPeriodo", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevoPeriodo').hide();", true);
             }
             else
             {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevoPeriodo", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevoPeriodo').hide();", true);
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoPeriodo();", true);
+                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevoPeriodo", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevoPeriodo').hide();", true);
+                //ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoPeriodo();", true);
             }
         }
 
@@ -1161,8 +1323,10 @@ namespace PEP.Catalogos.Periodos
                 }
             }
 
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEliminarPeriodo", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEliminarPeriodo').hide();", true);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalEliminarPeriodo();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEliminarPeriodo", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEliminarPeriodo').hide();", true);
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalEliminarPeriodo();", true);
+            lbConfPer.Text = periodoSelccionado.anoPeriodo.ToString();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalConfirmarPeriodo();", true);
         }
 
         /// <summary>
@@ -1176,8 +1340,9 @@ namespace PEP.Catalogos.Periodos
         public void btnConfirmarEliminarPeriodo_Click(Object sender, EventArgs e)
         {
             lbConfPer.Text = periodoSelccionado.anoPeriodo.ToString();
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalConfirmarPeriodo", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalConfirmarPeriodo').hide();", true);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalConfirmarPeriodo()", true);
+
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "cerrarModalEliminarPeriodo()", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalConfirmarPeriodo();", true);
         }
 
         /// <summary>
@@ -1210,8 +1375,8 @@ namespace PEP.Catalogos.Periodos
 
             MostrarPeriodos();
 
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalConfirmarPeriodo", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalConfirmarPeriodo').hide();", true);
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEliminarPeriodo", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEliminarPeriodo').hide();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalConfirmarPeriodo", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalConfirmarPeriodo').hide();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEliminarPeriodo", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEliminarPeriodo').hide();", true);
         }
 
         /// <summary>
@@ -1897,6 +2062,42 @@ namespace PEP.Catalogos.Periodos
         }
 
         /// <summary>
+        /// Leonardo Carrion
+        /// 12/nov/2020
+        /// Efecto: Carga los datos de la tabla de sub unidades de acuerdo a la unidad seleccionada de la BD
+        /// Requiere: Seleccionar una unidad de la tabla unidades
+        /// Modifica: -
+        /// Devuelve: -
+        /// </summary>
+        public void mostrarTablaSubUnidades()
+        {
+            List<SubUnidad> listaSubUnidades = (List<SubUnidad>)Session["listaSubUnidades"];
+            /*FILTRO*/
+
+            var dt = listaSubUnidades;
+            pgsource.DataSource = dt;
+            pgsource.AllowPaging = true;
+            //numero de items que se muestran en el Repeater
+            pgsource.PageSize = elmentosMostrar;
+            pgsource.CurrentPageIndex = paginaActual5;
+            //mantiene el total de paginas en View State
+            ViewState["TotalPaginas6"] = pgsource.PageCount;
+            //Ejemplo: "Página 1 al 10"
+            lblpagina6.Text = "Página " + (paginaActual6 + 1) + " de " + pgsource.PageCount + " (" + dt.Count + " - elementos)";
+            //Habilitar los botones primero, último, anterior y siguiente
+            lbAnterior6.Enabled = !pgsource.IsFirstPage;
+            lbSiguiente6.Enabled = !pgsource.IsLastPage;
+            lbPrimero6.Enabled = !pgsource.IsFirstPage;
+            lbUltimo6.Enabled = !pgsource.IsLastPage;
+
+            rpSubUnidades.DataSource = pgsource;
+            rpSubUnidades.DataBind();
+
+            //metodo que realiza la paginacion
+            Paginacion6();
+        }
+
+        /// <summary>
         /// Mariela Calvo
         /// Septiembre/2019
         /// Efecto: Cargar todos los proyectos del periodo anteriormente seleccionado en un dropDown para usarlos en la inserción de unidades
@@ -1956,7 +2157,7 @@ namespace PEP.Catalogos.Periodos
             //PeriodosDDL.SelectedIndex = 0;
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevaUnidad();", true);
         }
-
+        
         /// <summary>
         /// Mariela Calvo
         /// Septiembre/2019
@@ -1997,7 +2198,7 @@ namespace PEP.Catalogos.Periodos
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevaUnidad();", true);
             }
         }
-
+        
         /// <summary>
         /// Mariela Calvo
         /// Septiembre/2019
@@ -2195,6 +2396,61 @@ namespace PEP.Catalogos.Periodos
                 valido = false;
             }
             return valido;
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 26/oct/2020
+        /// Efecto:
+        /// Requiere:
+        /// Modifica:
+        /// Devuelve:
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnSubUnidades_Click(object sender, EventArgs e)
+        {
+            int idUnidad = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+
+            string nombreProyecto = proyectoSelccionadoUnidades.nombreProyecto;
+            LinkedList<Unidad> listaUnidades = (LinkedList<Unidad>)Session["listaUnidades"];
+            
+            foreach (Unidad unidad in listaUnidades)
+            {
+                if (unidad.idUnidad == idUnidad)
+                {
+                    unidadSeleccionada = unidad;
+                    break;
+                }
+
+            }
+
+            Session["listaSubUnidades"] = subUnidadServicios.getSubUnidadesPorUnidad(unidadSeleccionada);
+            mostrarTablaSubUnidades();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalSubUnidades();", true);
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 12/nov/2020
+        /// Efecto: Guarda la nueva sub unidad en la base de datos
+        /// Requiere: ingresar nombre de sub unidad
+        /// Modifica: -
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnNuevaSubUnidad_Click(object sender, EventArgs e)
+        {
+            if (!String.IsNullOrEmpty(txtNombreSubUnidad.Text))
+            {
+                Toastr("error", "Debe ingresar el nombre de la sub unidad");
+            }
+            else
+            {
+
+            }
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalSubUnidades();", true);
         }
 
         #region otros

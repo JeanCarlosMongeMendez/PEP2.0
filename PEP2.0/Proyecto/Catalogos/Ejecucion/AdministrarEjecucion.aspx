@@ -32,7 +32,6 @@
                             <tr style="text-align: center" class="btn-primary">
                                 <th></th>
                                 <th>Unidad</th>
-                                <th>Nombre</th>
 
                             </tr>
                         </thead>
@@ -47,11 +46,6 @@
                                         <asp:LinkButton ID="btnEliminarUnidad" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("idUnidad") %>' OnClick="EliminarUnidadSeleccionada_OnChanged" Cssclass="btn glyphicon glyphicon-remove" />
 
                                     </td>
-                                    <td>
-                                        <%# Eval("idUnidad") %>
-                                    
-                                    </td>
-
                                     <td>
                                         <%# Eval("nombreUnidad") %>
                                     </td>
@@ -190,23 +184,6 @@
 
                 </div>
                 
-                 <asp:UpdatePanel ID="UpdatePanel4" runat="server">
-                 <ContentTemplate>
-                <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
-                
-                    <asp:Label ID="lblArchivos" runat="server" Text="Archivos " Font-Size="Medium" ForeColor="Black" Font-Bold="true" CssClass="label"></asp:Label>
-             
-                
-                    <asp:FileUpload ID="fuArchivos" runat="server" AllowMultiple="true" oninput="validarArchivos(this);" onchange="validarArchivos(this);" />
-                
-                
-            </div>
-                       </ContentTemplate>
-                
-                    </asp:UpdatePanel>
-                <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
-                    <asp:Button ID="Button4" runat="server" Text="Ver Archivos" CssClass="btn btn-primary" OnClick="btnVerEjecucionArchivo_Click" />
-                </div>
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                     <asp:Label ID="Label6" runat="server" Text="Número de referencia" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                     <asp:TextBox class="form-control" ID="numeroReferencia" runat="server" Enabled="true"></asp:TextBox>
@@ -246,7 +223,7 @@
                                              
                                             </td>
                                             <td>
-                                                 <%# Eval("idUnidad") %>
+                                                 <%# Eval("nombreUnidad") %>
                                     
                                             </td>
 
@@ -305,6 +282,24 @@
                                 </div>
                     </ContentTemplate>
                 </asp:UpdatePanel>
+
+                   <asp:UpdatePanel ID="UpdatePanel4" runat="server">
+                 <ContentTemplate>
+                <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+                
+                    <asp:Label ID="lblArchivos" runat="server" Text="Archivos " Font-Size="Medium" ForeColor="Black" Font-Bold="true" CssClass="label"></asp:Label>
+             
+                
+                    <asp:FileUpload ID="fuArchivos" runat="server" AllowMultiple="true" oninput="validarArchivos(this);" onchange="validarArchivos(this);" />
+                
+                
+            </div>
+                       </ContentTemplate>
+                
+                    </asp:UpdatePanel>
+                <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+                    <asp:Button ID="Button4" runat="server" Text="Ver Archivos" CssClass="btn btn-primary" OnClick="btnVerEjecucionArchivo_Click" />
+                </div>
             </div>
            
         </ContentTemplate>
@@ -479,7 +474,7 @@
                          <ContentTemplate>
                              <div class="col-md-3 col-xs-3 col-sm-3">
 
-                                        <asp:Label ID="label8" runat="server" Text="Partida" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                        <asp:Label ID="label8" runat="server" Text="Unidad" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                                         <%--<asp:DropDownList ID="ddlPartida" class="btn btn-default dropdown-toggle" runat="server"></asp:DropDownList>--%>
                                         <asp:DropDownList ID="ddlPartida" class="btn btn-default dropdown-toggle" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlUnidad_SelectedIndexChanged"></asp:DropDownList>
                                  </div>
@@ -492,7 +487,6 @@
                                         <thead style="text-align: center">
                                             <tr style="text-align: center" class="btn-primary">
                                                 <th></th>
-                                                <th>Unidad</th>
                                                 <th>Número de partida </th>
                                                 <th>Saldo </th>
                                                 <th>Monto </th>
@@ -510,13 +504,6 @@
                                                        <asp:LinkButton ID="btnAlmacenarUnidadPartida" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("idPartida") %>'  OnClick="btnAlmacenarUnidadPartida_Click" Cssclass="btn glyphicon glyphicon-ok" />
 
                                                     </td>
-                                                    <td>
-                                                      
-                                                        <%# Eval("idUnidad") %>
-                                    
-                                                    </td>
-                                    
-                                                   
                                                     <td>
                                                     
                                                         <%# Eval("numeroPartida") %>
@@ -626,7 +613,6 @@
                                         <tr style="text-align: center" class="btn-primary">
                                             <th></th>
                                             <th>Unidad</th>
-                                            <th>Nombre</th>
 
                                         </tr>
                                     </thead>
@@ -641,11 +627,6 @@
                                                     <asp:LinkButton ID="btnAnadirPartida" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("idUnidad") %>' OnClick="btnUnidadSeleccionada_Click" Cssclass="btn glyphicon glyphicon-ok" />
 
                                                 </td>
-                                                <td>
-                                                    <%# Eval("idUnidad") %>
-                                    
-                                                </td>
-
 
                                                 <td>
                                                     <%# Eval("nombreUnidad") %>

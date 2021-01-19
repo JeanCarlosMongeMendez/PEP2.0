@@ -952,9 +952,8 @@ namespace Proyecto.Planilla
             txtNombreCompleto.Text = "";
             hdIdFuncionario.Value = "0";
             limpiarFormulario();
-           
-          
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevoFuncionario", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevoFuncionario').hide();", true);
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoFuncionario();", true);
         }
        
         /// <summary>

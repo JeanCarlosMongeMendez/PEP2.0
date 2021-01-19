@@ -14,5 +14,6 @@ namespace Entidades
         public string NumeroPartida { get; set; }
         public double Monto { get; set; }
         public double MontoDisponible { get; set; }
+        public String nombreUnidad { get; set; }
     }
 }
