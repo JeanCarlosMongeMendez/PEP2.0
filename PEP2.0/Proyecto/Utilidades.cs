@@ -215,6 +215,7 @@ namespace PEP
             /*
              * Rol..................idRol
              * Administrador.........2
+             * Usuario......................13
              */
             else if (rol == 2)
             {

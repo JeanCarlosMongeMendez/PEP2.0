@@ -76,8 +76,8 @@ namespace Proyecto.Catalogos.Ejecucion
                 dt.Rows.Add(dr);
             }
 
-            DataList2.DataSource = dt;
-            DataList2.DataBind();
+            rptPaginacion4.DataSource = dt;
+            rptPaginacion4.DataBind();
         }
 
         /// <summary>
@@ -199,8 +199,8 @@ namespace Proyecto.Catalogos.Ejecucion
             }
             else
             {
-                paginaActual4 = 0;
-                MostrarDatosTablaUnidad();
+                //paginaActual4 = 0;
+                //MostrarDatosTablaUnidad();
             }
 
 
@@ -223,13 +223,12 @@ namespace Proyecto.Catalogos.Ejecucion
         ///// <param name="e"></param>
         protected void rpEjecucion_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            int idEjecucion;
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 LinkButton btnEditar = e.Item.FindControl("btnEditarEjecucion") as LinkButton;
 
                 //Entidades.Ejecucion ejecucion = new Entidades.Ejecucion();
-              idEjecucion= Convert.ToInt32(btnEditar.CommandArgument.ToString());
+             int idEjecucion= Convert.ToInt32(btnEditar.CommandArgument.ToString());
                 int Estado= ejecucionServicios.EstadoEjecucion(idEjecucion);
 
                 if (Estado == 2)
@@ -276,8 +275,8 @@ namespace Proyecto.Catalogos.Ejecucion
         /// <param name="e"></param>
         protected void EditarEjecucion_OnChanged(object sender, EventArgs e)
         {
-
-            string idEjecucion = ((LinkButton)(sender)).CommandArgument.ToString();
+            int idEjecucion = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+         //   string idEjecucion = ((LinkButton)(sender)).CommandArgument.ToString();
             List<Entidades.Ejecucion> listaEjecucion = new List<Entidades.Ejecucion>();
             Session["nuevaEjecucion"] = 0;
             Session["verEjecucion"] = 1;
@@ -286,6 +285,8 @@ namespace Proyecto.Catalogos.Ejecucion
             List<Entidades.ArchivoEjecucion> eje = new List<Entidades.ArchivoEjecucion>();
             Session["listaArchivoEjecucion"] = archivoEjecucionServicios.obtenerArchivoEjecucion(Convert.ToInt32(idEjecucion));
             listaEjecucion = ejecucionServicios.ConsultarEjecucion(PeriodosDDL.SelectedValue, ProyectosDDL.SelectedValue);
+            Session["realizadoPor"] = listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().realizadoPor;
+            Session["fecha"] = listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().fecha;
             int idTipoTramite = listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().idTipoTramite.idTramite;
             Session["listaMontoPartidaDisponible"] = ejecucionServicios.ConsultarEjecucionMontoPartida(Convert.ToInt32(idEjecucion));
             Session["periodo"] = Convert.ToString(PeriodosDDL.SelectedValue);
@@ -329,6 +330,8 @@ namespace Proyecto.Catalogos.Ejecucion
             Session["listaPartida"] = ejecucionServicios.ConsultarPartidaEjecucion(Convert.ToInt32(idEjecucion));
   
             listaEjecucion = ejecucionServicios.ConsultarEjecucion(PeriodosDDL.SelectedValue, ProyectosDDL.SelectedValue);
+            Session["realizadoPor"] = listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().realizadoPor;
+            Session["fecha"] = listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().fecha;
             int idTipoTramite = listaEjecucion.Where(item => item.idEjecucion == Convert.ToInt32(idEjecucion)).ToList().First().idTipoTramite.idTramite;
             Session["listaMontoPartidaDisponible"] = ejecucionServicios.ConsultarEjecucionMontoPartida(Convert.ToInt32(idEjecucion));
             Session["periodo"] = Convert.ToString(PeriodosDDL.SelectedValue);

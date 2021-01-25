@@ -18,5 +18,7 @@ namespace Entidades
         public Partida idPartida { get; set; }
         public Unidad idUnidad { get; set; }
         public string descripcionEjecucionOtro { get; set; }
+        public String realizadoPor { get; set; }
+        public DateTime fecha { get; set; }
     }
 }

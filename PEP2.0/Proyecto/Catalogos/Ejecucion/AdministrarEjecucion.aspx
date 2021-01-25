@@ -17,6 +17,19 @@
                 <p class="mt-1">Seleccione un proyecto</p>
                 <asp:DropDownList AutoPostBack="true" ID="ProyectosDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="Proyectos_OnChanged"></asp:DropDownList>
                 </div>
+                <div id="divRealizadoPor" runat="server" style="display: block">
+                <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+                    <asp:Label ID="Label10" runat="server" Text="Realizado por" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                    <asp:Label ID="lblRealizadoPor" runat="server" Text="" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                </div>
+                <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+                    <asp:Label ID="Label11" runat="server" Text="Fecha" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                    <asp:Label ID="lblFecha" runat="server" Text="" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                </div>
+                </div>
+                <div class="col-md-12 col-xs-12 col-sm-12 mt-2">
+                    <hr />
+                </div>
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
                     <asp:Label ID="Unidades" runat="server" Text="Unidades" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                     <asp:Button ID="ButtonAsociar" runat="server" Text="Asociar" CssClass="btn btn-primary" OnClick="ButtonAsociar_Click" />

@@ -1151,6 +1151,9 @@ namespace Proyecto.Catalogos.Ejecucion
                 estado=Convert.ToString(Page.Session["idEstado"]);
                 if (nuevaEjecucion == 0)
                 {
+                    lblRealizadoPor.Text= (String)Session["realizadoPor"];
+                    lblFecha.Text = ((DateTime)Session["fecha"]).ToShortDateString();
+                    divRealizadoPor.Style.Add("display", "block");
                     List<Entidades.Unidad> comparaListaUnidades = new List<Entidades.Unidad>();
                     LinkedList<int> unidades = new LinkedList<int>();
                     Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());
@@ -1234,6 +1237,7 @@ namespace Proyecto.Catalogos.Ejecucion
                 }
                 else
                 {
+                    divRealizadoPor.Style.Add("display", "none");
                     descripcionOtroTipoTramite.Visible = false;
                     UpdatePanel10.Visible = false;
                     ButtonRepartir.Visible = false;
@@ -1859,6 +1863,7 @@ namespace Proyecto.Catalogos.Ejecucion
                         ejecucionGuardar.descripcionEjecucionOtro = descripcionOtroTipoTramite.Text;
                         ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
                         ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
+                        ejecucionGuardar.realizadoPor = (String)Session["nombreCompleto"];
                         respuesta = ejecucionServicios.InsertarEjecucion(ejecucionGuardar);
                         // Inserción de los archivos en el servidor y en la BD
                         if (fuArchivos.HasFiles)
@@ -1885,6 +1890,7 @@ namespace Proyecto.Catalogos.Ejecucion
                         ejecucionGuardar.anoPeriodo = Convert.ToInt32(PeriodosDDL.SelectedValue);
                         ejecucionGuardar.idProyecto = Int32.Parse(ProyectosDDL.SelectedValue);
                         ejecucionGuardar.monto = Convert.ToInt32(txtMontoIngresar.Text);
+                        ejecucionGuardar.realizadoPor = (String)Session["nombreCompleto"];
                         tipoTramite.idTramite = Int32.Parse(DDLTipoTramite.SelectedValue);
                         ejecucionGuardar.idTipoTramite = tipoTramite;
                         ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
@@ -1997,6 +2003,7 @@ namespace Proyecto.Catalogos.Ejecucion
                         ejecucionGuardar.idTipoTramite = tipoTramite;
                         ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
                         ejecucionGuardar.descripcionEjecucionOtro = descripcionOtroTipoTramite.Text;
+                        ejecucionGuardar.realizadoPor = (String)Session["nombreCompleto"];
                         respuesta = ejecucionServicios.InsertarEjecucion(ejecucionGuardar);
                         // Inserción de los archivos en el servidor y en la BD
                         if (fuArchivos.HasFiles)

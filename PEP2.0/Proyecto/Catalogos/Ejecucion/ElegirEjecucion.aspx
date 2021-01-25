@@ -33,7 +33,8 @@
                                 <th>Estado</th>
                                 <th>Tipo de Tramite</th>
                                 <th>Monto</th>
-
+                                <th>Realizado por</th>
+                                <th>Ingresado</th>
                             </tr>
                         </thead>
 
@@ -64,7 +65,13 @@
                                         <%# Eval("idTipoTramite.nombreTramite") %>
                                     </td>
                                      <td>
-                                        <%# Eval("monto") %>
+                                        ₡ <%# Eval("monto") %>
+                                    </td>
+                                    <td>
+                                        <%# Eval("realizadoPor") %>
+                                    </td>
+                                    <td>
+                                        <%# Convert.ToDateTime(Eval("fecha")).ToShortDateString() %>
                                     </td>
                                 </tr>
 
@@ -86,7 +93,7 @@
                                 <asp:LinkButton ID="lbAnterior4" runat="server" CssClass="btn btn-default" OnClick="lbAnterior4_Click"><span class="glyphicon glyphicon-backward"></asp:LinkButton>
                             </td>
                             <td style="padding:1px !important">
-                                <asp:DataList ID="DataList2" runat="server"
+                                <asp:DataList ID="rptPaginacion4" runat="server"
                                     OnItemCommand="rptPaginacion4_ItemCommand"
                                     OnItemDataBound="rptPaginacion4_ItemDataBound" RepeatDirection="Horizontal">
                                     <ItemTemplate>

@@ -38,7 +38,6 @@ namespace AccesoDatos
             command.Parameters.AddWithValue("@nombre_unidad", unidad.nombreUnidad);
             command.Parameters.AddWithValue("@id_ejecucion", respuesta);
 
-
             sqlConnection.Open();
             command.ExecuteReader();
             sqlConnection.Close();
@@ -111,8 +110,8 @@ namespace AccesoDatos
             SqlConnection sqlConnection = conexion.conexionPEP();
             int respuesta = 0;
             sqlConnection.Open();
-            String consulta = @"insert Ejecucion(id_estado,ano_periodo,id_proyecto,monto,id_tipo_tramite,numero_referencia,descripcion_tramite_otro) output INSERTED.id_ejecucion
-                                            values(@id_estado,@ano_periodo,@id_proyecto,@monto,@id_tipo_tramite,@numero_referencia,@descripcion_tramite_otro)";
+            String consulta = @"insert Ejecucion(id_estado,ano_periodo,id_proyecto,monto,id_tipo_tramite,numero_referencia,descripcion_tramite_otro,realizado_por,fecha) output INSERTED.id_ejecucion
+                                            values(@id_estado,@ano_periodo,@id_proyecto,@monto,@id_tipo_tramite,@numero_referencia,@descripcion_tramite_otro,@realizadoPor,@fecha)";
 
             SqlCommand command = new SqlCommand(consulta, sqlConnection);
 
@@ -123,6 +122,9 @@ namespace AccesoDatos
             command.Parameters.AddWithValue("@id_tipo_tramite", ejecucion.idTipoTramite.idTramite);
             command.Parameters.AddWithValue("@numero_referencia", ejecucion.numeroReferencia);
             command.Parameters.AddWithValue("@descripcion_tramite_otro", ejecucion.descripcionEjecucionOtro);
+            command.Parameters.AddWithValue("@realizadoPor", ejecucion.realizadoPor);
+            command.Parameters.AddWithValue("@fecha", DateTime.Now);
+
             respuesta = (int)command.ExecuteScalar();
 
             
@@ -270,9 +272,9 @@ namespace AccesoDatos
             List<Ejecucion> listaEjecucion = new List<Ejecucion>();
             SqlConnection sqlConnection = conexion.conexionPEP();
 
-            String consulta = @"select descripcion_estado,monto,numero_referencia,nombre_tramite,E.id_ejecucion,T.id_tramite,descripcion_tramite_otro
+            String consulta = @"select descripcion_estado,monto,numero_referencia,nombre_tramite,E.id_ejecucion,T.id_tramite,descripcion_tramite_otro, E.realizado_por,E.fecha
                                       from EstadoEjecucion Es,Ejecucion E,Tipos_tramite T
-                                      where E.id_proyecto=@idProyecto and E.ano_periodo=@Periodo and E.id_tipo_tramite= T.id_tramite and E.id_estado= Es.id_estado";
+                                      where E.id_proyecto=@idProyecto and E.ano_periodo=@Periodo and E.id_tipo_tramite= T.id_tramite and E.id_estado= Es.id_estado order by  id_ejecucion desc";
 
             SqlCommand command = new SqlCommand(consulta, sqlConnection);
 
@@ -296,6 +298,8 @@ namespace AccesoDatos
                 estadoEjecucion.descripcion= Convert.ToString(reader["descripcion_estado"].ToString());
                 ejecucion.idestado = estadoEjecucion;
                 ejecucion.descripcionEjecucionOtro= Convert.ToString(reader["descripcion_tramite_otro"].ToString());
+                ejecucion.realizadoPor = reader["realizado_por"].ToString();
+                ejecucion.fecha = Convert.ToDateTime(reader["fecha"].ToString());
                 listaEjecucion.Add(ejecucion);
             }
             sqlConnection.Close();
