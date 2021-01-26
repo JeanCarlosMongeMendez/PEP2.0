@@ -1130,7 +1130,8 @@ namespace Proyecto.Catalogos.Ejecucion
         #region page load
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            int[] rolesPermitidos = { 2, 13 };
+            Utilidades.escogerMenu(Page, rolesPermitidos);
             this.ejecucionServicios = new EjecucionServicios();
             this.presupuestoEgresosServicio = new PresupuestoEgresosServicios();
             this.periodoServicios = new PeriodoServicios();
@@ -1144,6 +1145,11 @@ namespace Proyecto.Catalogos.Ejecucion
             nombre = Convert.ToString(Page.Session["nombreCompleto"]);
             if (!IsPostBack)
             {
+                int rol = Session["rol"] == null ? 0 : Int32.Parse(Session["rol"].ToString());
+                if (rol == 13)
+                {
+                    btnAprobar.Visible = false;
+                }
                 descripcionEjecucionOtro = Convert.ToString(Session["descripcionEjecionOtro"]);
                 nuevaEjecucion = Convert.ToInt32(Session["nuevaEjecucion"]);
                 verEjecucion = Convert.ToInt32(Session["verEjecucion"]);
@@ -2947,7 +2953,7 @@ namespace Proyecto.Catalogos.Ejecucion
             ButtonAsociarPartida.Visible = false;
             ButtonRepartir.Visible = false;
             Button1.Visible = false;
-            Button2.Visible = false;
+            btnAprobar.Visible = false;
 
             DDLTipoTramite.Enabled = false;
             txtMontoIngresar.Enabled = false;

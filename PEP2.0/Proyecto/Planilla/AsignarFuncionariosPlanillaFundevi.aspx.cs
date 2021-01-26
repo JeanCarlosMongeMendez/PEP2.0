@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Servicios;
 using Entidades;
+using PEP;
 
 namespace Proyecto.Planilla
 {
@@ -16,6 +17,8 @@ namespace Proyecto.Planilla
         PlanillaFundeviServicios fundeviServicios = new PlanillaFundeviServicios();
         protected void Page_Load(object sender, EventArgs e)
         {
+            int[] rolesPermitidos = { 2 };
+            Utilidades.escogerMenu(Page, rolesPermitidos);
             if (!IsPostBack)
             {
                 Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());

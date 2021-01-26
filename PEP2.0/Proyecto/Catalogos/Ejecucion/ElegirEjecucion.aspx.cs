@@ -1,4 +1,5 @@
 ﻿using Entidades;
+using PEP;
 using Servicios;
 using System;
 using System.Collections.Generic;
@@ -169,6 +170,8 @@ namespace Proyecto.Catalogos.Ejecucion
         #region page load
         protected void Page_Load(object sender, EventArgs e)
         {
+            int[] rolesPermitidos = { 2, 13 };
+            Utilidades.escogerMenu(Page, rolesPermitidos);
             this.proyectoServicios = new ProyectoServicios();
             this.periodoServicios = new PeriodoServicios();
             this.ejecucionServicios = new EjecucionServicios();

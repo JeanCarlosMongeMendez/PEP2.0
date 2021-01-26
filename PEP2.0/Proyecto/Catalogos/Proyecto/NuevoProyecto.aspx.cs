@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using Servicios;
 using Entidades;
+using PEP;
 
 namespace Proyecto.Catalogos.Proyecto
 {
@@ -24,6 +25,8 @@ namespace Proyecto.Catalogos.Proyecto
         #region page load
         protected void Page_Load(object sender, EventArgs e)
         {
+            int[] rolesPermitidos = { 2 };
+            Utilidades.escogerMenu(Page, rolesPermitidos);
             if (!IsPostBack)
             {
                 txtNombreProyecto.Attributes.Add("oninput", "validarTexto(this)");

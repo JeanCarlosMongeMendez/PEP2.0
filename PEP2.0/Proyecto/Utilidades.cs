@@ -222,6 +222,22 @@ namespace PEP
                 if (rolesPermitidos.Contains(rol))
                 {
                     page.Master.FindControl("MenuAdministrador").Visible = true;
+                    page.Master.FindControl("MenuUsuario").Visible = false;
+                }
+                else
+                {
+                    page.Session.RemoveAll();
+                    page.Session.Abandon();
+                    page.Session.Clear();
+                    String url = page.ResolveUrl("~/login.aspx");
+                    page.Response.Redirect(url);
+                }
+            }else if (rol == 13)
+            {
+                if (rolesPermitidos.Contains(rol))
+                {
+                    page.Master.FindControl("MenuAdministrador").Visible = false;
+                    page.Master.FindControl("MenuUsuario").Visible = true;
                 }
                 else
                 {

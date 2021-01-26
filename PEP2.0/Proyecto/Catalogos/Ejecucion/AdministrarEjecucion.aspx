@@ -323,7 +323,7 @@
         <asp:Button ID="Button1" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="btnGuardar_Click" />
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
        
-        <asp:Button ID="Button2" runat="server" Text="Aprobar" CssClass="btn btn-primary" OnClick="btnApobar_Click" />
+        <asp:Button ID="btnAprobar" runat="server" Text="Aprobar" CssClass="btn btn-primary" OnClick="btnApobar_Click" />
          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
          <asp:Button ID="BtnCerrar" runat="server" Text="Volver" CssClass="btn btn-primary" OnClick="btnVolver_Click" />
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

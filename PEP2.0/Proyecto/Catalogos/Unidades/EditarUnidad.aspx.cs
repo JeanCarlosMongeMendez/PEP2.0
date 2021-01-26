@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using PEP;
 
 namespace Proyecto.Catalogos.Unidades
 {
@@ -18,6 +19,8 @@ namespace Proyecto.Catalogos.Unidades
         #region page load
         protected void Page_Load(object sender, EventArgs e)
         {
+            int[] rolesPermitidos = { 2 };
+            Utilidades.escogerMenu(Page, rolesPermitidos);
             if (!IsPostBack)
             {
                 if (Session["unidadEditar"] != null)
