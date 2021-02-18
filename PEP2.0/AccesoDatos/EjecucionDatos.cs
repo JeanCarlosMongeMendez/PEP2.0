@@ -253,7 +253,7 @@ namespace AccesoDatos
             reader = command.ExecuteReader();
             while (reader.Read())
             {
-               monto = Convert.ToDouble(reader["montoDisponible"].ToString());
+                monto = String.IsNullOrEmpty(reader["montoDisponible"].ToString()) ? 0 :  Convert.ToDouble(reader["montoDisponible"].ToString());
             }
             sqlConnection.Close();
             return monto;
