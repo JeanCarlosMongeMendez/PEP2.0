@@ -25,11 +25,26 @@ namespace Servicios
         }
         public void eliminarArchivoEjecucion(int idEjecucion)
         {
-             archivoEjecucionDatos.eliminarArchivoEjecucion(idEjecucion);
+            archivoEjecucionDatos.eliminarArchivoEjecucion(idEjecucion);
         }
-        public void eliminarArchivoEjecucionPorNombreYId(int idEjecucion,string nombreArchivo)
+        public void eliminarArchivoEjecucionPorNombreYId(int idEjecucion, string nombreArchivo)
         {
-            archivoEjecucionDatos.eliminarArchivoEjecucionPorNombreYID(idEjecucion,nombreArchivo);
+            archivoEjecucionDatos.eliminarArchivoEjecucionPorNombreYID(idEjecucion, nombreArchivo);
         }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 19/mar/2021
+        /// Efecto: Elimina archivo ejecucion
+        /// Requiere: idArchivoEjecucion
+        /// Modifica: -
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="idEjecucion"></param>
+        public void eliminarArchivoEjecucionPorId(int idArchivoEjecucion)
+        {
+            archivoEjecucionDatos.eliminarArchivoEjecucionPorId(idArchivoEjecucion);
+        }
+    
     }
 }

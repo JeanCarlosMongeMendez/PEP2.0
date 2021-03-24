@@ -850,6 +850,7 @@ namespace Proyecto.Catalogos.Presupuesto
 
             cargarDatosTblIngresos();
         }
+        
         #endregion
     }
 }

@@ -47,7 +47,9 @@
     <Compile Include="ConexionServicios.cs" />
     <Compile Include="ContactoServicios.cs" />
     <Compile Include="EjecucionServicios.cs" />
+    <Compile Include="EjecucionUnidadParitdaServicios.cs" />
     <Compile Include="EscalaSalarialServicios.cs" />
+    <Compile Include="EstadoEjecucionServicios.cs" />
     <Compile Include="EstadoPresupIngresoServicios.cs" />
     <Compile Include="EstadoPresupuestoServicios.cs" />
     <Compile Include="FuncionarioServicios.cs" />

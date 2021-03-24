@@ -190,7 +190,7 @@ namespace AccesoDatos
                     {
                         if (proyecto.esUCR)
                         {
-                            LinkedList<Unidad> unidades = new LinkedList<Unidad>();
+                            List<Unidad> unidades = new List<Unidad>();
                             unidades = this.unidadDatos.ObtenerPorProyecto(idProyecto);
 
                             foreach (Unidad unidad in unidades)

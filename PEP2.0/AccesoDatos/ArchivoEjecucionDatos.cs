@@ -50,7 +50,7 @@ namespace AccesoDatos
 
             SqlConnection sqlConnection = conexion.conexionPEP();
 
-            String consulta = @"select id_ejecucion,ruta_archivo,nombre_archivo,creado_por
+            String consulta = @"select id_ejecucion,ruta_archivo,nombre_archivo,creado_por,id_archivo_ejecucion
                 from Archivo_Ejecucion 
                 where id_ejecucion=@idEjecucion";
 
@@ -67,6 +67,7 @@ namespace AccesoDatos
             {
                 ArchivoEjecucion archivoEjecucion = new ArchivoEjecucion();
                
+                archivoEjecucion.idArchivoEjecucion = Convert.ToInt32(reader["id_archivo_ejecucion"].ToString());
                 archivoEjecucion.idEjecucion = Convert.ToInt32(reader["id_Ejecucion"].ToString());
                 archivoEjecucion.rutaArchivo = reader["ruta_archivo"].ToString();
                 archivoEjecucion.nombreArchivo = reader["nombre_archivo"].ToString();
@@ -120,8 +121,31 @@ namespace AccesoDatos
             sqlCommand.ExecuteReader();
 
             sqlConnection.Close();
+        }
 
+        /// <summary>
+        /// Leonardo Carrion
+        /// 19/mar/2021
+        /// Efecto: Elimina archivo ejecucion
+        /// Requiere: idArchivoEjecucion
+        /// Modifica: -
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="idEjecucion"></param>
+        public void eliminarArchivoEjecucionPorId(int idArchivoEjecucion)
+        {
 
+            SqlConnection sqlConnection = conexion.conexionPEP();
+
+            SqlCommand sqlCommand = new SqlCommand("Delete Archivo_Ejecucion " +
+                                                    "where id_archivo_ejecucion = @idArchivoEjecucion ;", sqlConnection);
+
+            sqlCommand.Parameters.AddWithValue("@idArchivoEjecucion", idArchivoEjecucion);
+
+            sqlConnection.Open();
+            sqlCommand.ExecuteReader();
+
+            sqlConnection.Close();
         }
     }
 }

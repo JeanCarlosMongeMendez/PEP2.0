@@ -126,7 +126,7 @@ namespace Proyecto.Catalogos.Presupuesto
 
             if (!ddlProyectos.SelectedValue.Equals(""))
             {
-                LinkedList<Unidad> unidades = new LinkedList<Unidad>();
+                List<Unidad> unidades = new List<Unidad>();
                 unidades = this.unidadServicios.ObtenerPorProyecto(Int32.Parse(ddlProyectos.SelectedValue));
                 Session["listaUnidades"] = unidades;
                 foreach (Unidad unidad in unidades)
@@ -225,7 +225,7 @@ namespace Proyecto.Catalogos.Presupuesto
                 }
             }
 
-            LinkedList<Unidad> unidades = (LinkedList<Unidad>)Session["listaUnidades"];
+            List<Unidad> unidades = (List<Unidad>)Session["listaUnidades"];
             foreach (Unidad unidad in unidades)
             {
                 montoAprobado += (Double)presupuestoEgresosServicios.getPresupuestosEgresosPorUnidad(unidad).Sum(presupuesto => presupuesto.montoTotal);

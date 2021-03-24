@@ -8,12 +8,11 @@ namespace Entidades
 {
     public class PartidaUnidad
     {
-
-        public int IdPartida { get; set; }
-        public int IdUnidad { get; set; }
-        public string NumeroPartida { get; set; }
-        public double Monto { get; set; }
-        public double MontoDisponible { get; set; }
+        public int idPartida { get; set; }
+        public int idUnidad { get; set; }
+        public String numeroPartida { get; set; }
+        public double monto { get; set; }
+        public double montoDisponible { get; set; }
         public String nombreUnidad { get; set; }
     }
 }

@@ -139,7 +139,7 @@
                                         <ul class="dropdown-menu" role="menu">
                                             <%--<li><a href='<%=Page.ResolveUrl("~/Default.aspx") %>'>Default</a></li>--%>
                                            
-                                             <li><a href='<%=Page.ResolveUrl("~/Catalogos/Ejecucion/ElegirEjecucion.aspx") %>'>Administrar Ejecución</a></li>
+                                             <li><a href='<%=Page.ResolveUrl("~/Catalogos/Ejecucion/AdministrarEjecuciones.aspx") %>'>Administrar Ejecución</a></li>
                                           
                                         </ul>
                                     </li>
@@ -169,7 +169,7 @@
                                         <ul class="dropdown-menu" role="menu">
                                             <%--<li><a href='<%=Page.ResolveUrl("~/Default.aspx") %>'>Default</a></li>--%>
                                            
-                                             <li><a href='<%=Page.ResolveUrl("~/Catalogos/Ejecucion/ElegirEjecucion.aspx") %>'>Administrar Ejecución</a></li>
+                                             <li><a href='<%=Page.ResolveUrl("~/Catalogos/Ejecucion/AdministrarEjecuciones.aspx") %>'>Administrar Ejecución</a></li>
                                         </ul>
                                     </li>
                                     <li>

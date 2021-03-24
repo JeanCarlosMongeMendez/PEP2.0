@@ -147,7 +147,7 @@ namespace Proyecto.Reportes
             ListItem unidades = new ListItem("Todas", "0");
             ddlUnidades.Items.Add(unidades);
 
-            LinkedList<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(Convert.ToInt32(ddlProyectos.SelectedValue));
+            List<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(Convert.ToInt32(ddlProyectos.SelectedValue));
 
             foreach (Unidad unidad in listaUnidades)
             {

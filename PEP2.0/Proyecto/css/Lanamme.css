@@ -24,11 +24,9 @@ body {
 */
 
 body {
-    
 }
 
 .loginBody {
-
     background-image: url("../Imagenes/background.png");
 }
 
@@ -40,7 +38,6 @@ body {
     -moz-background-size: cover;
     background-size: cover;
     -o-background-size: cover;
-   
 }
 
 .divRedondo {
@@ -106,9 +103,10 @@ body {
     background-color: #666666;
     text-align: center;
 }
- .subheaderTitle{
-     padding-top: 10px;
- }
+
+.subheaderTitle {
+    padding-top: 10px;
+}
 
 /* ------------------
     Footer
@@ -123,7 +121,7 @@ body {
     left: 0;
     position: absolute;
     width: 100%;
-    padding-top:15px;
+    padding-top: 15px;
 }
 
 
@@ -199,8 +197,8 @@ hr {
 #infoIcon {
     color: #005da4;
     font-size: 25px;
-    float:left;
-    margin:5px;
+    float: left;
+    margin: 5px;
 }
 
     #infoIcon:hover {
@@ -285,7 +283,7 @@ hr {
 
     .boton-nuevo > span {
         color: #4CAF50;
-        border-color:white;
+        border-color: white;
     }
 
     .boton-nuevo:hover > span {

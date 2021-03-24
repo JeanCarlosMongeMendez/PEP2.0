@@ -17,9 +17,9 @@ namespace Servicios
     {
         UnidadDatos unidadDatos = new UnidadDatos();
 
-        public LinkedList<Unidad> ObtenerPorProyecto(int idProyecto)
+        public List<Unidad> ObtenerPorProyecto(int idProyecto)
         {
-            return this.unidadDatos.ObtenerPorProyecto(idProyecto);
+            return unidadDatos.ObtenerPorProyecto(idProyecto);
         }
 
         public int Insertar(Unidad unidad)

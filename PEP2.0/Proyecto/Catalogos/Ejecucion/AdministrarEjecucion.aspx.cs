@@ -1161,7 +1161,7 @@ namespace Proyecto.Catalogos.Ejecucion
                     lblFecha.Text = ((DateTime)Session["fecha"]).ToShortDateString();
                     divRealizadoPor.Style.Add("display", "block");
                     List<Entidades.Unidad> comparaListaUnidades = new List<Entidades.Unidad>();
-                    LinkedList<int> unidades = new LinkedList<int>();
+                    List<int> unidades = new List<int>();
                     Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());
 
                     //Session["partidasPorUnidadesProyectoPeriodo"] = null;
@@ -1188,7 +1188,7 @@ namespace Proyecto.Catalogos.Ejecucion
 
                     foreach (Unidad unidad in listaUnidad)
                     {
-                        unidades.AddFirst(unidad.idUnidad);
+                        unidades.Add(unidad.idUnidad);
                     }
                     List<Partida> tempPartida = new List<Partida>();
                     List<Partida> Partidas = partidaServicios.ObtienePartidaPorPeriodoUnidadProyecto(Convert.ToInt32(proyectoo), unidades, Convert.ToInt32(periodooo));
@@ -1325,7 +1325,7 @@ namespace Proyecto.Catalogos.Ejecucion
             if (partidasAsignadasConMonto != null)
             {
 
-                montoDisponible = (Double)partidasAsignadasConMonto.Sum(monto => monto.Monto);
+                montoDisponible = (Double)partidasAsignadasConMonto.Sum(monto => monto.monto);
             }
             else
             {
@@ -1368,7 +1368,7 @@ namespace Proyecto.Catalogos.Ejecucion
                             //{
                             if (partidasAsignadasConMonto != null)
                             {
-                                montoDisponible = (Double)partidasAsignadasConMonto.Sum(monto => monto.Monto);
+                                montoDisponible = (Double)partidasAsignadasConMonto.Sum(monto => monto.monto);
 
 
                                 montoRepartir.Text = Convert.ToString(Convert.ToDouble(txtMontoIngresar.Text) - Convert.ToDouble(montoDisponible));
@@ -1437,21 +1437,21 @@ namespace Proyecto.Catalogos.Ejecucion
                 partidasElegidasTemporal = partidasElegidas;
                 PartidaUnidad partidaUnidad = new PartidaUnidad();
                 //Double montoDisponible = (Double)listaPartidasEgreso.Sum(presupuesto => presupuesto.monto);
-                Double sumaMontoTotalRepartir = (Double)partidasElegidasConMonto.Sum(PartidaUnidad => PartidaUnidad.Monto);
+                Double sumaMontoTotalRepartir = (Double)partidasElegidasConMonto.Sum(PartidaUnidad => PartidaUnidad.monto);
                 if (Convert.ToDouble(txtMontoIngresar.Text) >= sumaMontoTotalRepartir || monto == 0)
                 {
 
                     foreach (PartidaUnidad p in partidasElegidas.ToList())
                     {
-                        Double montoDisponible = partidasElegidasTemporal.Where(item => p.IdUnidad == item.IdUnidad && item.NumeroPartida == p.NumeroPartida).ToList().First().MontoDisponible;
+                        Double montoDisponible = partidasElegidasTemporal.Where(item => p.idUnidad == item.idUnidad && item.numeroPartida == p.numeroPartida).ToList().First().montoDisponible;
                         if (monto <= montoDisponible || monto >= 0)
                         {
-                            if (p.IdPartida == Convert.ToInt32(idPartida))
+                            if (p.idPartida == Convert.ToInt32(idPartida))
                             {
-                                partidaUnidad.IdPartida = p.IdPartida;
-                                partidaUnidad.IdUnidad = p.IdUnidad;
+                                partidaUnidad.idPartida = p.idPartida;
+                                partidaUnidad.idUnidad = p.idUnidad;
                                 partidaUnidad.nombreUnidad = ddlPartida.SelectedItem.Text;
-                                partidaUnidad.NumeroPartida = p.NumeroPartida;
+                                partidaUnidad.numeroPartida = p.numeroPartida;
 
                                 // partidasElegidas.RemoveAll(item => item.IdPartida == p.IdPartida);
 
@@ -1472,9 +1472,9 @@ namespace Proyecto.Catalogos.Ejecucion
                                         {
 
                                             monto = Convert.ToDouble(montoRepartir.Text);
-                                            double saldo = p.MontoDisponible - Convert.ToDouble(txtMont);
-                                            partidaUnidad.MontoDisponible = saldo;
-                                            partidaUnidad.Monto = Convert.ToDouble(txtMont);
+                                            double saldo = p.montoDisponible - Convert.ToDouble(txtMont);
+                                            partidaUnidad.montoDisponible = saldo;
+                                            partidaUnidad.monto = Convert.ToDouble(txtMont);
                                             partidasElegidasConMonto.Add(partidaUnidad);
                                         }
                                         else
@@ -1511,7 +1511,7 @@ namespace Proyecto.Catalogos.Ejecucion
                                 {
                                     Session["partidasAsignadasConMonto"] = partidasElegidasConMonto;
                                     MostrarUnidadesConMontoRepartido();
-                                    partidasElegidas.RemoveAll(item => item.IdPartida == Convert.ToInt32(idPartida) && item.IdUnidad == idUnidadElegida);
+                                    partidasElegidas.RemoveAll(item => item.idPartida == Convert.ToInt32(idPartida) && item.idUnidad == idUnidadElegida);
                                     Session["partidasAsignadas"] = partidasElegidas;
                                     obtenerUnidadesPartidasAsignarMonto();
                                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La Partida fue añadida con exito" + "');", true);
@@ -1541,10 +1541,10 @@ namespace Proyecto.Catalogos.Ejecucion
             List<PartidaUnidad> partidasAsignadas = (List<PartidaUnidad>)Session["partidasAsignadas"];
             List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
 
-            partidasAsignadas.Add((PartidaUnidad)partidasElegidasConMonto.Where(item => item.NumeroPartida == numeroPartida && item.IdUnidad == Convert.ToInt32(idUnidad)).ToList().First());
-            double montoEliminado = partidasElegidasConMonto.Where(item => item.NumeroPartida == numeroPartida && item.IdUnidad == Convert.ToInt32(idUnidad)).ToList().First().Monto;
+            partidasAsignadas.Add((PartidaUnidad)partidasElegidasConMonto.Where(item => item.numeroPartida == numeroPartida && item.idUnidad == Convert.ToInt32(idUnidad)).ToList().First());
+            double montoEliminado = partidasElegidasConMonto.Where(item => item.numeroPartida == numeroPartida && item.idUnidad == Convert.ToInt32(idUnidad)).ToList().First().monto;
             monto = monto + montoEliminado;
-            partidasElegidasConMonto.RemoveAll(item => item.NumeroPartida == numeroPartida && item.IdUnidad == Convert.ToInt32(idUnidad));
+            partidasElegidasConMonto.RemoveAll(item => item.numeroPartida == numeroPartida && item.idUnidad == Convert.ToInt32(idUnidad));
             MostrarUnidadesConMontoRepartido();
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La unidad fue borrada con exito" + "');", true);
@@ -1641,11 +1641,11 @@ namespace Proyecto.Catalogos.Ejecucion
                 List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
                 if (partidasElegidasConMonto != null)
                 {
-                    if (partidasElegidasConMonto.Exists(element => element.NumeroPartida.Equals(numeroPartida)))
+                    if (partidasElegidasConMonto.Exists(element => element.numeroPartida.Equals(numeroPartida)))
                     {
-                        double montoEliminado = partidasElegidasConMonto.Where(item => item.NumeroPartida == numeroPartida).ToList().First().Monto;
+                        double montoEliminado = partidasElegidasConMonto.Where(item => item.numeroPartida == numeroPartida).ToList().First().monto;
                         monto = monto + montoEliminado;
-                        partidasElegidasConMonto.RemoveAll(item => item.NumeroPartida == numeroPartida);
+                        partidasElegidasConMonto.RemoveAll(item => item.numeroPartida == numeroPartida);
                         MostrarUnidadesConMontoRepartido();
                     }
                 }
@@ -1692,11 +1692,11 @@ namespace Proyecto.Catalogos.Ejecucion
             List<PartidaUnidad> partidasElegidasConMonto = (List<PartidaUnidad>)Session["partidasAsignadasConMonto"];
             if (partidasElegidasConMonto != null)
             {
-                if (partidasElegidasConMonto.Exists(element => element.IdUnidad.Equals(idUnidad)))
+                if (partidasElegidasConMonto.Exists(element => element.idUnidad.Equals(idUnidad)))
                 {
-                    double montoEliminado = partidasElegidasConMonto.Where(item => item.IdUnidad == idUnidad).ToList().First().Monto;
+                    double montoEliminado = partidasElegidasConMonto.Where(item => item.idUnidad == idUnidad).ToList().First().monto;
                     monto = monto + montoEliminado;
-                    partidasElegidasConMonto.RemoveAll(item => item.IdUnidad == idUnidad);
+                    partidasElegidasConMonto.RemoveAll(item => item.idUnidad == idUnidad);
                     MostrarUnidadesConMontoRepartido();
                 }
             }
@@ -1860,12 +1860,12 @@ namespace Proyecto.Catalogos.Ejecucion
                     {
                         Entidades.Ejecucion ejecucionGuardar = new Entidades.Ejecucion();
                         estadoEjecucion.idEstado = 1;
-                        ejecucionGuardar.idestado = estadoEjecucion;
+                        ejecucionGuardar.estadoEjecucion = estadoEjecucion;
                         ejecucionGuardar.anoPeriodo = Convert.ToInt32(PeriodosDDL.SelectedValue);
                         ejecucionGuardar.idProyecto = Int32.Parse(ProyectosDDL.SelectedValue);
                         ejecucionGuardar.monto = Convert.ToInt32(txtMontoIngresar.Text);
                         tipoTramite.idTramite = Int32.Parse(DDLTipoTramite.SelectedValue);
-                        ejecucionGuardar.idTipoTramite = tipoTramite;
+                        ejecucionGuardar.tipoTramite = tipoTramite;
                         ejecucionGuardar.descripcionEjecucionOtro = descripcionOtroTipoTramite.Text;
                         ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
                         ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
@@ -1892,13 +1892,13 @@ namespace Proyecto.Catalogos.Ejecucion
                         respuesta = Convert.ToInt32(idEjecucioon);
                         ejecucionGuardar.idEjecucion = respuesta;
                         estadoEjecucion.idEstado = 1;
-                        ejecucionGuardar.idestado = estadoEjecucion;
+                        ejecucionGuardar.estadoEjecucion = estadoEjecucion;
                         ejecucionGuardar.anoPeriodo = Convert.ToInt32(PeriodosDDL.SelectedValue);
                         ejecucionGuardar.idProyecto = Int32.Parse(ProyectosDDL.SelectedValue);
                         ejecucionGuardar.monto = Convert.ToInt32(txtMontoIngresar.Text);
                         ejecucionGuardar.realizadoPor = (String)Session["nombreCompleto"];
                         tipoTramite.idTramite = Int32.Parse(DDLTipoTramite.SelectedValue);
-                        ejecucionGuardar.idTipoTramite = tipoTramite;
+                        ejecucionGuardar.tipoTramite = tipoTramite;
                         ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
                         ejecucionGuardar.descripcionEjecucionOtro = descripcionOtroTipoTramite.Text;
                         ejecucionServicios.EliminarEjecucionUnidad(respuesta);
@@ -1935,11 +1935,11 @@ namespace Proyecto.Catalogos.Ejecucion
                     foreach (PartidaUnidad pu in partidasElegidasConMonto)
                     {
 
-                        partidaUnidad.IdPartida = pu.IdPartida;
-                        partidaUnidad.IdUnidad = pu.IdUnidad;
-                        partidaUnidad.Monto = pu.Monto;
-                        partidaUnidad.MontoDisponible = pu.MontoDisponible;
-                        partidaUnidad.NumeroPartida = pu.NumeroPartida;
+                        partidaUnidad.idPartida = pu.idPartida;
+                        partidaUnidad.idUnidad = pu.idUnidad;
+                        partidaUnidad.monto = pu.monto;
+                        partidaUnidad.montoDisponible = pu.montoDisponible;
+                        partidaUnidad.numeroPartida = pu.numeroPartida;
                         ejecucionServicios.InsertarEjecucionPartidaMontoElelegido(partidaUnidad, numeroReferencia.Text, respuesta);
                     }
                     String url = Page.ResolveUrl("~/Catalogos/Ejecucion/ElegirEjecucion.aspx");
@@ -2001,12 +2001,12 @@ namespace Proyecto.Catalogos.Ejecucion
                     if (idEjecucioon.Equals(""))
                     {
                         estadoEjecucion.idEstado = 2;
-                        ejecucionGuardar.idestado = estadoEjecucion;
+                        ejecucionGuardar.estadoEjecucion = estadoEjecucion;
                         ejecucionGuardar.anoPeriodo = Convert.ToInt32(PeriodosDDL.SelectedValue);
                         ejecucionGuardar.idProyecto = Int32.Parse(ProyectosDDL.SelectedValue);
                         ejecucionGuardar.monto = Convert.ToInt32(txtMontoIngresar.Text);
                         tipoTramite.idTramite = Int32.Parse(DDLTipoTramite.SelectedValue);
-                        ejecucionGuardar.idTipoTramite = tipoTramite;
+                        ejecucionGuardar.tipoTramite = tipoTramite;
                         ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
                         ejecucionGuardar.descripcionEjecucionOtro = descripcionOtroTipoTramite.Text;
                         ejecucionGuardar.realizadoPor = (String)Session["nombreCompleto"];
@@ -2029,13 +2029,13 @@ namespace Proyecto.Catalogos.Ejecucion
                         respuesta = Convert.ToInt32(idEjecucioon);
                         ejecucionGuardar.idEjecucion = respuesta;
                         estadoEjecucion.idEstado = 2;
-                        ejecucionGuardar.idestado = estadoEjecucion;
+                        ejecucionGuardar.estadoEjecucion = estadoEjecucion;
                         ejecucionGuardar.anoPeriodo = Convert.ToInt32(PeriodosDDL.SelectedValue);
                         ejecucionGuardar.anoPeriodo = Convert.ToInt32(PeriodosDDL.SelectedValue);
                         ejecucionGuardar.idProyecto = Int32.Parse(ProyectosDDL.SelectedValue);
                         ejecucionGuardar.monto = Convert.ToInt32(txtMontoIngresar.Text);
                         tipoTramite.idTramite = Int32.Parse(DDLTipoTramite.SelectedValue);
-                        ejecucionGuardar.idTipoTramite = tipoTramite;
+                        ejecucionGuardar.tipoTramite = tipoTramite;
                         ejecucionGuardar.numeroReferencia = numeroReferencia.Text;
                         ejecucionGuardar.descripcionEjecucionOtro = descripcionOtroTipoTramite.Text;
                         ejecucionServicios.EliminarEjecucionUnidad(ejecucionGuardar.idEjecucion);
@@ -2074,11 +2074,11 @@ namespace Proyecto.Catalogos.Ejecucion
                     foreach (PartidaUnidad pu in partidasElegidasConMonto)
                     {
 
-                        partidaUnidad.IdPartida = pu.IdPartida;
-                        partidaUnidad.IdUnidad = pu.IdUnidad;
-                        partidaUnidad.Monto = pu.Monto;
-                        partidaUnidad.MontoDisponible = pu.MontoDisponible;
-                        partidaUnidad.NumeroPartida = pu.NumeroPartida;
+                        partidaUnidad.idPartida = pu.idPartida;
+                        partidaUnidad.idUnidad = pu.idUnidad;
+                        partidaUnidad.monto = pu.monto;
+                        partidaUnidad.montoDisponible = pu.montoDisponible;
+                        partidaUnidad.numeroPartida = pu.numeroPartida;
                         ejecucionServicios.InsertarEjecucionPartidaMontoElelegido(partidaUnidad, numeroReferencia.Text, respuesta);
                     }
                     String url = Page.ResolveUrl("~/Catalogos/Ejecucion/ElegirEjecucion.aspx");
@@ -2343,10 +2343,10 @@ namespace Proyecto.Catalogos.Ejecucion
             //{
            
             List<Partida> TempPartidasN = new List<Partida>();
-            LinkedList<int> unidades = new LinkedList<int>();
+            List<int> unidades = new List<int>();
                 foreach (Unidad unidad in listaUnidad)
                 {
-                    unidades.AddFirst(unidad.idUnidad);
+                    unidades.Add(unidad.idUnidad);
                 }
             
                  TempPartidasN = (List<Partida>)Session["partidasSeleccionadasPorUnidadesProyectoPeriodo"];
@@ -2684,9 +2684,9 @@ namespace Proyecto.Catalogos.Ejecucion
                 foreach (Partida p in partidaTemp)
                 {
                     PartidaUnidad partidaU = new PartidaUnidad();
-                    partidaU.IdPartida = p.idPartida;
-                    partidaU.IdUnidad = p.idUnidad;
-                    partidaU.NumeroPartida = p.numeroPartida;
+                    partidaU.idPartida = p.idPartida;
+                    partidaU.idUnidad = p.idUnidad;
+                    partidaU.numeroPartida = p.numeroPartida;
                     Unidad unidad = new Unidad();
                     unidad.idUnidad = p.idUnidad;
 
@@ -2702,7 +2702,7 @@ namespace Proyecto.Catalogos.Ejecucion
                     
                     string idPartida = Convert.ToString(partida.idPartida);
                     Double montoDisponible = ejecucionServicios.ConsultaMontoDisponiblePartida(idPartida, Convert.ToString(idPresupuestoEgreso));
-                    partidaU.MontoDisponible = montoDisponible;
+                    partidaU.montoDisponible = montoDisponible;
                     partidaUnidad.Add(partidaU);
 
                 }
@@ -2711,10 +2711,10 @@ namespace Proyecto.Catalogos.Ejecucion
                 if (partidasElegidasConMonto != null)
                 {
 
-                    List<PartidaUnidad> TempPartida = partidaUnidad.Where(a => !partidasElegidasConMonto.Any(a1 => a1.NumeroPartida == a.NumeroPartida && a1.IdUnidad == a.IdUnidad))
-                    .Union(partidasElegidasConMonto.Where(a => !partidaUnidad.Any(a1 => a1.NumeroPartida == a.NumeroPartida && a1.IdUnidad == a.IdUnidad))).ToList();
+                    List<PartidaUnidad> TempPartida = partidaUnidad.Where(a => !partidasElegidasConMonto.Any(a1 => a1.numeroPartida == a.numeroPartida && a1.idUnidad == a.idUnidad))
+                    .Union(partidasElegidasConMonto.Where(a => !partidaUnidad.Any(a1 => a1.numeroPartida == a.numeroPartida && a1.idUnidad == a.idUnidad))).ToList();
 
-                    Session["partidasAsignadas"] = TempPartida.Where(item => item.IdUnidad == idUnidadElegida).ToList();
+                    Session["partidasAsignadas"] = TempPartida.Where(item => item.idUnidad == idUnidadElegida).ToList();
 
                 }
                 partidaUnidad = (List<PartidaUnidad>)Session["partidasAsignadas"];

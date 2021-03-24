@@ -130,7 +130,11 @@ namespace PEP
             {
                 // Llame al método SaveAs para guardar el archivo
                 // guardado en el directorio especificado.
-                file.SaveAs(pathToCheck);
+                try
+                {
+                    file.SaveAs(pathToCheck);
+                }
+                catch { }
                 return 0;
             }
         }

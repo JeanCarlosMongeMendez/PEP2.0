@@ -24,9 +24,9 @@ namespace Servicios
         /// <param name="unidad">Unidad</param>
         /// <param name="numeroReferencia">string</param>
         /// <param name="respuesta">string</param>
-        public void InsertarEjecucionUnidad(Unidad unidad,string numeroReferencia, int respuesta)
+        public void InsertarEjecucionUnidad(Unidad unidad, string numeroReferencia, int respuesta)
         {
-             ejecucionDatos.insertarEjecucionUnidad(unidad,numeroReferencia,respuesta); 
+            ejecucionDatos.insertarEjecucionUnidad(unidad, numeroReferencia, respuesta);
         }
         /// <summary>
         /// Inserta una Ejecucion_Partida
@@ -34,9 +34,9 @@ namespace Servicios
         /// <param name="partida">Partida</param>
         ///  <param name="numeroReferencia">string</param>
         ///  <param name="respuesta">string</param>
-        public void InsertarEjecucionPartidas(Partida partida, string numeroReferencia,int respuesta)
+        public void InsertarEjecucionPartidas(Partida partida, string numeroReferencia, int respuesta)
         {
-            ejecucionDatos.insertarEjecucionPartidas(partida, numeroReferencia,respuesta);
+            ejecucionDatos.insertarEjecucionPartidas(partida, numeroReferencia, respuesta);
         }
         /// <summary>
         /// Inserta una EjecucionPartidaMontoElelegido
@@ -44,9 +44,9 @@ namespace Servicios
         /// <param name="partidaUnidad">PartidaUnidad</param>
         ///  <param name="numeroReferencia">String</param>
         /// <param name="respuesta">String</param>
-        public void InsertarEjecucionPartidaMontoElelegido(PartidaUnidad partidaUnidad, string numeroReferencia,int respuesta)
+        public void InsertarEjecucionPartidaMontoElelegido(PartidaUnidad partidaUnidad, string numeroReferencia, int respuesta)
         {
-            ejecucionDatos.insertarEjecucionMontoPartidaElegida(partidaUnidad, numeroReferencia,respuesta);
+            ejecucionDatos.insertarEjecucionMontoPartidaElegida(partidaUnidad, numeroReferencia, respuesta);
         }
         /// <summary>
         /// Inserta una Ejecucion
@@ -55,16 +55,16 @@ namespace Servicios
         ///
         public int InsertarEjecucion(Ejecucion ejecucion)
         {
-           return ejecucionDatos.insertarEjecucion(ejecucion);
+            return ejecucionDatos.insertarEjecucion(ejecucion);
         }
         /// <summary>
         /// Editar una Ejecucion
         /// </summary>
         /// <param name="ejecucion">Ejecucion</param>
-        
+
         public void EditarEjecucion(Ejecucion ejecucion)
         {
-           ejecucionDatos.actualizarEjecucion(ejecucion);
+            ejecucionDatos.actualizarEjecucion(ejecucion);
         }
         /// <summary>
         /// Consultar una Ejecucion
@@ -72,18 +72,18 @@ namespace Servicios
         /// <param name="Proyecto">Ejecucion</param>
         /// <param name="Periodo">Ejecucion</param>
 
-        public List<Ejecucion> ConsultarEjecucion(string Periodo,string Proyecto)
+        public List<Ejecucion> ConsultarEjecucion(string Periodo, string Proyecto)
         {
-            return ejecucionDatos.consultaEjecucion(Periodo,Proyecto);
+            return ejecucionDatos.consultaEjecucion(Periodo, Proyecto);
         }
 
         /// <summary>
         /// Eliminar una Ejecucion_Partida
         /// </summary>
         /// <param name="respuesta">string</param>
-        public void EliminarEjecucionUnidad( int respuesta)
+        public void EliminarEjecucionUnidad(int respuesta)
         {
-            ejecucionDatos.EliminarEjecucionUnidad( respuesta);
+            ejecucionDatos.EliminarEjecucionUnidad(respuesta);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Servicios
         ///Eliminar una Ejecucion_Partida
         /// </summary>
         /// /// <param name="respuesta">string</param>
-        public void EliminarEjecucionPartidas( int respuesta)
+        public void EliminarEjecucionPartidas(int respuesta)
         {
             ejecucionDatos.eliminarEjecucionPartidas(respuesta);
         }
@@ -109,7 +109,7 @@ namespace Servicios
         /// </summary>
         /// <param name="idPartida">String</param>
         /// <param name="idPresupuestoEgreso">String</param>
-        public double ConsultaMontoDisponiblePartida(String idPartida,String idPresupuestoEgreso)
+        public double ConsultaMontoDisponiblePartida(String idPartida, String idPresupuestoEgreso)
         {
             return ejecucionDatos.consultarMontoDiponible(idPartida, idPresupuestoEgreso);
         }
@@ -117,7 +117,7 @@ namespace Servicios
         /// Consultar una UnidadEjecucion
         /// </summary>
         /// <param name="idEjecucion">Ejecucion</param>
-       
+
 
         public List<Unidad> ConsultarUnidadEjecucion(int idEjecucion)
         {
@@ -163,6 +163,21 @@ namespace Servicios
         {
             return ejecucionDatos.ConsultarEjecucionEstado(idEjecucion);
         }
-       
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 23/feb/2021
+        /// Efecto: devuelve la lista de ejecuciones segun el periodo y proyecto seleccionado
+        /// Requiere: periodo y proyecto
+        /// Modifica: -
+        /// Devuelve: lista de ejecuciones
+        /// </summary>
+        /// <param name="periodo"></param>
+        /// <param name="proyecto"></param>
+        /// <returns></returns>
+        public List<Ejecucion> getEjecucionesPorPeriodoYProyecto(Periodo periodo, Proyectos proyecto)
+        {
+            return ejecucionDatos.getEjecucionesPorPeriodoYProyecto(periodo, proyecto);
+        }
     }
 }

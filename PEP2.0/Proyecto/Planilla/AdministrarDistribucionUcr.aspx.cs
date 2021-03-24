@@ -363,7 +363,7 @@ namespace Proyecto.Planilla
         /// </summary>
         public void mostrarTablaUnidades()
         {
-            LinkedList<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(Convert.ToInt32(ddlProyecto.SelectedValue));
+            List<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(Convert.ToInt32(ddlProyecto.SelectedValue));
             /*FILTRO*/
 
             var dt = listaUnidades;
@@ -610,7 +610,7 @@ namespace Proyecto.Planilla
         {
             int id = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
             Unidad unidadSeleccionada = null;
-            LinkedList<Unidad> unidades = unidadServicios.ObtenerPorProyecto(Convert.ToInt32(ddlProyecto.SelectedValue));
+            List<Unidad> unidades = unidadServicios.ObtenerPorProyecto(Convert.ToInt32(ddlProyecto.SelectedValue));
             foreach (Unidad unidad in unidades)
             {
                 if (unidad.idUnidad == id)
@@ -778,7 +778,7 @@ namespace Proyecto.Planilla
                     montoSumaEgresos += listaProyeccion.Sum(proyeccion => proyeccion.montoSalario);
                 }
 
-                LinkedList<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(idProyecto);
+                List<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(idProyecto);
 
                 List<PresupuestoEgresoPartida> listaPresupuestoEgresoPartidasEliminar = new List<PresupuestoEgresoPartida>();//lista de presupuestos partidas ya aprobados, hay q borrar si es el caso
                 List<int> listaIdEgresos = new List<int>();

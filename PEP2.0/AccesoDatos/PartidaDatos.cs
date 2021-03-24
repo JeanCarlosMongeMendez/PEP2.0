@@ -248,7 +248,7 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.numero_partid
         /// <param name="unidades"></param>
         /// <param name="periodo"></param>
         /// <returns></returns>
-        public List<Partida> ObtienePartidaPorPeriodoUnidadProyecto(int proyecto, LinkedList<int> unidades, int periodo)
+        public List<Partida> ObtienePartidaPorPeriodoUnidadProyecto(int proyecto, List<int> unidades, int periodo)
         {
             List<Partida> partidas = new List<Partida>();
             SqlConnection sqlConnection = conexion.conexionPEP();

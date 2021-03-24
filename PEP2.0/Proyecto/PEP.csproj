@@ -85,7 +85,12 @@
   <ItemGroup>
     <Content Include="Catalogos\CargasSociales\AdministrarCargasSociales.aspx" />
     <Content Include="Catalogos\Ejecucion\AdministrarEjecucion.aspx" />
+    <Content Include="Catalogos\Ejecucion\AdministrarEjecuciones.aspx" />
+    <Content Include="Catalogos\Ejecucion\EditarEjecucion.aspx" />
     <Content Include="Catalogos\Ejecucion\ElegirEjecucion.aspx" />
+    <Content Include="Catalogos\Ejecucion\EliminarEjecucion.aspx" />
+    <Content Include="Catalogos\Ejecucion\NuevaEjecucion.aspx" />
+    <Content Include="Catalogos\Ejecucion\VerEjecucion.aspx" />
     <Content Include="Catalogos\Jornadas\AdministrarJornadas.aspx" />
     <Content Include="Catalogos\Partidas\AdministrarPartida - Copia.aspx" />
     <Content Include="Catalogos\Partidas\AdministrarPartidas.aspx" />
@@ -189,12 +194,47 @@
     <Compile Include="Catalogos\Ejecucion\AdministrarEjecucion.aspx.designer.cs">
       <DependentUpon>AdministrarEjecucion.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Catalogos\Ejecucion\AdministrarEjecuciones.aspx.cs">
+      <DependentUpon>AdministrarEjecuciones.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Catalogos\Ejecucion\AdministrarEjecuciones.aspx.designer.cs">
+      <DependentUpon>AdministrarEjecuciones.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Catalogos\Ejecucion\EditarEjecucion.aspx.cs">
+      <DependentUpon>EditarEjecucion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Catalogos\Ejecucion\EditarEjecucion.aspx.designer.cs">
+      <DependentUpon>EditarEjecucion.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Catalogos\Ejecucion\ElegirEjecucion.aspx.cs">
       <DependentUpon>ElegirEjecucion.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Catalogos\Ejecucion\ElegirEjecucion.aspx.designer.cs">
       <DependentUpon>ElegirEjecucion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Catalogos\Ejecucion\EliminarEjecucion.aspx.cs">
+      <DependentUpon>EliminarEjecucion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Catalogos\Ejecucion\EliminarEjecucion.aspx.designer.cs">
+      <DependentUpon>EliminarEjecucion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Catalogos\Ejecucion\NuevaEjecucion.aspx.cs">
+      <DependentUpon>NuevaEjecucion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Catalogos\Ejecucion\NuevaEjecucion.aspx.designer.cs">
+      <DependentUpon>NuevaEjecucion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Catalogos\Ejecucion\VerEjecucion.aspx.cs">
+      <DependentUpon>VerEjecucion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Catalogos\Ejecucion\VerEjecucion.aspx.designer.cs">
+      <DependentUpon>VerEjecucion.aspx</DependentUpon>
     </Compile>
     <Compile Include="Catalogos\Jornadas\AdministrarJornadas.aspx.cs">
       <DependentUpon>AdministrarJornadas.aspx</DependentUpon>

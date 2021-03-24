@@ -48,7 +48,7 @@ namespace Servicios
             this.partidaDatos.EliminarPartida(idPartida, periodo);
         }
 
-        public List<Partida> ObtienePartidaPorPeriodoUnidadProyecto(int proyecto, LinkedList<int> unidad, int periodo)
+        public List<Partida> ObtienePartidaPorPeriodoUnidadProyecto(int proyecto, List<int> unidad, int periodo)
         {
             return this.partidaDatos.ObtienePartidaPorPeriodoUnidadProyecto(proyecto, unidad, periodo);
         }

@@ -24,8 +24,7 @@ namespace AccesoDatos
         ///  <param name="respuesta"></param>
         public void insertarEjecucionUnidad(Unidad unidad, string numeroReferencia,int respuesta)
         {
-
-
+            
             SqlConnection sqlConnection = conexion.conexionPEP();
 
             String consulta = @"insert Unidad_ejecucion (numero_referencia,id_unidad,nombre_unidad,id_ejecucion)
@@ -89,11 +88,11 @@ namespace AccesoDatos
             SqlCommand command = new SqlCommand(consulta, sqlConnection);
 
             command.Parameters.AddWithValue("@numero_referencia", Convert.ToString(numeroReferencia));
-            command.Parameters.AddWithValue("@id_partida", partidaUnidad.IdPartida);
-            command.Parameters.AddWithValue("@id_unidad", partidaUnidad.IdUnidad);
-            command.Parameters.AddWithValue("@monto", partidaUnidad.Monto);
-            command.Parameters.AddWithValue("@monto_disponible", partidaUnidad.MontoDisponible);
-            command.Parameters.AddWithValue("@numero_partida", partidaUnidad.NumeroPartida);
+            command.Parameters.AddWithValue("@id_partida", partidaUnidad.idPartida);
+            command.Parameters.AddWithValue("@id_unidad", partidaUnidad.idUnidad);
+            command.Parameters.AddWithValue("@monto", partidaUnidad.monto);
+            command.Parameters.AddWithValue("@monto_disponible", partidaUnidad.montoDisponible);
+            command.Parameters.AddWithValue("@numero_partida", partidaUnidad.numeroPartida);
             command.Parameters.AddWithValue("@id_ejecucion", respuesta);
 
 
@@ -115,11 +114,11 @@ namespace AccesoDatos
 
             SqlCommand command = new SqlCommand(consulta, sqlConnection);
 
-            command.Parameters.AddWithValue("@id_estado", ejecucion.idestado.idEstado);
+            command.Parameters.AddWithValue("@id_estado", ejecucion.estadoEjecucion.idEstado);
             command.Parameters.AddWithValue("@ano_periodo", ejecucion.anoPeriodo);
             command.Parameters.AddWithValue("@id_proyecto", ejecucion.idProyecto);
             command.Parameters.AddWithValue("@monto", ejecucion.monto);
-            command.Parameters.AddWithValue("@id_tipo_tramite", ejecucion.idTipoTramite.idTramite);
+            command.Parameters.AddWithValue("@id_tipo_tramite", ejecucion.tipoTramite.idTramite);
             command.Parameters.AddWithValue("@numero_referencia", ejecucion.numeroReferencia);
             command.Parameters.AddWithValue("@descripcion_tramite_otro", ejecucion.descripcionEjecucionOtro);
             command.Parameters.AddWithValue("@realizadoPor", ejecucion.realizadoPor);
@@ -214,11 +213,11 @@ namespace AccesoDatos
 
             SqlCommand command = new SqlCommand(consulta, sqlConnection);
             command.Parameters.AddWithValue("@id_ejecucion",ejecucion.idEjecucion);
-            command.Parameters.AddWithValue("@id_estado", ejecucion.idestado.idEstado);
+            command.Parameters.AddWithValue("@id_estado", ejecucion.estadoEjecucion.idEstado);
             command.Parameters.AddWithValue("@ano_periodo", ejecucion.anoPeriodo);
             command.Parameters.AddWithValue("@id_proyecto", ejecucion.idProyecto);
             command.Parameters.AddWithValue("@monto", ejecucion.monto);
-            command.Parameters.AddWithValue("@id_tipo_tramite", ejecucion.idTipoTramite.idTramite);
+            command.Parameters.AddWithValue("@id_tipo_tramite", ejecucion.tipoTramite.idTramite);
             command.Parameters.AddWithValue("@numero_referencia", ejecucion.numeroReferencia);
             command.Parameters.AddWithValue("@descripcion_tramite_otro", ejecucion.descripcionEjecucionOtro);
 
@@ -294,9 +293,9 @@ namespace AccesoDatos
                 ejecucion.numeroReferencia = Convert.ToString(reader["numero_referencia"].ToString());
                 tipoTramite.nombreTramite = Convert.ToString(reader["nombre_tramite"].ToString());
                 tipoTramite.idTramite = Convert.ToInt32(reader["id_tramite"].ToString());
-                ejecucion.idTipoTramite = tipoTramite;
+                ejecucion.tipoTramite = tipoTramite;
                 estadoEjecucion.descripcion= Convert.ToString(reader["descripcion_estado"].ToString());
-                ejecucion.idestado = estadoEjecucion;
+                ejecucion.estadoEjecucion = estadoEjecucion;
                 ejecucion.descripcionEjecucionOtro= Convert.ToString(reader["descripcion_tramite_otro"].ToString());
                 ejecucion.realizadoPor = reader["realizado_por"].ToString();
                 ejecucion.fecha = Convert.ToDateTime(reader["fecha"].ToString());
@@ -406,11 +405,11 @@ namespace AccesoDatos
             while (reader.Read())
             {
                 PartidaUnidad partidaUnidad = new PartidaUnidad();
-                partidaUnidad.IdPartida = Convert.ToInt32(reader["id_partida"].ToString());
-                partidaUnidad.IdUnidad = Convert.ToInt32(reader["id_unidad"].ToString());
-                partidaUnidad.Monto = Convert.ToDouble(reader["monto"].ToString());
-                partidaUnidad.MontoDisponible = Convert.ToDouble(reader["monto_disponible"].ToString());
-                partidaUnidad.NumeroPartida = Convert.ToString(reader["numero_partida"].ToString());
+                partidaUnidad.idPartida = Convert.ToInt32(reader["id_partida"].ToString());
+                partidaUnidad.idUnidad = Convert.ToInt32(reader["id_unidad"].ToString());
+                partidaUnidad.monto = Convert.ToDouble(reader["monto"].ToString());
+                partidaUnidad.montoDisponible = Convert.ToDouble(reader["monto_disponible"].ToString());
+                partidaUnidad.numeroPartida = Convert.ToString(reader["numero_partida"].ToString());
                 partidaUnidad.nombreUnidad = reader["nombre_unidad"].ToString();
                 listapartidaUnidad.Add(partidaUnidad);
             }
@@ -474,6 +473,56 @@ namespace AccesoDatos
 
             sqlConnection.Close();
             return idEstado;
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 23/feb/2021
+        /// Efecto: devuelve la lista de ejecuciones segun el periodo y proyecto seleccionado
+        /// Requiere: periodo y proyecto
+        /// Modifica: -
+        /// Devuelve: lista de ejecuciones
+        /// </summary>
+        /// <param name="periodo"></param>
+        /// <param name="proyecto"></param>
+        /// <returns></returns>
+        public List<Ejecucion> getEjecucionesPorPeriodoYProyecto(Periodo periodo, Proyectos proyecto)
+        {
+            List<Ejecucion> listaEjecucion = new List<Ejecucion>();
+            SqlConnection sqlConnection = conexion.conexionPEP();
+
+            String consulta = @"select descripcion_estado,monto,numero_referencia,nombre_tramite,E.id_ejecucion,T.id_tramite,descripcion_tramite_otro, E.realizado_por,E.fecha
+                                      from EstadoEjecucion Es,Ejecucion E,Tipos_tramite T
+                                      where E.id_proyecto=@idProyecto and E.ano_periodo=@Periodo and E.id_tipo_tramite= T.id_tramite and E.id_estado= Es.id_estado order by  id_ejecucion desc";
+
+            SqlCommand command = new SqlCommand(consulta, sqlConnection);
+
+            command.Parameters.AddWithValue("@Periodo", periodo.anoPeriodo);
+            command.Parameters.AddWithValue("@idProyecto", proyecto.idProyecto);
+
+            SqlDataReader reader;
+            sqlConnection.Open();
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                EstadoEjecucion estadoEjecucion = new EstadoEjecucion();
+                TipoTramite tipoTramite = new TipoTramite();
+                Ejecucion ejecucion = new Ejecucion();
+                ejecucion.idEjecucion = Convert.ToInt32(reader["id_ejecucion"].ToString());
+                ejecucion.monto = Convert.ToInt32(reader["monto"].ToString());
+                ejecucion.numeroReferencia = Convert.ToString(reader["numero_referencia"].ToString());
+                tipoTramite.nombreTramite = Convert.ToString(reader["nombre_tramite"].ToString());
+                tipoTramite.idTramite = Convert.ToInt32(reader["id_tramite"].ToString());
+                ejecucion.tipoTramite = tipoTramite;
+                estadoEjecucion.descripcion = Convert.ToString(reader["descripcion_estado"].ToString());
+                ejecucion.estadoEjecucion = estadoEjecucion;
+                ejecucion.descripcionEjecucionOtro = Convert.ToString(reader["descripcion_tramite_otro"].ToString());
+                ejecucion.realizadoPor = reader["realizado_por"].ToString();
+                ejecucion.fecha = Convert.ToDateTime(reader["fecha"].ToString());
+                listaEjecucion.Add(ejecucion);
+            }
+            sqlConnection.Close();
+            return listaEjecucion;
         }
 
 

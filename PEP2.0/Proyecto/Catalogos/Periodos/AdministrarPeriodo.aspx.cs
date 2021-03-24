@@ -1908,7 +1908,7 @@ namespace PEP.Catalogos.Periodos
 
             Proyectos proyectoInsertar = new Proyectos();
             LinkedList<Proyectos> listaProyectos = proyectoServicios.ObtenerPorPeriodo(anioPeriodo);
-            LinkedList<Unidad> listaUnidades = new LinkedList<Unidad>();
+            List<Unidad> listaUnidades = new List<Unidad>();
 
             foreach (Proyectos proyecto in listaProyectos)
             {
@@ -2018,7 +2018,7 @@ namespace PEP.Catalogos.Periodos
             }
 
 
-            LinkedList<Unidad> listaUnidades = new LinkedList<Unidad>();
+            List<Unidad> listaUnidades = new List<Unidad>();
             listaUnidades = unidadServicios.ObtenerPorProyecto(proyectoSelccionadoUnidades.idProyecto);
             Session["listaUnidades"] = listaUnidades;
             mostrarTablaUnidades();
@@ -2187,7 +2187,7 @@ namespace PEP.Catalogos.Periodos
                 {
                     Toastr("error", "Error, la unidad " + unidad.nombreUnidad + " ya se encuentra registrada en el proyecto " + proyectoSelccionadoUnidades.nombreProyecto);
                 }
-                LinkedList<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(proyectoActualSelec);
+                List<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(proyectoActualSelec);
                 Session["listaUnidades"] = listaUnidades;
                 mostrarTablaUnidades();
                 ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevaUnidad", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevaUnidad').hide();", true);
@@ -2281,7 +2281,7 @@ namespace PEP.Catalogos.Periodos
         {
             Unidad unidadEliminar = unidadSeleccionada;
             unidadServicios.EliminarUnidad(unidadEliminar.idUnidad);
-            LinkedList<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(proyectoSelccionadoUnidades.idProyecto);
+            List<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(proyectoSelccionadoUnidades.idProyecto);
             if (listaUnidades.Contains(unidadEliminar))
             {
                 Toastr("error", "Error, la unidad " + unidadEliminar.nombreUnidad + " no pudo ser eliminada.");
@@ -2355,7 +2355,7 @@ namespace PEP.Catalogos.Periodos
                 txtNombreUnidadEditar.Text = "";
                 txtCoordinadorEditar.Text = "";
 
-                LinkedList<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(proyectoSelccionadoUnidades.idProyecto);
+                List<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(proyectoSelccionadoUnidades.idProyecto);
 
                 Session["listaUnidades"] = listaUnidades;
                 Toastr("success", "La unidad fue modificada con éxito!");

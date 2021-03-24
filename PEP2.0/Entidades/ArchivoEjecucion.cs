@@ -9,6 +9,7 @@ namespace Entidades
     public class ArchivoEjecucion
     {
         public int idEjecucion { get; set; }
+        public int idArchivoEjecucion { get; set; }
         public DateTime fechaCreacion { get; set; }
         public String creadoPor { get; set; }
         public String nombreArchivo { get; set; }

@@ -22,10 +22,10 @@ namespace AccesoDatos
         /// </summary>
         /// <param name="idProyecto">Valor de tipo <code>int</code> para filtrar la búsqueda</param>
         /// <returns>Retorna la lista <code>LinkedList<Unidad></code> que contiene las unidades que correspondan al periodo especificado</returns>
-        public LinkedList<Unidad> ObtenerPorProyecto(int idProyecto)
+        public List<Unidad> ObtenerPorProyecto(int idProyecto)
         {
             SqlConnection sqlConnection = conexion.conexionPEP();
-            LinkedList<Unidad> unidades = new LinkedList<Unidad>();
+            List<Unidad> unidades = new List<Unidad>();
             SqlCommand sqlCommand = new SqlCommand("select id_unidad, nombre_unidad, coordinador from Unidad where id_proyecto=@id_proyecto_ AND disponible=1;", sqlConnection);
             sqlCommand.Parameters.AddWithValue("@id_proyecto_", idProyecto);
 
@@ -39,7 +39,7 @@ namespace AccesoDatos
                 unidad.idUnidad = Convert.ToInt32(reader["id_unidad"].ToString());
                 unidad.nombreUnidad = reader["nombre_unidad"].ToString();
                 unidad.coordinador = reader["coordinador"].ToString();
-                unidades.AddLast(unidad);
+                unidades.Add(unidad);
             }
 
             sqlConnection.Close();
