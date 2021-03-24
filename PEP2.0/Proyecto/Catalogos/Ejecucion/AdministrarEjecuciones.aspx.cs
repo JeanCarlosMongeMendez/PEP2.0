@@ -18,6 +18,8 @@ namespace Proyecto.Catalogos.Ejecucion
         PeriodoServicios periodoServicios = new PeriodoServicios();
         ProyectoServicios proyectoServicios = new ProyectoServicios();
         EjecucionServicios ejecucionServicios = new EjecucionServicios();
+        EjecucionUnidadParitdaServicios ejecucionUnidadParitdaServicios = new EjecucionUnidadParitdaServicios();
+        EstadoEjecucionServicios estadoEjecucionServicios = new EstadoEjecucionServicios();
         #endregion
 
         #region paginacion
@@ -559,7 +561,7 @@ namespace Proyecto.Catalogos.Ejecucion
             String url = Page.ResolveUrl("~/Catalogos/Ejecucion/VerEjecucion.aspx");
             Response.Redirect(url);
         }
-
+        
         /// <summary>
         /// Leonardo Carrion
         /// 23/mar/2021
@@ -586,9 +588,170 @@ namespace Proyecto.Catalogos.Ejecucion
 
             Entidades.Ejecucion ejecucion = (Entidades.Ejecucion)listaEjecuciones.Where(eje => eje.idEjecucion == idEjecucion).ToList().First();
 
-            Session["ejecucionVer"] = ejecucion;
+            Session["ejecucionComprometer"] = ejecucion;
             lblConfirmarComprometer.Text = "¿Seguro o segura que desea comprometer la ejecución número "+ejecucion.idEjecucion+"?";
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalComprometer();", true);
+        }
+        
+        /// <summary>
+        /// Leonardo Carrion
+        /// 24/mar/2021
+        /// Efecto: Cambia el estado de la ejecucion a comprometer y verifica que los montos de las partidas esten correctos
+        /// Requiere: dar clic en el boton de Si
+        /// Modifica: estado de ejecucion
+        /// Devuelve: mesnsaje de confirmacion de accion
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnSiComprometer_Click(object sender, EventArgs e)
+        {
+            Entidades.Ejecucion ejecucion = (Entidades.Ejecucion)Session["ejecucionComprometer"];
+            List<PartidaUnidad> listaUnidadesPartidas = ejecucionUnidadParitdaServicios.getUnidadesPartidasMontoPorEjecucion(ejecucion);
+
+            Double montoResta = listaUnidadesPartidas.Sum(part => part.monto);
+
+             if((ejecucion.monto - montoResta) == 0)
+            {
+                Boolean correcto = true;
+                foreach(PartidaUnidad partidaUnidad in listaUnidadesPartidas)
+                {
+                    Unidad unidad = new Unidad();
+                    unidad.idUnidad = partidaUnidad.idUnidad;
+                    Partida partida = new Partida();
+                    partida.idPartida = partidaUnidad.idPartida;
+                    Double montoDisponible = ejecucionUnidadParitdaServicios.getMontoDisponible(unidad, partida);
+                    if((montoDisponible - partidaUnidad.monto) < 0)
+                    {
+                        correcto = false;
+                        break;
+                    }
+                }
+
+                if (correcto)
+                {
+                    EstadoEjecucion estadoEjecucion = new EstadoEjecucion();
+                    estadoEjecucion = estadoEjecucionServicios.getEstadoEjecucionSegunNombre("Comprometer");
+
+                    Periodo periodo = new Periodo();
+                    periodo.anoPeriodo = Convert.ToInt32(ddlPeriodos.SelectedValue);
+
+                    Proyectos proyecto = new Proyectos();
+                    proyecto.idProyecto = Convert.ToInt32(ddlProyectos.SelectedValue);
+
+                    ejecucion.anoPeriodo = periodo.anoPeriodo;
+                    ejecucion.idProyecto = proyecto.idProyecto;
+                    ejecucion.estadoEjecucion = estadoEjecucion;
+                    ejecucionServicios.EditarEjecucion(ejecucion);
+                    mostrarDatosTabla();
+
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "cerrarModalComprometer();", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se comprometio correctamente la ejecución número "+ejecucion.idEjecucion.ToString() + "');", true);
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Favor revisar los montos disponibles de cada partida" + "');", true);
+                }
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El monto de la ejecución debe ser igual al monto repartido entre las unidades" + "');", true);
+            }
+        }
+        
+        /// <summary>
+        /// Leonardo Carrion
+        /// 24/mar/2021
+        /// Efecto: levanta modal para confirmar si se desea aprobar la ejecucion
+        /// Requiere: dar clic en el boton de aprobar
+        /// Modifica: -
+        /// Deuvelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnAprobar_Click(object sender, EventArgs e)
+        {
+            int idEjecucion = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
+
+            List<Entidades.Ejecucion> listaEjecuciones = new List<Entidades.Ejecucion>();
+
+            Periodo periodo = new Periodo();
+            periodo.anoPeriodo = Convert.ToInt32(ddlPeriodos.SelectedValue);
+
+            Proyectos proyecto = new Proyectos();
+            proyecto.idProyecto = Convert.ToInt32(ddlProyectos.SelectedValue);
+
+            listaEjecuciones = ejecucionServicios.getEjecucionesPorPeriodoYProyecto(periodo, proyecto);
+
+            Entidades.Ejecucion ejecucion = (Entidades.Ejecucion)listaEjecuciones.Where(eje => eje.idEjecucion == idEjecucion).ToList().First();
+
+            Session["ejecucionAprobar"] = ejecucion;
+            lblConfirmarAprobar.Text = "¿Seguro o segura que desea aprobar la ejecución número " + ejecucion.idEjecucion + "?";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalAprobar();", true);
+        }
+
+        /// <summary>
+        /// Leonardo Carrion
+        /// 24/mar/2021
+        /// Efecto: Cambia el estado de la ejecucion a aprobar y verifica que los montos de las partidas esten correctos
+        /// Requiere: dar clic en el boton de Si
+        /// Modifica: estado de ejecucion
+        /// Devuelve: mesnsaje de confirmacion de accion
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnSiAprobar_Click(object sender, EventArgs e)
+        {
+            Entidades.Ejecucion ejecucion = (Entidades.Ejecucion)Session["ejecucionAprobar"];
+            List<PartidaUnidad> listaUnidadesPartidas = ejecucionUnidadParitdaServicios.getUnidadesPartidasMontoPorEjecucion(ejecucion);
+
+            Double montoResta = listaUnidadesPartidas.Sum(part => part.monto);
+
+            if ((ejecucion.monto - montoResta) == 0)
+            {
+                Boolean correcto = true;
+                foreach (PartidaUnidad partidaUnidad in listaUnidadesPartidas)
+                {
+                    Unidad unidad = new Unidad();
+                    unidad.idUnidad = partidaUnidad.idUnidad;
+                    Partida partida = new Partida();
+                    partida.idPartida = partidaUnidad.idPartida;
+                    Double montoDisponible = ejecucionUnidadParitdaServicios.getMontoDisponible(unidad, partida);
+                    if ((montoDisponible - partidaUnidad.monto) < 0)
+                    {
+                        correcto = false;
+                        break;
+                    }
+                }
+
+                if (correcto)
+                {
+                    EstadoEjecucion estadoEjecucion = new EstadoEjecucion();
+                    estadoEjecucion = estadoEjecucionServicios.getEstadoEjecucionSegunNombre("Aprobado");
+
+                    Periodo periodo = new Periodo();
+                    periodo.anoPeriodo = Convert.ToInt32(ddlPeriodos.SelectedValue);
+
+                    Proyectos proyecto = new Proyectos();
+                    proyecto.idProyecto = Convert.ToInt32(ddlProyectos.SelectedValue);
+
+                    ejecucion.anoPeriodo = periodo.anoPeriodo;
+                    ejecucion.idProyecto = proyecto.idProyecto;
+                    ejecucion.estadoEjecucion = estadoEjecucion;
+                    ejecucionServicios.EditarEjecucion(ejecucion);
+                    mostrarDatosTabla();
+
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "cerrarModalAprobar();", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se aprobó correctamente la ejecución número " + ejecucion.idEjecucion.ToString() + "');", true);
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Favor revisar los montos disponibles de cada partida" + "');", true);
+                }
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El monto de la ejecución debe ser igual al monto repartido entre las unidades" + "');", true);
+            }
         }
         #endregion
     }

@@ -79,15 +79,16 @@
                             </HeaderTemplate>
 
                             <ItemTemplate>
-                                <tr style="text-align: center">
+                                <tr >
+                                        
                                     <td>
                                         <asp:LinkButton ID="btnVer" runat="server" ToolTip="Ver" CommandArgument='<%# Eval("idEjecucion") %>' CssClass="btn glyphicon glyphicon-eye-open" OnClick="btnVer_Click" />
-                                        <asp:LinkButton ID="btnEliminar" runat="server" ToolTip="Editar" CommandArgument='<%# Eval("idEjecucion") %>' CssClass="btn glyphicon glyphicon-trash" OnClick="btnEliminar_Click" />
-                                        <asp:LinkButton ID="btnEditar" runat="server" ToolTip="Editar" CommandArgument='<%# Eval("idEjecucion") %>' CssClass="btn glyphicon glyphicon-pencil" OnClick="btnEditar_Click" />
+                                        <asp:LinkButton ID="btnEliminar" runat="server" ToolTip="Editar" CommandArgument='<%# Eval("idEjecucion") %>' CssClass="btn glyphicon glyphicon-trash" OnClick="btnEliminar_Click" Visible='<%# Convert.ToString(Eval("estadoEjecucion.descripcion"))=="Aprobado"?false:true  %>'/>
+                                        <asp:LinkButton ID="btnEditar" runat="server" ToolTip="Editar" CommandArgument='<%# Eval("idEjecucion") %>' CssClass="btn glyphicon glyphicon-pencil" OnClick="btnEditar_Click" Visible='<%# Convert.ToString(Eval("estadoEjecucion.descripcion"))=="Aprobado"?false:true  %>'/>
                                     </td>
                                     <td>
-                                        <asp:LinkButton ID="btnComprometer" runat="server" ToolTip="Comprometer" Text="Comprometer" CssClass="btn btn-default" CommandArgument='<%# Eval("idEjecucion") %>' OnClick="btnComprometer_Click" />
-                                        <asp:LinkButton ID="btnAprobar" runat="server" ToolTip="Aprobar" Text="Aprobar" CssClass="btn btn-default" CommandArgument='<%# Eval("idEjecucion") %>' OnClick="btnVer_Click" />
+                                        <asp:LinkButton ID="btnAprobar" runat="server" ToolTip="Aprobar" Text="Aprobar" CssClass="btn btn-default" CommandArgument='<%# Eval("idEjecucion") %>' OnClick="btnAprobar_Click" Visible='<%# Convert.ToString(Eval("estadoEjecucion.descripcion"))=="Guardado"?true: (Convert.ToString(Eval("estadoEjecucion.descripcion"))=="Comprometer"?true:false)  %>'/>
+                                        <asp:LinkButton ID="btnComprometer" runat="server" ToolTip="Comprometer" Text="Comprometer" CssClass="btn btn-default" CommandArgument='<%# Eval("idEjecucion") %>' OnClick="btnComprometer_Click" Visible='<%# Convert.ToString(Eval("estadoEjecucion.descripcion"))=="Guardado"?true:false  %>'/>
                                     </td>
                                     <td>
                                         <%# Eval("idEjecucion") %>
@@ -98,7 +99,7 @@
                                     
                                     </td>
 
-                                    <td>
+                                    <td style='<%# Convert.ToString(Eval("estadoEjecucion.descripcion"))=="Guardado"?"background-color:#E74C3C; color: #fff;":(Convert.ToString(Eval("estadoEjecucion.descripcion"))=="Comprometer")?"background-color:#D4AC0D":"background-color:white" %>'>
                                         <%# Eval("estadoEjecucion.descripcion") %>
                                     </td>
                                     <td>
@@ -183,7 +184,7 @@
                         </div>
                         <%-- fin campos a llenar --%>
                         <div class="modal-footer" style="text-align: center">
-                            <asp:Button ID="btnSiComprometer" runat="server" Text="Guardar" CssClass="btn btn-primary" />
+                            <asp:Button ID="btnSiComprometer" runat="server" Text="Si" CssClass="btn btn-primary" OnClick="btnSiComprometer_Click"/>
                             <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                         </div>
                     </ContentTemplate>
@@ -193,10 +194,52 @@
     </div>
     <!-- fin Modal comproter-->
 
+    <!-- Modal Aprobar -->
+    <div id="modalAprobar" class="modal fade" role="alertdialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <asp:UpdatePanel runat="server">
+                    <ContentTemplate>
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Repartir gastos</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <%-- campos a llenar --%>
+                                <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+                                    <asp:Label ID="lblConfirmarAprobar" runat="server" Text="¿Seguro o segura que desea aprobar la ejecución?" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+                            </div>
+                        </div>
+                        <%-- fin campos a llenar --%>
+                        <div class="modal-footer" style="text-align: center">
+                            <asp:Button ID="btnSiAprobar" runat="server" Text="Si" CssClass="btn btn-primary" OnClick="btnSiAprobar_Click"/>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                        </div>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+            </div>
+        </div>
+    </div>
+    <!-- fin Modal Aprobar-->
 
     <script type="text/javascript">
         function activarModalComprometer() {
             $('#modalComprometer').modal('show');
+        };
+
+        function cerrarModalComprometer() {
+            $('#modalComprometer').modal('hide');
+        };
+        function activarModalAprobar() {
+            $('#modalAprobar').modal('show');
+        };
+
+        function cerrarModalAprobar() {
+            $('#modalAprobar').modal('hide');
         };
     </script>
 </asp:Content>
