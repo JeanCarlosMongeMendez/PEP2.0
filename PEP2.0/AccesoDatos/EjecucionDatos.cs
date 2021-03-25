@@ -509,7 +509,7 @@ namespace AccesoDatos
                 TipoTramite tipoTramite = new TipoTramite();
                 Ejecucion ejecucion = new Ejecucion();
                 ejecucion.idEjecucion = Convert.ToInt32(reader["id_ejecucion"].ToString());
-                ejecucion.monto = Convert.ToInt32(reader["monto"].ToString());
+                ejecucion.monto = Convert.ToDouble(reader["monto"].ToString());
                 ejecucion.numeroReferencia = Convert.ToString(reader["numero_referencia"].ToString());
                 tipoTramite.nombreTramite = Convert.ToString(reader["nombre_tramite"].ToString());
                 tipoTramite.idTramite = Convert.ToInt32(reader["id_tramite"].ToString());
