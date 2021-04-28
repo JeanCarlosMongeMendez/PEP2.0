@@ -43,12 +43,15 @@
   <ItemGroup>
     <Compile Include="AnualidadServicios.cs" />
     <Compile Include="ArchivoEjecucionServicios.cs" />
+    <Compile Include="CajaChicaServicios.cs" />
+    <Compile Include="CajaChicaUnidadPartidaServicios.cs" />
     <Compile Include="CargaSocialServicios.cs" />
     <Compile Include="ConexionServicios.cs" />
     <Compile Include="ContactoServicios.cs" />
     <Compile Include="EjecucionServicios.cs" />
     <Compile Include="EjecucionUnidadParitdaServicios.cs" />
     <Compile Include="EscalaSalarialServicios.cs" />
+    <Compile Include="EstadoCajaChicaServicios.cs" />
     <Compile Include="EstadoEjecucionServicios.cs" />
     <Compile Include="EstadoPresupIngresoServicios.cs" />
     <Compile Include="EstadoPresupuestoServicios.cs" />

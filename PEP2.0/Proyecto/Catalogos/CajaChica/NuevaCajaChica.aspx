@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMaster.Master" AutoEventWireup="true" CodeBehind="NuevaEjecucion.aspx.cs" Inherits="Proyecto.Catalogos.Ejecucion.NuevaEjecucion" MaintainScrollPositionOnPostback="true" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMaster.Master" AutoEventWireup="true" CodeBehind="NuevaCajaChica.aspx.cs" Inherits="Proyecto.Catalogos.CajaChica.NuevaCajaChica" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
@@ -7,14 +7,23 @@
     <div class="row">
         <asp:UpdatePanel ID="UpdatePanel1" runat="server">
             <ContentTemplate>
-                <%-- titulo pantalla --%>
+                 <%-- titulo pantalla --%>
                 <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center">
-                    <asp:Label ID="label" runat="server" Text="Nueva Ejecución" Font-Size="Large" ForeColor="Black"></asp:Label>
+                    <asp:Label ID="label" runat="server" Text="Nueva Solicitud Caja Chica" Font-Size="Large" ForeColor="Black"></asp:Label>
                 </div>
                 <%-- fin titulo pantalla --%>
-                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+
+                 <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
                     <hr />
                 </div>
+                <div class="col-md-12 col-xs-12 col-sm-12">
+                    <asp:Label ID="label4" runat="server" Text="Numero Caja Chica:" Font-Size="Large" ForeColor="Black"></asp:Label>
+                    <asp:Label ID="Label5" runat="server" Text="" Font-Size="Large" ForeColor="Black"></asp:Label>
+                </div>
+                 <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                    <br />
+                </div>
+               
                 <div class="col-md-12 col-xs-12 col-sm-12">
                     <asp:Label ID="label1" runat="server" Text="Período seleccionado:" Font-Size="Large" ForeColor="Black"></asp:Label>
                     <asp:Label ID="lblPeriodo" runat="server" Text="" Font-Size="Large" ForeColor="Black"></asp:Label>
@@ -111,7 +120,7 @@
                     <hr />
                 </div>
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
-             <asp:Label ID="Label3" runat="server" Text="Partidas" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+               <asp:Label ID="Label3" runat="server" Text="Partidas" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                     <asp:Button ID="btnAsociarPartidas" runat="server" Text="Asociar" CssClass="btn btn-primary" OnClick="btnAsociarPartidas_Click" />
                 </div>
                 <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
@@ -198,24 +207,24 @@
                     <br />
                 </div>
 
-                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: left">
+<%--                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: left">
                     <asp:Label ID="label4" runat="server" Text="Tipo de tramite" Font-Size="Large" ForeColor="Black"></asp:Label>
-                </div>
-                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+                </div>--%>
+               <%-- <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
                     <asp:DropDownList AutoPostBack="true" ID="ddlTipoTramite" runat="server" CssClass="form-control" OnSelectedIndexChanged="ddlTipoTramite_SelectedIndexChanged"></asp:DropDownList>
                 </div>
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 col-lg-12" id="divTipoTramiteOtro" runat="server" visible="false">
                     <asp:Label ID="label5" runat="server" Text="Ingrese tipo de tramite" Font-Size="Large" ForeColor="Black"></asp:Label>
                     <asp:TextBox ID="txtTipoTramiteOtro" runat="server" CssClass="form-control"></asp:TextBox>
-                </div>
+                </div>--%>
 
                 <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
                     <br />
                 </div>
 
                 <div class="form-group col-md-12 col-xs-12 col-sm-12 col-lg-12" id="div1" runat="server" >
-                    <asp:Label ID="label6" runat="server" Text="Número de referencia" Font-Size="Large" ForeColor="Black"></asp:Label>
-                    <asp:TextBox ID="txtNumeroReferencia" runat="server" CssClass="form-control"></asp:TextBox>
+                    <asp:Label ID="label6" runat="server" Text="Detalle" Font-Size="Large" ForeColor="Black"></asp:Label>
+                    <asp:TextBox ID="txtDetalle" runat="server" CssClass="form-control"></asp:TextBox>
                 </div>
 
                 <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
@@ -328,7 +337,7 @@
                 </div>
 
                 <!-- Archivos -->
-                <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
+            <%--    <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12">
                         <div class="col-md-2 col-xs-2 col-sm-2">
                             <asp:Label ID="lblArchivos" runat="server" Text="Archivos " Font-Size="Medium" ForeColor="Black" Font-Bold="true" CssClass="label"></asp:Label>
                         </div>
@@ -348,7 +357,7 @@
                             <br />
                             <asp:Label ID="lblArchivosVacio" runat="server" Text="Debe seleccionar al menos un archivo " Font-Size="Small" ForeColor="Black" Font-Bold="true" CssClass="label"></asp:Label>
                         </div>
-                    </div>
+                    </div>--%>
                 <!-- fin archivos -->
 
                 <div class="col-md-12 col-xs-12 col-sm-12 mt-2">
@@ -356,114 +365,13 @@
                 </div>
 
                 <div class="col-md-12 col-xs-12 col-sm-12">
-                    <asp:Button ID="btnGuardar" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="btnGuardar_Click" />
+                    <%--<asp:Button ID="btnGuardar" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="btnGuardar_Click" />--%>
                     <%--<asp:Button ID="btnComprometer" runat="server" Text="Comprometer" CssClass="btn btn-primary" OnClick="btnComprometer_Click" />--%>
-                    <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" CssClass="btn btn-danger" OnClick="btnCancelar_Click" />
+                    <%--<asp:Button ID="btnCancelar" runat="server" Text="Cancelar" CssClass="btn btn-danger" OnClick="btnCancelar_Click" />--%>
                 </div>
-
             </ContentTemplate>
         </asp:UpdatePanel>
-    </div>
-
-    <!-- Modal Unidades -->
-    <div id="modalUnidades" class="modal fade" role="alertdialog">
-        <div class="modal-dialog modal-lg">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <asp:UpdatePanel runat="server">
-                    <ContentTemplate>
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Seleccionar Unidades</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <%-- campos a llenar --%>
-                                <%-- tabla--%>
-                                <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
-                                    <table class="table table-bordered">
-                                        <thead style="text-align: center">
-                                            <tr style="text-align: center" class="btn-primary">
-                                                <th></th>
-                                                <th>Unidad</th>
-                                            </tr>
-                                        </thead>
-                                        <tr>
-                                            <td></td>
-                                            <td>
-                                                <asp:TextBox ID="txtBuscarUnidadSinAsociar" runat="server" CssClass="form-control chat-input" AutoPostBack="true" placeholder="Filtro unidad" OnTextChanged="txtBuscarUnidadSinAsociar_TextChanged"></asp:TextBox></td>
-                                        </tr>
-
-                                        <asp:Repeater ID="rpUnidadesSinAsociar" runat="server">
-                                            <HeaderTemplate>
-                                            </HeaderTemplate>
-
-                                            <ItemTemplate>
-                                                <tr style="text-align: center">
-                                                    <td>
-                                                        <asp:LinkButton ID="btnSeleccionar" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("idUnidad") %>' CssClass="btn glyphicon glyphicon-ok" OnClick="btnSeleccionar_Click" />
-                                                    </td>
-                                                    <td>
-                                                        <%# Eval("nombreUnidad") %>
-                                                    </td>
-                                                </tr>
-                                            </ItemTemplate>
-
-                                            <FooterTemplate>
-                                            </FooterTemplate>
-                                        </asp:Repeater>
-                                    </table>
-                                </div>
-                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
-                                    <center>
-                    <table class="table" style="max-width:664px;">
-                        <tr style="padding:1px !important">
-                            <td style="padding:1px !important">
-                                <asp:LinkButton ID="lbPrimero1" runat="server" CssClass="btn btn-primary" OnClick="lbPrimero1_Click"><span class="glyphicon glyphicon-fast-backward"></span></asp:LinkButton>
-                                </td>
-                            <td style="padding:1px !important">
-                                <asp:LinkButton ID="lbAnterior1" runat="server" CssClass="btn btn-default" OnClick="lbAnterior1_Click"><span class="glyphicon glyphicon-backward"></span></asp:LinkButton>
-                            </td>
-                            <td style="padding:1px !important">
-                                <asp:DataList ID="rptPaginacion1" runat="server"
-                                    OnItemCommand="rptPaginacion1_ItemCommand"
-                                    OnItemDataBound="rptPaginacion1_ItemDataBound" RepeatDirection="Horizontal">
-                                    <ItemTemplate>
-                                        <asp:LinkButton ID="lbPaginacion1" runat="server" CssClass="btn btn-default"
-                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
-                                            Text='<%# Eval("PaginaText") %>' ></asp:LinkButton>
-                                    </ItemTemplate>
-                                </asp:DataList>
-                            </td>
-                            <td style="padding:1px !important">
-                                <asp:LinkButton ID="lbSiguiente1" CssClass="btn btn-default" runat="server" OnClick="lbSiguiente1_Click"><span class="glyphicon glyphicon-forward"></span></asp:LinkButton>
-                                </td>
-                            <td style="padding:1px !important">
-                                <asp:LinkButton ID="lbUltimo1" CssClass="btn btn-primary" runat="server" OnClick="lbUltimo1_Click"><span class="glyphicon glyphicon-fast-forward"></span></asp:LinkButton>
-                                </td>
-                            <td style="padding:1px !important">
-                                <asp:Label ID="lblpagina1" runat="server" Text=""></asp:Label>
-                            </td>
-                        </tr>
-                    </table>
-                        </center>
-                                </div>
-                                <%-- fin de tabla--%>
-                                <%-- fin campos a llenar --%>
-                            </div>
-                            <div class="modal-footer" style="text-align: center">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                            </div>
-                        </div>
-                    </ContentTemplate>
-                </asp:UpdatePanel>
-            </div>
-        </div>
-    </div>
-    <!-- fin Modal Unidades -->
-
-    <!-- Modal Partidas -->
+            <!-- Modal Partidas -->
     <div id="modalPartidas" class="modal fade" role="alertdialog">
         <div class="modal-dialog modal-lg">
 
@@ -567,7 +475,105 @@
     </div>
     <!-- fin Modal partidas -->
 
-    <!-- Modal Partidas unidades -->
+    </div>
+    <!-- Modal Unidades -->
+    <div id="modalUnidades" class="modal fade" role="alertdialog">
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <asp:UpdatePanel runat="server">
+                    <ContentTemplate>
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Seleccionar Unidades</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <%-- campos a llenar --%>
+                                <%-- tabla--%>
+                                <div class="table-responsive col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                                    <table class="table table-bordered">
+                                        <thead style="text-align: center">
+                                            <tr style="text-align: center" class="btn-primary">
+                                                <th></th>
+                                                <th>Unidad</th>
+                                            </tr>
+                                        </thead>
+                                        <tr>
+                                            <td></td>
+                                            <td>
+                                                <asp:TextBox ID="txtBuscarUnidadSinAsociar" runat="server" CssClass="form-control chat-input" AutoPostBack="true" placeholder="Filtro unidad" OnTextChanged="txtBuscarUnidadSinAsociar_TextChanged"></asp:TextBox></td>
+                                        </tr>
+
+                                        <asp:Repeater ID="rpUnidadesSinAsociar" runat="server">
+                                            <HeaderTemplate>
+                                            </HeaderTemplate>
+
+                                            <ItemTemplate>
+                                                <tr style="text-align: center">
+                                                    <td>
+                                                        <asp:LinkButton ID="btnSeleccionar" runat="server" ToolTip="Seleccionar" CommandArgument='<%# Eval("idUnidad") %>' CssClass="btn glyphicon glyphicon-ok" OnClick="btnSeleccionar_Click" />
+                                                    </td>
+                                                    <td>
+                                                        <%# Eval("nombreUnidad") %>
+                                                    </td>
+                                                </tr>
+                                            </ItemTemplate>
+
+                                            <FooterTemplate>
+                                            </FooterTemplate>
+                                        </asp:Repeater>
+                                    </table>
+                                </div>
+                              <div class="col-md-12 col-xs-12 col-sm-12" style="text-align: center; overflow-y: auto;">
+                                    <center>
+                    <table class="table" style="max-width:664px;">
+                        <tr style="padding:1px !important">
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbPrimero1" runat="server" CssClass="btn btn-primary" OnClick="lbPrimero1_Click"><span class="glyphicon glyphicon-fast-backward"></span></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbAnterior1" runat="server" CssClass="btn btn-default" OnClick="lbAnterior1_Click"><span class="glyphicon glyphicon-backward"></span></asp:LinkButton>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:DataList ID="rptPaginacion1" runat="server"
+                                    OnItemCommand="rptPaginacion1_ItemCommand"
+                                    OnItemDataBound="rptPaginacion1_ItemDataBound" RepeatDirection="Horizontal">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lbPaginacion1" runat="server" CssClass="btn btn-default"
+                                            CommandArgument='<%# Eval("IndexPagina") %>' CommandName="nuevaPagina"
+                                            Text='<%# Eval("PaginaText") %>' ></asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:DataList>
+                            </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbSiguiente1" CssClass="btn btn-default" runat="server" OnClick="lbSiguiente1_Click"><span class="glyphicon glyphicon-forward"></span></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:LinkButton ID="lbUltimo1" CssClass="btn btn-primary" runat="server" OnClick="lbUltimo1_Click"><span class="glyphicon glyphicon-fast-forward"></span></asp:LinkButton>
+                                </td>
+                            <td style="padding:1px !important">
+                                <asp:Label ID="lblpagina1" runat="server" Text=""></asp:Label>
+                            </td>
+                        </tr>
+                    </table>
+                        </center>
+                                </div>
+                                <%-- fin de tabla--%>
+                                <%-- fin campos a llenar --%>
+                     </div>
+                            <div class="modal-footer" style="text-align: center">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+            </div>
+        </div>
+    </div>
+    <!-- fin Modal Unidades -->
+       <!-- Modal Partidas unidades -->
     <div id="modalUnidadesPartidas" class="modal fade" role="alertdialog">
         <div class="modal-dialog modal-lg">
 
