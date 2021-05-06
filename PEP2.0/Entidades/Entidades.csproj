@@ -66,8 +66,10 @@
     <Compile Include="Proyeccion.cs" />
     <Compile Include="Proyeccion_CargaSocial.cs" />
     <Compile Include="Proyectos.cs" />
+    <Compile Include="ReporteDetalleEjecucion.cs" />
     <Compile Include="Reporte_Egresos.cs" />
     <Compile Include="Reporte_Egresos_Unidad.cs" />
+    <Compile Include="Reporte_Ejecuciones.cs" />
     <Compile Include="SubUnidad.cs" />
     <Compile Include="TipoTramite.cs" />
     <Compile Include="Unidad.cs" />
