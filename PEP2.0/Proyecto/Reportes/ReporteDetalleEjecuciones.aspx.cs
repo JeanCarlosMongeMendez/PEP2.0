@@ -51,7 +51,7 @@ namespace Proyecto.Reportes
         #region logica
         /// <summary>
         /// Leonardo Carrion
-        /// 21/oct/2019
+        /// 06/may/2021
         /// Efecto: llean el DropDownList con los periodos que se encuentran en la base de datos
         /// Requiere: - 
         /// Modifica: DropDownList
@@ -95,7 +95,7 @@ namespace Proyecto.Reportes
 
         /// <summary>
         /// Leonardo Carrion
-        /// 21/oct/2019
+        /// 06/may/2021
         /// Efecto: llean el DropDownList con los proyectos que se encuentran en la base de datos segun el periodo seleccionado
         /// Requiere: Periodo
         /// Modifica: DropDownList y datos del reporte
@@ -118,21 +118,14 @@ namespace Proyecto.Reportes
                         ddlProyectos.Items.Add(itemLB);
                     }
 
-                    //Periodo periodo = new Periodo();
-                    //periodo.anoPeriodo = Convert.ToInt32(ddlPeriodos.SelectedValue);
-
-                    //Proyectos proyecto = new Proyectos();
-                    //proyecto.idProyecto = Convert.ToInt32(ddlProyectos.SelectedValue);
-                    
                     cargarUnidades();
-                    //cargarDatosReporte();
                 }
             }
         }
 
         /// <summary>
         /// Leonardo Carrion
-        /// 09/ene/2019
+        /// 06/may/2021
         /// Efecto: carga el DropDownList de unidades
         /// Requiere: -
         /// Modifica: DropDownList y datos del reporte
@@ -141,8 +134,6 @@ namespace Proyecto.Reportes
         private void cargarUnidades()
         {
             ddlUnidades.Items.Clear();
-            //ListItem unidades = new ListItem("Todas", "0");
-            //ddlUnidades.Items.Add(unidades);
 
             List<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(Convert.ToInt32(ddlProyectos.SelectedValue));
 
@@ -157,7 +148,7 @@ namespace Proyecto.Reportes
 
         /// <summary>
         /// Leonardo Carrion
-        /// 21/oct/2019
+        /// 06/may/2021
         /// Efecto: cargar el reporte con los datos filtrados
         /// Requiere: -
         /// Modifica: datasource del reporte
@@ -189,9 +180,10 @@ namespace Proyecto.Reportes
         }
         #endregion
         #region eventos
+
         /// <summary>
         /// Leonardo Carrion
-        /// 21/oct/2019
+        /// 06/may/2021
         /// Efecto: cambia los datos de la tabla segun el periodo seleccionado
         /// Requiere: cambiar periodo
         /// Modifica: datos de la tabla
@@ -201,15 +193,12 @@ namespace Proyecto.Reportes
         /// <param name="e"></param>
         protected void ddlPeriodo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //Periodo periodo = new Periodo();
-            //periodo.anoPeriodo = Convert.ToInt32(ddlPeriodos.SelectedValue);
-
             CargarProyectos();
         }
 
         /// <summary>
         /// Leonardo Carrion
-        /// 21/oct/2019
+        /// 06/may/2021
         /// Efecto: cargar la tabla de plan estrategico y muestra los montos de las partidas
         /// Requiere: cambiar la unidad
         /// Modifica: plan estrategico y montos de las partidas
@@ -219,15 +208,19 @@ namespace Proyecto.Reportes
         /// <param name="e"></param>
         protected void ddlProyecto_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //Periodo periodo = new Periodo();
-            //periodo.anoPeriodo = Convert.ToInt32(ddlPeriodos.SelectedValue);
-
-            //Proyectos proyecto = new Proyectos();
-            //proyecto.idProyecto = Convert.ToInt32(ddlProyectos.SelectedValue);
-
             cargarDatosReporte();
         }
 
+        /// <summary>
+        /// Leonardo Carrion
+        /// 06/may/2021
+        /// Efecto: actualiza los datos del reporte cuando se cambia de unidad
+        /// Requiere: cambiar de unidad
+        /// Modifica: datos del reporte
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void ddlUnidades_SelectedIndexChanged(object sender, EventArgs e)
         {
             cargarDatosReporte();
