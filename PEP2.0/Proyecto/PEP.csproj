@@ -86,6 +86,11 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Catalogos\CajaChica\AdministrarCajaChica.aspx" />
+    <Content Include="Catalogos\CajaChica\EditarCajaChica.aspx" />
+    <Content Include="Catalogos\CajaChica\EliminarCajaChica.aspx" />
+    <Content Include="Catalogos\CajaChica\NuevaCajaChica.aspx" />
+    <Content Include="Catalogos\CajaChica\VerCajaChica.aspx" />
     <Content Include="Catalogos\CargasSociales\AdministrarCargasSociales.aspx" />
     <Content Include="Catalogos\Ejecucion\AdministrarEjecuciones.aspx" />
     <Content Include="Catalogos\Ejecucion\EditarEjecucion.aspx" />
@@ -183,6 +188,41 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Catalogos\CajaChica\AdministrarCajaChica.aspx.cs">
+      <DependentUpon>AdministrarCajaChica.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Catalogos\CajaChica\AdministrarCajaChica.aspx.designer.cs">
+      <DependentUpon>AdministrarCajaChica.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Catalogos\CajaChica\EditarCajaChica.aspx.cs">
+      <DependentUpon>EditarCajaChica.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Catalogos\CajaChica\EditarCajaChica.aspx.designer.cs">
+      <DependentUpon>EditarCajaChica.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Catalogos\CajaChica\EliminarCajaChica.aspx.cs">
+      <DependentUpon>EliminarCajaChica.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Catalogos\CajaChica\EliminarCajaChica.aspx.designer.cs">
+      <DependentUpon>EliminarCajaChica.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Catalogos\CajaChica\NuevaCajaChica.aspx.cs">
+      <DependentUpon>NuevaCajaChica.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Catalogos\CajaChica\NuevaCajaChica.aspx.designer.cs">
+      <DependentUpon>NuevaCajaChica.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Catalogos\CajaChica\VerCajaChica.aspx.cs">
+      <DependentUpon>VerCajaChica.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Catalogos\CajaChica\VerCajaChica.aspx.designer.cs">
+      <DependentUpon>VerCajaChica.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Catalogos\CargasSociales\AdministrarCargasSociales.aspx.cs">
       <DependentUpon>AdministrarCargasSociales.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

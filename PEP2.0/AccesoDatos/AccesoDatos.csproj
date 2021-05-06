@@ -45,12 +45,15 @@
   <ItemGroup>
     <Compile Include="AnualidadDatos.cs" />
     <Compile Include="ArchivoEjecucionDatos.cs" />
+    <Compile Include="CajaChicaDatos.cs" />
+    <Compile Include="CajaChicaUnidadPartidaDatos.cs" />
     <Compile Include="CargaSocialDatos.cs" />
     <Compile Include="ConexionDatos.cs" />
     <Compile Include="ContactoDatos.cs" />
     <Compile Include="EjecucionDatos.cs" />
     <Compile Include="EjecucionUnidadParitdaDatos.cs" />
     <Compile Include="EscalaSalarialDatos.cs" />
+    <Compile Include="EstadoCajaChicaDatos.cs" />
     <Compile Include="EstadoEjecucionDatos.cs" />
     <Compile Include="EstadoPresupIngresoDatos.cs" />
     <Compile Include="EstadoPresupuestoDatos.cs" />
