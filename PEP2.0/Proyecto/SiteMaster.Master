@@ -144,13 +144,18 @@
                                           
                                         </ul>
                                     </li>
+
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Reportes<span class="caret"></span></a>
                                         <ul class="dropdown-menu" role="menu">
                                             <li><a href='<%=Page.ResolveUrl("~/Reportes/ReporteEgresos.aspx") %>'>Reporte Egreso</a></li>
                                             <li><a href='<%=Page.ResolveUrl("~/Reportes/ReporteEgresosUnidades.aspx") %>'>Reporte Egreso por unidades</a></li>
+                                            <li><a href='<%=Page.ResolveUrl("~/Reportes/ReporteEjecuciones.aspx") %>'>Reporte Egreso ejecuciones</a></li>
+                                            <li><a href='<%=Page.ResolveUrl("~/Reportes/ReporteDetalleEjecuciones.aspx") %>'>Reporte detalle ejecuciones</a></li>
+                                            
                                         </ul>
                                     </li>
+
                                     <li>
                                         <a href='<%=Page.ResolveUrl("~/") %>'>Ayuda</a>
                                     </li>
