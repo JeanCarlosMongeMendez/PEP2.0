@@ -46,7 +46,8 @@
                             <tr style="text-align: center" class="btn-primary">
                                 <th></th>
                                 <th></th>
-                                <th>Número de Caja Chica</th> 
+                                <th style="display:none">Número de Caja Chica</th> 
+                                <th>Número Solicitud de Caja Chica</th> 
                                 <th>Estado</th>
                                 <th>Monto</th>
                                 <th>Realizado por</th>
@@ -86,7 +87,11 @@
                                         <asp:LinkButton ID="btnAprobar" runat="server" ToolTip="Aprobar" Text="Aprobar" CssClass="btn btn-default" CommandArgument='<%# Eval("idCajaChica") %>' OnClick="btnAprobar_Click" Visible='<%# Convert.ToString(Eval("idEstadoCajaChica.descripcion"))=="Guardado"?true: (Convert.ToString(Eval("estadoEjecucion.descripcion"))!="Rechazado"?true:false)  %>'/>
                                         <%--<asp:LinkButton ID="btnRechazar" runat="server" ToolTip="Rechazar" Text="Rechazar" CssClass="btn btn-default" CommandArgument='<%# Eval("idEjecucion") %>' OnClick="btnRechazar_Click" Visible='<%# Convert.ToString(Eval("estadoEjecucion.descripcion"))=="Guardado"?true:false  %>'/>--%>
                                     </td>
-                                    <td>
+                                    <td >
+                                        <%# Eval("numeroCajaChica") %>
+                                    
+                                    </td>
+                                    <td style ="display:none">
                                         <%# Eval("idCajaChica") %>
                                     
                                     </td>

@@ -365,9 +365,9 @@
                 </div>
 
                 <div class="col-md-12 col-xs-12 col-sm-12">
-                    <%--<asp:Button ID="btnGuardar" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="btnGuardar_Click" />--%>
+                    <asp:Button ID="btnGuardar" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="btnGuardar_Click" />
                     <%--<asp:Button ID="btnComprometer" runat="server" Text="Comprometer" CssClass="btn btn-primary" OnClick="btnComprometer_Click" />--%>
-                    <%--<asp:Button ID="btnCancelar" runat="server" Text="Cancelar" CssClass="btn btn-danger" OnClick="btnCancelar_Click" />--%>
+                    <asp:Button ID="btnCancelar" runat="server" Text="Cancelar" CssClass="btn btn-danger" OnClick="btnCancelar_Click" />
                 </div>
             </ContentTemplate>
         </asp:UpdatePanel>

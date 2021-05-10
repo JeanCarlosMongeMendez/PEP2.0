@@ -12,7 +12,15 @@ namespace Servicios
     {
        CajaChicaDatos cajaChicaDatos = new CajaChicaDatos();
 
+        /// <summary>
+        /// Editar una Ejecucion
+        /// </summary>
+        /// <param name="ejecucion">Ejecucion</param>
 
+        public int InsertarCajaChica(CajaChica cajaChica)
+        {
+            return cajaChicaDatos.insertarCajaChica(cajaChica);
+        }
         /// <summary>
         /// Editar una Ejecucion
         /// </summary>
@@ -42,6 +50,9 @@ namespace Servicios
         {
             return cajaChicaDatos.getNumeroSolicitudCajaChica(año);
         }
-        
+        public void eliminarCajaChica(int idCajaChica)
+        {
+            cajaChicaDatos.eliminarCajaChica(idCajaChica);
+        }
     }
 }

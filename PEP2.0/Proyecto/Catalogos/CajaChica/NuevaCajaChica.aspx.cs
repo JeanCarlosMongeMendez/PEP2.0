@@ -20,6 +20,7 @@ namespace Proyecto.Catalogos.CajaChica
         PartidaServicios partidaServicios = new PartidaServicios();
         CajaChicaServicios cajaChicaServicios = new CajaChicaServicios();
         CajaChicaUnidadPartidaServicios cajaChicaUnidadPartidaServicios = new CajaChicaUnidadPartidaServicios();
+        EstadoCajaChicaServicios estadoCajaChicaServicios = new EstadoCajaChicaServicios();
         #endregion
         #region paginacion
         readonly PagedDataSource pgsource = new PagedDataSource();
@@ -1428,6 +1429,99 @@ namespace Proyecto.Catalogos.CajaChica
                     }
                 }
             }
+        }
+        /// <summary>
+        /// Leonardo Carrion
+        /// 09/mar/2021
+        /// Efecto: guarda los datos seleccionados en la base de datos
+        /// Requiere: dar clic al boton de guardar
+        /// Modifica: -
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnGuardar_Click(object sender, EventArgs e)
+        {
+          
+                List<PartidaUnidad> listaPartidaUnidadAsociadas = (List<PartidaUnidad>)Session["listaPartidaUnidadAsociadas"];
+
+                if (listaPartidaUnidadAsociadas.Count > 0)
+                {
+                    Entidades.CajaChica cajaChica = new Entidades.CajaChica();
+
+                    Periodo periodo = new Periodo();
+                    periodo.anoPeriodo = Convert.ToInt32(Session["periodoSeleccionado"]);
+
+                    EstadoCajaChica estadoCajaChica = new EstadoCajaChica();
+                    estadoCajaChica = estadoCajaChicaServicios.getEstadoCajaChicaSegunNombre("Guardado");
+
+                    Proyectos proyecto = new Proyectos();
+                    proyecto.idProyecto = Convert.ToInt32(Session["proyectoSeleccionado"]);
+
+                    Double.TryParse(txtMonto.Text, out Double monto);
+
+                   
+
+                    cajaChica.idEstadoCajaChica = estadoCajaChica;
+                    cajaChica.anoPeriodo = periodo.anoPeriodo;
+                    cajaChica.idProyedto = proyecto.idProyecto;
+                    cajaChica.monto = monto;
+
+                //cajaChica.numeroReferencia = txtNumeroReferencia.Text;
+
+                if (txtDetalle.Text == null)
+                {
+                    txtDetalle.Text = "";
+                }
+
+                 cajaChica.comentario = txtDetalle.Text;
+                  cajaChica.realizadoPor = (String)Session["nombreCompleto"];
+                    
+                    cajaChica.fecha = DateTime.Now;
+
+                    cajaChica.idCajaChica = cajaChicaServicios.InsertarCajaChica(cajaChica);
+
+                    foreach (PartidaUnidad partidaUnidad in listaPartidaUnidadAsociadas)
+                    {
+                        cajaChicaUnidadPartidaServicios.insertarCajaChicaPartidaUnidad(cajaChica.idCajaChica, partidaUnidad.idUnidad, partidaUnidad.idPartida, partidaUnidad.monto);
+                    }
+
+                    //if (fuArchivos.HasFiles)
+                    //{
+                    //    List<ArchivoEjecucion> listaArchivos = guardarArchivos(ejecucion, fuArchivos);
+
+                    //    foreach (ArchivoEjecucion archivo in listaArchivos)
+                    //    {
+                    //        archivoEjecucionServicios.insertarArchivoEjecucion(archivo);
+                    //    }
+                    //}
+
+                    String url = Page.ResolveUrl("~/Catalogos/CajaChica/AdministrarCajaChica.aspx");
+                    Response.Redirect(url);
+
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se guardo con exito" + "');", true);
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Debe de repartir los gastos entre la unidad(es)" + "');", true);
+                }
+
+            
+        }
+        /// <summary>
+        /// Leonardo Carrion
+        /// 09/mar/2021
+        /// Efecto: redirecciona a la pantalla de Administrar Ejecuciones
+        /// Requiere: dar clic en cancelar
+        /// Modifica: -
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnCancelar_Click(object sender, EventArgs e)
+        {
+            String url = Page.ResolveUrl("~/Catalogos/CajaChica/AdministrarCajaChica.aspx");
+            Response.Redirect(url);
         }
         #endregion
         #region logica

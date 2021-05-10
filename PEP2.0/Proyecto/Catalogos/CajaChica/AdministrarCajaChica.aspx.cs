@@ -326,7 +326,7 @@ namespace Proyecto.Catalogos.CajaChica
                 ingresado = txtBuscarIngresado.Text;
             }
 
-             List<Entidades.CajaChica> listaCajaChicaFiltrada = (List<Entidades.CajaChica>)listaCajaChica.Where(eje => eje.idCajaChica.ToString().ToUpper().Contains(numeroCajaChica.ToUpper()) &&
+             List<Entidades.CajaChica> listaCajaChicaFiltrada = (List<Entidades.CajaChica>)listaCajaChica.Where(eje => eje.numeroCajaChica.ToString().ToUpper().Contains(numeroCajaChica.ToUpper()) &&
             eje.idEstadoCajaChica.descripcion.ToUpper().Contains(estado.ToUpper()) &&
             eje.monto.ToString().ToUpper().Contains(monto.ToUpper()) &&
             eje.realizadoPor.ToUpper().Contains(realizadoPor.ToUpper()) && eje.fecha.ToShortDateString().ToUpper().Contains(ingresado.ToUpper())).ToList();

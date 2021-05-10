@@ -12,6 +12,37 @@ namespace AccesoDatos
         private ConexionDatos conexion = new ConexionDatos();
 
         /// <summary>
+        /// Inserta Ejecucion
+        /// </summary>
+        /// <param name="cajaChica">ejecucion</param>
+        public int insertarCajaChica(CajaChica cajaChica)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+            int respuesta = 0;
+            string numeroSolicitud;
+            sqlConnection.Open();
+            String consulta = @"insert Solicitud_Caja_Chica(numero,ano_periodo,id_proyecto,fecha,realizado_por,monto,id_estado_caja_chica,comentario,numero_caja_chica) output INSERTED.id_solicitud_caja_chica
+                                            values(@ano_periodo,@id_proyecto,@fecha,@realizadoPor,@monto,@id_estado_caja_chica,@comentario,@numero_caja_chica)";
+
+            SqlCommand command = new SqlCommand(consulta, sqlConnection);
+
+
+            command.Parameters.AddWithValue("@ano_periodo", cajaChica.anoPeriodo);
+            command.Parameters.AddWithValue("@id_proyecto", cajaChica.idProyedto);
+            command.Parameters.AddWithValue("@fecha", DateTime.Now);
+            command.Parameters.AddWithValue("@realizadoPor", cajaChica.realizadoPor);
+            command.Parameters.AddWithValue("@monto", cajaChica.monto);
+            command.Parameters.AddWithValue("@id_estado_caja_chica", cajaChica.idEstadoCajaChica.idEstadoCajaChica);
+            command.Parameters.AddWithValue("@comentario", cajaChica.comentario); 
+            numeroSolicitud = getNumeroSolicitudCajaChica(cajaChica.anoPeriodo);
+            command.Parameters.AddWithValue("@numero_caja_chica", cajaChica.numeroCajaChica);
+            respuesta = (int)command.ExecuteScalar();
+
+
+            sqlConnection.Close();
+            return respuesta;
+        }
+        /// <summary>
         ///Kevin Picado
         /// 23/04/2021
         /// Efecto: devuelve la lista de ejecuciones segun el periodo y proyecto seleccionado
@@ -27,7 +58,7 @@ namespace AccesoDatos
             List<CajaChica> listaCajaChica = new List<CajaChica>();
             SqlConnection sqlConnection = conexion.conexionPEP();
 
-            String consulta = @"select descripcion,monto,S.id_solicitud_caja_chica, S.realizado_por,S.fecha
+            String consulta = @"select descripcion,monto,S.id_solicitud_caja_chica, S.realizado_por,S.fecha,numero_caja_chica,comentario
                                       from Estado_Caja_Chica EC,Solicitud_Caja_Chica S
                                       where S.id_proyecto=@idProyecto and S.ano_periodo=@Periodo and S.id_estado_caja_chica= EC.id_estado_caja_chica order by  id_solicitud_caja_chica desc";
 
@@ -50,6 +81,8 @@ namespace AccesoDatos
                 cajaChica.idEstadoCajaChica = estadoCajaChica;
                 cajaChica.realizadoPor = reader["realizado_por"].ToString();
                 cajaChica.fecha = Convert.ToDateTime(reader["fecha"].ToString());
+                cajaChica.numeroCajaChica = reader["numero_caja_chica"].ToString();
+                cajaChica.comentario = reader["comentario"].ToString();
                 listaCajaChica.Add(cajaChica);
             }
             sqlConnection.Close();
@@ -64,7 +97,7 @@ namespace AccesoDatos
         {
             SqlConnection sqlConnection = conexion.conexionPEP();
 
-            String consulta = @"update Solicitud_Caja_Chica set id_estado_caja_chica=@id_estado,ano_periodo=@ano_periodo ,id_proyecto=@id_proyecto,monto=@monto
+            String consulta = @"update Solicitud_Caja_Chica set id_estado_caja_chica=@id_estado,ano_periodo=@ano_periodo ,id_proyecto=@id_proyecto,monto=@monto,comentario=@comentario
                                  where id_solicitud_caja_chica=@id_CajaChica";
 
             SqlCommand command = new SqlCommand(consulta, sqlConnection);
@@ -73,7 +106,8 @@ namespace AccesoDatos
             command.Parameters.AddWithValue("@ano_periodo", cajaChica.anoPeriodo);
             command.Parameters.AddWithValue("@id_proyecto", cajaChica.idProyedto);
             command.Parameters.AddWithValue("@monto", cajaChica.monto);
-            
+            command.Parameters.AddWithValue("@comentario", cajaChica.comentario);
+
 
             sqlConnection.Open();
             command.ExecuteReader();
@@ -110,5 +144,25 @@ namespace AccesoDatos
             sqlConnection.Close();
             return  Convert.ToString(numero);
         }
+        /// <summary>
+        /// Eliminar Ejecucion
+        /// </summary>
+        /// <param name="idCajaChica">ejecucion</param>
+
+        public void eliminarCajaChica(int idCajaChica)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+
+            String consulta = @"delete Solicitud_Caja_Chica 
+                                 where id_solicitud_caja_chica=@id_cajaChica";
+
+            SqlCommand command = new SqlCommand(consulta, sqlConnection);
+            command.Parameters.AddWithValue("@id_cajaChica", idCajaChica);
+
+            sqlConnection.Open();
+            command.ExecuteReader();
+            sqlConnection.Close();
+        }
+
     }
 }

@@ -40,5 +40,24 @@ namespace Servicios
         {
             return cajaChicaUnidadPartidaDatos.getUnidadesPartidasMontoPorCajaChica(cajaChica);
         }
+
+        public void insertarCajaChicaPartidaUnidad(int idCajaChica,int idunidad, int idpartida,Double monto)
+        {
+            cajaChicaUnidadPartidaDatos.insertarCajaChicaUnidadPartida(idCajaChica,idunidad,idpartida,monto) ;
+        }
+        public List<Unidad> getUnidadesPorCajaChica(CajaChica cajaChica)
+        {
+            return cajaChicaUnidadPartidaDatos.getUnidadesPorCajaChica(cajaChica);
+        }
+        public List<Partida> getPartidasPorCajaChica(CajaChica cajaChica)
+        {
+
+            return cajaChicaUnidadPartidaDatos.getPartidasPorCajaChica(cajaChica);
+        }
+        public void eliminarCajaChicaUnidadPartidaPorCajaChica(int idcajaChica)
+        {
+            cajaChicaUnidadPartidaDatos.eliminarCajaChicaUnidadPartidaPorEjecucion(idcajaChica);
+        }
     }
+
 }

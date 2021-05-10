@@ -14,6 +14,9 @@ namespace Entidades
         public DateTime fecha { get; set; }
         public string realizadoPor { get; set; }
         public double monto { get; set; }
+        public string comentario { get; set; }
+        public string numeroCajaChica { get; set; }
+
         public EstadoCajaChica idEstadoCajaChica { get; set; }
     }
 }

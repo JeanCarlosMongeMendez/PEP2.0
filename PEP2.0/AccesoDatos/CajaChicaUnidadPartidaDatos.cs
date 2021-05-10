@@ -110,6 +110,138 @@ where CUP.id_solicitud_caja_chica =@idCajaChica and P.id_partida = CUP.id_partid
             return listaUnidadesPartidas;
         }
 
+        /// <summary>
+        /// Leonarrdo Carrion
+        /// 10/mar/2021
+        /// Efecto: guarda en la base de datos en la tabla de Ejecucion_Unidad_Partida
+        /// Requiere: datos a ingresar en la tabla
+        /// Modifca: -
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="idCajaChica"></param>
+        /// <param name="idUnidad"></param>
+        /// <param name="idPartida"></param>
+        /// <param name="monto"></param>
+        public void insertarCajaChicaUnidadPartida(int idCajaChica, int idUnidad, int idPartida, Double monto)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+
+            SqlCommand sqlCommand = new SqlCommand("INSERT Caja_Chica_Unidad_Partida (id_solicitud_caja_chica,id_unidad,id_partida,monto) " +
+                                                    "values(@idCajaChica,@idUnidad,@idPartida,@monto);", sqlConnection);
+
+            sqlCommand.Parameters.AddWithValue("@idCajaChica", idCajaChica);
+            sqlCommand.Parameters.AddWithValue("@idUnidad", idUnidad);
+            sqlCommand.Parameters.AddWithValue("@idPartida", idPartida);
+            sqlCommand.Parameters.AddWithValue("@monto", monto);
+
+            sqlConnection.Open();
+            sqlCommand.ExecuteReader();
+
+            sqlConnection.Close();
+        }
+        /// <summary>
+        /// Leonardo Carrion
+        /// 12/mar/2021
+        /// Efecto: devuelve la lista de unidades segun la ejecucion ingresada
+        /// Requiere: ejecucion
+        /// Modifica: -
+        /// Devuelve: lista de unidades
+        /// </summary>
+        /// <param name="cajaChica"></param>
+        /// <returns></returns>
+        public List<Unidad> getUnidadesPorCajaChica(CajaChica cajaChica)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+
+            List<Unidad> listaUnidades = new List<Unidad>();
+
+            String consulta = @"select * from Unidad where id_unidad in (
+              select distinct id_unidad from Caja_Chica_Unidad_Partida where id_solicitud_caja_chica=@idCajaChica)";
+
+            SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@idCajaChica", cajaChica.idCajaChica);
+
+            SqlDataReader reader;
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Unidad unidad = new Unidad();
+                unidad.idUnidad = Convert.ToInt32(reader["id_unidad"].ToString());
+                unidad.nombreUnidad = reader["nombre_unidad"].ToString();
+                unidad.coordinador = reader["coordinador"].ToString();
+                listaUnidades.Add(unidad);
+            }
+
+            sqlConnection.Close();
+
+            return listaUnidades;
+        }
+        /// <summary>
+        /// Leonardo Carrion
+        /// 17/mar/2021
+        /// Efecto: devuelve la lista de partidas segun la ejecucion ingresada
+        /// Requiere: ejecucion
+        /// Modifica: -
+        /// Devuelve: lista de partidas
+        /// </summary>
+        /// <param name="cajaChica"></param>
+        /// <returns></returns>
+        public List<Partida> getPartidasPorCajaChica(CajaChica cajaChica)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+
+            List<Partida> listaPartidas = new List<Partida>();
+
+            String consulta = @"select * from Partida where id_partida in (
+                         select distinct id_partida from Caja_Chica_Unidad_Partida where id_solicitud_caja_chica=@idCajaChica)";
+
+            SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
+            sqlCommand.Parameters.AddWithValue("@idCajaChica", cajaChica.idCajaChica);
+
+            SqlDataReader reader;
+            sqlConnection.Open();
+            reader = sqlCommand.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Partida partida = new Partida();
+                partida.idPartida = Convert.ToInt32(reader["id_partida"].ToString());
+                partida.numeroPartida = reader["numero_partida"].ToString();
+                partida.descripcionPartida = reader["descripcion_partida"].ToString();
+                partida.esUCR = Boolean.Parse(reader["esUCR"].ToString());
+                partida.periodo = new Periodo();
+                partida.periodo.anoPeriodo = Convert.ToInt32(reader["ano_periodo"].ToString());
+                listaPartidas.Add(partida);
+            }
+
+            sqlConnection.Close();
+
+            return listaPartidas;
+        }
+        /// <summary>
+        /// Leonardo Carrion
+        /// 19/mar/2021
+        /// Efecto: elimina ejecucionUnidadPartida
+        /// Requiere: idEjecucion
+        /// Modifica: -
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="idcajaChica"></param>
+        public void eliminarCajaChicaUnidadPartidaPorEjecucion(int idcajaChica)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
+            SqlCommand sqlCommand = new SqlCommand("delete from Caja_Chica_Unidad_Partida where id_solicitud_caja_chica = @idCajaChica;", sqlConnection);
+
+            sqlCommand.Parameters.AddWithValue("@idCajaChica", idcajaChica);
+
+            sqlConnection.Open();
+            sqlCommand.ExecuteReader();
+
+            sqlConnection.Close();
+        }
+
     }
 }
 
