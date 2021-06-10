@@ -56,6 +56,7 @@
     <Compile Include="FuncionarioFundevi.cs" />
     <Compile Include="Jornada.cs" />
     <Compile Include="Mes.cs" />
+    <Compile Include="Parametros.cs" />
     <Compile Include="Partida.cs" />
     <Compile Include="PartidaUnidad.cs" />
     <Compile Include="Periodo.cs" />

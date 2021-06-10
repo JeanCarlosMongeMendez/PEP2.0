@@ -41,7 +41,7 @@ namespace Servicios
         /// <param name="periodo"></param>
         /// <param name="proyecto"></param>
         /// <returns></returns>
-        public List<CajaChica> getEjecucionesPorPeriodoYProyecto(Periodo periodo, Proyectos proyecto)
+        public List<CajaChica> getCajaChicaPorPeriodoYProyecto(Periodo periodo, Proyectos proyecto)
         {
             return cajaChicaDatos.getCajaChicaPorPeriodoYProyecto(periodo, proyecto);
         }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -21,6 +22,8 @@ namespace Proyecto.Catalogos.CajaChica
         CajaChicaServicios cajaChicaServicios = new CajaChicaServicios();
         CajaChicaUnidadPartidaServicios cajaChicaUnidadPartidaServicios = new CajaChicaUnidadPartidaServicios();
         EstadoCajaChicaServicios estadoCajaChicaServicios = new EstadoCajaChicaServicios();
+        ParametroServicios parametroServicios = new ParametroServicios();
+        Thread threadEnviarCorreo;
         #endregion
         #region paginacion
         readonly PagedDataSource pgsource = new PagedDataSource();
@@ -299,7 +302,7 @@ namespace Proyecto.Catalogos.CajaChica
             Proyectos proyecto = new Proyectos();
             proyecto.idProyecto = Convert.ToInt32(ddlProyectos.SelectedValue);
 
-            listaCajaChica = cajaChicaServicios.getEjecucionesPorPeriodoYProyecto(periodo, proyecto);
+            listaCajaChica = cajaChicaServicios.getCajaChicaPorPeriodoYProyecto(periodo, proyecto);
 
             String numeroCajaChica = "", estado = "", monto = "", realizadoPor = "", ingresado = "";
 
@@ -352,6 +355,60 @@ namespace Proyecto.Catalogos.CajaChica
 
             //metodo que realiza la paginacion
             Paginacion();
+        }
+        /// <summary>
+        /// Leonardo Carrion
+        /// 04/jun/2018
+        /// Efecto: envia correo a los administradores con la informacion del destinatario ingresado
+        /// Requiere: destinatario
+        /// Modifica: -
+        /// Devuelve: -
+        /// </summary>
+        /// <param name="institucion"></param>
+        public void enviarCorreo(int idCajaChica)
+        {
+           
+
+            List<Parametros> listaDestinatarios = new List<Parametros>();
+            listaDestinatarios = parametroServicios.getCorreosDestinatarios();
+
+            //Obtención de los correos de los usuarios a los que se les va a enviar el correo
+           String destinatarios = "";
+            foreach (Parametros parametro in listaDestinatarios)
+            {
+                destinatarios += parametro.valor + ";";
+            }
+            List<Entidades.CajaChica> listaCajaChica = new List<Entidades.CajaChica>();
+
+            Periodo periodo = new Periodo();
+            periodo.anoPeriodo = Convert.ToInt32(ddlPeriodos.SelectedValue);
+
+            Proyectos proyecto = new Proyectos();
+            proyecto.idProyecto = Convert.ToInt32(ddlProyectos.SelectedValue);
+
+            listaCajaChica = cajaChicaServicios.getCajaChicaPorPeriodoYProyecto(periodo, proyecto);
+
+            Entidades.CajaChica cajaChica = (Entidades.CajaChica)listaCajaChica.Where(eje => eje.idCajaChica == idCajaChica).ToList().First();
+            Dictionary<String, String> informacionCorreo = new Dictionary<String, String>();
+            informacionCorreo["destinatarios"] = destinatarios;
+            informacionCorreo["conCopia"] = "";
+            informacionCorreo["conCopiaOculta"] = "";
+            informacionCorreo["asunto"] = "Nueva solicitud,número de consecutivo " + cajaChica.numeroCajaChica;
+            informacionCorreo["cuerpo"] = "<br>Detalle: " + cajaChica.comentario + "<br>Monto:"+ cajaChica.monto +" Colones"+
+                " <br><br> *Este correo es generado de forma automática, por favor no responder";
+            //informacionCorreo["remitente"] = "laboratorios.lanamme@ucr.ac.cr";
+            informacionCorreo["remitente"] = "consejotecnico2016@gmail.com";
+            informacionCorreo["archivos"] = "";
+
+            Boolean enviado = Utilidades.enviarCorreo(informacionCorreo);
+
+            try
+            {
+                threadEnviarCorreo.Abort();
+            }
+            catch
+            {
+            }
         }
         #endregion
 
@@ -478,7 +535,7 @@ namespace Proyecto.Catalogos.CajaChica
             Proyectos proyecto = new Proyectos();
             proyecto.idProyecto = Convert.ToInt32(ddlProyectos.SelectedValue);
 
-            listaCajaChica = cajaChicaServicios.getEjecucionesPorPeriodoYProyecto(periodo, proyecto);
+            listaCajaChica = cajaChicaServicios.getCajaChicaPorPeriodoYProyecto(periodo, proyecto);
 
             Entidades.CajaChica cajaChica = (Entidades.CajaChica)listaCajaChica.Where(eje => eje.idCajaChica == idCajaChica).ToList().First();
 
@@ -512,7 +569,7 @@ namespace Proyecto.Catalogos.CajaChica
             Proyectos proyecto = new Proyectos();
             proyecto.idProyecto = Convert.ToInt32(ddlProyectos.SelectedValue);
 
-            listaCajaChica = cajaChicaServicios.getEjecucionesPorPeriodoYProyecto(periodo, proyecto);
+            listaCajaChica = cajaChicaServicios.getCajaChicaPorPeriodoYProyecto(periodo, proyecto);
 
             Entidades.CajaChica cajaChica = (Entidades.CajaChica)listaCajaChica.Where(eje => eje.idCajaChica == idCajaChica).ToList().First();
 
@@ -546,7 +603,7 @@ namespace Proyecto.Catalogos.CajaChica
             Proyectos proyecto = new Proyectos();
             proyecto.idProyecto = Convert.ToInt32(ddlProyectos.SelectedValue);
 
-            listaCajaChica = cajaChicaServicios.getEjecucionesPorPeriodoYProyecto(periodo, proyecto);
+            listaCajaChica = cajaChicaServicios.getCajaChicaPorPeriodoYProyecto(periodo, proyecto);
 
             Entidades.CajaChica cajaChica = (Entidades.CajaChica)listaCajaChica.Where(eje => eje.idCajaChica == idCajaChica).ToList().First();
             Session["ejecucionVer"] = cajaChica;
@@ -652,7 +709,37 @@ namespace Proyecto.Catalogos.CajaChica
         //        ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El monto de la ejecución debe ser igual al monto repartido entre las unidades" + "');", true);
         //    }
         //}
+        ///// <summary>
+        ///// Leonardo Carrion
+        ///// 24/mar/2021
+        ///// Efecto: levanta modal para confirmar si se desea aprobar la ejecucion
+        ///// Requiere: dar clic en el boton de aprobar
+        ///// Modifica: -
+        ///// Deuvelve: -
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        protected void btnEnviar_Click(object sender, EventArgs e)
+        {
+            int idCajaChica = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
 
+            List<Entidades.CajaChica> listaCajaChica = new List<Entidades.CajaChica>();
+
+            Periodo periodo = new Periodo();
+            periodo.anoPeriodo = Convert.ToInt32(ddlPeriodos.SelectedValue);
+
+            Proyectos proyecto = new Proyectos();
+            proyecto.idProyecto = Convert.ToInt32(ddlProyectos.SelectedValue);
+
+            listaCajaChica = cajaChicaServicios.getCajaChicaPorPeriodoYProyecto(periodo, proyecto);
+
+            Entidades.CajaChica cajaChica = (Entidades.CajaChica)listaCajaChica.Where(eje => eje.idCajaChica == idCajaChica).ToList().First();
+           
+            Session["ejecucionEnviarCorreo"] = cajaChica;
+            LabelEnviar.Text = "¿Seguro o segura que desea Enviar un correo, con el numero de Caja Chica  " + cajaChica.numeroCajaChica + "?";
+           
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalEnviar();", true);
+        }
         ///// <summary>
         ///// Leonardo Carrion
         ///// 24/mar/2021
@@ -675,14 +762,67 @@ namespace Proyecto.Catalogos.CajaChica
             Proyectos proyecto = new Proyectos();
             proyecto.idProyecto = Convert.ToInt32(ddlProyectos.SelectedValue);
 
-            listaCajaChica = cajaChicaServicios.getEjecucionesPorPeriodoYProyecto(periodo, proyecto);
+            listaCajaChica = cajaChicaServicios.getCajaChicaPorPeriodoYProyecto(periodo, proyecto);
 
             Entidades.CajaChica cajaChica = (Entidades.CajaChica)listaCajaChica.Where(eje => eje.idCajaChica == idCajaChica).ToList().First();
 
             Session["ejecucionAprobar"] = cajaChica;
-            lblConfirmarAprobar.Text = "¿Seguro o segura que desea aprobar la Caja Chica número " + cajaChica.idCajaChica + "?";
+            lblConfirmarAprobar.Text = "¿Seguro o segura que desea aprobar la Caja Chica número " + cajaChica.numeroCajaChica + "?";
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalAprobar();", true);
         }
+        ///// <summary>
+        ///// Leonardo Carrion
+        ///// 24/mar/2021
+        ///// Efecto: Cambia el estado de la ejecucion a aprobar y verifica que los montos de las partidas esten correctos
+        ///// Requiere: dar clic en el boton de Si
+        ///// Modifica: estado de ejecucion
+        ///// Devuelve: mesnsaje de confirmacion de accion
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        protected void btnSiEnviarCorreo_Click(object sender, EventArgs e)
+        {
+            Entidades.CajaChica cajaChica = (Entidades.CajaChica)Session["ejecucionEnviarCorreo"];
+            List<PartidaUnidad> listaUnidadesPartidas = cajaChicaUnidadPartidaServicios.getUnidadesPartidasMontoPorCajaChica(cajaChica);
+
+            Double montoResta = listaUnidadesPartidas.Sum(part => part.monto);
+
+            if ((cajaChica.monto - montoResta) == 0)
+            {
+                Boolean correcto = true;
+                foreach (PartidaUnidad partidaUnidad in listaUnidadesPartidas)
+                {
+                    Unidad unidad = new Unidad();
+                    unidad.idUnidad = partidaUnidad.idUnidad;
+                    Partida partida = new Partida();
+                    partida.idPartida = partidaUnidad.idPartida;
+                    Double montoDisponible = cajaChicaUnidadPartidaServicios.getMontoDisponible(unidad, partida);
+                    if ((montoDisponible - partidaUnidad.monto) < 0)
+                    {
+                        correcto = false;
+                        break;
+                    }
+                }
+
+                if (correcto)
+                {
+                    enviarCorreo(cajaChica.idCajaChica);
+                    mostrarDatosTabla();
+
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "cerrarModalEnviar();", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se Envio correctamente el correo "  + "');", true);
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Favor revisar los montos disponibles de cada partida" + "');", true);
+                }
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "El monto de la Caja Chica debe ser igual al monto repartido entre las unidades" + "');", true);
+            }
+        }
+        
 
         ///// <summary>
         ///// Leonardo Carrion
@@ -736,7 +876,7 @@ namespace Proyecto.Catalogos.CajaChica
                     mostrarDatosTabla();
 
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "cerrarModalAprobar();", true);
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se aprobó correctamente la Caja Chica número " + cajaChica.idCajaChica.ToString() + "');", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se aprobó correctamente la Caja Chica número " + cajaChica.numeroCajaChica.ToString() + "');", true);
                 }
                 else
                 {

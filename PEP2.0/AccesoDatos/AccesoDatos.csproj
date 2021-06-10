@@ -62,6 +62,7 @@
     <Compile Include="JornadaDatos.cs" />
     <Compile Include="JornadaUnidadFuncionarioDatos.cs" />
     <Compile Include="MesDatos.cs" />
+    <Compile Include="ParametrosDatos.cs" />
     <Compile Include="PartidaDatos.cs" />
     <Compile Include="PeriodoDatos.cs" />
     <Compile Include="PlanillaDatos.cs" />

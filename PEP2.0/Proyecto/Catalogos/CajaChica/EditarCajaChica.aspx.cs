@@ -1729,7 +1729,7 @@ namespace Proyecto.Catalogos.CajaChica
                     {
                         TextBox txtMontoAsociar = (TextBox)item.FindControl("txtMontoAsociar");
                         Double.TryParse(txtMontoAsociar.Text, out monto);
-                    }
+                    } 
                 }
             }
 

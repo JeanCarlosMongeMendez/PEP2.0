@@ -263,13 +263,13 @@ namespace PEP
         }
 
         /*
-         * Jonathan Fonseca Vallejos
-         * 30/may/2016
-         * Efecto: envía un correo con la información indicada en el parámetro 
-         * Requiere: la información necesaria para enviar el correo
-         * Modifica: -
-         * Devuelve: -
-         */
+          * Jonathan Fonseca Vallejos
+          * 30/may/2016
+          * Efecto: envía un correo con la información indicada en el parámetro 
+          * Requiere: la información necesaria para enviar el correo
+          * Modifica: -
+          * Devuelve: -
+          */
         public static Boolean enviarCorreo(Dictionary<String, String> informacionCorreo)
         //public static Boolean enviarCorreo(Dictionary<String, String> informacionCorreo)
         {
@@ -373,13 +373,13 @@ namespace PEP
             System.Net.Mail.SmtpClient cliente = new System.Net.Mail.SmtpClient();
 
             //Hay que crear las credenciales del correo emisor
-            cliente.Credentials = new System.Net.NetworkCredential("correo@gmail.com", "contraseña");
-            //cliente.Credentials = new System.Net.NetworkCredential("correo@ucr.ac.cr", "contraseña");
+            cliente.Credentials = new System.Net.NetworkCredential("consejotecnico2016@gmail.com", "lanamme2016");
+            //cliente.Credentials = new System.Net.NetworkCredential("uti.lanamme@ucr.ac.cr", "UNTELA.181125");
 
             //Lo siguiente es obligatorio si enviamos el mensaje desde Gmail
             cliente.Port = 587;
             cliente.EnableSsl = true;
-
+            //cliente.Host = "smtp-mail.outlook.com"; //Para live "smtp.gmail.comsmtp-mail.outlook.com
             cliente.Host = "smtp.gmail.com"; //Para Gmail "smtp.gmail.com";
             //cliente.Host = "smtp.ucr.ac.cr"; //Para UCR "smtp.ucr.ac.cr";
 

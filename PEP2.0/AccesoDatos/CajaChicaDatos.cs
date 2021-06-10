@@ -22,20 +22,22 @@ namespace AccesoDatos
             string numeroSolicitud;
             sqlConnection.Open();
             String consulta = @"insert Solicitud_Caja_Chica(numero,ano_periodo,id_proyecto,fecha,realizado_por,monto,id_estado_caja_chica,comentario,numero_caja_chica) output INSERTED.id_solicitud_caja_chica
-                                            values(@ano_periodo,@id_proyecto,@fecha,@realizadoPor,@monto,@id_estado_caja_chica,@comentario,@numero_caja_chica)";
+                                            values(@numero,@ano_periodo,@id_proyecto,@fecha,@realizadoPor,@monto,@id_estado_caja_chica,@comentario,@numero_caja_chica)";
 
             SqlCommand command = new SqlCommand(consulta, sqlConnection);
 
-
+            numeroSolicitud = getNumeroSolicitudCajaChica(cajaChica.anoPeriodo);
+            command.Parameters.AddWithValue("@numero", numeroSolicitud);
             command.Parameters.AddWithValue("@ano_periodo", cajaChica.anoPeriodo);
             command.Parameters.AddWithValue("@id_proyecto", cajaChica.idProyedto);
             command.Parameters.AddWithValue("@fecha", DateTime.Now);
             command.Parameters.AddWithValue("@realizadoPor", cajaChica.realizadoPor);
             command.Parameters.AddWithValue("@monto", cajaChica.monto);
             command.Parameters.AddWithValue("@id_estado_caja_chica", cajaChica.idEstadoCajaChica.idEstadoCajaChica);
-            command.Parameters.AddWithValue("@comentario", cajaChica.comentario); 
-            numeroSolicitud = getNumeroSolicitudCajaChica(cajaChica.anoPeriodo);
+            command.Parameters.AddWithValue("@comentario", cajaChica.comentario);
             command.Parameters.AddWithValue("@numero_caja_chica", cajaChica.numeroCajaChica);
+           
+           
             respuesta = (int)command.ExecuteScalar();
 
 

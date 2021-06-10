@@ -60,6 +60,7 @@
     <Compile Include="JornadaServicios.cs" />
     <Compile Include="JornadaUnidadFuncionarioServicios.cs" />
     <Compile Include="MesServicios.cs" />
+    <Compile Include="ParametroServicios.cs" />
     <Compile Include="PartidaServicios.cs" />
     <Compile Include="PeriodoServicios.cs" />
     <Compile Include="PlanillaFundeviServicios.cs" />

@@ -84,8 +84,8 @@
                                         <asp:LinkButton ID="btnEditar" runat="server" ToolTip="Editar" CommandArgument='<%# Eval("idCajaChica") %>' CssClass="btn glyphicon glyphicon-pencil" OnClick="btnEditar_Click" Visible='<%# Convert.ToString(Eval("idEstadoCajaChica.descripcion"))=="Aprobado"?false:true  %>'/>
                                     </td>
                                     <td>
-                                        <asp:LinkButton ID="btnAprobar" runat="server" ToolTip="Aprobar" Text="Aprobar" CssClass="btn btn-default" CommandArgument='<%# Eval("idCajaChica") %>' OnClick="btnAprobar_Click" Visible='<%# Convert.ToString(Eval("idEstadoCajaChica.descripcion"))=="Guardado"?true: (Convert.ToString(Eval("estadoEjecucion.descripcion"))!="Rechazado"?true:false)  %>'/>
-                                        <%--<asp:LinkButton ID="btnRechazar" runat="server" ToolTip="Rechazar" Text="Rechazar" CssClass="btn btn-default" CommandArgument='<%# Eval("idEjecucion") %>' OnClick="btnRechazar_Click" Visible='<%# Convert.ToString(Eval("estadoEjecucion.descripcion"))=="Guardado"?true:false  %>'/>--%>
+                                        <asp:LinkButton ID="btnAprobar" runat="server" ToolTip="Aprobar" Text="Aprobar" CssClass="btn btn-default" CommandArgument='<%# Eval("idCajaChica") %>' OnClick="btnAprobar_Click" Visible='<%# Convert.ToString(Eval("idEstadoCajaChica.descripcion"))=="Guardado"?true:false %>'/>
+                                        <asp:LinkButton ID="btnEnviarCorreo" runat="server" ToolTip="Enviar" Text="Enviar" CssClass="btn btn-default" CommandArgument='<%# Eval("idCajaChica") %>' OnClick="btnEnviar_Click" Visible='<%# Convert.ToString(Eval("idEstadoCajaChica.descripcion"))=="Guardado"?true:false  %>'/>
                                     </td>
                                     <td >
                                         <%# Eval("numeroCajaChica") %>
@@ -97,7 +97,7 @@
                                     </td>
                                    
 
-                                    <td style='<%# Convert.ToString(Eval("idEstadoCajaChica.descripcion"))=="Guardado"?"background-color:#E74C3C; color: #fff;":(Convert.ToString(Eval("idEstadoCajaChica.descripcion"))=="Rechazado")?"background-color:#D4AC0D":"background-color:white" %>'>
+                                    <td style='<%# Convert.ToString(Eval("idEstadoCajaChica.descripcion"))=="Guardado"?"background-color:#E74C3C; color: #fff;":(Convert.ToString(Eval("idEstadoCajaChica.descripcion"))=="Rechazado")?"background-color:#D4AC0D":"background-color:green" %>'>
                                         <%# Eval("idEstadoCajaChica.descripcion") %>
                                     </td>
                                   
@@ -189,7 +189,37 @@
         </div>
     </div>
     <!-- fin Modal Aprobar-->
+      <!-- Modal Enviar -->
+    <div id="modalEnviar" class="modal fade" role="alertdialog">
+        <div class="modal-dialog modal-lg">
 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <asp:UpdatePanel runat="server">
+                    <ContentTemplate>
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Repartir gastos</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <%-- campos a llenar --%>
+                                <div class="form-group col-md-12 col-xs-12 col-sm-12 mt-1">
+                                    <asp:Label ID="LabelEnviar" runat="server" Text="¿Seguro o segura que desea enviar un correo?" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
+                                </div>
+                            </div>
+                        </div>
+                        <%-- fin campos a llenar --%>
+                        <div class="modal-footer" style="text-align: center">
+                            <asp:Button ID="Button1" runat="server" Text="Si" CssClass="btn btn-primary" OnClick="btnSiEnviarCorreo_Click"/>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                        </div>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+            </div>
+        </div>
+    </div>
+    <!-- fin Modal Enviar-->
     <script type="text/javascript">
        
         function activarModalAprobar() {
@@ -198,6 +228,13 @@
 
         function cerrarModalAprobar() {
             $('#modalAprobar').modal('hide');
+        };
+        
+        function activarModalEnviar() {
+            $('#modalEnviar').modal('show');
+        };
+        function cerrarModalEnviar() {
+            $('#modalEnviar').modal('hide');
         };
     </script>
 
