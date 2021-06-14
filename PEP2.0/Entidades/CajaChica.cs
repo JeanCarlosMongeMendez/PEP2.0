@@ -16,7 +16,7 @@ namespace Entidades
         public double monto { get; set; }
         public string comentario { get; set; }
         public string numeroCajaChica { get; set; }
-
+        public Boolean Enviado { get; set; }
         public EstadoCajaChica idEstadoCajaChica { get; set; }
     }
 }

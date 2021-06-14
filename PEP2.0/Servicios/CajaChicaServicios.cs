@@ -54,5 +54,9 @@ namespace Servicios
         {
             cajaChicaDatos.eliminarCajaChica(idCajaChica);
         }
+        public void actualizarEnviadoCajaChica(int idCajaChica,Boolean Enviado)
+        {
+            cajaChicaDatos.actualizarEnviadoCajaChica(idCajaChica,Enviado);
+        }
     }
 }

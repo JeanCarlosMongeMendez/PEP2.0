@@ -60,7 +60,7 @@ namespace AccesoDatos
             List<CajaChica> listaCajaChica = new List<CajaChica>();
             SqlConnection sqlConnection = conexion.conexionPEP();
 
-            String consulta = @"select descripcion,monto,S.id_solicitud_caja_chica, S.realizado_por,S.fecha,numero_caja_chica,comentario
+            String consulta = @"select descripcion,monto,S.id_solicitud_caja_chica, S.realizado_por,S.fecha,numero_caja_chica,comentario,Enviado
                                       from Estado_Caja_Chica EC,Solicitud_Caja_Chica S
                                       where S.id_proyecto=@idProyecto and S.ano_periodo=@Periodo and S.id_estado_caja_chica= EC.id_estado_caja_chica order by  id_solicitud_caja_chica desc";
 
@@ -85,6 +85,7 @@ namespace AccesoDatos
                 cajaChica.fecha = Convert.ToDateTime(reader["fecha"].ToString());
                 cajaChica.numeroCajaChica = reader["numero_caja_chica"].ToString();
                 cajaChica.comentario = reader["comentario"].ToString();
+                cajaChica.Enviado= Convert.ToBoolean(reader["Enviado"].ToString());
                 listaCajaChica.Add(cajaChica);
             }
             sqlConnection.Close();
@@ -115,7 +116,28 @@ namespace AccesoDatos
             command.ExecuteReader();
             sqlConnection.Close();
         }
+        /// <summary>
+        /// Actulizar Ejecucion
+        /// </summary>
+        /// <param name="cajaChica">ejecucion</param>
+        /// <param name="respuesta"></param>
+        public void actualizarEnviadoCajaChica(int idCajaChica,Boolean Enviado)
+        {
+            SqlConnection sqlConnection = conexion.conexionPEP();
 
+            String consulta = @"update Solicitud_Caja_Chica set Enviado=@Enviado
+                                 where id_solicitud_caja_chica=@id_CajaChica";
+
+            SqlCommand command = new SqlCommand(consulta, sqlConnection);
+            command.Parameters.AddWithValue("@id_CajaChica", idCajaChica);
+            command.Parameters.AddWithValue("@Enviado", Enviado);
+            
+
+
+            sqlConnection.Open();
+            command.ExecuteReader();
+            sqlConnection.Close();
+        }
 
         public string getNumeroSolicitudCajaChica(int año)
         {

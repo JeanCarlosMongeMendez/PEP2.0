@@ -52,7 +52,7 @@
                                 <th>Monto</th>
                                 <th>Realizado por</th>
                                 <th>Ingresado</th>
-                                
+                               
                             </tr>
                         </thead>
                         <tr>
@@ -85,7 +85,8 @@
                                     </td>
                                     <td>
                                         <asp:LinkButton ID="btnAprobar" runat="server" ToolTip="Aprobar" Text="Aprobar" CssClass="btn btn-default" CommandArgument='<%# Eval("idCajaChica") %>' OnClick="btnAprobar_Click" Visible='<%# Convert.ToString(Eval("idEstadoCajaChica.descripcion"))=="Guardado"?true:false %>'/>
-                                        <asp:LinkButton ID="btnEnviarCorreo" runat="server" ToolTip="Enviar" Text="Enviar" CssClass="btn btn-default" CommandArgument='<%# Eval("idCajaChica") %>' OnClick="btnEnviar_Click" Visible='<%# Convert.ToString(Eval("idEstadoCajaChica.descripcion"))=="Guardado"?true:false  %>'/>
+                                        <asp:LinkButton ID="btnEnviarCorreo" runat="server" ToolTip="Enviar" Text="Enviar" CssClass="btn btn-default" CommandArgument='<%# Eval("idCajaChica") %>' OnClick="btnEnviar_Click" Visible='<%# Convert.ToString(Eval("idEstadoCajaChica.descripcion"))=="Guardado" && Convert.ToString(Eval("idEstadoCajaChica.descripcion"))=="Aprobado" ?true: (Convert.ToBoolean(Eval("Enviado"))==false?true:false)  %>'/>
+
                                     </td>
                                     <td >
                                         <%# Eval("numeroCajaChica") %>
@@ -108,6 +109,9 @@
                                     </td>
                                     <td>
                                         <%# Convert.ToDateTime(Eval("fecha")).ToShortDateString() %>
+                                    </td>
+                                    <td style="display:none;">
+                                        <%# Convert.ToBoolean(Eval("Enviado")) %>
                                     </td>
                                 </tr>
 

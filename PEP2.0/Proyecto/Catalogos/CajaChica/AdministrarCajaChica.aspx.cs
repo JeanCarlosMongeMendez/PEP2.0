@@ -807,6 +807,7 @@ namespace Proyecto.Catalogos.CajaChica
                 if (correcto)
                 {
                     enviarCorreo(cajaChica.idCajaChica);
+                    cajaChicaServicios.actualizarEnviadoCajaChica(cajaChica.idCajaChica,true);
                     mostrarDatosTabla();
 
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "cerrarModalEnviar();", true);
