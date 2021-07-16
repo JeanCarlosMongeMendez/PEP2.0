@@ -3,7 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <asp:ScriptManager ID="MainScriptManager" runat="server" EnableCdn="true"></asp:ScriptManager>
+    <asp:ScriptManager runat="server" EnableCdn="true"></asp:ScriptManager>
 
 
     <div class="row">
@@ -18,14 +18,7 @@
                 <div class="col-md-12 col-xs-6 col-sm-6">
 
                     <div class="col-md-2 col-xs-2 col-sm-2 col-md-offset-10 col-xs-offset-10 col-sm-offset-10" style="text-align: right">
-                        <asp:UpdatePanel runat="server">
-                            <ContentTemplate>
                                 <asp:Button ID="btnNuevoPeriodo" runat="server" Text="Nuevo periodo" CssClass="btn btn-primary boton-nuevo" OnClick="btnNuevoPeriodo_Click" />
-                            </ContentTemplate>
-                            <Triggers>
-                                <asp:PostBackTrigger ControlID="btnNuevoPeriodo" />
-                            </Triggers>
-                        </asp:UpdatePanel>
                     </div>
                 </div>
 
@@ -142,7 +135,7 @@
                         </center>
                     </div>
                     <%--ACOMODAR BOTONES--%>
-                    <div class="row col-md-11 col-xs-12 col-sm-12">
+                    <div class="col-md-11 col-xs-12 col-sm-12">
                         <div class="form-group col-md-6 col-xs-6 col-sm-6 mt-1">
                             <asp:Button ID="btnNuevoProyecto" runat="server" Text="Nuevo proyecto" CssClass="btn btn-primary boton-nuevo" OnClick="AgregarProyecto_Click" />
                             <asp:Button ID="btnTransferir" runat="server" Text="Transferir Proyecto" CssClass="btn btn-primary boton-otro" OnClick="btnTransferirProyecto_Click" />
@@ -629,6 +622,7 @@
                     </ContentTemplate>
                 </asp:UpdatePanel>
             </div>
+        </div>
         </div>
 
 
@@ -1288,9 +1282,6 @@
         <!-- FIN Modal Confirmar Eliminar periodo -->
 
         <!-- Modal Confirmar Eliminar Proyecto-->
-        activos
-        tipo
-
         <div id="modalConfirmarProyecto" class="modal" role="alertdialog">
             <div class="modal-dialog modal-lg">
 

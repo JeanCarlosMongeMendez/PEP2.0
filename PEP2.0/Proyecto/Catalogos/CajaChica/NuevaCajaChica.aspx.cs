@@ -1477,6 +1477,7 @@ namespace Proyecto.Catalogos.CajaChica
                 cajaChica.numeroCajaChica = cajaChicaServicios.getNumeroSolicitudCajaChica(periodo.anoPeriodo) + " - " + periodo.anoPeriodo;
                 cajaChica.comentario = txtDetalle.Text;
                   cajaChica.realizadoPor = (String)Session["nombreCompleto"];
+                cajaChica.Enviado = false;
                     
                     cajaChica.fecha = DateTime.Now;
 

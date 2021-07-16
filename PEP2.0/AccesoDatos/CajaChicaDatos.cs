@@ -21,8 +21,8 @@ namespace AccesoDatos
             int respuesta = 0;
             string numeroSolicitud;
             sqlConnection.Open();
-            String consulta = @"insert Solicitud_Caja_Chica(numero,ano_periodo,id_proyecto,fecha,realizado_por,monto,id_estado_caja_chica,comentario,numero_caja_chica) output INSERTED.id_solicitud_caja_chica
-                                            values(@numero,@ano_periodo,@id_proyecto,@fecha,@realizadoPor,@monto,@id_estado_caja_chica,@comentario,@numero_caja_chica)";
+            String consulta = @"insert Solicitud_Caja_Chica(numero,ano_periodo,id_proyecto,fecha,realizado_por,monto,id_estado_caja_chica,comentario,numero_caja_chica,Enviado) output INSERTED.id_solicitud_caja_chica
+                                            values(@numero,@ano_periodo,@id_proyecto,@fecha,@realizadoPor,@monto,@id_estado_caja_chica,@comentario,@numero_caja_chica,@enviado)";
 
             SqlCommand command = new SqlCommand(consulta, sqlConnection);
 
@@ -36,8 +36,9 @@ namespace AccesoDatos
             command.Parameters.AddWithValue("@id_estado_caja_chica", cajaChica.idEstadoCajaChica.idEstadoCajaChica);
             command.Parameters.AddWithValue("@comentario", cajaChica.comentario);
             command.Parameters.AddWithValue("@numero_caja_chica", cajaChica.numeroCajaChica);
-           
-           
+            command.Parameters.AddWithValue("@enviado", cajaChica.Enviado);
+
+
             respuesta = (int)command.ExecuteScalar();
 
 

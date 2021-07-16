@@ -14,9 +14,9 @@ namespace PEP.Catalogos.Periodos
     public partial class AdministrarPeriodo : System.Web.UI.Page
     {
         #region variables globales
-        private PeriodoServicios periodoServicios;
-        private ProyectoServicios proyectoServicios;
-        private UnidadServicios unidadServicios;
+        private PeriodoServicios periodoServicios = new PeriodoServicios();
+        private ProyectoServicios proyectoServicios = new ProyectoServicios();
+        private UnidadServicios unidadServicios = new UnidadServicios();
         private SubUnidadServicios subUnidadServicios = new SubUnidadServicios();
         private static int periodoActualSelec;
         public static int proyectoActualSelec = 0;
@@ -132,26 +132,20 @@ namespace PEP.Catalogos.Periodos
         #region page load
         protected void Page_Load(object sender, EventArgs e)
         {
-            bool visible = false;
 
             //controla los menus q se muestran y las pantallas que se muestras segun el rol que tiene el usuario
             //si no tiene permiso de ver la pagina se redirecciona a login
             int[] rolesPermitidos = { 2 };
             Utilidades.escogerMenu(Page, rolesPermitidos);
 
-            this.periodoServicios = new PeriodoServicios();
-            this.proyectoServicios = new ProyectoServicios();
-            this.unidadServicios = new UnidadServicios();
-
             if (!IsPostBack)
             {
                 Session["CheckRefresh"] = Server.UrlDecode(System.DateTime.Now.ToString());
                 CargarPeriodos();
+                MostrarPeriodos();
             }
 
-
-
-            MostrarPeriodos();
+           
         }
         #endregion
 
@@ -2035,7 +2029,7 @@ namespace PEP.Catalogos.Periodos
         ///
         public void mostrarTablaUnidades()
         {
-            LinkedList<Unidad> listaUnidades = (LinkedList<Unidad>)Session["listaUnidades"];
+            List<Unidad> listaUnidades = (List<Unidad>)Session["listaUnidades"];
             /*FILTRO*/
 
             var dt = listaUnidades;
@@ -2413,7 +2407,7 @@ namespace PEP.Catalogos.Periodos
             int idUnidad = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
 
             string nombreProyecto = proyectoSelccionadoUnidades.nombreProyecto;
-            LinkedList<Unidad> listaUnidades = (LinkedList<Unidad>)Session["listaUnidades"];
+            List<Unidad> listaUnidades = (List<Unidad>)Session["listaUnidades"];
             
             foreach (Unidad unidad in listaUnidades)
             {
