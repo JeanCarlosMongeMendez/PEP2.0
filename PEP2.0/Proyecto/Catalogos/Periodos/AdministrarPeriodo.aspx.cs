@@ -145,7 +145,7 @@ namespace PEP.Catalogos.Periodos
                 MostrarPeriodos();
             }
 
-           
+
         }
         #endregion
 
@@ -1171,7 +1171,8 @@ namespace PEP.Catalogos.Periodos
             btnTransferir.Visible = botones;
             btnNuevoProyecto.Visible = botones;
 
-            Toastr("success", "Periodo " + anoPeriodo + " seleccionado con éxito!");
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Periodo " + anoPeriodo + " seleccionado con éxito!');", true);
+
             MostrarTablaProyectos();
         }
 
@@ -1247,11 +1248,11 @@ namespace PEP.Catalogos.Periodos
                 txtNuevoP.Text = "";
                 if (respuesta == periodo.anoPeriodo)
                 {
-                    Toastr("success", "Período registrado con éxito!");
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Período registrado con éxito!');", true);
                 }
                 else
                 {
-                    Toastr("error", "Error, el período " + periodo.anoPeriodo + " ya se encuentra registrado");
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Error, el período " + periodo.anoPeriodo + " ya se encuentra registrado');", true);
                 }
                 LinkedList<Periodo> listaPeriodos = periodoServicios.ObtenerTodos();
                 Session["listaPeriodos"] = listaPeriodos;
@@ -1350,7 +1351,7 @@ namespace PEP.Catalogos.Periodos
         /// 
         protected void btnEliminarModal_Click(object sender, EventArgs e)
         {
-            
+
             Periodo periodo = periodoSelccionado;
 
             periodoServicios.EliminarPeriodo(periodo.anoPeriodo);
@@ -1359,11 +1360,12 @@ namespace PEP.Catalogos.Periodos
 
             if (listaPeriodos.Contains(periodo))
             {
-                Toastr("error", "Error al eliminar el período");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Error al eliminar el período');", true);
             }
             else
             {
-                Toastr("success", "Período eliminado con éxito!");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "cerrarModalConfirmarPeriodo();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Período eliminado con éxito!');", true);
             }
             Session["listaPeriodos"] = listaPeriodos;
 
@@ -1409,10 +1411,9 @@ namespace PEP.Catalogos.Periodos
             }
             else
             {
-                txtTipoEditar.Text = "Fundevi";
+                txtTipoEditar.Text = "FundacionUCR";
             }
-
-            ClientScript.RegisterStartupScript(GetType(), "activar", "activarModalEditarProyecto();", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalEditarProyecto();", true);
         }
 
         /// <summary>
@@ -1435,14 +1436,15 @@ namespace PEP.Catalogos.Periodos
                 LinkedList<Proyectos> listaProyectos = proyectoServicios.ObtenerPorPeriodo(proyectoEditar.periodo.anoPeriodo);
                 Session["listaProyectos"] = listaProyectos;
 
-                Toastr("success", "Proyecto actualizado con éxito!");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Proyecto actualizado con éxito!');", true);
 
                 MostrarTablaProyectos();
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEditarProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEditarProyecto').hide();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "cerrarModalEditarProyecto();", true);
+                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEditarProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEditarProyecto').hide();", true);
             }
             else
             {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEditarProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEditarProyecto').hide();", true);
+                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEditarProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEditarProyecto').hide();", true);
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalEditarProyecto();", true);
             }
 
@@ -1500,11 +1502,11 @@ namespace PEP.Catalogos.Periodos
 
                 if (respuesta)
                 {
-                    Toastr("success", "Periodo establecido con éxito!");
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Periodo establecido con éxito!');", true);
                 }
                 else
                 {
-                    Toastr("error", "Error al establecer el proyecto");
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Error al establecer el proyecto');", true);
                 }
 
                 CargarPeriodos();
@@ -1534,14 +1536,12 @@ namespace PEP.Catalogos.Periodos
             }
             else
             {
-                txtTipoElim.Text = "Fundevi";
+                txtTipoElim.Text = "FundacionUCR";
             }
             lblElimPerProyModal.Text = anoPeriodo;
             txtProyEliminar.Text = proyectoSelccionado.nombreProyecto;
 
-
-            ClientScript.RegisterStartupScript(GetType(), "activar", "activarModalEliminarProyecto()", true);
-
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalEliminarProyecto();", true);
         }
 
         /// <summary>
@@ -1556,7 +1556,7 @@ namespace PEP.Catalogos.Periodos
         {
 
             lbConfProy.Text = proyectoSelccionado.nombreProyecto;
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalConfirmarProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalConfirmarProyecto').hide();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalConfirmarProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalConfirmarProyecto').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalConfirmarProyecto()", true);
         }
 
@@ -1578,17 +1578,19 @@ namespace PEP.Catalogos.Periodos
 
             if (listaProyectos.Contains(proyectoEliminar))
             {
-                Toastr("success", "Erro, no se pudo eliminar el proyecto " + proyectoEliminar.nombreProyecto);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Error, no se pudo eliminar el proyecto " + proyectoEliminar.nombreProyecto + "');", true);
             }
             else
             {
-                Toastr("success", "Se elimino el proyecto " + proyectoEliminar.nombreProyecto + " con éxito!");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "cerrarModalConfirmarProyecto();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "cerrarModalEliminarProyecto();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se elimino el proyecto " + proyectoEliminar.nombreProyecto + " con éxito!');", true);
             }
             Session["listaProyectos"] = listaProyectos;
             MostrarTablaProyectos();
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalConfirmaProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalConfirmarProyecto').hide();", true);
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEliminarProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEliminarProyecto').hide();", true);
 
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalConfirmaProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalConfirmarProyecto').hide();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEliminarProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEliminarProyecto').hide();", true);
 
         }
 
@@ -1640,26 +1642,21 @@ namespace PEP.Catalogos.Periodos
 
                 if (respuesta > 0)
                 {
-                    Toastr("success", "Se registró el proyecto " + proyecto.nombreProyecto + " al período " + periodoSelccionado.anoPeriodo + " con éxito!");
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se registró el proyecto " + proyecto.nombreProyecto + " al período " + periodoSelccionado.anoPeriodo + " con éxito!');", true);
                     LinkedList<Proyectos> listaProyectos = proyectoServicios.ObtenerPorPeriodo(proyecto.periodo.anoPeriodo);
                     Session["listaProyectos"] = listaProyectos;
                     MostrarTablaProyectos();
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevoProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevoProyecto').hide();", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "cerrarModalNuevoProyecto();", true);
+                    //  ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevoProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevoProyecto').hide();", true);
                 }
                 else if (respuesta == -1)
                 {
-                    Toastr("error", "Error, el proyecto con código " + proyecto.codigo + " ya fue registrado para el período " + periodoSelccionado.anoPeriodo);
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevoProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevoProyecto').hide();", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Error, el proyecto con código " + proyecto.codigo + " ya fue registrado para el período " + periodoSelccionado.anoPeriodo + "');", true);
+                    //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevoProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevoProyecto').hide();", true);
 
                 }
 
             }
-            else
-            {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevoProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevoProyecto').hide();", true);
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevoProyecto();", true);
-            }
-
         }
 
         /// <summary>
@@ -1805,7 +1802,7 @@ namespace PEP.Catalogos.Periodos
             cargarTablaProyectosTransferidos();
 
 
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalTransferirProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalTransferirProyecto').hide();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalTransferirProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalTransferirProyecto').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalTransferirProyecto();", true);
         }
 
@@ -1842,7 +1839,7 @@ namespace PEP.Catalogos.Periodos
             rpTransferirProyecto.DataBind();
 
             Paginacion2();
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalTransferirProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalTransferirProyecto').hide();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalTransferirProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalTransferirProyecto').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalTransferirProyecto();", true);
 
         }
@@ -1880,7 +1877,7 @@ namespace PEP.Catalogos.Periodos
             rpProyectoTransferidos.DataBind();
 
             Paginacion3();
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalTransferirProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalTransferirProyecto').hide();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalTransferirProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalTransferirProyecto').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalTransferirProyecto();", true);
         }
 
@@ -1958,7 +1955,7 @@ namespace PEP.Catalogos.Periodos
             cargarTablaProyectosTransferidos();
 
 
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalTransferirProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalTransferirProyecto').hide();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalTransferirProyecto", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalTransferirProyecto').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalTransferirProyecto();", true);
 
             if (proyectoTransferido != 0)
@@ -2002,14 +1999,14 @@ namespace PEP.Catalogos.Periodos
             }
 
 
-            if (proyectoSelccionadoUnidades.esUCR)
-            {
-                btnNuevaUnidad.Visible = true;
-            }
-            else
-            {
-                btnNuevaUnidad.Visible = false;
-            }
+            //if (proyectoSelccionadoUnidades.esUCR)
+            //{
+            btnNuevaUnidad.Visible = true;
+            //}
+            //else
+            //{
+            //    btnNuevaUnidad.Visible = false;
+            //}
 
 
             List<Unidad> listaUnidades = new List<Unidad>();
@@ -2151,7 +2148,7 @@ namespace PEP.Catalogos.Periodos
             //PeriodosDDL.SelectedIndex = 0;
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevaUnidad();", true);
         }
-        
+
         /// <summary>
         /// Mariela Calvo
         /// Septiembre/2019
@@ -2175,24 +2172,24 @@ namespace PEP.Catalogos.Periodos
                 int respuesta = unidadServicios.Insertar(unidad);
                 if (respuesta != 0)
                 {
-                    Toastr("sucess", "La unidad " + unidad.nombreUnidad + " fue registrada con éxito en el proyecto " + proyectoSelccionadoUnidades.nombreProyecto);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "La unidad " + unidad.nombreUnidad + " fue registrada con éxito en el proyecto " + proyectoSelccionadoUnidades.nombreProyecto + "');", true);
                 }
                 else
                 {
-                    Toastr("error", "Error, la unidad " + unidad.nombreUnidad + " ya se encuentra registrada en el proyecto " + proyectoSelccionadoUnidades.nombreProyecto);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Error, la unidad " + unidad.nombreUnidad + " ya se encuentra registrada en el proyecto " + proyectoSelccionadoUnidades.nombreProyecto + "');", true);
                 }
                 List<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(proyectoActualSelec);
                 Session["listaUnidades"] = listaUnidades;
                 mostrarTablaUnidades();
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevaUnidad", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevaUnidad').hide();", true);
+                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevaUnidad", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevaUnidad').hide();", true);
             }
             else
             {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevaUnidad", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevaUnidad').hide();", true);
+                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevaUnidad", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevaUnidad').hide();", true);
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevaUnidad();", true);
             }
         }
-        
+
         /// <summary>
         /// Mariela Calvo
         /// Septiembre/2019
@@ -2236,13 +2233,13 @@ namespace PEP.Catalogos.Periodos
         public void btnEliminarUnidad_Click(Object sender, EventArgs e)
         {
             int idUnidad = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString()); ;
-            LinkedList<Unidad> listaUnidades = (LinkedList<Unidad>)Session["listaUnidades"];
+            List<Unidad> listaUnidades = (List<Unidad>)Session["listaUnidades"];
             unidadSeleccionada = unidadServicios.ObtenerPorId(idUnidad);
             txtNombreUnidadEliminar.Text = unidadSeleccionada.nombreUnidad;
             txtCoordinadorEliminar.Text = unidadSeleccionada.coordinador;
             lbProyUnidadElim.Text = proyectoSelccionadoUnidades.nombreProyecto;
 
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEliminarUnidad", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEliminarUnidad').hide();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEliminarUnidad", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEliminarUnidad').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalEliminarUnidad()", true);
         }
 
@@ -2258,7 +2255,7 @@ namespace PEP.Catalogos.Periodos
         {
 
             lbConfUnidadEliminar.Text = unidadSeleccionada.nombreUnidad;
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalConfirmar", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalConfirmar').hide();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalConfirmar", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalConfirmar').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalConfirmar()", true);
         }
 
@@ -2278,18 +2275,18 @@ namespace PEP.Catalogos.Periodos
             List<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(proyectoSelccionadoUnidades.idProyecto);
             if (listaUnidades.Contains(unidadEliminar))
             {
-                Toastr("error", "Error, la unidad " + unidadEliminar.nombreUnidad + " no pudo ser eliminada.");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Error, la unidad " + unidadEliminar.nombreUnidad + " no pudo ser eliminada.');", true);
             }
             else
             {
-                Toastr("sucess", "La unidad " + unidadEliminar.nombreUnidad + " fue eliminada con éxito!");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.succcess('" + "La unidad " + unidadEliminar.nombreUnidad + " fue eliminada con éxito!');", true);
             }
             Session["listaUnidades"] = listaUnidades;
 
             mostrarTablaUnidades();
 
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalConfirmar", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalConfirmar').hide();", true);
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEliminarUnidad", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEliminarUnidad').hide();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalConfirmar", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalConfirmar').hide();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEliminarUnidad", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEliminarUnidad').hide();", true);
 
         }
 
@@ -2307,9 +2304,7 @@ namespace PEP.Catalogos.Periodos
             int idUnidad = Convert.ToInt32((((LinkButton)(sender)).CommandArgument).ToString());
 
             string nombreProyecto = proyectoSelccionadoUnidades.nombreProyecto;
-            LinkedList<Unidad> listaUnidades = (LinkedList<Unidad>)Session["listaUnidades"];
-
-
+            List<Unidad> listaUnidades = (List<Unidad>)Session["listaUnidades"];
 
             foreach (Unidad unidad in listaUnidades)
             {
@@ -2326,7 +2321,7 @@ namespace PEP.Catalogos.Periodos
             lbProyectoUnidad.Text = nombreProyecto;
             txtNombreUnidadEditar.Text = unidadSeleccionada.nombreUnidad;
             txtCoordinadorEditar.Text = unidadSeleccionada.coordinador;
-            ClientScript.RegisterStartupScript(GetType(), "activar", "activarModalEditarUnidad();", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalEditarUnidad();", true);
         }
 
         /// <summary>
@@ -2352,14 +2347,14 @@ namespace PEP.Catalogos.Periodos
                 List<Unidad> listaUnidades = unidadServicios.ObtenerPorProyecto(proyectoSelccionadoUnidades.idProyecto);
 
                 Session["listaUnidades"] = listaUnidades;
-                Toastr("success", "La unidad fue modificada con éxito!");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.succcess('" + "La unidad fue modificada con éxito!');", true);
                 mostrarTablaUnidades();
-
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEditarUnidad", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEditarUnidad').hide();", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "cerrarModalEditarUnidad();", true);
+                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEditarUnidad", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEditarUnidad').hide();", true);
             }
             else
             {
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEditarUnidad", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEditarUnidad').hide();", true);
+                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEditarUnidad", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEditarUnidad').hide();", true);
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalEditarUnidad();", true);
             }
 
@@ -2408,7 +2403,7 @@ namespace PEP.Catalogos.Periodos
 
             string nombreProyecto = proyectoSelccionadoUnidades.nombreProyecto;
             List<Unidad> listaUnidades = (List<Unidad>)Session["listaUnidades"];
-            
+
             foreach (Unidad unidad in listaUnidades)
             {
                 if (unidad.idUnidad == idUnidad)
@@ -2438,7 +2433,7 @@ namespace PEP.Catalogos.Periodos
         {
             if (!String.IsNullOrEmpty(txtNombreSubUnidad.Text))
             {
-                Toastr("error", "Debe ingresar el nombre de la sub unidad");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Debe ingresar el nombre de la sub unidad');", true);
             }
             else
             {

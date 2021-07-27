@@ -6,7 +6,7 @@
         <%-- titulo pantalla --%>
         <div class="col-md-12 col-xs-12 col-sm-12">
             <center>
-                        <asp:Label ID="label" runat="server" Text="Planillas Fundevi" Font-Size="Large" ForeColor="Black"></asp:Label>
+                        <asp:Label ID="label" runat="server" Text="Planillas FundacionUCR" Font-Size="Large" ForeColor="Black"></asp:Label>
                     </center>
         </div>
         <%-- fin titulo pantalla --%>
@@ -108,7 +108,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Nueva planilla Fundevi</h4>
+                        <h4 class="modal-title">Nueva planilla FundacionUCR</h4>
                     </div>
                     <div class="modal-body" style="align-content:center;text-align:center">
                         <%-- campos a llenar --%>

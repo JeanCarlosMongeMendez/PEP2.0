@@ -63,9 +63,7 @@
                                     </td>
 
                                     <td>
-                                        <asp:UpdatePanel runat="server"><ContentTemplate>
                                         <asp:LinkButton ID="btnEliminar" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("anoPeriodo") %>' OnClick="btnEliminar_Click" CssClass="btn btn glyphicon glyphicon-trash"></asp:LinkButton>
-                                            </ContentTemplate><Triggers><asp:PostBackTrigger ControlID="btnEliminar"/></Triggers></asp:UpdatePanel>
                                     </td>
                                 </tr>
 
@@ -177,7 +175,7 @@
                                         </td>
 
                                         <td>
-                                            <%# (Eval("esUCR").ToString() == "True")? "UCR" : "Fundevi" %>
+                                            <%# (Eval("esUCR").ToString() == "True")? "UCR" : "FundacionUCR" %>
                                             
                                         </td>
                                         <td>
@@ -639,7 +637,7 @@
                         <ContentTemplate>
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Eliminar Proyecto</h4>
+                                <h4 class="modal-title">Nuevo Proyecto</h4>
                             </div>
                             <div class="modal-body">
 
@@ -657,7 +655,9 @@
                                             <asp:Label ID="lbPeriodoDDLNuevo" runat="server" Text="f" Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
                                         </div>
                                     </div>
-
+                                    <div class="col-md-12 col-xs-12 col-sm-12">
+                                        <br />
+                                        </div>
                                     <div class="col-md-12 col-xs-12 col-sm-12 mt-1">
                                         <div class="col-md-2 col-xs-2 col-sm-2">
                                             <asp:Label ID="lblNombreProyecto" runat="server" Text="Nombre <span style='color:red'>*</span> " Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
@@ -667,7 +667,9 @@
                                         </div>
 
                                     </div>
-
+                                    <div class="col-md-12 col-xs-12 col-sm-12">
+                                        <br />
+                                        </div>
                                     <div class="col-md-12 col-xs-12 col-sm-12 mt-1">
                                         <div class="col-md-2 col-xs-2 col-sm-2">
                                             <asp:Label ID="lblCodigoProyecto" runat="server" Text="Código <span style='color:red'>*</span> " Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
@@ -677,7 +679,9 @@
                                         </div>
 
                                     </div>
-
+                                    <div class="col-md-12 col-xs-12 col-sm-12">
+                                        <br />
+                                        </div>
                                     <div class="col-md-12 col-xs-12 col-sm-12 mt-1">
                                         <div class="col-md-2 col-xs-2 col-sm-2">
                                             <asp:Label ID="lblEsUCRProyecto" runat="server" Text="Tipo <span style='color:red'>*</span> " Font-Size="Medium" ForeColor="Black" CssClass="label"></asp:Label>
@@ -685,7 +689,7 @@
                                         <div class="col-md-8 col-xs-8 col-sm-8">
                                             <asp:DropDownList ID="ddlEsUCRProyecto" runat="server" CssClass="form-control">
                                                 <asp:ListItem Text="UCR" Value="true" />
-                                                <asp:ListItem Text="Fundevi" Value="false" />
+                                                <asp:ListItem Text="FundacionUCR" Value="false" />
                                             </asp:DropDownList>
                                         </div>
                                     </div>
@@ -799,7 +803,7 @@
                                                             <td>
                                                                 <%# Eval("nombreProyecto") %>
                                                             </td>
-                                                            <td><%# (Eval("esUCR").ToString() == "True")? "UCR" : "Fundevi" %>
+                                                            <td><%# (Eval("esUCR").ToString() == "True")? "UCR" : "FundacionUCR" %>
                                                             </td>
                                                         </tr>
                                                     </ItemTemplate>
@@ -830,7 +834,7 @@
                                                             <td>
                                                                 <%# Eval("nombreProyecto") %>
                                                             </td>
-                                                            <td><%# (Eval("esUCR").ToString() == "True")? "UCR" : "Fundevi" %>
+                                                            <td><%# (Eval("esUCR").ToString() == "True")? "UCR" : "FundacionUCR" %>
                                                             </td>
                                                         </tr>
 
@@ -1461,11 +1465,20 @@
             function activarModalEditarProyecto() {
                 $('#modalEditarProyecto').modal('show');
             };
+            function cerrarModalEditarProyecto() {
+                $('#modalEditarProyecto').modal('hide');
+            };
             function activarModalEliminarProyecto() {
                 $('#modalEliminarProyecto').modal('show');
             };
+            function cerrarModalEliminarProyecto() {
+                $('#modalEliminarProyecto').modal('hide');
+            };
             function activarModalNuevoProyecto() {
                 $('#modalNuevoProyecto').modal('show');
+            };
+            function cerrarModalNuevoProyecto() {
+                $('#modalNuevoProyecto').modal('hide');
             };
             function activarModalTransferirProyecto() {
                 $('#modalTransferirProyecto').modal('show');
@@ -1482,11 +1495,20 @@
             function activarModalEditarUnidad() {
                 $('#modalEditarUnidad').modal('show');
             };
+            function cerrarModalEditarUnidad() {
+                $('#modalEditarUnidad').modal('hide');
+            };
             function activarModalConfirmarProyecto() {
                 $('#modalConfirmarProyecto').modal('show');
             };
+            function cerrarModalConfirmarProyecto() {
+                $('#modalConfirmarProyecto').modal('hide');
+            };
             function activarModalConfirmarPeriodo() {
                 $('#modalConfirmarPeriodo').modal('show');
+            };
+            function cerrarModalConfirmarPeriodo() {
+                $('#modalConfirmarPeriodo').modal('hide');
             };
             function activarModalSubUnidades() {
                 $('#modalSubUnidades').modal('show');

@@ -48,7 +48,7 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.numero_partid
                 partida.periodo.anoPeriodo = Convert.ToInt32(reader["ano_periodo"].ToString());
 
                 //Si la partida padre contiene un valor se le agrega, sino se deja como nulo
-                if (!DBNull.Value.Equals(reader["id_partida_padre"]))
+                if (!String.IsNullOrEmpty(reader["id_partida_padre"].ToString()))
                 {
                     partida.partidaPadre = new Partida();
                     partida.partidaPadre.idPartida = Convert.ToInt32(reader["id_partida_padre"].ToString());
@@ -183,7 +183,7 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.numero_partid
                 partida.esUCR = Convert.ToBoolean(reader["esUCR"].ToString());
 
                 //Si la partida padre contiene un valor se le agrega, sino se deja como nulo
-                if (!DBNull.Value.Equals(reader["id_partida_padre"]))
+                if (!String.IsNullOrEmpty(reader["id_partida_padre"].ToString()))
                 {
                     partida.partidaPadre = new Partida();
                     partida.partidaPadre.idPartida = Convert.ToInt32(reader["id_partida_padre"].ToString());
@@ -212,7 +212,11 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.numero_partid
             SqlConnection sqlConnection = conexion.conexionPEP();
             List<Partida> partidas = new List<Partida>();
 
-            String consulta = @"select id_partida, numero_partida, descripcion_partida, id_partida_padre, ano_periodo,esUCR from Partida where esUCR=@esUCR AND ano_periodo=@ano_periodo AND disponible=1 order by numero_partida;";
+            String consulta = @"select ph.id_partida, ph.numero_partida, 
+ph.descripcion_partida, ph.id_partida_padre,ph.esUCR, ph.ano_periodo, pp.numero_partida AS numero_partida_padre,
+ pp.descripcion_partida AS descripcion_padre
+ from Partida ph left join Partida pp ON ph.id_partida_padre = pp.id_partida
+ where ph.esUCR=@esUCR AND ph.ano_periodo=@ano_periodo AND ph.disponible=1 order by numero_partida;";
 
             SqlCommand sqlCommand = new SqlCommand(consulta, sqlConnection);
             sqlCommand.Parameters.AddWithValue("@esUCR", tipoPartida);
@@ -228,14 +232,27 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.numero_partid
                 partida.idPartida = Convert.ToInt32(reader["id_partida"].ToString());
                 partida.numeroPartida = reader["numero_partida"].ToString();
                 partida.descripcionPartida = reader["descripcion_partida"].ToString();
-                partida.esUCR = Convert.ToBoolean(reader["esUCR"].ToString());
+                partida.esUCR = Boolean.Parse(reader["esUCR"].ToString());
                 partida.periodo = new Periodo();
                 partida.periodo.anoPeriodo = Convert.ToInt32(reader["ano_periodo"].ToString());
 
+                //Si la partida padre contiene un valor se le agrega, sino se deja como nulo
+                if (!String.IsNullOrEmpty(reader["id_partida_padre"].ToString()))
+                {
+                    partida.partidaPadre = new Partida();
+                    partida.partidaPadre.idPartida = Convert.ToInt32(reader["id_partida_padre"].ToString());
+                    partida.partidaPadre.descripcionPartida = reader["descripcion_padre"].ToString();
+                    partida.partidaPadre.numeroPartida = reader["numero_partida_padre"].ToString();
+
+                }
+                else
+                {
+                    partida.partidaPadre = null;
+                }
+
                 partidas.Add(partida);
-
-
             }
+            
             return partidas;
         }
 
@@ -384,7 +401,7 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.numero_partid
                 partidaBD.esUCR = Convert.ToBoolean(reader["esUCR"].ToString());
 
                 //Si la partida padre contiene un valor se le agrega, sino se deja como nulo
-                if (!DBNull.Value.Equals(reader["id_partida_padre"]))
+                if (!String.IsNullOrEmpty(reader["id_partida_padre"].ToString()))
                 {
                     partidaBD.partidaPadre = new Partida();
                     partidaBD.partidaPadre.idPartida = Convert.ToInt32(reader["id_partida_padre"].ToString());
@@ -475,7 +492,7 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.numero_partid
                 partida.esUCR = Convert.ToBoolean(reader["esUCR"].ToString());
 
                 //Si la partida padre contiene un valor se le agrega, sino se deja como nulo
-                if (!DBNull.Value.Equals(reader["id_partida_padre"]))
+                if (!String.IsNullOrEmpty(reader["id_partida_padre"].ToString()))
                 {
                     partida.partidaPadre = new Partida();
                     partida.partidaPadre.idPartida = Convert.ToInt32(reader["id_partida_padre"].ToString());
@@ -521,7 +538,7 @@ where ph.ano_periodo=@ano_periodo_ AND ph.disponible=1 order by ph.numero_partid
                 partida.esUCR = Convert.ToBoolean(reader["esUCR"].ToString());
 
                 //Si la partida padre contiene un valor se le agrega, sino se deja como nulo
-                if (!DBNull.Value.Equals(reader["id_partida_padre"]))
+                if (!String.IsNullOrEmpty(reader["id_partida_padre"].ToString()))
                 {
                     partida.partidaPadre = new Partida();
                     partida.partidaPadre.idPartida = Convert.ToInt32(reader["id_partida_padre"].ToString());

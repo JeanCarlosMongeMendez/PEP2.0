@@ -40,7 +40,7 @@ namespace Proyecto.Catalogos.Partidas
                 Session["listaPartidaAgregadas"] = null;
                 Session["listaPartidaAgregadasFiltrada"] = null;
 
-                llenarDdlPeriodos(ddlPeriodo);
+                llenarDdlPeriodos();
 
                 Periodo periodo = new Periodo();
                 periodo.anoPeriodo = Convert.ToInt32(ddlPeriodo.SelectedValue);
@@ -99,9 +99,9 @@ namespace Proyecto.Catalogos.Partidas
             txtNumeroPartidas.CssClass = "form-control";
             txtDescripcionPartida.Text = "";
             txtDescripcionPartida.CssClass = "form-control";
-            llenarDdlPeriodos(ddlPeriodoModal);
-
-            Session["listaPartidasPorPeriodo"] = partidaServicios.ObtenerPorPeriodo(Convert.ToInt32(ddlPeriodoModal.SelectedValue));
+            //llenarDdlPeriodos();
+            ddlPeriodoModal.SelectedIndex = ddlPeriodo.SelectedIndex;
+            Session["listaPartidasPorPeriodo"] = partidaServicios.ObtenerPorPeriodo(Convert.ToInt32(ddlPeriodo.SelectedValue));
             List<Partida> lista =( List<Partida>)Session["listaPartidasPorPeriodo"];
             llenarPartidasPadreDDL(ddlPartidasPadre);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevaPartida();", true);
@@ -278,9 +278,9 @@ namespace Proyecto.Catalogos.Partidas
             
             lbPeriodoModalModificar.Text = partidaEditar.periodo.anoPeriodo.ToString();
             txtNumeroPartidasModalModificar.Text = partidaEditar.numeroPartida;
-            txtNumeroPartidasModalModificar.CssClass = "form-control";
+            //txtNumeroPartidasModalModificar.CssClass = "form-control";
             txtDescripcionPartidaModalModificar.Text = partidaEditar.descripcionPartida;
-            txtDescripcionPartidaModalModificar.CssClass = "form-control";
+            //txtDescripcionPartidaModalModificar.CssClass = "form-control";
             
 
             if (partidaEditar.esUCR)
@@ -290,7 +290,7 @@ namespace Proyecto.Catalogos.Partidas
             }
             else
             {
-                lbPartidaTipoMod.Text = "Fundevi";
+                lbPartidaTipoMod.Text = "FundacionUCR";
             }
 
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalModificarPartida();", true);
@@ -339,7 +339,7 @@ namespace Proyecto.Catalogos.Partidas
             }
             else
             {
-                lbTipoPartidaElm.Text = "Fundevi";
+                lbTipoPartidaElm.Text = "FundacionUCR";
             }
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalEliminarPartida();", true);
         }
@@ -418,7 +418,9 @@ namespace Proyecto.Catalogos.Partidas
                     Session["listaPartidasFiltrada"] = listaPartidas;
 
                     mostrarDatosTabla();
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevaPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevaPartida').hide();", true);
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "cerrarModalNuevaPartida();", true);
+                    
+                    //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevaPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevaPartida').hide();", true);
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se ingreso la partida correctamente" + "');", true);
                 }
                 catch
@@ -430,8 +432,8 @@ namespace Proyecto.Catalogos.Partidas
             else
             {
 
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevaPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevaPartida').hide();", true);
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevaPartida();", true);
+                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevaPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevaPartida').hide();", true);
+                
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Todos los espacios son requeridos" + "');", true);
             }
         
@@ -451,7 +453,7 @@ namespace Proyecto.Catalogos.Partidas
         {
             Session["listaPartidasPorPeriodo"] = partidaServicios.ObtenerPorPeriodo(Convert.ToInt32(ddlPeriodoModal.SelectedValue));
             llenarPartidasPadreDDL(ddlPartidasPadre);
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevaPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevaPartida').hide();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalNuevaPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalNuevaPartida').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalNuevaPartida();", true);
         }
 
@@ -486,8 +488,10 @@ namespace Proyecto.Catalogos.Partidas
                     Session["listaPartidasFiltrada"] = listaPartidas;
 
                     mostrarDatosTabla();
-                    ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalModificarPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalModificarPartida').hide();", true);
+                    //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalModificarPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalModificarPartida').hide();", true);
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se modificó la partida correctamente" + "');", true);
+
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "cerrarModalModificarPartida();", true);
                 }
                 catch
                 {
@@ -498,8 +502,8 @@ namespace Proyecto.Catalogos.Partidas
             else
             {
 
-                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalModificarPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalModificarPartida').hide();", true);
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalModificarPartida();", true);
+                //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalModificarPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalModificarPartida').hide();", true);
+                //ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalModificarPartida();", true);
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.error('" + "Todos los espacios son requeridos" + "');", true);
             }
         }
@@ -516,8 +520,7 @@ namespace Proyecto.Catalogos.Partidas
         /// 
         protected void btnConfirmarEliminarPartida(Object sender, EventArgs e)
         {
-            
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalConfirmarPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalConfirmarPartida').hide();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalConfirmarPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalConfirmarPartida').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalConfirmarPartida()", true);
         }
        
@@ -543,10 +546,10 @@ namespace Proyecto.Catalogos.Partidas
             Session["listaPartidas"] = listaPartidas;
             Session["listaPatidasFiltrada"] = listaPartidas;
 
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEliminarPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEliminarPartida').hide();", true);
             mostrarDatosTabla();
-
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalEliminarPartida", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalEliminarPartida').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Pop", "toastr.success('" + "Se elimino la partida correctamente" + "');", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "cerrarModalConfirmarPartida();", true);
         }
 
         /// <summary>
@@ -1044,10 +1047,12 @@ namespace Proyecto.Catalogos.Partidas
         /// Modifica: DropDownList
         /// Devuelve: -
         /// </summary>
-        public void llenarDdlPeriodos(DropDownList ddl)
+        public void llenarDdlPeriodos()
         {
             LinkedList<Periodo> periodos = new LinkedList<Periodo>();
-            ddl.Items.Clear();
+            ddlPeriodo.Items.Clear();
+            ddlPeriodoModal.Items.Clear();
+
             periodos = this.periodoServicios.ObtenerTodos();
             int anoHabilitado = 0;
 
@@ -1068,12 +1073,14 @@ namespace Proyecto.Catalogos.Partidas
                     }
 
                     ListItem itemPeriodo = new ListItem(nombre, periodo.anoPeriodo.ToString());
-                    ddl.Items.Add(itemPeriodo);
+                    ddlPeriodo.Items.Add(itemPeriodo);
+                    ddlPeriodoModal.Items.Add(itemPeriodo);
                 }
 
                 if (anoHabilitado != 0)
-                {  
-                    ddl.Items.FindByValue(ddlPeriodo.SelectedValue).Selected = true;
+                {
+                    ddlPeriodo.Items.FindByValue(anoHabilitado.ToString()).Selected = true;
+                    ddlPeriodoModal.Items.FindByValue(anoHabilitado.ToString()).Selected = true;
                 }
             }
         }
@@ -1140,7 +1147,7 @@ namespace Proyecto.Catalogos.Partidas
             ddlPartidasUCR.Items.Clear();
            
             ddlPartidasUCR.Items.Add(new ListItem("UCR", "true"));
-            ddlPartidasUCR.Items.Add(new ListItem("Fundevi", "false"));
+            ddlPartidasUCR.Items.Add(new ListItem("FundacionUCR", "false"));
 
             List<Partida> partidas = new List<Partida>();
             partidas = (List<Partida>)Session["listaPartidasPorPeriodo"];
@@ -1166,12 +1173,12 @@ namespace Proyecto.Catalogos.Partidas
             ddlBuscarTipo.Items.Clear();
             ddlBuscarTipo.Items.Add(new ListItem("Tipo Partida", "null"));
             ddlBuscarTipo.Items.Add(new ListItem("UCR", "true"));
-            ddlBuscarTipo.Items.Add(new ListItem("Fundevi", "false"));
+            ddlBuscarTipo.Items.Add(new ListItem("FundacionUCR", "false"));
 
             ddlBuscarApasar.Items.Clear();
             ddlBuscarApasar.Items.Add(new ListItem("Tipo Partida", "null"));
             ddlBuscarApasar.Items.Add(new ListItem("UCR", "true"));
-            ddlBuscarApasar.Items.Add(new ListItem("Fundevi", "false"));
+            ddlBuscarApasar.Items.Add(new ListItem("FundacionUCR", "false"));
         }
         /// <summary>
         /// Jesús Torres
@@ -1186,7 +1193,7 @@ namespace Proyecto.Catalogos.Partidas
             ddlBuscarAgregadas.Items.Clear();
             ddlBuscarAgregadas.Items.Add(new ListItem("Tipo Partida", "null"));
             ddlBuscarAgregadas.Items.Add(new ListItem("UCR", "true"));
-            ddlBuscarAgregadas.Items.Add(new ListItem("Fundevi", "false"));
+            ddlBuscarAgregadas.Items.Add(new ListItem("FundacionUCR", "false"));
 
         }
        
@@ -1304,7 +1311,7 @@ namespace Proyecto.Catalogos.Partidas
             //metodo que realiza la paginacion
             Paginacion2();
 
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarPartidas').hide();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarPartidas').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarPartida();", true);
         }
         /// <summary>
@@ -1350,7 +1357,7 @@ namespace Proyecto.Catalogos.Partidas
             //metodo que realiza la paginacion
             Paginacion3();
 
-            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarPartidas').hide();", true);
+            //ScriptManager.RegisterStartupScript(Page, Page.GetType(), "#modalPasarPartidas", "$('body').removeClass('modal-open');$('.modal-backdrop').remove();$('#modalPasarPartidas').hide();", true);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "activar", "activarModalPasarPartida();", true);
         }
 

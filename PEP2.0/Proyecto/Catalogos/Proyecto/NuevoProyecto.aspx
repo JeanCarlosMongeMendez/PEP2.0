@@ -59,7 +59,7 @@
                 <div class="col-md-8 col-xs-8 col-sm-8">
                     <asp:DropDownList ID="ddlEsUCRProyecto" runat="server" CssClass="form-control">
                         <asp:ListItem Text="UCR" Value="true" />
-                        <asp:ListItem Text="FUNDEVI" Value="false" />
+                        <asp:ListItem Text="FundacionUCR" Value="false" />
                     </asp:DropDownList>
                 </div>
             </div>

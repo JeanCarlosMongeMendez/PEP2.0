@@ -70,8 +70,8 @@
                             <ItemTemplate>
                                 <tr style="text-align: center">
                                     <td>
-                                        <asp:LinkButton ID="btnEditar" runat="server" ToolTip="Editar" CommandArgument='<%# Eval("idPartida") %>' OnClick="btnEditar_Click"><span class="btn glyphicon glyphicon-pencil"></span></asp:LinkButton>
-                                        <asp:LinkButton ID="btnEliminar" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("idPartida") %>' OnClick="btnEliminar_Click"><span class="btn glyphicon glyphicon-trash"></span></asp:LinkButton>
+                                        <asp:LinkButton ID="btnEditar" runat="server" ToolTip="Editar" CommandArgument='<%# Eval("idPartida") %>' OnClick="btnEditar_Click" CssClass="btn glyphicon glyphicon-pencil"></asp:LinkButton>
+                                        <asp:LinkButton ID="btnEliminar" runat="server" ToolTip="Eliminar" CommandArgument='<%# Eval("idPartida") %>' OnClick="btnEliminar_Click" CssClass="btn glyphicon glyphicon-trash"></asp:LinkButton>
                                     </td>
                                     <td>
                                         <%# Eval("descripcionPartida") %>
@@ -80,7 +80,7 @@
                                         <%# Eval("numeroPartida") %>
                                     </td>
                                     <td>
-                                        <%# (Eval("esUCR").ToString() == "True")? "UCR" : "Fundevi" %>     
+                                        <%# (Eval("esUCR").ToString() == "True")? "UCR" : "FundacionUCR" %>     
                                     </td>
                                 </tr>
 
@@ -142,13 +142,12 @@
     </asp:UpdatePanel>
 
     <!-- Modal nueva partida -->
-    <asp:UpdatePanel ID="UpdatePanel7" runat="server">
-     <ContentTemplate>
             <div id="modalNuevaPartida" class="modal fade" role="alertdialog">
                 <div class="modal-dialog modal-lg">
 
                     <!-- Modal content-->
                     <div class="modal-content">
+                        <asp:UpdatePanel runat="server"><ContentTemplate>
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Nueva Partida</h4>
@@ -233,12 +232,11 @@
                             <asp:Button ID="btnNuevaPartidaModal" runat="server" Text="Guardar" CssClass="btn btn-primary" OnClick="btnNuevaPartidaModal_Click"/>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         </div>
-                    </div>
-
+              
+                    </ContentTemplate></asp:UpdatePanel>
                 </div>
             </div>
-                </ContentTemplate>
-    </asp:UpdatePanel>
+                </div>
     <!-- Fin modal nueva partida -->
 
 
@@ -254,6 +252,7 @@
 
                     <!-- Modal content-->
                     <div class="modal-content">
+                        <asp:UpdatePanel runat="server"><ContentTemplate>
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Modificar Partida</h4>
@@ -338,6 +337,7 @@
                             <asp:Button ID="btnModificar" runat="server" Text="Modificar" CssClass="btn btn-primary" OnClick="btnModificar_Click"/>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         </div>
+                        </ContentTemplate></asp:UpdatePanel>
                     </div>
 
                 </div>
@@ -351,6 +351,7 @@
 
                     <!-- Modal content-->
                     <div class="modal-content">
+                        <asp:UpdatePanel runat="server"><ContentTemplate>
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Eliminar partida</h4>
@@ -438,6 +439,7 @@
                             <asp:Button ID="btnEliminarPartidaModal" runat="server" Text="Eliminar" CssClass="btn btn-primary" OnClick="btnConfirmarEliminarPartida"/>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                         </div>
+                        </ContentTemplate></asp:UpdatePanel>
                     </div>
 
                 </div>
@@ -546,7 +548,7 @@
                                                          <%# Eval("numeroPartida") %>
                                                      </td>
                                                      <td>
-                                                        <%# (Eval("esUCR").ToString() == "True")? "UCR" : "Fundevi" %> 
+                                                        <%# (Eval("esUCR").ToString() == "True")? "UCR" : "FundacionUCR" %> 
                                                      </td>
                                                  </tr>
                                              </ItemTemplate>
@@ -599,7 +601,7 @@
                                                          <%# Eval("numeroPartida") %>
                                                      </td>
                                                     <td>
-                                                        <%# (Eval("esUCR").ToString() == "True")? "UCR" : "Fundevi" %> 
+                                                        <%# (Eval("esUCR").ToString() == "True")? "UCR" : "FundacionUCR" %> 
                                                      </td>
                                                      
                                                  </tr>
@@ -704,13 +706,12 @@
                      
 
              <!-- Modal Confirmar Eliminar Unidad -->
-    <asp:UpdatePanel ID="UPEliminar" runat="server">
-        <ContentTemplate>
             <div id="modalConfirmarPartida" class="modal fade" role="alertdialog">
                 <div class="modal-dialog modal-lg">
 
                     <!-- Modal content-->
                     <div class="modal-content">
+                        <asp:UpdatePanel runat="server"><ContentTemplate>
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="modal-title">Confirmar Eliminar Partida</h4>
@@ -724,12 +725,9 @@
                                 <div class="col-md-12 col-xs-12 col-sm-12">
                                     <br />
                                 </div>
-                                <div class="col-md-12 col-xs-12 col-sm-12">
-                                    <center>
+                                <div class="col-md-12 col-xs-12 col-sm-12" style="text-align:center;align-content:center">
                                              <asp:Label runat="server" Text="" Font-Size="Large" ForeColor="Black"></asp:Label>
                                              <p>¿Está seguro que desea eliminar la Partida?</p> 
-                                                         
-                                            </center>
                                 </div>
 
                                 <div class="col-md-12 col-xs-12 col-sm-12">
@@ -741,18 +739,17 @@
                             <asp:Button ID="btnConfirmar" runat="server" Text="Confirmar" CssClass="btn btn-primary boton-eliminar" OnClick="btnEliminarPartidaModal_Click" />
                             <button type="button" class="btn btn-default boton-otro" data-dismiss="modal">Cancelar</button>
                         </div>
+                        </ContentTemplate></asp:UpdatePanel>
                     </div>
 
                 </div>
             </div>
-        </ContentTemplate>
-    </asp:UpdatePanel>
     <!-- FIN Modal Confirmar Eliminar Unidad -->
 
 
 
 
-
+    
 
 
 
@@ -766,12 +763,24 @@
             $('#modalNuevaPartida').modal('show');
         };
 
+        function cerrarModalNuevaPartida() {
+            $('#modalNuevaPartida').modal('hide');
+        };
+
         function activarModalModificarPartida() {
             $('#modalModificarPartida').modal('show');
         };
 
+        function cerrarModalModificarPartida() {
+            $('#modalModificarPartida').modal('hide');
+        };
+
           function activarModalEliminarPartida() {
             $('#modalEliminarPartida').modal('show');
+        };
+
+        function cerrarModalEliminarPartida() {
+            $('#modalEliminarPartida').modal('hide');
         };
 
          function activarModalPasarPartida() {
@@ -779,6 +788,10 @@
         };
         function activarModalConfirmarPartida() {
              $('#modalConfirmarPartida').modal('show');
+        }
+
+        function cerrarModalConfirmarPartida() {
+            $('#modalConfirmarPartida').modal('hide');
         }
 
          function enter3_click() {

@@ -10,7 +10,7 @@
         <div class="row" style="text-align: center">
 
             <div class="col-md-12 col-xs-12 col-sm-12" style="align-content: center; text-align: center;">
-                <asp:Label ID="label" runat="server" Text="Planillas Fundevi" Font-Size="Large" ForeColor="Black"></asp:Label>
+                <asp:Label ID="label" runat="server" Text="Planillas FundacionUCR" Font-Size="Large" ForeColor="Black"></asp:Label>
             </div>
 
 

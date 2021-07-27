@@ -34,7 +34,7 @@ namespace Proyecto.Catalogos.Proyecto
                     }
                     else
                     {
-                        txtEsUCRProyecto.Text = "FUNDEVI";
+                        txtEsUCRProyecto.Text = "FundacionUCR";
                     }
                     txPeriodoProyecto.Text = proyecto.periodo.anoPeriodo.ToString();
                 }
