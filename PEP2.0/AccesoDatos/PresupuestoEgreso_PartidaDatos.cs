@@ -38,6 +38,7 @@ namespace AccesoDatos
                                                                                             and P.ano_periodo = (select ano_periodo from Proyecto where id_proyecto = (
                                                                                             select id_proyecto from Unidad where id_unidad = (select id_unidad from Presupuesto_Egreso where id_presupuesto_egreso = @idPresupuestoEgreso)
                                                                                             )) and P.disponible = 'True' and EP.id_estado_presupuesto = PEP.id_estado_presupuesto
+and P.esUCR = (select es_UCR from Proyecto where id_proyecto = (select id_proyecto from Unidad where id_unidad = (select id_unidad from Presupuesto_Egreso where id_presupuesto_egreso= @idPresupuestoEgreso)))
                                                                                             union
                                                                                             select @idPresupuestoEgreso as id_presupuesto_egreso, P.id_partida, 0 as monto, '' as descripcion,(select id_estado_presupuesto from Estado_presupuestos where descripcion_estado_presupuesto='Guardar') as id_estado_presupuesto,1 as id_linea, P.descripcion_partida,P.numero_partida,'Espera' as descripcion_estado_presupuesto
                                                                                             from Partida P
@@ -45,6 +46,7 @@ namespace AccesoDatos
                                                                                             ) and P.id_partida_padre is not null and P.ano_periodo = (select ano_periodo from Proyecto where id_proyecto = (
                                                                                             select id_proyecto from Unidad where id_unidad = (select id_unidad from Presupuesto_Egreso where id_presupuesto_egreso = @idPresupuestoEgreso)
                                                                                             )) and P.disponible = 'True'
+and P.esUCR = (select es_UCR from Proyecto where id_proyecto = (select id_proyecto from Unidad where id_unidad = (select id_unidad from Presupuesto_Egreso where id_presupuesto_egreso= @idPresupuestoEgreso)))
                                                                                             order by P.numero_partida", sqlConnection);
             sqlCommand.Parameters.AddWithValue("@idPresupuestoEgreso", presupuestoEgreso.idPresupuestoEgreso);
 
